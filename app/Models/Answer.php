@@ -14,6 +14,7 @@ class Answer extends Model
       ];
        public function questions(): BelongsToMany
       {
+        //
           //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
           return $this->belongsToMany(Question::class, 'quest_ans', 'answer', 'question')
           ->as('qa')
