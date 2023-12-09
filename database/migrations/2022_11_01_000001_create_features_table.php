@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('scope');
             $table->text('value');
             $table->timestamps();
-
             $table->unique(['name', 'scope']);
         });
     }
