@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\QuestionResource\Pages;
 use App\Filament\Resources\QuestionResource\RelationManagers\AnswersRelationManager;
 use App\Models\Question;
-use App\Models\Module;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,20 +14,21 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 
 class QuestionResource extends Resource
 {
     protected static ?string $model = Question::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-question-mark-circle';
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Textarea::make('text')
+                TinyEditor::make('text')
                     ->required()
-                    ->maxLength(65535)
+                    ->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads')
                     ->columnSpanFull(),
                 Forms\Components\Select::make('module')->label('Modules')
                 ->relationship(name: 'moduleRel', titleAttribute: 'name'),
@@ -41,11 +41,11 @@ class QuestionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('text')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('moduleRel.name')->label('Modules'),
+                Tables\Columns\TextColumn::make('text')->limit(50)->html()
+                ->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('moduleRel.name')->label('Modules')->sortable(),
                 Tables\Columns\TextColumn::make('answers_count')->counts('answers')->label('Answers')
-                ->numeric(),
+                ->numeric()->sortable(),
                         //     Tables\Columns\IconColumn::make('isexam')
             //        ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -62,14 +62,18 @@ class QuestionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->mutateFormDataUsing(function (array $data): array {
+                    $data['text'] = str_replace('src="../storage','src="'.env('APP_URL').'/storage',$data['text']);
+                    return $data;
+                }),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->deferLoading();;
     }
 
     public static function getPages(): array
@@ -89,7 +93,7 @@ class QuestionResource extends Resource
 {
     return $infolist
         ->schema([
-            Infolists\Components\TextEntry::make('text'),
+            Infolists\Components\TextEntry::make('text')->html(),
             Infolists\Components\TextEntry::make('moduleRel.name')->label('Modules'),
         ]);
 }

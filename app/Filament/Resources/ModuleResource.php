@@ -26,7 +26,10 @@ class ModuleResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('course')
+                    Forms\Components\TextInput::make('maxq')
+                    ->required()
+                    ->numeric()->default(50),
+                Forms\Components\Select::make('course')->label('Course')->required()
                 ->relationship(name: 'courseRel', titleAttribute: 'name')
             ]);
     }
@@ -38,6 +41,7 @@ class ModuleResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                     Tables\Columns\TextColumn::make('courseRel.name')->label('Course'),
+                    Tables\Columns\TextColumn::make('maxq')->label('Max. Questions'),
                     Tables\Columns\TextColumn::make('added_at')
                     ->dateTime()
                     ->sortable(),

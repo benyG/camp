@@ -5,6 +5,8 @@ namespace App\Filament\Resources\QuestionResource\Pages;
 use App\Filament\Resources\QuestionResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 
 class ManageQuestions extends ManageRecords
 {
@@ -13,7 +15,10 @@ class ManageQuestions extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
-        ];
+                Actions\CreateAction::make()->mutateFormDataUsing(function (array $data): array {
+                    $data['text'] = str_replace('src="../storage','src="'.env('APP_URL').'/storage',$data['text']);
+                    return $data;
+                })
+            ];
     }
 }

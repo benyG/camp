@@ -20,17 +20,17 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         '40275907c8566c390185147049ef6e5d' => __DIR__ . '/..' . '/livewire/livewire/src/helpers.php',
         '2c620c99f96a2b964346b45a4d1d1e64' => __DIR__ . '/..' . '/spatie/invade/src/functions.php',
         'e125f489d647ae664b0af7b573079de7' => __DIR__ . '/..' . '/filament/support/src/helpers.php',
-        'b69d5f1f95cd1ed438c038b6cbcc45b5' => __DIR__ . '/..' . '/filament/notifications/src/Testing/Autoload.php',
         '9e4824c5afbdc1482b6025ce3d4dfde8' => __DIR__ . '/..' . '/league/csv/src/functions_include.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
-        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
-        'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         '9261e07cd92c53dcc971c7c88c176c04' => __DIR__ . '/..' . '/danharrin/date-format-converter/src/helpers.php',
         '9720327d09ed9a4ba00c9b5071b71c7d' => __DIR__ . '/..' . '/danharrin/date-format-converter/src/standards.php',
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '2ad94ea6f6f6013119e9abcf4e302a08' => __DIR__ . '/..' . '/filament/forms/src/helpers.php',
+        'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '3bd81c9b8fcc150b69d8b63b4d2ccf23' => __DIR__ . '/..' . '/spatie/flare-client-php/src/helpers.php',
+        'b69d5f1f95cd1ed438c038b6cbcc45b5' => __DIR__ . '/..' . '/filament/notifications/src/Testing/Autoload.php',
         '35a6ad97d21e794e7e22a17d806652e4' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Functions.php',
         '09f6b20656683369174dd6fa83b7e5fb' => __DIR__ . '/..' . '/symfony/polyfill-uuid/bootstrap.php',
         '47e1160838b5e5a10346ac4084b58c23' => __DIR__ . '/..' . '/laravel/prompts/src/helpers.php',
@@ -109,6 +109,8 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         array (
             'RyanChandler\\BladeCaptureDirective\\Database\\Factories\\' => 54,
             'RyanChandler\\BladeCaptureDirective\\' => 35,
+            'Rawilk\\FilamentPasswordInput\\Database\\Factories\\' => 48,
+            'Rawilk\\FilamentPasswordInput\\' => 29,
             'Ramsey\\Uuid\\' => 12,
             'Ramsey\\Collection\\' => 18,
         ),
@@ -133,6 +135,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'M' => 
         array (
             'Monolog\\' => 8,
+            'Mohamedsabil83\\FilamentFormsTinyeditor\\' => 39,
             'Mockery\\' => 8,
             'Masterminds\\' => 12,
         ),
@@ -399,6 +402,14 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         array (
             0 => __DIR__ . '/..' . '/ryangjchandler/blade-capture-directive/src',
         ),
+        'Rawilk\\FilamentPasswordInput\\Database\\Factories\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/rawilk/filament-password-input/database/factories',
+        ),
+        'Rawilk\\FilamentPasswordInput\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/rawilk/filament-password-input/src',
+        ),
         'Ramsey\\Uuid\\' => 
         array (
             0 => __DIR__ . '/..' . '/ramsey/uuid/src',
@@ -460,6 +471,10 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
+        'Mohamedsabil83\\FilamentFormsTinyeditor\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mohamedsabil83/filament-forms-tinyeditor/src',
+        ),
         'Mockery\\' => 
         array (
             0 => __DIR__ . '/..' . '/mockery/mockery/library/Mockery',
@@ -474,8 +489,8 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         ),
         'League\\Uri\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/uri-interfaces',
-            1 => __DIR__ . '/..' . '/league/uri',
+            0 => __DIR__ . '/..' . '/league/uri',
+            1 => __DIR__ . '/..' . '/league/uri-interfaces',
         ),
         'League\\OAuth1\\Client\\' => 
         array (
@@ -695,7 +710,24 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Filament\\Resources\\AnswerResource' => __DIR__ . '/../..' . '/app/Filament/Resources/AnswerResource.php',
+        'App\\Filament\\Resources\\AnswerResource\\Pages\\ManageAnswers' => __DIR__ . '/../..' . '/app/Filament/Resources/AnswerResource/Pages/ManageAnswers.php',
+        'App\\Filament\\Resources\\CourseResource' => __DIR__ . '/../..' . '/app/Filament/Resources/CourseResource.php',
+        'App\\Filament\\Resources\\CourseResource\\Pages\\ManageCourses' => __DIR__ . '/../..' . '/app/Filament/Resources/CourseResource/Pages/ManageCourses.php',
+        'App\\Filament\\Resources\\InfoResource' => __DIR__ . '/../..' . '/app/Filament/Resources/InfoResource.php',
+        'App\\Filament\\Resources\\InfoResource\\Pages\\ManageInfos' => __DIR__ . '/../..' . '/app/Filament/Resources/InfoResource/Pages/ManageInfos.php',
+        'App\\Filament\\Resources\\ModuleResource' => __DIR__ . '/../..' . '/app/Filament/Resources/ModuleResource.php',
+        'App\\Filament\\Resources\\ModuleResource\\Pages\\ManageModules' => __DIR__ . '/../..' . '/app/Filament/Resources/ModuleResource/Pages/ManageModules.php',
+        'App\\Filament\\Resources\\QuestionResource' => __DIR__ . '/../..' . '/app/Filament/Resources/QuestionResource.php',
+        'App\\Filament\\Resources\\QuestionResource\\Pages\\ManageQuestions' => __DIR__ . '/../..' . '/app/Filament/Resources/QuestionResource/Pages/ManageQuestions.php',
+        'App\\Filament\\Resources\\QuestionResource\\Pages\\ViewQuestion' => __DIR__ . '/../..' . '/app/Filament/Resources/QuestionResource/Pages/ViewQuestion.php',
+        'App\\Filament\\Resources\\QuestionResource\\RelationManagers\\AnswersRelationManager' => __DIR__ . '/../..' . '/app/Filament/Resources/QuestionResource/RelationManagers/AnswersRelationManager.php',
+        'App\\Filament\\Resources\\UserResource' => __DIR__ . '/../..' . '/app/Filament/Resources/UserResource.php',
+        'App\\Filament\\Resources\\UserResource\\Pages\\ManageUsers' => __DIR__ . '/../..' . '/app/Filament/Resources/UserResource/Pages/ManageUsers.php',
+        'App\\Filament\\Resources\\VagueResource' => __DIR__ . '/../..' . '/app/Filament/Resources/VagueResource.php',
+        'App\\Filament\\Resources\\VagueResource\\Pages\\ManageVagues' => __DIR__ . '/../..' . '/app/Filament/Resources/VagueResource/Pages/ManageVagues.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\PageController' => __DIR__ . '/../..' . '/app/Http/Controllers/PageController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
@@ -706,11 +738,27 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\ValidateSignature' => __DIR__ . '/../..' . '/app/Http/Middleware/ValidateSignature.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Models\\Answer' => __DIR__ . '/../..' . '/app/Models/Answer.php',
+        'App\\Models\\Course' => __DIR__ . '/../..' . '/app/Models/Course.php',
+        'App\\Models\\Info' => __DIR__ . '/../..' . '/app/Models/Info.php',
+        'App\\Models\\Module' => __DIR__ . '/../..' . '/app/Models/Module.php',
+        'App\\Models\\QuestAns' => __DIR__ . '/../..' . '/app/Models/QuestAns.php',
+        'App\\Models\\Question' => __DIR__ . '/../..' . '/app/Models/Question.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\Vague' => __DIR__ . '/../..' . '/app/Models/Vague.php',
+        'App\\Policies\\AnswerPolicy' => __DIR__ . '/../..' . '/app/Policies/AnswerPolicy.php',
+        'App\\Policies\\CoursePolicy' => __DIR__ . '/../..' . '/app/Policies/CoursePolicy.php',
+        'App\\Policies\\InfoPolicy' => __DIR__ . '/../..' . '/app/Policies/InfoPolicy.php',
+        'App\\Policies\\ModulePolicy' => __DIR__ . '/../..' . '/app/Policies/ModulePolicy.php',
+        'App\\Policies\\QuestAnsPolicy' => __DIR__ . '/../..' . '/app/Policies/QuestAnsPolicy.php',
+        'App\\Policies\\QuestionPolicy' => __DIR__ . '/../..' . '/app/Policies/QuestionPolicy.php',
+        'App\\Policies\\UserPolicy' => __DIR__ . '/../..' . '/app/Policies/UserPolicy.php',
+        'App\\Policies\\VaguePolicy' => __DIR__ . '/../..' . '/app/Policies/VaguePolicy.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
+        'App\\Providers\\Filament\\AdminPanelProvider' => __DIR__ . '/../..' . '/app/Providers/Filament/AdminPanelProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'BladeUI\\Heroicons\\BladeHeroiconsServiceProvider' => __DIR__ . '/..' . '/blade-ui-kit/blade-heroicons/src/BladeHeroiconsServiceProvider.php',
@@ -4981,6 +5029,8 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'Mockery\\Undefined' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Undefined.php',
         'Mockery\\VerificationDirector' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/VerificationDirector.php',
         'Mockery\\VerificationExpectation' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/VerificationExpectation.php',
+        'Mohamedsabil83\\FilamentFormsTinyeditor\\Components\\TinyEditor' => __DIR__ . '/..' . '/mohamedsabil83/filament-forms-tinyeditor/src/Components/TinyEditor.php',
+        'Mohamedsabil83\\FilamentFormsTinyeditor\\FilamentFormsTinyeditorServiceProvider' => __DIR__ . '/..' . '/mohamedsabil83/filament-forms-tinyeditor/src/FilamentFormsTinyeditorServiceProvider.php',
         'Monolog\\Attribute\\AsMonologProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Attribute/AsMonologProcessor.php',
         'Monolog\\Attribute\\WithMonologChannel' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Attribute/WithMonologChannel.php',
         'Monolog\\DateTimeImmutable' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/DateTimeImmutable.php',
@@ -6781,6 +6831,11 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'Ramsey\\Uuid\\UuidInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/UuidInterface.php',
         'Ramsey\\Uuid\\Validator\\GenericValidator' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/GenericValidator.php',
         'Ramsey\\Uuid\\Validator\\ValidatorInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/ValidatorInterface.php',
+        'Rawilk\\FilamentPasswordInput\\Concerns\\CanCopyToClipboard' => __DIR__ . '/..' . '/rawilk/filament-password-input/src/Concerns/CanCopyToClipboard.php',
+        'Rawilk\\FilamentPasswordInput\\Concerns\\CanRegeneratePassword' => __DIR__ . '/..' . '/rawilk/filament-password-input/src/Concerns/CanRegeneratePassword.php',
+        'Rawilk\\FilamentPasswordInput\\Concerns\\CanRevealPassword' => __DIR__ . '/..' . '/rawilk/filament-password-input/src/Concerns/CanRevealPassword.php',
+        'Rawilk\\FilamentPasswordInput\\FilamentPasswordInputServiceProvider' => __DIR__ . '/..' . '/rawilk/filament-password-input/src/FilamentPasswordInputServiceProvider.php',
+        'Rawilk\\FilamentPasswordInput\\Password' => __DIR__ . '/..' . '/rawilk/filament-password-input/src/Password.php',
         'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirective' => __DIR__ . '/..' . '/ryangjchandler/blade-capture-directive/src/BladeCaptureDirective.php',
         'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider' => __DIR__ . '/..' . '/ryangjchandler/blade-capture-directive/src/BladeCaptureDirectiveServiceProvider.php',
         'SebastianBergmann\\CliParser\\AmbiguousOptionException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/AmbiguousOptionException.php',

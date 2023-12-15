@@ -35,6 +35,8 @@ class CourseResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                    Tables\Columns\TextColumn::make('modules_count')->counts('modules')->label('Modules')
+                    ->numeric()->sortable(),
                 Tables\Columns\TextColumn::make('added_at')
                     ->dateTime()
                     ->sortable(),

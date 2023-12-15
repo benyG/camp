@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->smallInteger('maxq')->default(50);
             $table->unsignedBigInteger('course')->nullable();
             $table->timestamp('added_at')->useCurrent();
             $table->foreign('course')->references('id')->on('courses')->cascadeOnUpdate()->nullOnDelete();
