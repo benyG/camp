@@ -54,7 +54,7 @@ class UserResource extends Resource
                 ->password()
                 ->required()
                 ->maxLength(255),
-                Forms\Components\Select::make('vague')->label('Session')
+                Forms\Components\Select::make('vague')->label('Class')
                 ->relationship(name: 'vagueRel', titleAttribute: 'name')
             ]);
     }
@@ -72,7 +72,7 @@ class UserResource extends Resource
                 ->color('success')->placeholder('No')->icon('heroicon-o-check-circle')
                     ->tooltip(fn (User $record): string => "{$record->email_verified_at}")
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('vagueRel.name')->label('Session')->sortable(),
+                    Tables\Columns\TextColumn::make('vagueRel.name')->label('Class')->sortable(),
                 Tables\Columns\TextColumn::make('ex')->label('Type')
                 ->formatStateUsing(fn (int $state): string => $state<=1?'Admin':'User')
                 ->sortable(),

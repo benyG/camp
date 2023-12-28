@@ -38,9 +38,9 @@ class ModuleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('name')->sortable()
                     ->searchable(),
-                    Tables\Columns\TextColumn::make('courseRel.name')->label('Course'),
+                    Tables\Columns\TextColumn::make('courseRel.name')->label('Course')->sortable(),
                     Tables\Columns\TextColumn::make('maxq')->label('Max. Questions'),
                     Tables\Columns\TextColumn::make('added_at')
                     ->dateTime()

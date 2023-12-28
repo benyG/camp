@@ -36,7 +36,7 @@ class AnswerResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('text')
-                ->searchable(),
+                ->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('questions_count')->counts('questions')->label('Using Questions')
                 ->numeric(),
                 Tables\Columns\TextColumn::make('created_at')
