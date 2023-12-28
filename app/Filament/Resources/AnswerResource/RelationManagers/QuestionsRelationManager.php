@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\QuestionResource\RelationManagers;
+namespace App\Filament\Resources\AnswerResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,25 +11,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Actions\AttachAction;
 
-class AnswersRelationManager extends RelationManager
+class QuestionsRelationManager extends RelationManager
 {
-
-    protected static string $relationship = 'answers';
+    protected static string $relationship = 'questions';
     public function isReadOnly(): bool
     {
         return false;
-    }
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('text')
-                    ->required()
-                    ->maxLength(500)
-                    ->unique(table: \App\Models\Answer::class),
-                Forms\Components\Toggle::make('isok')->label('Is an answer ?')
-                             ->required(),
-            ]);
     }
 
     public function table(Table $table): Table
@@ -37,22 +24,19 @@ class AnswersRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('text')
             ->columns([
-                Tables\Columns\TextColumn::make('text'),
+                Tables\Columns\TextColumn::make('text')->limit(50)->html()->label('Question'),
                 Tables\Columns\IconColumn::make('isok')->boolean()->label('Answer ?')
-                ])
+            ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
                     Forms\Components\Toggle::make('isok')->label('Is an answer ?')->required(),
-                ])->disabled($this->getOwnerRecord()->answers()->count()>=$this->getOwnerRecord()->maxr)
-                ->color('warning'),
+                ]),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make(),
             ])
             ->bulkActions([

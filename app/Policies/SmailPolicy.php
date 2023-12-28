@@ -37,7 +37,7 @@ class SmailPolicy
      */
     public function update(User $user, Smail $smail): bool
     {
-        return $smail->from==$user->id;
+        return true;
     }
 
     /**
@@ -45,7 +45,7 @@ class SmailPolicy
      */
     public function delete(User $user, Smail $smail): bool
     {
-        return $smail->from==$user->id;
+        return false;
     }
 
     /**
@@ -53,7 +53,7 @@ class SmailPolicy
      */
     public function restore(User $user, Smail $smail): bool
     {
-        return $user->ex != true;
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class SmailPolicy
      */
     public function forceDelete(User $user, Smail $smail): bool
     {
-        return $user->ex != true;
+        return false;
     }
 }

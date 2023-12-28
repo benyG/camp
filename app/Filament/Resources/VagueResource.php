@@ -18,7 +18,7 @@ class VagueResource extends Resource
     protected static ?string $model = Vague::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-folder-open';
-    protected static ?string $modelLabel = 'session';
+    protected static ?string $modelLabel = 'Class';
     public static function form(Form $form): Form
     {
         return $form

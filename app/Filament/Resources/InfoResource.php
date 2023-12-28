@@ -18,6 +18,8 @@ class InfoResource extends Resource
     protected static ?string $model = Info::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
+    protected static ?string $modelLabel = 'setting';
+    protected static ?string $slug = 'settings';
 
     public static function table(Table $table): Table
     {
@@ -27,6 +29,8 @@ class InfoResource extends Resource
                 ->rules(['required', 'numeric','max:100']),
                 Tables\Columns\TextInputColumn::make('efrom')->label('Email from')
                     ->rules(['required', 'email']),
+                Tables\Columns\TextInputColumn::make('smtp')->label('Auto send via SMTP')
+                    ->rules(['required']),
             ])
             ->filters([
                 //

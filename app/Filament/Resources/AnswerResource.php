@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\AnswerResource\RelationManagers\QuestionsRelationManager;
 
 class AnswerResource extends Resource
 {
@@ -26,6 +27,7 @@ class AnswerResource extends Resource
                 Forms\Components\TextInput::make('text')
                     ->required()
                     ->maxLength(200)
+                    ->unique()
             ]);
     }
 
@@ -46,6 +48,7 @@ class AnswerResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -56,11 +59,18 @@ class AnswerResource extends Resource
             ])
             ->deferLoading();;
     }
+    public static function getRelations(): array
+    {
+        return [
+            QuestionsRelationManager::class,
+        ];
+    }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ManageAnswers::route('/'),
+            'view' => Pages\ViewAnswer::route('/ans-{record}'),
         ];
     }
 }

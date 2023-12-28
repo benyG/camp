@@ -13,7 +13,7 @@ class InfoPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->ex != true;
+        return $user->ex ==0;
     }
 
     /**
@@ -21,7 +21,7 @@ class InfoPolicy
      */
     public function view(User $user, Info $info): bool
     {
-        return $user->ex != true;
+        return $user->ex ==0;
     }
 
     /**
@@ -29,7 +29,7 @@ class InfoPolicy
      */
     public function create(User $user): bool
     {
-        return $user->ex != true;
+        return false;
     }
 
     /**
@@ -37,7 +37,7 @@ class InfoPolicy
      */
     public function update(User $user, Info $info): bool
     {
-        return $user->ex != true;
+        return $user->ex ==0;
     }
 
     /**
@@ -45,7 +45,7 @@ class InfoPolicy
      */
     public function delete(User $user, Info $info): bool
     {
-        return $user->ex != true;
+        return false;
     }
 
     /**
@@ -53,7 +53,7 @@ class InfoPolicy
      */
     public function restore(User $user, Info $info): bool
     {
-        return $user->ex != true;
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class InfoPolicy
      */
     public function forceDelete(User $user, Info $info): bool
     {
-        return $user->ex != true;
+        return false;
     }
 }

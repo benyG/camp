@@ -13,7 +13,7 @@ class AnswerPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->ex != true;
+        return $user->ex ==0 || $user->ex ==1;
     }
 
     /**
@@ -21,23 +21,21 @@ class AnswerPolicy
      */
     public function view(User $user, Answer $answer): bool
     {
-        return $user->ex != true;
+        return $user->ex ==0 || $user->ex ==1;
     }
-
     /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
     {
-        return $user->ex != true;
+        return $user->ex ==0 || $user->ex ==1;
     }
-
     /**
      * Determine whether the user can update the model.
      */
     public function update(User $user, Answer $answer): bool
     {
-        return $user->ex != true;
+        return $user->ex ==0 || $user->ex ==1;
     }
 
     /**
@@ -45,7 +43,7 @@ class AnswerPolicy
      */
     public function delete(User $user, Answer $answer): bool
     {
-        return $user->ex != true;
+        return $user->ex ==0 || $user->ex ==1;
     }
 
     /**
@@ -53,7 +51,7 @@ class AnswerPolicy
      */
     public function restore(User $user, Answer $answer): bool
     {
-        return $user->ex != true;
+        return $user->ex ==0 || $user->ex ==1;
     }
 
     /**
@@ -61,6 +59,6 @@ class AnswerPolicy
      */
     public function forceDelete(User $user, Answer $answer): bool
     {
-        return $user->ex != true;
+        return $user->ex ==0 || $user->ex ==1;
     }
 }

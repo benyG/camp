@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('infos', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger('wperc')->default(50);
+            $table->boolean('smtp')->default(true);
             $table->string('efrom');
         });
     }

@@ -12,7 +12,7 @@ class Question extends Model
 {
     public $timestamps = true;
     protected $fillable = [
-        'text','isexam','module'
+        'text','isexam','module','maxr','descr'
       ];
     public function moduleRel(): BelongsTo
     {

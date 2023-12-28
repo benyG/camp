@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class UserResource extends Resource
 {
@@ -34,6 +35,9 @@ class UserResource extends Resource
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
+                    Forms\Components\Select::make('ex')->label('Type')
+                    ->options(['1'=>'Admin','2'=>'User'])
+                    ->rules([Rule::in(['1', '2'])]),
                 Password::make('password')
                     ->password()->copyable()->regeneratePassword()
                     ->generatePasswordUsing(function ($state) {
@@ -50,7 +54,7 @@ class UserResource extends Resource
                 ->password()
                 ->required()
                 ->maxLength(255),
-                Forms\Components\Select::make('vague')->label('Session')->required()
+                Forms\Components\Select::make('vague')->label('Session')
                 ->relationship(name: 'vagueRel', titleAttribute: 'name')
             ]);
     }
@@ -58,17 +62,20 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-        ->query(User::query()->where('ex',true))
+        ->query(User::query()->where('ex','<>',0)->where('id','<>',auth()->user()->id))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('email_verified_at')->label('Verified ?'.auth()->user()->Ex)
+                Tables\Columns\IconColumn::make('email_verified_at')->label('Verified ?')
                 ->color('success')->placeholder('No')->icon('heroicon-o-check-circle')
                     ->tooltip(fn (User $record): string => "{$record->email_verified_at}")
                     ->sortable(),
                     Tables\Columns\TextColumn::make('vagueRel.name')->label('Session')->sortable(),
+                Tables\Columns\TextColumn::make('ex')->label('Type')
+                ->formatStateUsing(fn (int $state): string => $state<=1?'Admin':'User')
+                ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

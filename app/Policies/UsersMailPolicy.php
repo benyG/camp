@@ -13,7 +13,7 @@ class UsersMailPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class UsersMailPolicy
      */
     public function view(User $user, UsersMail $usersMail): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class UsersMailPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class UsersMailPolicy
      */
     public function update(User $user, UsersMail $usersMail): bool
     {
-        //
+        return $usersMail->user==$user->id;
     }
 
     /**
@@ -45,7 +45,7 @@ class UsersMailPolicy
      */
     public function delete(User $user, UsersMail $usersMail): bool
     {
-        //
+        return $usersMail->user==$user->id;
     }
 
     /**
@@ -53,7 +53,8 @@ class UsersMailPolicy
      */
     public function restore(User $user, UsersMail $usersMail): bool
     {
-        //
+        return false;
+
     }
 
     /**
@@ -61,6 +62,6 @@ class UsersMailPolicy
      */
     public function forceDelete(User $user, UsersMail $usersMail): bool
     {
-        //
+        return false;
     }
 }

@@ -19,6 +19,6 @@ class Answer extends Model
           ->withPivot('added_at')
           ->withPivot('isok')
           ->withPivot('id')
-          ->using(App\Models\QuestAns::class);
+          ->using(\App\Models\QuestAns::class);
         }
 }

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('smails', function (Blueprint $table) {
             $table->id();
             $table->string('sub');
+            $table->boolean('hid')->default(false);
             $table->text('content');
             $table->unsignedBigInteger('from')->nullable();
             $table->foreign('from')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();

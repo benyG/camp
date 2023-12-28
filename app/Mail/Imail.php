@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Smail;
 
 class Imail extends Mailable
 {
@@ -16,9 +17,8 @@ class Imail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(protected Smail $order, protected $tos, protected $email)
     {
-        //
     }
 
     /**
@@ -27,7 +27,7 @@ class Imail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Imail',
+            subject: $this->order->sub,
         );
     }
 
@@ -37,7 +37,12 @@ class Imail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            html: 'emails.mail1',
+            with: [
+                'content' => $this->order->content,
+                'name' => $this->tos,
+                'email' => $this->email,
+            ],
         );
     }
 

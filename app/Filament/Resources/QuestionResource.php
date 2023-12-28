@@ -26,12 +26,18 @@ class QuestionResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('module')->label('Modules')
+                ->relationship(name: 'moduleRel', titleAttribute: 'name'),
+                Forms\Components\TextInput::make('maxr')->label('Max. Answers')
+                ->required()
+                ->default(4)
+                ->rules(['numeric']),
                 TinyEditor::make('text')
                     ->required()
                     ->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads')
                     ->columnSpanFull(),
-                Forms\Components\Select::make('module')->label('Modules')
-                ->relationship(name: 'moduleRel', titleAttribute: 'name'),
+                Forms\Components\Textarea::make('descr')->columnSpanFull()->label('Description'),
+
            //     Forms\Components\Toggle::make('isexam')
            //         ->required(),
             ]);
@@ -80,7 +86,7 @@ class QuestionResource extends Resource
     {
         return [
             'index' => Pages\ManageQuestions::route('/'),
-            'view' => Pages\ViewQuestion::route('/{record}'),
+            'view' => Pages\ViewQuestion::route('/quest-{record}'),
         ];
     }
     public static function getRelations(): array
@@ -93,8 +99,10 @@ class QuestionResource extends Resource
 {
     return $infolist
         ->schema([
-            Infolists\Components\TextEntry::make('text')->html(),
             Infolists\Components\TextEntry::make('moduleRel.name')->label('Modules'),
+            Infolists\Components\TextEntry::make('maxr')->label('Max. Answers'),
+            Infolists\Components\TextEntry::make('text')->html(),
+            Infolists\Components\TextEntry::make('descr')->html()->label('Description'),
         ]);
 }
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class UsersMail extends Pivot
 {
-    public $incrementing = false;
+    public $incrementing = true;
     protected $fillable = [
         'last_sent','sent','read'
       ];

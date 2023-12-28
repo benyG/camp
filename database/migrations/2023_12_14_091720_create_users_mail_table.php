@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('users_mail', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('last_sent')->useCurrent();
+            $table->timestamp('last_sent')->useCurrent()->nullable();
+            $table->timestamp('read_date')->useCurrent()->nullable();
             $table->boolean('sent')->default(false);
             $table->boolean('read')->default(false);
             $table->unsignedBigInteger('user');
