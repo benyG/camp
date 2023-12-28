@@ -47,7 +47,7 @@ class QuestionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('text')->limit(50)->html()
+                Tables\Columns\TextColumn::make('text')->limit(100)->html()
                 ->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('moduleRel.name')->label('Modules')->sortable(),
                 Tables\Columns\TextColumn::make('answers_count')->counts('answers')->label('Answers')

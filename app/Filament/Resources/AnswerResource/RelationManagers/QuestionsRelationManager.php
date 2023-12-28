@@ -24,7 +24,7 @@ class QuestionsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('text')
             ->columns([
-                Tables\Columns\TextColumn::make('text')->limit(50)->html()->label('Question'),
+                Tables\Columns\TextColumn::make('text')->limit(100)->html()->label('Question'),
                 Tables\Columns\IconColumn::make('isok')->boolean()->label('Answer ?')
             ])
             ->filters([
