@@ -9,6 +9,9 @@ use App\Models\Vague;
 use App\Models\Course;
 use App\Models\Info;
 use App\Models\QuestAns;
+use App\Models\UsersMail;
+use App\Models\Smail;
+use App\Models\Exam;
 
 use App\Policies\UserPolicy;
 use App\Policies\QuestionPolicy;
@@ -32,8 +35,8 @@ class AuthServiceProvider extends ServiceProvider
         //
         User::class => UserPolicy::class,Question::class => QuestionPolicy::class,Answer::class => AnswerPolicy::class,
         Module::class => ModulePolicy::class, Vague::class => VaguePolicy::class, Course::class => CoursePolicy::class,
-        Info::class => InfoPolicy::class, QuestAns::class => QuestAnsPolicy::class,
-    //    User::class => UserPolicy::class,
+        Info::class => InfoPolicy::class, Smail::class => SmailPolicy::class,QuestAns::class => QuestAnsPolicy::class,
+        UsersMail::class => UsersMailPolicy::class,Exam::class => ExamPolicy::class,
    //     User::class => UserPolicy::class,
        // User::class => UserPolicy::class,
 
