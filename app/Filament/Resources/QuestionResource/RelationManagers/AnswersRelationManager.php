@@ -51,7 +51,7 @@ class AnswersRelationManager extends RelationManager
                     Forms\Components\TextInput::make('text')
                     ->required()
                     ->maxLength(200)
-                    ->unique()
+                    ->unique(table: Answer::class)
                      ])->createOptionUsing(function($data){
                         $tag = new Answer();
                         $tag->fill($data);
@@ -60,7 +60,7 @@ class AnswersRelationManager extends RelationManager
                     })->searchable()->preload(),
                     Forms\Components\Toggle::make('isok')->label('Is an answer ?')->required(),
                 ])->disabled($this->getOwnerRecord()->answers()->count()>=$this->getOwnerRecord()->maxr)
-                ->color('warning')->label('Add Answer'),
+                ->color('success')->label('Add Answer')->modalSubmitActionLabel('Add'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
