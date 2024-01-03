@@ -57,10 +57,10 @@ class AnswersRelationManager extends RelationManager
                         $tag->fill($data);
                         $tag->save();
                         return $tag->getKey();
-                    }),
+                    })->searchable()->preload(),
                     Forms\Components\Toggle::make('isok')->label('Is an answer ?')->required(),
                 ])->disabled($this->getOwnerRecord()->answers()->count()>=$this->getOwnerRecord()->maxr)
-                ->color('warning'),
+                ->color('warning')->label('Add Answer'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
