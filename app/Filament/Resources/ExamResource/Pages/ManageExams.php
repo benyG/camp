@@ -1,35 +1,39 @@
 <?php
 
-namespace App\Filament\Resources\SmailResource\Pages;
+namespace App\Filament\Resources\ExamResource\Pages;
 
-use App\Filament\Resources\SmailResource;
+use App\Filament\Resources\ExamResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
+use App\Models\SMail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Imail;
 use Filament\Notifications\Notification;
 
-class ManageSmails extends ManageRecords
+class ManageExams extends ManageRecords
 {
-    protected static string $resource = SmailResource::class;
+    protected static string $resource = ExamResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make()->mutateFormDataUsing(function (array $data): array {
                 $data['from'] = auth()->id();
+                if(auth()->user()->ex!=0){
+                    $data['type']=false;
+                    $data['due']=null;
+                    $data['users']=auth()->id();
+                }
                 return $data;
             })->after(function(Model $record){
                 foreach ($record->users as $rec) {
-                Mail::to($rec->email)->send(new Imail($record,[$rec->name,$rec->email],'1'));
+                    $ma = new SMail;
+                    $ma->sub="New Exam for you !";
+                Mail::to($rec->email)->send(new Imail($ma,[$rec->name,$rec->email,now(),$record->name,$record->due],'2'));
                 Notification::make()->success()->title('Successfully sent via SMTP to : '.$rec->email)->send();
                 }
             })->createAnother(false),
         ];
-    }
-    public function getHeading(): string
-    {
-        return 'Inbox';
     }
 }

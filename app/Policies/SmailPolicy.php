@@ -21,7 +21,7 @@ class SmailPolicy
      */
     public function view(User $user, Smail $smail): bool
     {
-        return ($smail->from==$user->id) || ($smail->users1->count()>0);
+        return false;
     }
 
     /**

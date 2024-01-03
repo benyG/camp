@@ -12,11 +12,11 @@ class Course extends Model
     protected $fillable = [
         'name'
       ];
-    protected function Slug(): Attribute
+    protected function slug(): Attribute
     {
         return Attribute::make(
          //   get: fn (string $value) => ucfirst($value),
-            get: fn (string $value, array $attributes) => Str::slug($attributes['name'], '-')
+            get: fn (mixed $value, array $attributes) => Str::slug($attributes['name'], '-')
         );
     }
     public function modules(): HasMany

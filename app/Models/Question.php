@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Module;
 use App\Models\Answer;
 use App\Models\QuestAns;
+use App\Models\ExamQuest;
 class Question extends Model
 {
     public $timestamps = true;
@@ -30,4 +31,10 @@ class Question extends Model
         ->withPivot('id')
         ->using(QuestAns::class);
     }
+    public function exams(): BelongsToMany
+    {
+        return $this->belongsToMany(ExamUser::class, 'exam_quests', 'quest', 'exam')
+        ->using(ExamQuest::class);
+    }
+
 }

@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('descr');
+            $table->string('name')->unique();
+            $table->text('descr')->nullable();
+            $table->smallInteger('timer')->default(60)->unsigned();
             $table->boolean('type')->default(false);
             $table->timestamp('added_at')->useCurrent();
+            $table->timestamp('due');
+            $table->unsignedBigInteger('from')->nullable();
+            $table->foreign('from')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 

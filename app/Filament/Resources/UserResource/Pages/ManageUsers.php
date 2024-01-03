@@ -15,6 +15,7 @@ class ManageUsers extends ManageRecords
     {
         return [
             Actions\CreateAction::make()->after(function (Model $record) { $record->markEmailAsVerified();})
+            ->createAnother(false)
         ];
     }
 }

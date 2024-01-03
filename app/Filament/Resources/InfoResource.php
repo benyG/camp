@@ -27,6 +27,8 @@ class InfoResource extends Resource
             ->columns([
                 Tables\Columns\TextInputColumn::make('wperc')->label('Win Perc.')
                 ->rules(['required', 'numeric','max:100']),
+                Tables\Columns\TextInputColumn::make('maxt')->label('Win Perc.')
+                ->rules(['required', 'numeric','max:32000']),
                 Tables\Columns\TextInputColumn::make('efrom')->label('Email from')
                     ->rules(['required', 'email']),
                 Tables\Columns\TextInputColumn::make('smtp')->label('Auto send via SMTP')

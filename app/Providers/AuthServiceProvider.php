@@ -21,6 +21,9 @@ use App\Policies\VaguePolicy;
 use App\Policies\CoursePolicy;
 use App\Policies\InfoPolicy;
 use App\Policies\QuestAnsPolicy;
+use App\Policies\ExamPolicy;
+use App\Policies\ExamUserPolicy;
+use App\Policies\ExamQuestPolicy;
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 

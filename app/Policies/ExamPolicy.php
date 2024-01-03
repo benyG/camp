@@ -21,7 +21,7 @@ class ExamPolicy
      */
     public function view(User $user, Exam $exam): bool
     {
-        return $user->ex ==0 || ($exam->users1->count()>0);
+        return $exam->users1()->count()>0;
     }
 
     /**
@@ -37,7 +37,7 @@ class ExamPolicy
      */
     public function update(User $user, Exam $exam): bool
     {
-        return true;
+        return $user->id==$exam->from;
     }
 
     /**
@@ -45,7 +45,7 @@ class ExamPolicy
      */
     public function delete(User $user, Exam $exam): bool
     {
-        return $user->ex ==0 || ($exam->users1->count()>0);
+        return $user->id==$exam->user;
     }
 
     /**

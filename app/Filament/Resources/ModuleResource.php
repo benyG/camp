@@ -12,7 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Filament\Actions\Action;
 class ModuleResource extends Resource
 {
     protected static ?string $model = Module::class;
@@ -27,7 +27,7 @@ class ModuleResource extends Resource
                     ->required()
                     ->maxLength(255),
                     Forms\Components\TextInput::make('maxq')
-                    ->required()
+                    ->required()->inputMode('numeric')
                     ->numeric()->default(50),
                 Forms\Components\Select::make('course')->label('Course')->required()
                 ->relationship(name: 'courseRel', titleAttribute: 'name')

@@ -15,6 +15,8 @@ use App\Models\UsersMail;
 use App\Models\SMail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\ExamUser;
+use App\Models\Exam;
 
 
 
@@ -67,6 +69,12 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
    //    return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');
         return $this->belongsTo(Vague::class,'vague','id');
     }
+    public function exams(): HasMany
+    {
+       // return $this->hasMany(App\Models\Module::class, 'foreign_key', 'local_key');
+        return $this->hasMany(Exam::class, 'from');
+    }
+
     public function fmails(): HasMany
     {
        // return $this->hasMany(App\Models\Module::class, 'foreign_key', 'local_key');
@@ -83,5 +91,14 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
         ->withPivot('id')
         ->using(UsersMail::class);
     }
-
+    public function exams2(): BelongsToMany
+    {
+        //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+        return $this->belongsToMany(Exam::class, 'exam_users', 'user', 'exam')
+        ->as('um')
+        ->withPivot('last-sent')
+        ->withPivot('sent')
+        ->withPivot('id')
+        ->using(ExamUser::class);
+    }
 }

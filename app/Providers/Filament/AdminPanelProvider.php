@@ -24,6 +24,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->brandName('IT Exam Boot Camp')
             ->id('admin')
             ->path('boss')
             ->login()

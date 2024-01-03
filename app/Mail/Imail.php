@@ -9,6 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Smail;
+use Illuminate\Mail\Mailables\Headers;
 
 class Imail extends Mailable
 {
@@ -17,10 +18,21 @@ class Imail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(protected Smail $order, protected $tos, protected $email)
+    public function __construct(protected Smail $order, protected $para, protected $opt)
     {
     }
 
+    public function headers(): Headers
+    {
+        return new Headers(
+            text: [
+                'MIME-Version' => '1.0',
+              //  'From' => env('MAIL_FROM_ADDRESS', 'contact@cisspbootcamp.online'),
+             //   'Reply-To' => env('MAIL_FROM_ADDRESS', 'contact@cisspbootcamp.online'),
+                'X-Mailer' => 'PHP '.phpversion(),
+            ],
+        );
+    }
     /**
      * Get the message envelope.
      */
@@ -37,11 +49,11 @@ class Imail extends Mailable
     public function content(): Content
     {
         return new Content(
-            html: 'emails.mail1',
+            html: 'emails.mail'.$this->opt,
+            text: 'emails.mail'.$this->opt.'-t',
             with: [
                 'content' => $this->order->content,
-                'name' => $this->tos,
-                'email' => $this->email,
+                'para' => $this->para,
             ],
         );
     }
@@ -55,4 +67,5 @@ class Imail extends Mailable
     {
         return [];
     }
+
 }

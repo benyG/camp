@@ -30,7 +30,7 @@ class QuestionResource extends Resource
                 ->relationship(name: 'moduleRel', titleAttribute: 'name'),
                 Forms\Components\TextInput::make('maxr')->label('Max. Answers')
                 ->required()
-                ->default(4)
+                ->default(4)->inputMode('numeric')
                 ->rules(['numeric']),
                 TinyEditor::make('text')
                     ->required()

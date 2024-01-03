@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('infos', function (Blueprint $table) {
             $table->id();
+            $table->smallInteger('maxt')->default(60)->unsigned();
             $table->tinyInteger('wperc')->default(50);
             $table->boolean('smtp')->default(true);
             $table->string('efrom');

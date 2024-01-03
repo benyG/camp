@@ -10,6 +10,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Actions\AttachAction;
+use App\Models\Answer;
 
 class AnswersRelationManager extends RelationManager
 {
@@ -44,9 +45,19 @@ class AnswersRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+              //  Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()->form(fn (AttachAction $action): array => [
-                    $action->getRecordSelect(),
+                    $action->getRecordSelect()->createOptionForm([
+                    Forms\Components\TextInput::make('text')
+                    ->required()
+                    ->maxLength(200)
+                    ->unique()
+                     ])->createOptionUsing(function($data){
+                        $tag = new Answer();
+                        $tag->fill($data);
+                        $tag->save();
+                        return $tag->getKey();
+                    }),
                     Forms\Components\Toggle::make('isok')->label('Is an answer ?')->required(),
                 ])->disabled($this->getOwnerRecord()->answers()->count()>=$this->getOwnerRecord()->maxr)
                 ->color('warning'),

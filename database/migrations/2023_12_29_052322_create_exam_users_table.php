@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('exam_users', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('added_at')->useCurrent();
+            $table->timestamp('added')->useCurrent();
             $table->timestamp('start_at')->nullable();
             $table->timestamp('comp_at')->nullable();
             $table->boolean('gen')->default(false);

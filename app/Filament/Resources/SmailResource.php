@@ -156,7 +156,7 @@ class SmailResource extends Resource
                 Tables\Actions\Action::make('resend')->color('warning')->label('Resend')
                 ->action(function (Smail $record) {
                     foreach ($record->users as $rrr) {
-                        Mail::to($rrr->email)->send(new Imail($record,$rrr->name,$rrr->email));
+                        Mail::to($rrr->email)->send(new Imail($record,[$rrr->name,$rrr->email],'1'));
                         Notification::make()->success()->title('Successfully sent via SMTP to : '.$rrr->email)->send();
                     }
                 })

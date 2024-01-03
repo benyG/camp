@@ -19,7 +19,7 @@
     td,th,div,p,a,h1,h2,h3,h4,h5,h6 {font-family: "Segoe UI", sans-serif; mso-line-height-rule: exactly;}
   </style>
   <![endif]-->
-  <title>New message</title>
+  <title>New Exam</title>
   <style>
     img {
       max-width: 100%;
@@ -70,19 +70,22 @@
                     Hello <span style="color: #15803d">{{$para[0]}}</span>,
                   </h1>
                   <p style="margin: 0; line-height: 24px">
-                    You have a new private message from the admin.
+                    An exam was affected to you on the <b>{{$para[2]}}
+                    <br>
+                        Title : {{$para[3]}}<br>
+                        Due Date : {{$para[4]}}</b>
                     <br>
                     <br>
-                    Please log in to your dashboad to read it.
+                    Please log in to your dashboad to complete the test.
                   </p>
                   <div role="separator" style="line-height: 10px">&zwj;</div>
                   <div>
-                    <a href="{{env('APP_URL')}}/boss" style="display: inline-block; border-radius: 4px; background-color: #15803d; padding: 16px 24px; font-size: 16px; font-weight: 600; line-height: 1; color: #f8fafc; text-decoration: none">
+                    <a href="{{env('APP_URL')}}/boss/tests" style="display: inline-block; border-radius: 4px; background-color: #15803d; padding: 16px 24px; font-size: 16px; font-weight: 600; line-height: 1; color: #f8fafc; text-decoration: none">
                       <!--[if mso]>
       <i style="mso-font-width: -100%; letter-spacing: 32px; mso-text-raise: 30px" hidden>&nbsp;</i>
     <![endif]-->
                       <span style="mso-text-raise: 16px">
-                  Login to Dashboard &rarr;
+                  Take Exam &rarr;
                 </span>
                       <!--[if mso]>
       <i style="mso-font-width: -100%; letter-spacing: 32px;" hidden>&nbsp;</i>

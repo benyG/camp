@@ -101,7 +101,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'contact@cisspbootcamp.online'),
-        'name' => 'ITExam Boot Camp',
+        'name' => 'IT Exam Boot Camp',
         'reply_to' => ['address' => env('MAIL_FROM_ADDRESS', 'contact@cisspbootcamp.online'), 'name' => 'ITExam Boot Camp'],
     ],
 
