@@ -33,7 +33,7 @@ class AnswersRelationManager extends RelationManager
                     ->maxLength(500)
                     ->unique(table: \App\Models\Answer::class)
                     ->validationMessages([
-                        'unique' => "Answer already in our database. You may attach it using the Atttack button above.",
+                        'unique' => "Answer already in our database. You may attach it using the Attach button above.",
                     ])
                     ->hintAction(
                         \Filament\Forms\Components\Actions\Action::make('kkj')->label('Attach')
@@ -57,7 +57,7 @@ class AnswersRelationManager extends RelationManager
                               }
                             })
                     ),
-                Forms\Components\Toggle::make('isok')->label('Is an answer ?')->inline(false)
+                Forms\Components\Toggle::make('isok')->label('Is a true answer ?')->inline(false)
                              ->required()->live(),
             ]);
     }
@@ -81,7 +81,7 @@ class AnswersRelationManager extends RelationManager
                          $action->halt();
                     }
                 })
-                ->createAnother(false)->label('Add Answer')
+                ->label('Add Answer')
                 ->disabled($this->getOwnerRecord()->answers()->count()>=$this->getOwnerRecord()->maxr),
             ])
             ->actions([
