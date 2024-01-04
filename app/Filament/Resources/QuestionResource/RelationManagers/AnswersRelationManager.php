@@ -74,7 +74,7 @@ class AnswersRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()->before(function (Actions\CreateAction $action, Model $record) {
+                Tables\Actions\CreateAction::make()->before(function (Tables\Actions\CreateAction $action) {
                     $quest=$this->getOwnerRecord();
                     if ($quest->answers()->count()>=$quest->maxr) {
                         Notification::make()->danger()->title('Maximum answers for this question reached')->send();
