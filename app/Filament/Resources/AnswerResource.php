@@ -8,6 +8,7 @@ use App\Models\Answer;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -48,7 +49,14 @@ class AnswerResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\ViewAction::make()
+                /* ->url(
+                    fn (Pages\ViewAnswer $livewire, Model $record): string => static::$parentResource::getUrl('view', [
+                        'record' => $record,
+                        'slug' => $record->slug,
+                        'parent' => $livewire->parent,
+                    ]) */
+                ,
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

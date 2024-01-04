@@ -24,6 +24,7 @@ class InfoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->modifyQueryUsing(fn (Builder $query) => $query->where('id',1))
             ->columns([
                 Tables\Columns\TextInputColumn::make('wperc')->label('Win Perc.')
                 ->rules(['required', 'numeric','max:100']),
