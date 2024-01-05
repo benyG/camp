@@ -212,5 +212,14 @@ class SmailResource extends Resource
                 Infolists\Components\TextEntry::make('content')->html()->columnSpanFull(),
             ]);
     }
-
+    public static function getNavigationBadge(): ?string
+    {
+        return Smail::selectRaw('user')->join('users_mail', 'smails.id', '=', 'users_mail.mail')
+        ->where('read',false)->where('user',auth()->user()->id)->get()->count();
+    }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return Smail::selectRaw('user')->join('users_mail', 'smails.id', '=', 'users_mail.mail')
+        ->where('read',false)->where('user',auth()->user()->id)->get()->count() > 0 ? 'danger' : 'primary';
+    }
 }

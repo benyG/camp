@@ -39,7 +39,7 @@ class UserResource extends Resource
                     ->maxLength(255),
                     Forms\Components\Select::make('ex')->label('Type')
                     ->options(['1'=>'Admin','2'=>'User'])
-                    ->rules([Rule::in(['1', '2'])]),
+                    ->rules([Rule::in(['1', '2','3','4'])]),
                 Password::make('password')
                     ->password()->copyable()->regeneratePassword()
                     ->generatePasswordUsing(function ($state) {
