@@ -43,7 +43,7 @@ a:hover
 <div id="bv_Shape1" style="margin:0;padding:0;position:absolute;left:0px;top:0px;width:1372px;height:45px;text-align:center;z-index:2;">
 <img src="{{asset('img/bv01002.gif')}}" id="Shape1" alt="" title="" style="border-width:0;width:1372px;height:45px"></div>
 <div id="bv_Image1" style="margin:0;padding:0;position:absolute;left:1177px;top:6px;width:185px;height:34px;text-align:left;z-index:3;">
-<img src="{{asset('img/bv_img8.jpg')}}" id="Image1" alt="" align="top" border="0" style="width:185px;height:34px;"></div>
+<img src="{{asset('img/bv_img8.png')}}" id="Image1" alt="" align="top" border="0" style="width:185px;height:34px;"></div>
 <div id="bv_Shape2" style="margin:0;padding:0;position:absolute;left:60px;top:0px;width:55px;height:87px;text-align:center;z-index:4;">
 <img src="{{asset('img/bv01003.gif')}}" id="Shape2" alt="" title="" style="border-width:0;width:55px;height:87px"></div>
 <div id="bv_Shape5" style="margin:0;padding:0;position:absolute;left:70px;top:559px;width:258px;height:50px;text-align:center;z-index:5;">

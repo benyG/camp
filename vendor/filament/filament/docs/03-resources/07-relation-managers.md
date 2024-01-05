@@ -1,6 +1,7 @@
 ---
 title: Managing relationships
 ---
+import LaracastsBanner from "@components/LaracastsBanner.astro"
 
 ## Choosing the right tool for the job
 
@@ -32,7 +33,7 @@ From a UX perspective, this solution is only suitable if your related model only
 
 > These are compatible with `BelongsTo`, `HasOne` and `MorphOne` relationships.
 
-All layout form components ([Grid](../../forms/layout/grid#grid-component), [Section](../../forms/layout/section), [Fieldset](../../forms/layout/fieldset), etc.) have a `relationship()` method. When you use this, all fields within that layout are saved to the related model instead of the owner's model:
+All layout form components ([Grid](../../forms/layout/grid#grid-component), [Section](../../forms/layout/section), [Fieldset](../../forms/layout/fieldset), etc.) have a [`relationship()` method](../../forms/advanced#saving-data-to-relationships). When you use this, all fields within that layout are saved to the related model instead of the owner's model:
 
 ```php
 use Filament\Forms\Components\Fieldset;
@@ -51,7 +52,16 @@ Fieldset::make('Metadata')
 
 In this example, the `title`, `description` and `image` are automatically loaded from the `metadata` relationship, and saved again when the form is submitted. If the `metadata` record does not exist, it is automatically created.
 
+This feature is explained more in depth in the [Forms documentation](../../forms/advanced#saving-data-to-relationships). Please visit that page for more information about how to use it.
+
 ## Creating a relation manager
+
+<LaracastsBanner
+    title="Relation Managers"
+    description="Watch the Rapid Laravel Development with Filament series on Laracasts - it will teach you the basics of adding relation managers to Filament resources."
+    url="https://laracasts.com/series/rapid-laravel-development-with-filament/episodes/13"
+    series="rapid-laravel-development"
+/>
 
 To create a relation manager, you can use the `make:filament-relation-manager` command:
 
@@ -520,6 +530,40 @@ public function table(Table $table): Table
 ### Customizing the `DeleteAction`
 
 To learn how to customize the `DeleteAction`, including changing the notification and adding lifecycle hooks, please see the [Actions documentation](../../actions/prebuilt-actions/delete).
+
+## Importing related records
+
+The [`ImportAction`](../../actions/prebuilt-actions/import) can be added to the header of a relation manager to import records. In this case, you probably want to tell the importer which owner these new records belong to. You can use [import options](../../actions/prebuilt-actions/import#using-import-options) to pass through the ID of the owner record:
+
+```php
+ImportAction::make()
+    ->importer(ProductImporter::class)
+    ->options(['categoryId' => $this->getOwnerRecord()->getKey()])
+```
+
+Now, in the importer class, you can associate the owner in a one-to-many relationship with the imported record:
+
+```php
+public function resolveRecord(): ?Product
+{
+    $product = Product::firstOrNew([
+        'sku' => $this->data['sku'],
+    ]);
+    
+    $product->category()->associate($this->options['categoryId']);
+    
+    return $product;
+}
+```
+
+Alternatively, you can attach the record in a many-to-many relationship using the `afterSave()` hook of the importer:
+
+```php
+protected function afterSave(): void
+{
+    $this->record->categories()->syncWithoutDetaching([$this->options['categoryId']]);
+}
+```
 
 ## Accessing the relationship's owner record
 

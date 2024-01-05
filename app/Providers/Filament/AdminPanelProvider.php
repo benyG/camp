@@ -7,6 +7,7 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
+use Filament\Enums\ThemeMode;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
@@ -17,6 +18,10 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Illuminate\Support\Facades\Blade;
+use App\Filament\Resources\InfoResource;
+use Filament\Navigation\MenuItem;
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -25,6 +30,9 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->brandName('IT Exam Boot Camp')
+            ->brandLogo(fn () => view('logo'))
+            ->darkModeBrandLogo(fn () => view('logo2'))
+            //->brandLogoHeight('3rem')
             ->id('admin')
             ->path('boss')
             ->login()
@@ -32,6 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->profile()
+            ->defaultThemeMode(ThemeMode::Dark)
             ->colors([
                 'primary' => Color::Green,
             ])
@@ -57,6 +66,17 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->renderHook(
+                'panels::footer',
+                fn (): string => Blade::render('footer'),
+            )->userMenuItems([
+                MenuItem::make()
+                    ->label('Settings')
+                    ->url(fn (): string => InfoResource::getUrl())
+                    ->icon('heroicon-o-cog-6-tooth')
+                    ->visible(fn (): bool => auth()->user()->can('viewAny', \App\Models\Info::class)),
+                // ...
             ]);
     }
 }

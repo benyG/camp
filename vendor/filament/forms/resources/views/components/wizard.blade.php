@@ -63,8 +63,10 @@
             return this.getStepIndex(this.step) + 1 >= this.getSteps().length
         },
 
-        isStepAccessible: function (step, index) {
-            return @js($isSkippable()) || this.getStepIndex(step) > index
+        isStepAccessible: function (stepId) {
+            return (
+                @js($isSkippable()) || this.getStepIndex(this.step) > this.getStepIndex(stepId)
+            )
         },
 
         updateQueryString: function () {
@@ -117,7 +119,7 @@
         @endif
         role="list"
         @class([
-            'fi-fo-wizard-header grid divide-y divide-gray-200 dark:divide-white/5 md:grid-flow-col md:divide-y-0',
+            'fi-fo-wizard-header grid divide-y divide-gray-200 md:grid-flow-col md:divide-y-0 dark:divide-white/5',
             'border-b border-gray-200 dark:border-white/10' => $isContained,
             'rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10' => ! $isContained,
         ])
@@ -134,7 +136,7 @@
                     type="button"
                     x-bind:aria-current="getStepIndex(step) === {{ $loop->index }} ? 'step' : null"
                     x-on:click="step = @js($step->getId())"
-                    x-bind:disabled="! isStepAccessible(step, {{ $loop->index }})"
+                    x-bind:disabled="! isStepAccessible(@js($step->getId()))"
                     role="step"
                     class="fi-fo-wizard-header-step-button flex h-full w-full items-center gap-x-4 px-6 py-4"
                 >
@@ -214,7 +216,7 @@
                 @if (! $loop->last)
                     <div
                         aria-hidden="true"
-                        class="fi-fo-wizard-header-step-separator absolute end-0 hidden w-5 md:block"
+                        class="fi-fo-wizard-header-step-separator absolute end-0 hidden h-full w-5 md:block"
                     >
                         <svg
                             fill="none"

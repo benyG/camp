@@ -14,6 +14,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\AnswerResource\RelationManagers\QuestionsRelationManager;
+use Illuminate\Support\Facades\Route;
 
 class AnswerResource extends Resource
 {
@@ -50,12 +51,7 @@ class AnswerResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
-                /* ->url(
-                    fn (Pages\ViewAnswer $livewire, Model $record): string => static::$parentResource::getUrl('view', [
-                        'record' => $record,
-                        'slug' => $record->slug,
-                        'parent' => $livewire->parent,
-                    ]) */
+                ->url(fn (Answer $record) => AnswerResource::getUrl('view', ['slug' => $record->slug,'record'=>$record->id]))
                 ,
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
@@ -78,7 +74,32 @@ class AnswerResource extends Resource
     {
         return [
             'index' => Pages\ManageAnswers::route('/'),
-            'view' => Pages\ViewAnswer::route('/ans-{record}'),
+            'view' => Pages\ViewAnswer::route('/ans-{record}-{slug}'),
         ];
+    }
+    public static function getUrl(string $name = 'index', array $parameters = [], bool $isAbsolute = true, ?string $panel = null, ?Model $tenant = null): string
+    {
+            $parameters['slug'] = self::getCurrentMenu();
+
+        return parent::getUrl($name, $parameters, $isAbsolute, $panel, $tenant);
+    }
+    private static function getCurrentMenu()
+    {
+        $menu = request('menu');
+        if(isset($menu)){
+            return $menu;
+        }
+
+        //try to get the Model from the previous known route
+        $previousRoute = Route::getRoutes()->match(request()->create(url()->previousPath()));
+        if (isset($previousRoute)) {
+            //the model is not in the request (this is probably a Livewire request)
+            //reset it
+            $menu = $previousRoute->parameter('menu');
+            request()->merge(['menu ' => $menu ]);
+            return $menu;
+        }
+
+        return null;
     }
 }
