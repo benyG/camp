@@ -25,8 +25,10 @@ class ExamResource extends Resource
     protected static ?string $model = Exam::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
-    protected static ?string $modelLabel = 'test';
-    protected static ?string $slug = 'tests';
+    protected static ?string $modelLabel = 'assessment';
+    protected static ?string $navigationLabel = 'Bootcamp';
+    protected static ?string $slug = 'bootcamp';
+    protected static ?int $navigationSort = 1;
     public static function form(Form $form): Form
     {
         return $form

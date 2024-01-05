@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 class AnswerResource extends Resource
 {
     protected static ?string $model = Answer::class;
+    protected static ?int $navigationSort = 4;
+    protected static ?string $navigationGroup = 'Teachers';
 
     protected static ?string $navigationIcon = 'heroicon-o-check-badge';
 

@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
+    protected static ?int $navigationSort = 6;
+    protected static ?string $navigationGroup = 'Teachers';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

@@ -28,9 +28,9 @@ class SmailResource extends Resource
     protected static ?string $model = SMail::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
-    protected static ?string $modelLabel = 'mail';
-    protected static ?string $navigationLabel = 'Inbox';
-    protected static ?string $slug = 'mails';
+    protected static ?string $modelLabel = 'message';
+    protected static ?string $slug = 'messages';
+    protected static ?int $navigationSort = 2;
     public static function form(Form $form): Form
     {
         return $form

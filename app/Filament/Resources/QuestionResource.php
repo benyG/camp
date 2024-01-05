@@ -19,8 +19,10 @@ use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 class QuestionResource extends Resource
 {
     protected static ?string $model = Question::class;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
+    protected static ?string $navigationGroup = 'Teachers';
 
     public static function form(Form $form): Form
     {
