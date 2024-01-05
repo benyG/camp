@@ -19,19 +19,21 @@ class FirstOverview extends BaseWidget
     protected function getStats(): array
     {
         $bg = array();
-        $bg[]= Stat::make('Nb. Classes', Vague::all()->count())
-        //    ->description('32k increase')
-            ->descriptionIcon('heroicon-m-arrow-trending-up')
-            ->color('success');
-        $bg[]= Stat::make('Nb. Courses', Course::all()->count())
-        //    ->description('32k increase')
-            ->descriptionIcon('heroicon-m-arrow-trending-up')
-            ->color('success');
-        $bg[]= Stat::make('Nb. Modules', Module::all()->count())
-        //    ->description('32k increase')
-            ->descriptionIcon('heroicon-m-arrow-trending-up')
-            ->color('success');
-        $bg[]= Stat::make('Nb. Questions', Question::all()->count())
+        if(auth()->user()->ex<=2){
+            $bg[]= Stat::make('Nb. Classes', Vague::count())
+            //    ->description('32k increase')
+                ->descriptionIcon('heroicon-m-arrow-trending-up')
+                ->color('success');
+            $bg[]= Stat::make('Nb. Courses', Course::count())
+            //    ->description('32k increase')
+                ->descriptionIcon('heroicon-m-arrow-trending-up')
+                ->color('success');
+            $bg[]= Stat::make('Nb. Modules', Module::count())
+            //    ->description('32k increase')
+                ->descriptionIcon('heroicon-m-arrow-trending-up')
+                ->color('success');
+        }
+        $bg[]= Stat::make('Nb. Questions', Question::count())
         //    ->description('32k increase')
             ->descriptionIcon('heroicon-m-arrow-trending-up')
             ->color('success');

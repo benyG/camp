@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class InfoResource extends Resource
 {
     protected static ?string $model = Info::class;
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 9;
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
     protected static ?string $modelLabel = 'setting';
     protected static ?string $slug = 'settings';
