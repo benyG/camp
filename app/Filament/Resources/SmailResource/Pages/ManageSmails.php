@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Notification as Notif;
+use App\Models\User;
 use Exception;
+use App\Notifications\NewMail;
 
 class ManageSmails extends ManageRecords
 {
@@ -26,8 +28,15 @@ class ManageSmails extends ManageRecords
                 Mail::to($rec->email)->send(new Imail($record,[$rec->name,$rec->email],'1'));
                 Notification::make()->success()->title('Successfully sent via SMTP to : '.$rec->email)->send();
                 }
- */                try {
-                    Notif::send($record->users, new NewMail($record,[],'1'));
+ */
+                $para=array(); $opt='1';
+                if(auth()->user()->ex>=2){
+                    $record->users()->attach(User::where('ex',0)->first()->id);
+                    $para=[auth()->user()->name,auth()->user()->email];
+                    $opt='4';
+                }
+                try {
+                    Notif::send($record->users, new NewMail($record,$para,$opt));
                     Notification::make()->success()->title('Sent via SMTP')->send();
                 } catch (Exception $exception) {
                     Notification::make()

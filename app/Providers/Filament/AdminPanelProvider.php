@@ -21,7 +21,10 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Illuminate\Support\Facades\Blade;
 use App\Filament\Resources\InfoResource;
 use Filament\Navigation\MenuItem;
-use App\Filament\Pages\Auth\Registers;
+use App\Filament\Pages\Auth\Register;
+use App\Filament\Pages\Auth\ResetPassword;
+use App\Filament\Pages\Auth\EditProfile;
+
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -35,10 +38,10 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('boss')
             ->login()
-            ->registration()
-            ->passwordReset()
+            ->registration(Register::class)
+            ->passwordReset(ResetPassword::class)
             ->emailVerification()
-            ->profile()
+            ->profile(EditProfile::class)
             ->defaultThemeMode(ThemeMode::Dark)
             ->sidebarCollapsibleOnDesktop()
             ->colors([
@@ -65,7 +68,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->renderHook('panels::page.end',fn (): string => Blade::render('footer'))
+            ->renderHook('panels::body.end',fn (): string => Blade::render('footer'))
             ->renderHook('panels::auth.login.form.after',fn (): string => Blade::render('footer2'))
             ->renderHook('panels::auth.register.form.after',fn (): string => Blade::render('footer2'))
             ->userMenuItems([

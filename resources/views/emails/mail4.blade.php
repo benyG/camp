@@ -70,7 +70,7 @@
                     Hello <span style="color: #15803d">{{$name}}</span>,
                   </h1>
                   <p style="margin: 0; line-height: 24px">
-                    You have a new private message from the admin.
+                    You have a new private message from <b><span style="color: #15803d">{{$para[0]}} ({{$para[1]}})</span></b>.
                     <br>
                     <br>
                     Please log in to your dashboad to read it.

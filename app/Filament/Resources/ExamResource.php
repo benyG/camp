@@ -126,7 +126,7 @@ class ExamResource extends Resource
             ])
             ->filters([
                 //
-            ])
+            ])->persistFiltersInSession()
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\Action::make('resend')->color('gray')->label('Results')
@@ -159,5 +159,9 @@ class ExamResource extends Resource
         return [
             'index' => Pages\ManageExams::route('/'),
         ];
+    }
+    protected function shouldPersistTableSortInSession(): bool
+    {
+        return true;
     }
 }

@@ -120,4 +120,8 @@ class QuestionResource extends Resource
     {
         return $this->getResource()::getUrl('view');
     }
+    protected function shouldPersistTableSortInSession(): bool
+    {
+        return true;
+    }
 }

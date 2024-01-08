@@ -10,7 +10,7 @@ Please log in to your dashboad to complete the test.
 
 Take Exam → {{env('APP_URL')}}/boss/tests
 
-Thanks, The IT Exam BootCamp Team
+Thanks, The ITExamBootCamp Team
 ‍
 
 This email was sent to {{$para[1]}}

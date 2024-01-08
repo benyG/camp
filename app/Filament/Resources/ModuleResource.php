@@ -67,4 +67,8 @@ class ModuleResource extends Resource
             'index' => Pages\ManageModules::route('/'),
         ];
     }
+    protected function shouldPersistTableSortInSession(): bool
+    {
+        return true;
+    }
 }

@@ -1,6 +1,6 @@
 Hello {{$name}},
 
-You have a new private message from the admin.
+You have a new private message from {{$para[0]}} ({{$para[1]}}).
 
 Please log in to your dashboad to read it.
 ‍

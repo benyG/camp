@@ -4,7 +4,7 @@ Please confirm your email address in order to activate your account.
 
 Dear Bootcamper,
 
-You just applied for an account on IT EXAM Boot Camp ({{env('APP_URL')}})
+You just applied for an account on ITEXAMBootCamp ({{env('APP_URL')}})
 
 Please confirm your email address to access your Dashboard.
 

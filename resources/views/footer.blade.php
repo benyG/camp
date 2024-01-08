@@ -1,3 +1,6 @@
+@if (Auth::check() && auth()->user()->hasVerifiedEmail())
+
+
 <div class="grid content-end h-full grid-rows-3 text-xs text-center gap-y-1">
  <p class="m-0 italic">
                   Test your knowledge, and let's claim your certificate !
@@ -16,3 +19,4 @@
                   <a href="#" class="text-custom-600 dark:text-custom-400">LinkedIn</a>
                 </p>
 </div>
+@endif

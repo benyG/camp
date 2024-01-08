@@ -76,7 +76,12 @@ class UserResource extends Resource
                     ->sortable(),
                     Tables\Columns\TextColumn::make('vagueRel.name')->label('Class')->sortable(),
                 Tables\Columns\TextColumn::make('ex')->label('Type')
-                ->formatStateUsing(fn (int $state): string => $state<=1?'Admin':'User')
+                ->formatStateUsing(fn (int $state): string => match ($state) {0 => "S. Admin",
+                    1 => "Admin",
+                    2 => "Starter",
+                    3 => "User",
+                    4 => "Pro",
+                    5 => "VIP"})
                 ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

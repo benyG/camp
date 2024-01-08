@@ -21,7 +21,7 @@ class SmailPolicy
      */
     public function view(User $user, Smail $smail): bool
     {
-        return false;
+        return true;
     }
 
     /**

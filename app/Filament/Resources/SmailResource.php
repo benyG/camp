@@ -40,7 +40,7 @@ class SmailResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user')->label('To')
                 ->multiple()
-                ->minItems(1)
+                ->required(fn():bool=>auth()->user()->ex<2)
                 ->relationship(name: 'users', titleAttribute: 'name')
                 ->options(function(){
                     $vagues= Vague::with('users')->get();
@@ -50,7 +50,7 @@ class SmailResource extends Resource
                     foreach($users as $uy){
                         $er[$uy->id]=$uy->name;
                     }
-                    $bg['No session']=$er;
+                    $bg['No class']=$er;
                     foreach ($vagues as $vague) {
                         $ez=$vague->users;
                         $ee=array();
@@ -61,7 +61,7 @@ class SmailResource extends Resource
                     }
                     return $bg;
                 })
-            ->preload(),
+            ->preload()->hidden(fn():bool=>auth()->user()->ex>=2),
                 Forms\Components\TextInput::make('sub')->label('Subject')
                     ->required()
                     ->maxLength(255),
@@ -81,14 +81,14 @@ class SmailResource extends Resource
        // ->join('users', 'users.id', '=', 'users_mail.user')
        ->where(function (Builder $query) {
         $query->where('from',auth()->user()->id)
-              ->where('hid',false);})->orwhere('user',auth()->user()->id))
+              ->where('hid',false);})->orwhere('user',auth()->user()->id)->latest())
             ->columns([
                 Tables\Columns\TextColumn::make('sub')->label('Subject')
                 ->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('from')->label('Correspondants')
                 ->formatStateUsing(fn (Model $record): string => $record->from== auth()->user()->id? $record->users2->pluck('name') : $record->user1->name)
-                ->sortable(),
-             Tables\Columns\IconColumn::make('sent')->label('Sent via SMTP')
+                ->sortable()->hidden(fn():bool=>auth()->user()->ex>=2),
+             Tables\Columns\IconColumn::make('sent')->label('Sent via SMTP')->hidden(fn():bool=>auth()->user()->ex>=2)
              ->icon(fn($state):string=>$state==1?'heroicon-o-envelope':'')
                  ->tooltip(fn (Smail $record): string =>$record->sent==1? "Last sent on {$record->last_sent}":"")
                  ->sortable(),
@@ -97,10 +97,9 @@ class SmailResource extends Resource
                  ->icon(fn($state, Smail $record):string=>$record->from== auth()->user()->id? "":($state==1?'heroicon-o-envelope-open':'heroicon-o-envelope'))
                      ->tooltip(fn (Smail $record): string =>$record->from== auth()->user()->id? "":($record->read==1? "Read on {$record->read_date}":""))
                      ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')->label('Date')
                 ->dateTime()
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true),
+                ->sortable(),
             Tables\Columns\TextColumn::make('updated_at')
                 ->dateTime()
                 ->sortable()
@@ -116,8 +115,8 @@ class SmailResource extends Resource
                 })->modalHeading(fn (Model $record): string=>$record->sub),
                 Tables\Actions\Action::make('transfer')->modalHeading('Transfer')->label('Transfer')->form([
                     Forms\Components\Select::make('user4')->label('To')
-                    ->multiple()
-                    ->minItems(1)
+                    ->multiple()->hidden(fn():bool=>auth()->user()->ex>=2)
+                    ->required(fn():bool=>auth()->user()->ex<2)
                     ->relationship(name: 'users', titleAttribute: 'name')
                     ->options(function(){
                         $vagues= Vague::with('users')->get();
@@ -155,11 +154,16 @@ class SmailResource extends Resource
                     $data['from']=auth()->user()->id;
                     $rec=$model::create($data);
                     $rec->users()->attach($data['user4']);
-                }),
+                })->hidden(fn():bool=>auth()->user()->ex>=2),
                 Tables\Actions\Action::make('resend')->color('warning')->label('Resend')
                 ->action(function (Smail $record) {
+                    $para=array(); $opt='1';
+                    if(auth()->user()->ex>=2){
+                        $para=[auth()->user()->name,auth()->user()->email];
+                        $opt='4';
+                    }
                     try {
-                        Notif::send($record->users, new NewMail($record,[],'1'));
+                        Notif::send($record->users, new NewMail($record,$para,$opt));
                         Notification::make()->success()->title('Sent via SMTP')->send();
                     } catch (Exception $exception) {
                         Notification::make()
