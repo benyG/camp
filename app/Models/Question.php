@@ -37,4 +37,5 @@ class Question extends Model
         ->using(ExamQuest::class);
     }
 
+
 }

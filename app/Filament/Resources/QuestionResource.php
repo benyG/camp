@@ -97,7 +97,8 @@ class QuestionResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->deferLoading()->striped()->persistFiltersInSession();
+            ->deferLoading()->striped()->persistFiltersInSession()
+            ->persistSearchInSession()->persistColumnSearchesInSession();
     }
 
     public static function getPages(): array

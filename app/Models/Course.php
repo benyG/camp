@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use App\Models\Module;
+use App\Models\Question;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+
 class Course extends Model
 {
     public $timestamps = false;
@@ -24,4 +27,10 @@ class Course extends Model
        // return $this->hasMany(App\Models\Module::class, 'foreign_key', 'local_key');
         return $this->hasMany(Module::class, 'course');
     }
+    public function questions(): HasManyThrough
+    {
+       // return $this->hasMany(App\Models\Module::class, 'foreign_key', 'local_key');
+       return $this->through('modules')->has('questions');
+    }
+
 }
