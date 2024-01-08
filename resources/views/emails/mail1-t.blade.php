@@ -1,4 +1,4 @@
-Hello {{$para[0]}},
+Hello {{$name}},
 
 You have a new private message from the admin.
 
@@ -10,7 +10,7 @@ Login to Dashboard → {{env('APP_URL')}}/boss
 Thanks, The IT Exam BootCamp Team
 ‍
 
-This email was sent to {{$para[1]}}
+This email was sent to {{$email}}
 If this is a mistake, you can safely ignore this email.
 
 IT Exam Boot Camp

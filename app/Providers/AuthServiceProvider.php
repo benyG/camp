@@ -25,6 +25,8 @@ use App\Policies\ExamPolicy;
 use App\Policies\ExamUserPolicy;
 use App\Policies\ExamQuestPolicy;
 // use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -50,6 +52,13 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
+        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+            return (new MailMessage)
+            ->subject('Please confirm your email address')
+            ->view(
+                ['emails.mail3', 'emails.mail3-t'],
+                ['url' => $url]
+            );
+        });
     }
 }

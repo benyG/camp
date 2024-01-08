@@ -13,7 +13,7 @@ class AnswerPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->hasVerifiedEmail() && ($user->ex ==0 || $user->ex ==1);
     }
 
     /**

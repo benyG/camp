@@ -3,13 +3,22 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'f5042a0f59ba4a1809053bd6ff7ebd28d59c4868',
+        'reference' => 'a80e3fa651c587a2ec30d94d62804322d9af1bfb',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
+        'bezhansalleh/filament-language-switch' => array(
+            'pretty_version' => '3.0.0',
+            'version' => '3.0.0.0',
+            'reference' => '93782a9313912c7e3812071fbe537852e30df2c2',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../bezhansalleh/filament-language-switch',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'blade-ui-kit/blade-heroicons' => array(
             'pretty_version' => '2.2.1',
             'version' => '2.2.1.0',
@@ -535,7 +544,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'f5042a0f59ba4a1809053bd6ff7ebd28d59c4868',
+            'reference' => 'a80e3fa651c587a2ec30d94d62804322d9af1bfb',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

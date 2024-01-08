@@ -19,7 +19,7 @@ class FirstOverview extends BaseWidget
     protected function getStats(): array
     {
         $bg = array();
-        if(auth()->user()->ex<=2){
+        if(auth()->user()->ex<=1){
             $bg[]= Stat::make('Nb. Classes', Vague::count())
             //    ->description('32k increase')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')

@@ -21,8 +21,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Illuminate\Support\Facades\Blade;
 use App\Filament\Resources\InfoResource;
 use Filament\Navigation\MenuItem;
-
-
+use App\Filament\Pages\Auth\Registers;
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -41,6 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->emailVerification()
             ->profile()
             ->defaultThemeMode(ThemeMode::Dark)
+            ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Green,
             ])
@@ -65,10 +65,10 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->renderHook(
-                'panels::footer',
-                fn (): string => Blade::render('footer'),
-            )->userMenuItems([
+            ->renderHook('panels::page.end',fn (): string => Blade::render('footer'))
+            ->renderHook('panels::auth.login.form.after',fn (): string => Blade::render('footer2'))
+            ->renderHook('panels::auth.register.form.after',fn (): string => Blade::render('footer2'))
+            ->userMenuItems([
                 MenuItem::make()
                     ->label('Settings')
                     ->url(fn (): string => InfoResource::getUrl())

@@ -37,7 +37,7 @@ class AnswerResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+        return $table->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('text')
                 ->searchable()->sortable(),

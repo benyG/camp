@@ -53,7 +53,7 @@ class QuestionPolicy
      */
     public function restore(User $user, Question $question): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class QuestionPolicy
      */
     public function forceDelete(User $user, Question $question): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return false;
     }
 }

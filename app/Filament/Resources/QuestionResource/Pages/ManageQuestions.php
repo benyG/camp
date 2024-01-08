@@ -18,7 +18,9 @@ class ManageQuestions extends ManageRecords
                 Actions\CreateAction::make()->mutateFormDataUsing(function (array $data): array {
                     $data['text'] = str_replace('src="../storage','src="'.env('APP_URL').'/storage',$data['text']);
                     return $data;
-                })
+                })->successRedirectUrl(fn (Model $record): string => $this->getResource()::getUrl('view', [
+                    'record' => $record->id,
+                ]))
             ];
     }
 }

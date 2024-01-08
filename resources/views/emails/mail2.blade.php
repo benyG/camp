@@ -175,9 +175,11 @@ l-91 0 0 -92z"></path>
                   <p style="cursor: default">
                     <a href="{{env('APP_URL')}}" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none">Home</a>
                     &bull;
-                    <a href="#" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none;">Signup</a>
+                    <a href="#" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none;">Docs</a>
                     &bull;
-                    <a href="#" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none;">About</a>
+                    <a href="#" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none;">LinkedIn</a>
+                    &bull;
+                    <a href="#" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none;">Twitter</a>
                   </p>
                 </td>
               </tr>

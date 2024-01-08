@@ -14,17 +14,22 @@
                 <p class="text-sm text-gray-500 dark:text-gray-400">
                     {{ filament()->getUserName($user) }}
                 </p>
+                <p class="text-xs italic text-gray-500 dark:text-gray-400">
+                   Since {{ \Illuminate\Support\Carbon::create($user->created_at)->toFormattedDayDateString() }}
+                </p>
             </div>
 <div class="flex-1">
                 <h2 class="grid flex-1 text-xs font-semibold leading-6 text-center text-gray-950 dark:text-white">Rank</h2>
                <div class="flex justify-center"  >
-                <span class="text-sm italic border rounded-full
-                {{ match ($user->ex) {0 => 'bg-gray-100 text-gray-800 font-medium me-2 px-2.5 py-0.5 dark:bg-gray-700 dark:text-gray-400 border border-gray-500',
-                1 => 'bg-purple-100 text-pu font-medium me-2 px-2.5 py-0.5 dark:bg-gray-700 dark:text-purple-400 border-purple-400',
-                2 => 'bg-green-100 text-g font-medium me-2 px-2.5 py-0.5 dark:bg-gray-700 dark:text-green-400 border-green-400',
-                3 => 'bg-blue-100 text- font-medium me-2 px-2.5 py-0.5 dark:bg-gray-700 dark:text-blue-400 border-blue-400',
-                4 => 'bg-red-100 text font-medium me-2 px-2.5 py-0.5 dark:bg-gray-700 dark:text-red-400 border-red-400',
-                5 => 'bg-yellow-100 text-ye font-medium me-2 px-2.5 py-0.5 dark:bg-gray-700 dark:text-yellow-300 border-yellow-300'} }}">
+                <span
+                {!! match ($user->ex) {0 => "style='--c-50:var(--warning-50);--c-400:var(--warning-400);--c-600:var(--warning-600);'",
+                1 => "style='--c-50:var(--gray-50);--c-400:var(--gray-400);--c-600:var(--gray-600);'",
+                2 => "style='--c-50:var(--info-50);--c-400:var(--info-400);--c-600:var(--info-600);'",
+                3 => "style='--c-50:var(--success-50);--c-400:var(--success-400);--c-600:var(--success-600);'",
+                4 => "style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);'",
+                5 => "style='--c-50:var(--warning-50);--c-400:var(--warning-400);--c-600:var(--warning-600);'"} !!}
+                class="rounded-full text-sm font-medium ring-1 ring-inset px-2 min-w-[theme(spacing.6)] py-1  bg-custom-50 text-custom-600 ring-custom-600/10 dark:bg-custom-400/10 dark:text-custom-400 dark:ring-custom-400/30"
+                >
                     {{ match ($user->ex) {0 => 'S. Admin',1 => 'Admin',2 => 'Starter',3 => 'User',4 => 'Pro',5 => 'VIP'} }}
                 </span>
                </div>

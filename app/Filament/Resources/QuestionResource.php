@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\QuestionResource\Pages;
 use App\Filament\Resources\QuestionResource\RelationManagers\AnswersRelationManager;
 use App\Models\Question;
+use App\Models\Course;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+use Filament\Forms\Get;
 
 class QuestionResource extends Resource
 {
@@ -28,8 +30,11 @@ class QuestionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('module')->label('Modules')
-                ->relationship(name: 'moduleRel', titleAttribute: 'name'),
+                Forms\Components\Select::make('cours')->label('Certifications')->required()
+                ->options(Course::all()->pluck('name', 'id'))->live(),
+                Forms\Components\Select::make('module')->label('Modules')->required()
+                ->relationship(name: 'moduleRel', titleAttribute: 'name',
+                modifyQueryUsing: fn (Builder $query,Get $get) => $query->where('course',$get('cours'))),
                 Forms\Components\TextInput::make('maxr')->label('Max. Answers')
                 ->required()
                 ->default(4)->inputMode('numeric')
@@ -38,7 +43,7 @@ class QuestionResource extends Resource
                     ->required()
                     ->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads')
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('descr')->columnSpanFull()->label('Description'),
+                Forms\Components\Textarea::make('descr')->columnSpanFull()->label('Explanation'),
 
            //     Forms\Components\Toggle::make('isexam')
            //         ->required(),
@@ -48,6 +53,7 @@ class QuestionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->modifyQueryUsing(fn (Builder $query) => $query->latest())
             ->columns([
                 Tables\Columns\TextColumn::make('text')->limit(100)->html()
                 ->searchable()->sortable(),
@@ -66,7 +72,10 @@ class QuestionResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('module')
+                    ->relationship(name: 'moduleRel', titleAttribute: 'name')
+                    ->searchable()->label('Modules')->multiple()
+                    ->preload()
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -81,7 +90,7 @@ class QuestionResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->deferLoading();;
+            ->deferLoading()->striped()->persistFiltersInSession();
     }
 
     public static function getPages(): array
@@ -98,13 +107,17 @@ class QuestionResource extends Resource
         ];
     }
     public static function infolist(Infolist $infolist): Infolist
-{
-    return $infolist
-        ->schema([
-            Infolists\Components\TextEntry::make('moduleRel.name')->label('Modules'),
-            Infolists\Components\TextEntry::make('maxr')->label('Max. Answers'),
-            Infolists\Components\TextEntry::make('text')->html(),
-            Infolists\Components\TextEntry::make('descr')->html()->label('Description'),
-        ]);
-}
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\TextEntry::make('moduleRel.name')->label('Modules'),
+                Infolists\Components\TextEntry::make('maxr')->label('Max. Answers'),
+                Infolists\Components\TextEntry::make('text')->html(),
+                Infolists\Components\TextEntry::make('descr')->html()->label('Explanation'),
+            ]);
+    }
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('view');
+    }
 }

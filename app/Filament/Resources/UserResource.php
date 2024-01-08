@@ -38,8 +38,8 @@ class UserResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
                     Forms\Components\Select::make('ex')->label('Type')
-                    ->options(['1'=>'Admin','2'=>'User'])
-                    ->rules([Rule::in(['1', '2','3','4'])]),
+                    ->options(['1' => 'Admin','2' => 'Starter','3' => 'User','4' => 'Pro','5' => 'VIP'])
+                    ->rules([Rule::in(['1','2','3','4','5'])]),
                 Password::make('password')
                     ->password()->copyable()->regeneratePassword()
                     ->generatePasswordUsing(function ($state) {
@@ -63,7 +63,7 @@ class UserResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+        return $table->striped()
         ->query(User::query()->where('ex','<>',0)->where('id','<>',auth()->user()->id))
             ->columns([
                 Tables\Columns\TextColumn::make('name')

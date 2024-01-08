@@ -13,7 +13,7 @@ class VaguePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->ex ==0;
     }
 
     /**
@@ -21,7 +21,7 @@ class VaguePolicy
      */
     public function view(User $user, Vague $vague): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->ex ==0;
     }
 
     /**
@@ -29,7 +29,7 @@ class VaguePolicy
      */
     public function create(User $user): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->ex ==0;
     }
 
     /**
@@ -37,7 +37,7 @@ class VaguePolicy
      */
     public function update(User $user, Vague $vague): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->ex ==0;
     }
 
     /**
@@ -45,7 +45,7 @@ class VaguePolicy
      */
     public function delete(User $user, Vague $vague): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->ex ==0;
     }
 
     /**
@@ -53,7 +53,7 @@ class VaguePolicy
      */
     public function restore(User $user, Vague $vague): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class VaguePolicy
      */
     public function forceDelete(User $user, Vague $vague): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return false;
     }
 }

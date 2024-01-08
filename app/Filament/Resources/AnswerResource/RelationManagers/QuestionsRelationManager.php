@@ -21,7 +21,7 @@ class QuestionsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return $table
+        return $table->striped()
             ->recordTitleAttribute('text')
             ->columns([
                 Tables\Columns\TextColumn::make('text')->limit(100)->html()->label('Question'),

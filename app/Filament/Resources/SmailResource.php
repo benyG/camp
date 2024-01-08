@@ -2,11 +2,13 @@
 
 namespace App\Filament\Resources;
 
+use Exception;
 use App\Filament\Resources\SmailResource\Pages;
 use App\Filament\Resources\SmailResource\RelationManagers;
 use App\Models\SMail;
 use App\Models\Vague;
 use App\Models\User;
+use App\Notifications\NewMail;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,9 +21,10 @@ use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\Imail;
+//use Illuminate\Support\Facades\Mail;
+//use App\Mail\Imail;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Notification as Notif;
 
 class SmailResource extends Resource
 {
@@ -73,7 +76,7 @@ class SmailResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+        return $table->striped()
         ->query(Smail::selectRaw('distinct (mail),hid, smails.id,sub,content,smails.from,smails.created_at,smails.updated_at,users_mail.sent,users_mail.read,read_date,last_sent')->join('users_mail', 'smails.id', '=', 'users_mail.mail')
        // ->join('users', 'users.id', '=', 'users_mail.user')
        ->where(function (Builder $query) {
@@ -84,7 +87,7 @@ class SmailResource extends Resource
                 ->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('from')->label('Correspondants')
                 ->formatStateUsing(fn (Model $record): string => $record->from== auth()->user()->id? $record->users2->pluck('name') : $record->user1->name)
-                ->searchable()->sortable(),
+                ->sortable(),
              Tables\Columns\IconColumn::make('sent')->label('Sent via SMTP')
              ->icon(fn($state):string=>$state==1?'heroicon-o-envelope':'')
                  ->tooltip(fn (Smail $record): string =>$record->sent==1? "Last sent on {$record->last_sent}":"")
@@ -155,9 +158,14 @@ class SmailResource extends Resource
                 }),
                 Tables\Actions\Action::make('resend')->color('warning')->label('Resend')
                 ->action(function (Smail $record) {
-                    foreach ($record->users as $rrr) {
-                        Mail::to($rrr->email)->send(new Imail($record,[$rrr->name,$rrr->email],'1'));
-                        Notification::make()->success()->title('Successfully sent via SMTP to : '.$rrr->email)->send();
+                    try {
+                        Notif::send($record->users, new NewMail($record,[],'1'));
+                        Notification::make()->success()->title('Sent via SMTP')->send();
+                    } catch (Exception $exception) {
+                        Notification::make()
+                            ->title('We were not able to reach some recipients via SMTP')
+                            ->danger()
+                            ->send();
                     }
                 })
                 ->visible(fn(Smail $record)=>$record->from== auth()->user()->id),

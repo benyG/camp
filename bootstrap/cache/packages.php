@@ -1,4 +1,11 @@
 <?php return array (
+  'bezhansalleh/filament-language-switch' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'BezhanSalleh\\FilamentLanguageSwitch\\FilamentLanguageSwitchServiceProvider',
+    ),
+  ),
   'blade-ui-kit/blade-heroicons' => 
   array (
     'providers' => 

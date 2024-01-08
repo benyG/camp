@@ -32,7 +32,7 @@ class VagueResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+        return $table->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),

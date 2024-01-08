@@ -53,7 +53,7 @@ class ModulePolicy
      */
     public function restore(User $user, Module $module): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class ModulePolicy
      */
     public function forceDelete(User $user, Module $module): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return false;
     }
 }

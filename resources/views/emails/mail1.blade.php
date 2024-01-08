@@ -67,7 +67,7 @@
               <tr>
                 <td class="sm-px-6" style="border-radius: 4px; background-color: #fff; padding: 40px; font-size: 16px; color: #334155; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)">
                   <h1 class="sm-leading-8" style="margin: 0 0 24px; font-size: 24px; font-weight: 600; color: #000">
-                    Hello <span style="color: #15803d">{{$para[0]}}</span>,
+                    Hello <span style="color: #15803d">{{$name}}</span>,
                   </h1>
                   <p style="margin: 0; line-height: 24px">
                     You have a new private message from the admin.
@@ -93,7 +93,7 @@
                   Thanks, <br><span style="font-size: 16px; font-style: italic; color: #94a3b8">The IT Exam BootCamp Team</span>
                   <div role="separator" style="background-color: #e2e8f0; height: 1px; line-height: 1px; margin: 20px 0">&zwj;</div>
                   <p style="margin: 0; font-size: 12px">
-                    This email was sent to <a href="#" class="hover-underline dark-text-green-400" target="_blank" style="color: #15803d">{{$para[1]}}</a>
+                    This email was sent to <a href="#" class="hover-underline dark-text-green-400" target="_blank" style="color: #15803d">{{$email}}</a>
                     <br>If this is a mistake, you can safely ignore this email.
                   </p>
                 </td>
@@ -172,9 +172,11 @@ l-91 0 0 -92z"></path>
                   <p style="cursor: default">
                     <a href="{{env('APP_URL')}}" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none">Home</a>
                     &bull;
-                    <a href="#" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none;">Signup</a>
+                    <a href="#" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none;">Docs</a>
                     &bull;
-                    <a href="#" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none;">About</a>
+                    <a href="#" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none;">LinkedIn</a>
+                    &bull;
+                    <a href="#" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none;">Twitter</a>
                   </p>
                 </td>
               </tr>

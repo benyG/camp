@@ -94,7 +94,7 @@ class ExamResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+        return $table->striped()
         ->query(Exam::selectRaw('distinct(exam),exams.id,name,descr,due,type,timer,added_at,added,start_at,comp_at,exams.from')->join('exam_users', 'exams.id', '=', 'exam_users.exam')
         ->where('from',auth()->user()->id)->orwhere('exam_users.user',auth()->user()->id)->latest('added_at'))
         ->columns([

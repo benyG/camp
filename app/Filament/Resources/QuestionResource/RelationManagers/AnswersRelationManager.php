@@ -31,7 +31,7 @@ class AnswersRelationManager extends RelationManager
                 Forms\Components\TextInput::make('text')
                     ->required()
                     ->maxLength(500)
-                    ->unique(table: \App\Models\Answer::class)
+                    ->unique(table: \App\Models\Answer::class,ignoreRecord: true)
                     ->validationMessages([
                         'unique' => "Answer already in our database. You may attach it using the Attach button above.",
                     ])
@@ -50,7 +50,7 @@ class AnswersRelationManager extends RelationManager
                                         Notification::make()->danger()->title('Maximum answers for this question reached')->send();
                                     }
                                     else {
-                                        $this->getOwnerRecord()->answers()->attach($ans->id,['isok',$get('isok')]);
+                                        $this->getOwnerRecord()->answers()->attach($ans->id,['isok'=>$get('isok')]);
                                         Notification::make()->success()->title('Answer successfully attached')->send();
                                     }
                                 }
@@ -64,7 +64,7 @@ class AnswersRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return $table
+        return $table->striped()
             ->recordTitleAttribute('text')
             ->columns([
                 Tables\Columns\TextColumn::make('text'),
