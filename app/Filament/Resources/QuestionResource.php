@@ -31,7 +31,7 @@ class QuestionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('cours')->label('Certifications')->required()
-                ->options(Course::all()->pluck('name', 'id'))->live(),
+                ->options(Course::all()->pluck('name', 'id'))->preload()->default(session('cours'))->live(),
                 Forms\Components\Select::make('module')->label('Modules')->required()
                 ->relationship(name: 'moduleRel', titleAttribute: 'name',
                 modifyQueryUsing: fn (Builder $query,Get $get) => $query->where('course',$get('cours'))),
