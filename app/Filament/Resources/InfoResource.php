@@ -16,11 +16,40 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class InfoResource extends Resource
 {
     protected static ?string $model = Info::class;
-    protected static ?int $navigationSort = 9;
-    protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
-    protected static ?string $modelLabel = 'setting';
-    protected static ?string $slug = 'settings';
-    protected static ?string $navigationGroup = 'Other';
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Toggle::make('wperc')
+                    ->required(),
+                Forms\Components\Toggle::make('smtp')
+                    ->required(),
+                Forms\Components\TextInput::make('maxt')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('maxs')
+                    ->required()
+                    ->numeric()
+                    ->default(50),
+                Forms\Components\TextInput::make('maxu')
+                    ->required()
+                    ->numeric()
+                    ->default(60),
+                Forms\Components\TextInput::make('maxp')
+                    ->required()
+                    ->numeric()
+                    ->default(70),
+                Forms\Components\TextInput::make('maxv')
+                    ->required()
+                    ->numeric()
+                    ->default(100),
+                Forms\Components\Toggle::make('mint')
+                    ->required(),
+            ]);
+    }
 
     public static function table(Table $table): Table
     {
@@ -31,8 +60,6 @@ class InfoResource extends Resource
                 ->rules(['required', 'numeric','max:100']),
                 Tables\Columns\TextInputColumn::make('maxt')->label('Win Perc.')
                 ->rules(['required', 'numeric','max:32000']),
-                Tables\Columns\TextInputColumn::make('efrom')->label('Email from')
-                    ->rules(['required', 'email']),
                 Tables\Columns\TextInputColumn::make('smtp')->label('Auto send via SMTP')
                     ->rules(['required']),
             ])
@@ -40,6 +67,7 @@ class InfoResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
             ]);
@@ -49,6 +77,7 @@ class InfoResource extends Resource
     {
         return [
             'index' => Pages\ManageInfos::route('/'),
+            'edit' => Pages\EditInfo::route('/{record}/edit'),
         ];
     }
 }

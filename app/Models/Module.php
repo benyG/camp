@@ -14,7 +14,7 @@ class Module extends Model
 {
     public $timestamps = false;
     protected $fillable = [
-        'name','course','maxq'
+        'name','course','maxu','maxs','maxv','maxp',
       ];
     protected function Slug(): Attribute
     {

@@ -28,11 +28,20 @@ class ModuleResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                    Forms\Components\TextInput::make('maxq')
+                Forms\Components\Select::make('course')->label('Certification')->required()
+                ->relationship(name: 'courseRel', titleAttribute: 'name'),
+                    Forms\Components\TextInput::make('maxs')->label('Q. Limit - Starter')
+                    ->required()->inputMode('numeric')
+                    ->numeric()->default(10),
+                    Forms\Components\TextInput::make('maxu')->label('Q. Limit - User')
+                    ->required()->inputMode('numeric')
+                    ->numeric()->default(20),
+                    Forms\Components\TextInput::make('maxp')->label('Q. Limit - Pro')
+                    ->required()->inputMode('numeric')
+                    ->numeric()->default(30),
+                    Forms\Components\TextInput::make('maxq')->label('Q. Limit - VIP')
                     ->required()->inputMode('numeric')
                     ->numeric()->default(50),
-                Forms\Components\Select::make('course')->label('Certification')->required()
-                ->relationship(name: 'courseRel', titleAttribute: 'name')
             ]);
     }
 

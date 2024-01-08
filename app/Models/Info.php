@@ -10,6 +10,6 @@ class Info extends Model
     use HasFactory;
     public $timestamps = false;
     protected $fillable = [
-        'wperc','efrom','smtp','maxt'
+        'wperc','smtp','maxt','maxu','maxs','maxv','maxp','mint'
       ];
 }

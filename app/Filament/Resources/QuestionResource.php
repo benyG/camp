@@ -30,7 +30,7 @@ class QuestionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('cours')->label('Certifications')->required()
+                Forms\Components\Select::make('cours')->label('Certifications')
                 ->options(Course::all()->pluck('name', 'id'))
                 ->preload()->live(),
                 Forms\Components\Select::make('module')->label('Modules')->required()

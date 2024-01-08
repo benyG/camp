@@ -4,16 +4,16 @@ namespace App\Filament\Resources\InfoResource\Pages;
 
 use App\Filament\Resources\InfoResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ManageRecords;
+use Filament\Resources\Pages\EditRecord;
 
-class ManageInfos extends ManageRecords
+class EditInfo extends EditRecord
 {
     protected static string $resource = InfoResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-          //  Actions\CreateAction::make(),
+            Actions\DeleteAction::make(),
         ];
     }
 }
