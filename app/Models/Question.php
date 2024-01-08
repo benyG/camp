@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Module;
+use App\Models\Course;
 use App\Models\Answer;
 use App\Models\QuestAns;
 use App\Models\ExamQuest;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+
 class Question extends Model
 {
     public $timestamps = true;
@@ -35,6 +38,17 @@ class Question extends Model
     {
         return $this->belongsToMany(ExamUser::class, 'exam_quests', 'quest', 'exam')
         ->using(ExamQuest::class);
+    }
+    public function certif(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Course::class,
+            Module::class,
+            'id', // Foreign key on the cars table...
+            'id', // Foreign key on the owners table...
+            'module', // Local key on the mechanics table...
+            'course' // Local key on the cars table...
+        );
     }
 
 

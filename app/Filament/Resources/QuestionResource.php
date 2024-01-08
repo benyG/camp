@@ -30,18 +30,12 @@ class QuestionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('cours')->label('Certifications')
-                ->options(Course::all()->pluck('name', 'id'))
+                Forms\Components\Select::make('cours')->label('Certifications')->required()
+                ->relationship(name: 'certif', titleAttribute: 'name')
                 ->preload()->live(),
                 Forms\Components\Select::make('module')->label('Modules')->required()
                 ->relationship(name: 'moduleRel', titleAttribute: 'name',
-                modifyQueryUsing: function (Builder $query,Get $get,string $operation) {
-                    if($operation=='create') return $query->where('course',$get('cours'));
-                    else{
-                        if(is_numeric($get('cours'))) return $query->where('course',$get('cours'));
-                        else return $query;
-                    }
-                }),
+                modifyQueryUsing: fn (Builder $query, Get $get)=>$query->where('course',$get('cours'))),
                 Forms\Components\TextInput::make('maxr')->label('Max. Answers')
                 ->required()
                 ->default(4)->inputMode('numeric')
