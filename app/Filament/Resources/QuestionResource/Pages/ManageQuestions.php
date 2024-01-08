@@ -22,7 +22,7 @@ class ManageQuestions extends ManageRecords
                 })
                 ->successRedirectUrl(fn (Model $record): string => $this->getResource()::getUrl('view', [
                     'record' => $record->id,
-                ]))
+                ])) ->createAnother(false)
             ];
     }
 }

@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class InfoResource extends Resource
 {
     protected static ?string $model = Info::class;
+    protected static ?int $navigationSort = 9;
+    protected static ?string $navigationGroup = 'Other';
+    protected static ?string $modelLabel = 'setting';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,31 +26,33 @@ class InfoResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Toggle::make('wperc')
-                    ->required(),
-                Forms\Components\Toggle::make('smtp')
-                    ->required(),
-                Forms\Components\TextInput::make('maxt')
+                Forms\Components\TextInput::make('wperc')->label('Win Perc.')
+                    ->required()->numeric(),
+                Forms\Components\Toggle::make('smtp')->label('Auto send via SMTP')
+                    ->required()->inline(false),
+                Forms\Components\TextInput::make('maxt')->label('Max Exam Timer')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('maxs')
+                    Forms\Components\TextInput::make('mint')->label('Min Exam Timer')
+                    ->required(),
+                    Forms\Components\TextInput::make('minq')->label('Min. Exam Quest')
+                    ->required(),
+                Forms\Components\TextInput::make('maxs')->label('Q. Limit-Starter')
                     ->required()
                     ->numeric()
                     ->default(50),
-                Forms\Components\TextInput::make('maxu')
+                Forms\Components\TextInput::make('maxu')->label('Q. Limit-Starter')
                     ->required()
                     ->numeric()
                     ->default(60),
-                Forms\Components\TextInput::make('maxp')
+                Forms\Components\TextInput::make('maxp')->label('Q. Limit-Starter')
                     ->required()
                     ->numeric()
                     ->default(70),
-                Forms\Components\TextInput::make('maxv')
+                Forms\Components\TextInput::make('maxv')->label('Q. Limit-Starter')
                     ->required()
                     ->numeric()
                     ->default(100),
-                Forms\Components\Toggle::make('mint')
-                    ->required(),
             ]);
     }
 
@@ -58,7 +63,7 @@ class InfoResource extends Resource
             ->columns([
                 Tables\Columns\TextInputColumn::make('wperc')->label('Win Perc.')
                 ->rules(['required', 'numeric','max:100']),
-                Tables\Columns\TextInputColumn::make('maxt')->label('Win Perc.')
+                Tables\Columns\TextInputColumn::make('maxt')->label('Max Exam Timer')
                 ->rules(['required', 'numeric','max:32000']),
                 Tables\Columns\TextInputColumn::make('smtp')->label('Auto send via SMTP')
                     ->rules(['required']),

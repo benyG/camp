@@ -30,12 +30,19 @@ class QuestionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('cours')->label('Certifications')->required()
-                ->relationship(name: 'certif', titleAttribute: 'name')
+                Forms\Components\Select::make('cours')->label('Certifications')
+                ->options(Course::all()->pluck('name', 'id'))->default(session('cours'))
                 ->preload()->live(),
                 Forms\Components\Select::make('module')->label('Modules')->required()
                 ->relationship(name: 'moduleRel', titleAttribute: 'name',
-                modifyQueryUsing: fn (Builder $query, Get $get)=>$query->where('course',$get('cours'))),
+                modifyQueryUsing: function (Builder $query, Get $get, string $operation)
+                {
+                    if($operation=='create') return $query->where('course',$get('cours'));
+                    else{
+                        if(is_numeric($get('cours'))) return $query->where('course',$get('cours'));
+                        else return $query;
+                    }
+                }),
                 Forms\Components\TextInput::make('maxr')->label('Max. Answers')
                 ->required()
                 ->default(4)->inputMode('numeric')
@@ -62,8 +69,6 @@ class QuestionResource extends Resource
                 Tables\Columns\TextColumn::make('certif.name')->label('Certification')->sortable(),
                 Tables\Columns\TextColumn::make('answers_count')->counts('answers')->label('Answers')
                 ->numeric()->sortable(),
-                        //     Tables\Columns\IconColumn::make('isexam')
-            //        ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -83,6 +88,9 @@ class QuestionResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()->mutateFormDataUsing(function (array $data): array {
                     $data['text'] = str_replace('src="../storage','src="'.env('APP_URL').'/storage',$data['text']);
+                    return $data;
+                })->mutateRecordDataUsing(function (array $data, QUestion $record): array {
+                    $data['cours']=$record->certif->id;
                     return $data;
                 }),
                 Tables\Actions\DeleteAction::make(),
