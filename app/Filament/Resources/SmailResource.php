@@ -7,6 +7,7 @@ use App\Filament\Resources\SmailResource\Pages;
 use App\Filament\Resources\SmailResource\RelationManagers;
 use App\Models\SMail;
 use App\Models\Vague;
+use App\Models\Info;
 use App\Models\User;
 use App\Notifications\NewMail;
 use Filament\Forms;
@@ -29,7 +30,6 @@ use Illuminate\Support\Facades\Notification as Notif;
 class SmailResource extends Resource
 {
     protected static ?string $model = SMail::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
     protected static ?string $modelLabel = 'message';
     protected static ?string $slug = 'messages';
@@ -91,8 +91,8 @@ class SmailResource extends Resource
              Tables\Columns\IconColumn::make('sent')->label('Sent via SMTP')->hidden(fn():bool=>auth()->user()->ex>=2)
              ->icon(fn($state):string=>$state==1?'heroicon-o-envelope':'')
                  ->tooltip(fn (Smail $record): string =>$record->sent==1? "Last sent on {$record->last_sent}":"")
-                 ->sortable(),
-                 Tables\Columns\IconColumn::make('read')->label('Read ?')
+                 ->sortable()->toggleable(isToggledHiddenByDefault: true),
+                 Tables\Columns\IconColumn::make('read')->label('Read')
                  ->color(fn($state):string=>$state==1?'success':'danger')
                  ->icon(fn($state, Smail $record):string=>$record->from== auth()->user()->id? "":($state==1?'heroicon-o-envelope-open':'heroicon-o-envelope'))
                      ->tooltip(fn (Smail $record): string =>$record->from== auth()->user()->id? "":($record->read==1? "Read on {$record->read_date}":""))
@@ -162,17 +162,20 @@ class SmailResource extends Resource
                         $para=[auth()->user()->name,auth()->user()->email];
                         $opt='4';
                     }
-                    try {
-                        Notif::send($record->users, new NewMail($record->sub,$para,$opt));
-                        Notification::make()->success()->title('Sent via SMTP')->send();
-                    } catch (Exception $exception) {
-                        Notification::make()
-                            ->title('We were not able to reach some recipients via SMTP')
-                            ->danger()
-                            ->send();
-                    }
+                        try {
+                            foreach ($record->users2 as $us) {
+                            Notif::send($us, new NewMail($record->sub,$para,$opt));
+                            $record->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
+                            }
+                            Notification::make()->success()->title('Sent via SMTP')->send();
+                        } catch (Exception $exception) {
+                            Notification::make()
+                                ->title('We were not able to reach some recipients via SMTP')
+                                ->danger()
+                                ->send();
+                        }
                 })
-                ->visible(fn(Smail $record)=>$record->from== auth()->user()->id),
+                ->visible(fn(Smail $record)=>($record->from== auth()->user()->id) && Info::first()->smtp),
                 Tables\Actions\Action::make('Delete')->modalHeading('Delete message')->label('Delete')
                 ->requiresConfirmation()->color('danger')->modalIcon('heroicon-o-trash')->modalIconColor('warning')
                 ->action(function (Smail $record) {

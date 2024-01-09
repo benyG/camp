@@ -21,7 +21,7 @@ class ListCertif extends Page implements HasTable
     protected static string $resource = ExamResource::class;
     protected static ?string $title = 'Certifications';
     protected ?string $heading = 'Available certifications';
-    protected ?string $subheading = '----';
+    protected ?string $subheading = 'Check the list to see which certification you can request to join for tests.';
     protected static string $view = 'filament.resources.exam-resource.pages.list-certif';
 
     public function mount(): void
@@ -31,7 +31,8 @@ class ListCertif extends Page implements HasTable
     public function table(Table $table): Table
     {
         return $table
-        ->query(Course::where('pub',true))
+        ->query(Course::where('pub',true))->emptyStateHeading('No certification yet')->emptyStateIcon('heroicon-o-bookmark')
+        ->emptyStateDescription('Please come later to check if there are new ones available.')
         ->columns([
             Tables\Columns\TextColumn::make('name')->sortable()->searchable()->label('Name')
             ->description(fn (Course $record): ?string => $record->descr),

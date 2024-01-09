@@ -29,7 +29,7 @@ class ModuleResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('course')->label('Certification')->required()
-                ->relationship(name: 'courseRel', titleAttribute: 'name'),
+                ->relationship(name: 'courseRel', titleAttribute: 'name')->limit(15),
                     Forms\Components\TextInput::make('maxs')->label('Q. Limit - Starter')
                     ->required()->inputMode('numeric')
                     ->numeric()->default(10),

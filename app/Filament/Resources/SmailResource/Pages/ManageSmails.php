@@ -29,20 +29,25 @@ class ManageSmails extends ManageRecords
                 Notification::make()->success()->title('Successfully sent via SMTP to : '.$rec->email)->send();
                 }
  */
-                $para=array(); $opt='1';
-                if(auth()->user()->ex>=2){
-                    $record->users()->attach(User::where('ex',0)->first()->id);
-                    $para=[auth()->user()->name,auth()->user()->email];
-                    $opt='4';
-                }
-                try {
-                    Notif::send($record->users, new NewMail($record->sub,$para,$opt));
-                    Notification::make()->success()->title('Sent via SMTP')->send();
-                } catch (Exception $exception) {
-                    Notification::make()
-                        ->title('We were not able to reach some recipients via SMTP')
-                        ->danger()
-                        ->send();
+                if(\App\Models\Info::first()->smtp){
+                    $para=array(); $opt='1';
+                    if(auth()->user()->ex>=2){
+                        $record->users()->attach(User::where('ex',0)->first()->id);
+                        $para=[auth()->user()->name,auth()->user()->email];
+                        $opt='4';
+                    }
+                    try {
+                        foreach ($record->users2 as $us) {
+                            Notif::send($us, new NewMail($record->sub,$para,$opt));
+                            $record->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
+                            }
+                        Notification::make()->success()->title('Sent via SMTP')->send();
+                    } catch (Exception $exception) {
+                        Notification::make()
+                            ->title('We were not able to reach some recipients via SMTP')
+                            ->danger()
+                            ->send();
+                    }
                 }
 
             })->createAnother(false),

@@ -27,14 +27,13 @@ class InfoResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('wperc')->label('Win Perc.')
-                    ->required()->numeric(),
+                    ->rules(['required', 'numeric','max:100']),
                 Forms\Components\TextInput::make('efrom')->label('Admin Email')
                     ->required()->email(),
-                Forms\Components\Toggle::make('smtp')->label('Auto send via SMTP')
+                Forms\Components\Toggle::make('smtp')->label('Auto send PM via SMTP')
                     ->required()->inline(false),
                 Forms\Components\TextInput::make('maxt')->label('Max Exam Timer')
-                    ->required()
-                    ->numeric(),
+                    ->required()->numeric(),
                     Forms\Components\TextInput::make('mint')->label('Min Exam Timer')
                     ->required(),
                     Forms\Components\TextInput::make('minq')->label('Min. Exam Quest')
@@ -63,12 +62,9 @@ class InfoResource extends Resource
         return $table
         ->modifyQueryUsing(fn (Builder $query) => $query->where('id',1))
             ->columns([
-                Tables\Columns\TextInputColumn::make('wperc')->label('Win Perc.')
-                ->rules(['required', 'numeric','max:100']),
-                Tables\Columns\TextInputColumn::make('maxt')->label('Max Exam Timer')
-                ->rules(['required', 'numeric','max:32000']),
-                Tables\Columns\TextInputColumn::make('smtp')->label('Auto send via SMTP')
-                    ->rules(['required']),
+                Tables\Columns\TextColumn::make('wperc')->label('Win Perc.'),
+                Tables\Columns\TextColumn::make('maxt')->label('Max Exam Timer'),
+                Tables\Columns\IconColumn::make('smtp')->label('Auto send via SMTP')->boolean(),
             ])
             ->filters([
                 //
