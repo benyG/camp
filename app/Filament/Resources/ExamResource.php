@@ -94,7 +94,7 @@ class ExamResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->striped()
+        return $table
         ->query(Exam::selectRaw('distinct(exam),exams.id,name,descr,due,type,timer,added_at,added,start_at,comp_at,exams.from')->join('exam_users', 'exams.id', '=', 'exam_users.exam')
         ->where('from',auth()->user()->id)->orwhere('exam_users.user',auth()->user()->id)->latest('added_at'))
         ->columns([
@@ -102,19 +102,17 @@ class ExamResource extends Resource
                 ->description(fn (Exam $record): ?string => $record->descr),
                 Tables\Columns\TextColumn::make('type')
                     ->badge()
-                    ->formatStateUsing(fn (Exam $record): string => $record->type== 0? 'Mock' : 'Exam')
+                    ->formatStateUsing(fn (Exam $record): string => $record->type== 0? 'Test' : 'Exam')
                     ->color(fn (string $state): string => match ($state) {'0' => 'warning','1' => 'success',})
                     ->sortable(),
                     Tables\Columns\TextColumn::make('users.name')->label('Users')
                     ->hidden(auth()->user()->ex!=0),
-                    Tables\Columns\TextColumn::make('slug')->label('Users')
-                    ,
                 Tables\Columns\TextColumn::make('added_at')->label('Created on')
                     ->dateTime()->hidden(auth()->user()->ex!=0)
-                    ->sortable(),
+                    ->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('added')->label('Affected on')
                     ->dateTime()->hidden(auth()->user()->ex==0)->since()
-                    ->sortable(),
+                    ->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('due')->label('Due Date')
                     ->dateTime()->sortable(),
                 Tables\Columns\TextColumn::make('Start on')->label('Started on')
@@ -126,16 +124,16 @@ class ExamResource extends Resource
             ])
             ->filters([
                 //
-            ])->persistFiltersInSession()
+            ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\Action::make('resend')->color('gray')->label('Results')
+                Tables\Actions\Action::make('resend')->label('Results')
                 ->action(function (Smail $record) {
                     foreach ($record->users as $rrr) {
                         Mail::to($rrr->email)->send(new Imail($record,$rrr->name,$rrr->email));
                         Notification::make()->success()->title('Successfully sent via SMTP to : '.$rrr->email)->send();
                     }
-                })->button()->color('success')->visible(fn (Exam $record): bool =>auth()->user()->ex==0),
+                })->button()->color('success')->visible(fn (): bool =>auth()->user()->ex==0),
                 Tables\Actions\EditAction::make()->mutateFormDataUsing(function (array $data): array {
                     $data['from'] = auth()->id();
                     if(auth()->user()->ex!=0) {
@@ -151,13 +149,16 @@ class ExamResource extends Resource
              /*    Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]), */
-            ]);
+            ])
+            ->deferLoading()->striped()->persistFiltersInSession()
+            ->persistSearchInSession()->persistColumnSearchesInSession();
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ManageExams::route('/'),
+            'certif' => Pages\ListCertif::route('/certifications'),
         ];
     }
     protected function shouldPersistTableSortInSession(): bool

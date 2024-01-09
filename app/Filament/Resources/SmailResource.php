@@ -76,7 +76,7 @@ class SmailResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->striped()
+        return $table->striped()->paginated([10, 25, 50, 100, 200, 'all'])
         ->query(Smail::selectRaw('distinct (mail),hid, smails.id,sub,content,smails.from,smails.created_at,smails.updated_at,users_mail.sent,users_mail.read,read_date,last_sent')->join('users_mail', 'smails.id', '=', 'users_mail.mail')
        // ->join('users', 'users.id', '=', 'users_mail.user')
        ->where(function (Builder $query) {
@@ -163,7 +163,7 @@ class SmailResource extends Resource
                         $opt='4';
                     }
                     try {
-                        Notif::send($record->users, new NewMail($record,$para,$opt));
+                        Notif::send($record->users, new NewMail($record->sub,$para,$opt));
                         Notification::make()->success()->title('Sent via SMTP')->send();
                     } catch (Exception $exception) {
                         Notification::make()
@@ -188,7 +188,7 @@ class SmailResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('Delete')->modalHeading('Delete messages')->label('Delete')
+                    Tables\Actions\BulkAction::make('Delete')->modalHeading('Delete messages')->label('Delete selected')
                     ->requiresConfirmation()->color('danger')->modalIcon('heroicon-o-trash')->modalIconColor('warning')
                     ->action(function (Collection $record) {
                         $record->each(function (Smail $rec, int $key) {

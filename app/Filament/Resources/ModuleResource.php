@@ -47,7 +47,7 @@ class ModuleResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+        return $table->paginated([25, 50, 100, 'all'])
             ->columns([
                 Tables\Columns\TextColumn::make('name')->sortable()
                     ->searchable(),

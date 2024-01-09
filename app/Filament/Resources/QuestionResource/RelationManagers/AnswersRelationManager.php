@@ -39,19 +39,19 @@ class AnswersRelationManager extends RelationManager
                         \Filament\Forms\Components\Actions\Action::make('kkj')->label('Attach')
                             ->icon('heroicon-m-link')
                             ->action(function (Get $get, $state) {
-                              if(empty($get('text'))) Notification::make()->danger()->title('Field empty')->send();
+                              if(empty($get('text'))) Notification::make('sgg')->danger()->title('Field empty')->send();
                               else{
-                                if(!Answer::where('text',$get('text'))->exists()) Notification::make()->danger()->title('Answer not in the database. You may create it using the Create button')->send();
+                                if(!Answer::where('text',$get('text'))->exists()) Notification::make('e7')->danger()->title('Answer not in the database. You may create it using the Create button')->send();
                                 else {
                                     $ans=Answer::where('text',$get('text'))->first();
                                     $quest=$this->getOwnerRecord();
-                                    if($quest->answers()->get()->contains($ans)) Notification::make()->danger()->title('Answer already attached to this question')->send();
+                                    if($quest->answers()->get()->contains($ans)) Notification::make('er')->danger()->title('Answer already attached to this question')->send();
                                     else if ($quest->answers()->count()>=$quest->maxr) {
-                                        Notification::make()->danger()->title('Maximum answers for this question reached')->send();
+                                        Notification::make('74')->danger()->title('Maximum answers for this question reached')->send();
                                     }
                                     else {
                                         $this->getOwnerRecord()->answers()->attach($ans->id,['isok'=>$get('isok')]);
-                                        Notification::make()->success()->title('Answer successfully attached')->send();
+                                        Notification::make('ed')->success()->title('Answer successfully attached')->send();
                                     }
                                 }
                               }
@@ -77,7 +77,7 @@ class AnswersRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make()->before(function (Tables\Actions\CreateAction $action) {
                     $quest=$this->getOwnerRecord();
                     if ($quest->answers()->count()>=$quest->maxr) {
-                        Notification::make()->danger()->title('Maximum answers for this question reached')->send();
+                        Notification::make('qsd')->danger()->title('Maximum answers for this question reached')->send();
                          $action->halt();
                     }
                 })

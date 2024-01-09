@@ -37,7 +37,7 @@ class AnswerResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->striped()
+        return $table->striped()->paginated([50, 100,300,500,1000,2000, 5000,10000, 'all'])
             ->columns([
                 Tables\Columns\TextColumn::make('text')
                 ->searchable()->sortable(),
@@ -61,7 +61,8 @@ class AnswerResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->deferLoading();;
+            ->deferLoading()->persistFiltersInSession()
+            ->persistSearchInSession()->persistColumnSearchesInSession();
     }
     public static function getRelations(): array
     {

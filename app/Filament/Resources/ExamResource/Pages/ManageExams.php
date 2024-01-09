@@ -18,6 +18,8 @@ class ManageExams extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('e')->label('Certifications')->color('info')
+            ->url(fn (): string => $this->getResource()::getUrl('certif')),
             Actions\CreateAction::make()->mutateFormDataUsing(function (array $data): array {
                 $data['from'] = auth()->id();
                 if(auth()->user()->ex!=0){

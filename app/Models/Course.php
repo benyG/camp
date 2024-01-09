@@ -6,14 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use App\Models\Module;
+use App\Models\User;
+use App\Models\UsersCourse;
 use App\Models\Question;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Course extends Model
 {
     public $timestamps = false;
     protected $fillable = [
-        'name'
+        'name','pub','descr'
       ];
     protected function slug(): Attribute
     {
@@ -32,5 +35,17 @@ class Course extends Model
        // return $this->hasMany(App\Models\Module::class, 'foreign_key', 'local_key');
        return $this->through('modules')->has('questions');
     }
-
+    public function users(): BelongsToMany
+    {
+        //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+        return $this->belongsToMany(User::class, 'users_course', 'course', 'user')
+        ->using(UsersCourse::class);
+    }
+    public function users1(): BelongsToMany
+    {
+        //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+        return $this->belongsToMany(User::class, 'users_course', 'course', 'user')
+    ->wherePivot('user', auth()->user()->id)
+        ->using(UsersCourse::class);
+    }
 }

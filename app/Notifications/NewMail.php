@@ -16,7 +16,7 @@ class NewMail extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(protected Smail $order, protected $para, protected $opt)
+    public function __construct(protected $sub, protected $para, protected $opt)
     {
         //
     }
@@ -37,7 +37,7 @@ class NewMail extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-        ->subject($this->order->sub)
+        ->subject($this->sub)
         ->view(
             ['emails.mail'.$this->opt, 'emails.mail'.$this->opt.'-t'],
             ['para' => $this->para,

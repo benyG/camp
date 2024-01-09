@@ -28,6 +28,8 @@ class InfoResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('wperc')->label('Win Perc.')
                     ->required()->numeric(),
+                Forms\Components\TextInput::make('efrom')->label('Admin Email')
+                    ->required()->email(),
                 Forms\Components\Toggle::make('smtp')->label('Auto send via SMTP')
                     ->required()->inline(false),
                 Forms\Components\TextInput::make('maxt')->label('Max Exam Timer')

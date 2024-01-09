@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\ExamUser;
 use App\Models\Exam;
+use App\Models\Course;
+use App\Models\UsersCourse;
 
 
 
@@ -101,4 +103,11 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
         ->withPivot('id')
         ->using(ExamUser::class);
     }
+    public function courses(): BelongsToMany
+    {
+        //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+        return $this->belongsToMany(Course::class, 'users_course', 'user', 'course')
+        ->using(UsersCourse::class);
+    }
+
 }

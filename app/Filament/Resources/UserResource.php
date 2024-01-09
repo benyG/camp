@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Filament\Notifications\Notification;
 
 class UserResource extends Resource
 {
@@ -69,19 +70,18 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
+                    ->searchable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('email_verified_at')->label('Verified ?')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->color('success')->placeholder('No')->icon('heroicon-o-check-circle')
                     ->tooltip(fn (User $record): string => "{$record->email_verified_at}")
                     ->sortable(),
                     Tables\Columns\TextColumn::make('vagueRel.name')->label('Class')->sortable(),
-                Tables\Columns\TextColumn::make('ex')->label('Type')
-                ->formatStateUsing(fn (int $state): string => match ($state) {0 => "S. Admin",
-                    1 => "Admin",
-                    2 => "Starter",
-                    3 => "User",
-                    4 => "Pro",
-                    5 => "VIP"})
+                Tables\Columns\TextColumn::make('ex')->label('Type')->badge()
+                ->formatStateUsing(fn (int $state): string => match ($state) {0 => "indigo",
+                    1 => "Admin", 2 => "Starter", 3 => "User", 4 => "Pro", 5 => "VIP"})
+                    ->color(fn (int $state): string => match ($state) {0 => "S. Admin",
+                        1 => "gray", 2 => "info", 3 => "success", 4 => "danger", 5 => "warning"})
                 ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -96,14 +96,33 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('resend')->color('info')->label('Portfolio')
+                ->fillForm(fn (User $record): array => [
+                    'cou' => $record->courses->pluck('id'),
+                ])
+                ->form([
+                    Forms\Components\Select::make('cou')
+                    ->options(\App\Models\Course::all()->pluck('name', 'id'))
+                        ->label('Certifications')
+                        ->multiple()->preload(),
+                ])
+                ->action(function ($data,$record):void {
+                      $record->courses()->sync($data['cou']);
+                    Notification::make('es')->success()->title('Certifications saved')->send();
+                      })->button()->visible(fn (): bool =>auth()->user()->ex==0)
+                    ->modalHeading('Manage a user portfolio')
+                    ->modalSubmitActionLabel('Grant access')
+                    ->modalDescription(fn(User $record):string=>$record->name),
+      Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->deferLoading()->persistFiltersInSession()
+            ->persistSearchInSession()->persistColumnSearchesInSession();
     }
 
     public static function getPages(): array

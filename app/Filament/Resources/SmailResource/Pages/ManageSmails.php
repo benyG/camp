@@ -36,7 +36,7 @@ class ManageSmails extends ManageRecords
                     $opt='4';
                 }
                 try {
-                    Notif::send($record->users, new NewMail($record,$para,$opt));
+                    Notif::send($record->users, new NewMail($record->sub,$para,$opt));
                     Notification::make()->success()->title('Sent via SMTP')->send();
                 } catch (Exception $exception) {
                     Notification::make()

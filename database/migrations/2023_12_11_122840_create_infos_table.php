@@ -14,9 +14,15 @@ return new class extends Migration
         Schema::create('infos', function (Blueprint $table) {
             $table->id();
             $table->smallInteger('maxt')->default(60)->unsigned();
+            $table->smallInteger('mint')->default(10)->unsigned();
+            $table->smallInteger('maxs')->default(20)->unsigned();
+            $table->smallInteger('maxu')->default(50)->unsigned();
+            $table->smallInteger('maxv')->default(80)->unsigned();
+            $table->smallInteger('maxp')->default(50)->unsigned();
+            $table->smallInteger('maxt')->default(60)->unsigned();
             $table->tinyInteger('wperc')->default(50);
-            $table->boolean('smtp')->default(true);
             $table->string('efrom');
+            $table->boolean('smtp')->default(true);
         });
     }
 
