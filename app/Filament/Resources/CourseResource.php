@@ -70,7 +70,7 @@ class CourseResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\BulkAction::make('def')->modalHeading('Publish')->label('Publish selected')
-                    ->requiresConfirmation()->color('info')->modalIcon('heroicon-o-eye')
+                    ->requiresConfirmation()->color('success')->modalIcon('heroicon-o-eye')
                     ->action(function (Collection $record) {
                         $record->each(function (Course $rec, int $key) { $rec->pub=true;$rec->save();});
                         Notification::make('e')->title('Certifications published successfully')

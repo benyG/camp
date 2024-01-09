@@ -71,7 +71,7 @@ class ListCertif extends Page implements HasTable
                             ->danger()
                             ->send();
                     }
-                })->button()->color('info')->hidden(fn(Course $record):bool=>$record->users1()->count()>0),
+                })->button()->color('success')->hidden(fn(Course $record):bool=>$record->users1()->count()>0),
             ])
             ->bulkActions([
             ])

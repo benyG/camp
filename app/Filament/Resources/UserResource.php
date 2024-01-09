@@ -96,7 +96,7 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\Action::make('resend')->color('info')->label('Portfolio')
+                Tables\Actions\Action::make('resend')->color('success')->label('Portfolio')
                 ->fillForm(fn (User $record): array => [
                     'cou' => $record->courses->pluck('id'),
                 ])
