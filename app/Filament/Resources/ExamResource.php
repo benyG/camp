@@ -46,6 +46,9 @@ class ExamResource extends Resource
                 //
                 Forms\Components\Section::make('General Settings')->columns(3)
                 ->description(function(Get $get){
+                    $ix=cache()->rememberForever('settings', function () {
+                        return \App\Models\Info::findOrFail(1);
+                    });
                    return $get('type')=='1'? 'Max timer is '.
                    match (auth()->user()->ex) {1 => $ix->maxts,0 => '(inf.)',
                     2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv}.' min.'.
