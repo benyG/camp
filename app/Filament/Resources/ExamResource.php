@@ -107,7 +107,7 @@ class ExamResource extends Resource
                                 $inn=$get('type')=='1'?$ix->maxes:$ix->maxs;
                                 $set('timer',rand($ix->mint,$ix->maxts));
                                 $rd=rand($ix->minq,$inn);
-                                $set('quest',rand($ix->minq,$rd));
+                                $set('quest',$rd);
                                 foreach ($arrk as $key) {
                                     $rd1=rand(0,$rd);
                                     $set('examods.'.$key.'.nb',$rd1);
