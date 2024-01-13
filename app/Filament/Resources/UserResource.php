@@ -70,7 +70,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable()->toggleable(isToggledHiddenByDefault: true),
+                    ->searchable(),
                 Tables\Columns\IconColumn::make('email_verified_at')->label('Verified ?')
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->color('success')->placeholder('No')->icon('heroicon-o-check-circle')
@@ -96,23 +96,6 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\Action::make('resend')->color('success')->label('Portfolio')
-                ->fillForm(fn (User $record): array => [
-                    'cou' => $record->courses->pluck('id'),
-                ])
-                ->form([
-                    Forms\Components\Select::make('cou')
-                    ->options(\App\Models\Course::all()->pluck('name', 'id'))
-                        ->label('Certifications')
-                        ->multiple()->preload(),
-                ])
-                ->action(function ($data,$record):void {
-                      $record->courses()->sync($data['cou']);
-                    Notification::make('es')->success()->title('Certifications saved')->send();
-                      })->button()->visible(fn (): bool =>auth()->user()->ex==0)
-                    ->modalHeading('Manage a user portfolio')
-                    ->modalSubmitActionLabel('Grant access')
-                    ->modalDescription(fn(User $record):string=>$record->name),
       Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

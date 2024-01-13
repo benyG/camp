@@ -36,19 +36,19 @@ class ManageSmails extends ManageRecords
                         $para=[auth()->user()->name,auth()->user()->email];
                         $opt='4';
                     }
-                    try {
-                        foreach ($record->users2 as $us) {
+                    foreach ($record->users2 as $us) {
+                        try {
                             Notif::send($us, new NewMail($record->sub,$para,$opt));
                             $record->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
-                            }
-                        Notification::make()->success()->title('Sent via SMTP')->send();
-                    } catch (Exception $exception) {
-                        Notification::make()
-                            ->title('We were not able to reach some recipients via SMTP')
-                            ->danger()
-                            ->send();
+                            Notification::make()->success()->title('Sent via SMTP to '.$us->email)->send();
+                        } catch (Exception $exception) {
+                            Notification::make()
+                                ->title('We were not able to reach '.$us->email)
+                                ->danger()
+                                ->send();
+                        }
                     }
-                }
+            }
 
             })->createAnother(false),
         ];

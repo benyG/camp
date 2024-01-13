@@ -2,10 +2,11 @@
 
 namespace App\Filament\Resources;
 
+use Exception;
 use App\Filament\Resources\ExamResource\Pages;
 use App\Filament\Resources\ExamResource\RelationManagers;
 use App\Models\Exam;
-use App\Models\Info;
+use App\Models\CertConfig;
 use App\Models\Module;
 use App\Models\Course;
 use App\Models\User;
@@ -17,86 +18,225 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Closure;
 
 class ExamResource extends Resource
 {
     protected static ?string $model = Exam::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
     protected static ?string $modelLabel = 'assessment';
     protected static ?string $navigationLabel = 'Bootcamp';
     protected static ?string $slug = 'bootcamp';
     protected static ?int $navigationSort = 1;
+
     public static function form(Form $form): Form
     {
+        $ix=cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+        });
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->label('Title')
-                    ->required()->maxLength(255)->unique()->columnSpanFull(),
-                Forms\Components\TextInput::make('timer')->maxLength(Info::findOrFail(1)->maxt)
-                ->required()->rules(['numeric'])->inputMode('numeric')->inlineLabel(),
-                Forms\Components\Toggle::make('type')->label('Is an Exam ?')->hidden(auth()->user()->ex!=0)
-                ->declined(auth()->user()->ex!=0)->live(),
-                Forms\Components\DateTimePicker::make('due')->seconds(false)->label('Due Date')
-                ->required(fn (Get $get) => $get('type') == true)
-                ->hidden(auth()->user()->ex!=0),
+                //hidden fields
                 Forms\Components\TextInput::make('from')
                 ->hidden(),
-                Forms\Components\Select::make('modules')->label('Modules')
-                ->multiple()
-                ->minItems(1)
-                ->relationship(name: 'modules', titleAttribute: 'name')
-                ->options(function(){
-                    $vagues= Course::with('modules')->get();
-                    $bg=array();
-                    foreach ($vagues as $vague) {
-                        $ez=$vague->modules;
-                        $ee=array();
-                        foreach($ez as $us){
-                            $ee[$us->id]=$us->name;
-                        }
-                        $bg[$vague->name]=$ee;
-                    }
-                    return $bg;
+                Forms\Components\TextInput::make('name')
+                ->hidden(),
+                //
+                Forms\Components\Section::make('General Settings')->columns(3)
+                ->description(function(Get $get){
+                   return $get('type')=='1'? 'Max timer is '.
+                   match (auth()->user()->ex) {1 => $ix->maxts,0 => '(inf.)',
+                    2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv}.' min.'.
+                    ' Max questions is '.match (auth()->user()->ex) {1 => $ix->maxes,0 => '(inf.)',
+                        2 => $ix->maxes, 3 => $ix->maxeu, 4 => $ix->maxep, 5 => $ix->maxev}
+                   :' Max Questions is '.match (auth()->user()->ex) {1 => $ix->maxs,0 => '(inf.)',
+                    2 => $ix->maxs, 3 => $ix->maxu, 4 => $ix->maxp, 5 => $ix->maxv};
                 })
-                ->preload(),
-                Forms\Components\Select::make('users')->label('Users')
-                ->multiple()
-                ->required(auth()->user()->ex==0)
-                ->relationship(name: 'users', titleAttribute: 'name')
-                ->hidden(auth()->user()->ex!=0)
-                ->options(function(){
-                    $vagues= Vague::with('users')->get();
-                    $users= User::where('vague',null)->where('id','<>',auth()->user()->id)->get();
-                    $bg=array();
-                    $er=array();
-                    foreach($users as $uy){
-                        $er[$uy->id]=$uy->name;
+                ->schema([
+                Forms\Components\Select::make('certi')->label('Certification')
+                ->options(Course::all()->pluck('name', 'id'))
+                ->afterStateUpdated(function (?string $state, ?string $old,Get $get,Set $set) {
+                    if($get('type')=='1'){
+                    $cert=CertConfig::where('course',$state)->get();
+                    $set('examods',array());
+                        if($cert->count()>0){
+                            $cert=CertConfig::where('course',$state)->first();
+                            $qe=match (auth()->user()->ex) {
+                                0 => 400000000,
+                                1 => $get('type')=='1'?$ix->maxes:$ix->maxs,
+                                2 => $get('type')=='1'?$ix->maxes:$ix->maxs,
+                                3 => $get('type')=='1'?$ix->maxeu:$ix->maxu,
+                                4 => $get('type')=='1'?$ix->maxep:$ix->maxp,
+                                5 => $get('type')=='1'?$ix->maxev:$ix->maxv,
+                                default=>1,
+                                };
+                            $te=match (auth()->user()->ex) {
+                                0 => 40000000,1 => $ix->maxts,2 => $ix->maxts,3 => $ix->maxtu,4 =>$ix->maxtp ,5 => $ix->maxtv,default=>1
+                                };
+                            $set('examods',$cert->mods);
+                            $set('timer',$cert->timer>=$te?$te:$cert->timer);
+                            $set('quest',$cert->quest>=$qe?$qe:$cert->quest);
+                        }else Notification::make()->warning()->title('Sorry, this certification doesn\'t have a typical configuration.')->send();
                     }
-                    $bg['No session']=$er;
-                    foreach ($vagues as $vague) {
-                        $ez=$vague->users;
-                        $ee=array();
-                        foreach($ez as $us){
-                            $ee[$us->id]=$us->name;
-                        }
-                        $bg[$vague->name]=$ee;
-                    }
-                    return $bg;
                 })
-                ->preload(),
-                Forms\Components\Textarea::make('descr')->label('Description')
-                    ->columnSpanFull(),
+                ->required()->live(),
+                Forms\Components\Select::make('type')->label('Type')->required()->selectablePlaceholder(false)->default('0')
+                ->options([
+                    '0' => 'Test',
+                    '1' => 'Exam',
+                ])->live(),
+                Forms\Components\Select::make('typee')->label('Configuration')->required()
+                ->options([
+                    '0' => 'Random',
+                    '1' => 'Typical',
+                    '2' => 'Custom',
+                ])->live()->afterStateUpdated(function (?string $state, ?string $old,Get $get,Set $set) {
+                    $ix=cache()->rememberForever('settings', function () {
+                        return \App\Models\Info::findOrFail(1);
+                    });
+                    if($state=='0'){
+                       // Notification::make()->success()->title($get('type'))->send();
+                                $arrk=array_keys($get('examods'));
+                        switch (auth()->user()->ex) {
+                            case 2:
+                                $inn=$get('type')=='1'?$ix->maxes:$ix->maxs;
+                                $set('timer',rand($ix->mint,$ix->maxts));
+                                $rd=rand($ix->minq,$inn);
+                                $set('quest',rand($ix->minq,$rd));
+                                foreach ($arrk as $key) {
+                                    $rd1=rand(0,$rd);
+                                    $set('examods.'.$key.'.nb',$rd1);
+                                $rd-=$rd1;
+                                }
+                                break;
+                            case 3:
+                                $inn=$get('type')=='1'?$ix->maxeu:$ix->maxu;
+                                $set('timer',rand($ix->mint,$ix->maxtu));
+                                $rd=rand($ix->minq,$inn);
+                                $set('quest',rand($ix->minq,$rd));
+                                foreach ($arrk as $key) {
+                                    $rd1=rand(0,$rd);
+                                    $set('examods.'.$key.'.nb',$rd1);
+                                    $rd-=$rd1;
+                                }
+                                break;
+                            case 4:
+                                $inn=$get('type')=='1'?$ix->maxes:$ix->maxp;
+                                $set('timer',rand($ix->mint,$ix->maxtp));
+                                $rd=rand($ix->minq,$inn);
+                                $set('quest',rand($ix->minq,$rd));
+                                foreach ($arrk as $key) {
+                                    $rd1=rand(0,$rd);
+                                    $set('examods.'.$key.'.nb',$rd1);
+                                $rd-=$rd1;
+                                }
+                                break;
+                            case 5:
+                                $inn=$get('type')=='1'?$ix->maxes:$ix->maxv;
+                                $set('timer',rand($ix->mint,$ix->maxtv));
+                                $rd=rand($ix->minq,$inn);
+                                $set('quest',rand($ix->minq,$rd));
+                                foreach ($arrk as $key) {
+                                    $rd1=rand(0,$rd);
+                                    $set('examods.'.$key.'.nb',$rd1);
+                                $rd-=$rd1;
+                                }
+                                break;
+
+                            default:
+                           /*  $inn=$get('type')=='1'?$ix->maxes:$ix->maxs;
+                            $set('timer',rand($ix->mint,$ix->maxts));
+                            $set('quest',rand($ix->minq,$get('type')=='1'?$ix->maxes:$ix->maxs));
+                            $arrk=array_keys($get('examods'));
+                            foreach ($arrk as $key) {$set('examods.'.$key.'.nb',rand($ix->minq,$inn));} */
+                            break;
+                        }
+                    }
+                    else if($state=='1'){
+                        $cert=CertConfig::where('course',$get('certi'))->get();
+                        $set('examods',array());
+                        if($cert->count()>0){
+                            $cert=CertConfig::where('course',$get('certi'))->first();
+                            $qe=match (auth()->user()->ex) {
+                                0 => 400000000,
+                                1 => $get('type')=='1'?$ix->maxes:$ix->maxs,
+                                2 => $get('type')=='1'?$ix->maxes:$ix->maxs,
+                                3 => $get('type')=='1'?$ix->maxeu:$ix->maxu,
+                                4 => $get('type')=='1'?$ix->maxep:$ix->maxp,
+                                5 => $get('type')=='1'?$ix->maxev:$ix->maxv,
+                                default=>1,
+                                };
+                            $te=match (auth()->user()->ex) {
+                                0 => 40000000,1 => $ix->maxts,2 => $ix->maxts,3 => $ix->maxtu,4 =>$ix->maxtp ,5 => $ix->maxtv,default=>1
+                                };
+                            $set('examods',$cert->mods);
+                            $set('timer',$cert->timer>=$te?$te:$cert->timer);
+                            $set('quest',$cert->quest>=$qe?$qe:$cert->quest);
+                        }else Notification::make()->warning()->title('Sorry, this certification doesn\'t have a typical configuration.')->send();
+                    }
+                }),
+                Forms\Components\TextInput::make('timer')->numeric()->step(5)->requiredIf('type', '1')->label('Timer (min)')
+                ->rules(['min:'.$ix->mint,'max:'.match (auth()->user()->ex) {1 => $ix->maxts,0 => 40000000,
+                 2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv}]),
+                Forms\Components\TextInput::make('quest')->numeric()->step(5)->required()->label('Nb. Questions')
+                ->rules(['min:'.$ix->minq,fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                    $mq=$get('type')=='1'? match (auth()->user()->ex) {1 => $ix->maxes,0 => 400000000,
+                            2 => $ix->maxes, 3 => $ix->maxeu, 4 => $ix->maxep, 5 => $ix->maxev}
+                            :match (auth()->user()->ex) {1 => $ix->maxes,0 => 4000000,
+                            2 => $ix->maxs, 3 => $ix->maxu, 4 => $ix->maxp, 5 => $ix->maxv};
+                    if ($mq <intval($value)) {
+                        $fail("Max questions is ".$mq);
+                    }
+                },
+                 fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                        $arrk=array_keys($get('examods'));
+                        $rd=0;
+                        foreach ($arrk as $key) {
+                        $rd+=intval($get('examods.'.$key.'.nb'));
+                        }
+                    if ($rd >intval($value)) {
+
+                        $fail('Max questions in modules should not exceed'.$value.' . Actual :'.$rd);
+                    }
+                }
+                ]),
+                ]),
+                Forms\Components\Section::make('Users')->columns(3)->hidden(auth()->user()->ex!=0)
+                ->description('This part is for the S. Admin only. You may choose a class, or select individual users')
+                ->schema([
+                    Forms\Components\Select::make('classe')->label('Classes')->multiple()
+                    ->options(Vague::all()->pluck('name', 'id'))->preload(),
+                    Forms\Components\Select::make('user5')->label('Users')->multiple()
+                    ->required(fn(Get $get):bool=>auth()->user()->ex==0 && $get('classe')==null)
+                    ->options(fn(Get $get)=>$get('classe')==null?User::where('id','<>',auth()->id())->get()->pluck('name', 'id'):
+                    User::where('id','<>',auth()->id())->where('vague',$get('classe'))->get()->pluck('name', 'id'))->preload(),
+                    Forms\Components\DatePicker::make('due')->label('Due Date')
+                    ->required(fn (Get $get): bool => $get('type')==1 && auth()->user()->ex==0)->minDate(now())
+                ]),
+                Forms\Components\Section::make('')
+                ->schema([
+                    Forms\Components\Repeater::make('examods')->grid(2)->label('Modules Configuration')
+                    ->addActionLabel('Add a Module')->reorderable(false)->defaultItems(1)
+                    ->relationship()
+                    ->schema([
+                        Forms\Components\Select::make('module')->label('Name')
+                        ->relationship('moduleRel', 'name',modifyQueryUsing: fn (Builder $query,Get $get) => $query
+                        ->where('course',$get('../../certi')))
+                        ->required()->disableOptionsWhenSelectedInSiblingRepeaterItems(),
+                        Forms\Components\TextInput::make('nb')->numeric()->step(5)->required()->label('Questions')->rules(['numeric'])
+                        ->default($ix->minq),
+                    ])->minItems(1)->maxItems(fn(Get $get):int=>$get('type')=='1'?Module::where('course',$get('certi'))->count():1)
+                ]),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-        ->query(Exam::selectRaw('distinct(exam),exams.id,name,descr,due,type,timer,added_at,added,start_at,comp_at,exams.from')->join('exam_users', 'exams.id', '=', 'exam_users.exam')
-        ->where('from',auth()->user()->id)->orwhere('exam_users.user',auth()->user()->id)->latest('added_at'))
+        ->query(auth()->user()->ex==0?Exam::where('from',auth()->id())->latest('added_at'):Exam::selectRaw('distinct(exam),exams.id,name,descr,due,type,timer,added_at,added,start_at,comp_at,exams.from')->join('exam_users', 'exams.id', '=', 'exam_users.exam')
+        ->where('exam_users.user',auth()->user()->id)->latest('added_at'))
         ->columns([
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable()->label('Title')
                 ->description(fn (Exam $record): ?string => $record->descr),
@@ -129,10 +269,7 @@ class ExamResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\Action::make('resend')->label('Results')
                 ->action(function (Smail $record) {
-                    foreach ($record->users as $rrr) {
-                        Mail::to($rrr->email)->send(new Imail($record,$rrr->name,$rrr->email));
-                        Notification::make()->success()->title('Successfully sent via SMTP to : '.$rrr->email)->send();
-                    }
+
                 })->button()->color('success')->visible(fn (): bool =>auth()->user()->ex==0),
                 Tables\Actions\EditAction::make()->mutateFormDataUsing(function (array $data): array {
                     $data['from'] = auth()->id();
@@ -158,6 +295,7 @@ class ExamResource extends Resource
     {
         return [
             'index' => Pages\ManageExams::route('/'),
+            'create' => Pages\AssessCreate::route('/create'),
             'certif' => Pages\ListCertif::route('/certifications'),
         ];
     }

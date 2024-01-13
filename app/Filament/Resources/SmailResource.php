@@ -162,19 +162,19 @@ class SmailResource extends Resource
                         $para=[auth()->user()->name,auth()->user()->email];
                         $opt='4';
                     }
+                    foreach ($record->users2 as $us) {
                         try {
-                            foreach ($record->users2 as $us) {
                             Notif::send($us, new NewMail($record->sub,$para,$opt));
                             $record->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
-                            }
-                            Notification::make()->success()->title('Sent via SMTP')->send();
+                            Notification::make()->success()->title('Sent via SMTP to '.$us->email)->send();
                         } catch (Exception $exception) {
                             Notification::make()
-                                ->title('We were not able to reach some recipients via SMTP')
-                                ->danger()
-                                ->send();
+                            ->title('We were not able to reach '.$us->email)
+                            ->danger()
+                            ->send();
                         }
-                })
+                    }
+               })
                 ->visible(fn(Smail $record)=>($record->from== auth()->user()->id) && Info::first()->smtp),
                 Tables\Actions\Action::make('Delete')->modalHeading('Delete message')->label('Delete')
                 ->requiresConfirmation()->color('danger')->modalIcon('heroicon-o-trash')->modalIconColor('warning')

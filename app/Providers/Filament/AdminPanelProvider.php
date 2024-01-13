@@ -42,7 +42,7 @@ class AdminPanelProvider extends PanelProvider
             ->passwordReset(ResetPassword::class)
             ->emailVerification()
             ->profile(EditProfile::class)
-            ->defaultThemeMode(ThemeMode::Dark)
+            ->darkMode(true)
             ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Green,

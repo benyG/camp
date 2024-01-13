@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class Exam extends Model
 {
     public $timestamps = false;
@@ -48,5 +48,8 @@ class Exam extends Model
       {
           return $this->belongsTo(User::class,'from','id');
       }
-
+      public function examods(): HasMany
+      {
+          return $this->hasMany(ExamModule::class,'exam','id');
+      }
 }

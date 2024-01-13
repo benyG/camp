@@ -13,14 +13,21 @@ return new class extends Migration
     {
         Schema::create('infos', function (Blueprint $table) {
             $table->id();
-            $table->smallInteger('maxt')->default(60)->unsigned();
-            $table->smallInteger('mint')->default(10)->unsigned();
-            $table->smallInteger('maxs')->default(20)->unsigned();
+            $table->smallInteger('mint')->default(15)->unsigned();
+            $table->smallInteger('maxs')->default(10)->unsigned();
             $table->smallInteger('maxu')->default(50)->unsigned();
-            $table->smallInteger('maxv')->default(80)->unsigned();
-            $table->smallInteger('maxp')->default(50)->unsigned();
-            $table->smallInteger('maxt')->default(60)->unsigned();
-            $table->tinyInteger('wperc')->default(50);
+            $table->smallInteger('maxv')->default(200)->unsigned();
+            $table->smallInteger('maxp')->default(100)->unsigned();
+            $table->smallInteger('minq')->default(5)->unsigned();
+            $table->smallInteger('maxts')->default(20)->unsigned();
+            $table->smallInteger('maxtu')->default(60)->unsigned();
+            $table->smallInteger('maxtv')->default(240)->unsigned();
+            $table->smallInteger('maxtp')->default(120)->unsigned();
+            $table->smallInteger('maxes')->default(10)->unsigned();
+            $table->smallInteger('maxeu')->default(30)->unsigned();
+            $table->smallInteger('maxev')->default(50)->unsigned();
+            $table->smallInteger('maxep')->default(100)->unsigned();
+          $table->tinyInteger('wperc')->default(50);
             $table->string('efrom');
             $table->boolean('smtp')->default(true);
         });

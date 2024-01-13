@@ -30,18 +30,6 @@ class ModuleResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('course')->label('Certification')->required()
                 ->relationship(name: 'courseRel', titleAttribute: 'name')->limit(15),
-                    Forms\Components\TextInput::make('maxs')->label('Q. Limit - Starter')
-                    ->required()->inputMode('numeric')
-                    ->numeric()->default(10),
-                    Forms\Components\TextInput::make('maxu')->label('Q. Limit - User')
-                    ->required()->inputMode('numeric')
-                    ->numeric()->default(20),
-                    Forms\Components\TextInput::make('maxp')->label('Q. Limit - Pro')
-                    ->required()->inputMode('numeric')
-                    ->numeric()->default(30),
-                    Forms\Components\TextInput::make('maxq')->label('Q. Limit - VIP')
-                    ->required()->inputMode('numeric')
-                    ->numeric()->default(50),
             ]);
     }
 
@@ -52,8 +40,10 @@ class ModuleResource extends Resource
                 Tables\Columns\TextColumn::make('name')->sortable()
                     ->searchable(),
                     Tables\Columns\TextColumn::make('courseRel.name')->label('Certification')->sortable(),
-                    Tables\Columns\TextColumn::make('added_at')
-                    ->dateTime()
+                    Tables\Columns\TextColumn::make('questions_count')->counts('questions')->label('Questions')
+                    ->numeric()->sortable(),
+                   Tables\Columns\TextColumn::make('added_at')
+                    ->dateTime()->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
             ])
             ->filters([

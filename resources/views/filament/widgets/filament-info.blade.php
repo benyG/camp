@@ -4,7 +4,7 @@
             <div class="flex-1">
                 <span class="font-serif text-lg italic font-bold">Platform</span>
                 <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                    v1.2.65
+                    v1.3
                 </p>
             </div>
             <div class="flex flex-col items-end gap-y-1">

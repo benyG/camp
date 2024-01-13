@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use App\Models\Module;
+use App\Models\CertConfig;
 use App\Models\User;
 use App\Models\UsersCourse;
 use App\Models\Question;
@@ -39,13 +40,21 @@ class Course extends Model
     {
         //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
         return $this->belongsToMany(User::class, 'users_course', 'course', 'user')
+        ->withPivot('approve')
         ->using(UsersCourse::class);
     }
     public function users1(): BelongsToMany
     {
         //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
         return $this->belongsToMany(User::class, 'users_course', 'course', 'user')
-    ->wherePivot('user', auth()->user()->id)
+        ->withPivot('approve')
+        ->wherePivot('user', auth()->user()->id)
         ->using(UsersCourse::class);
     }
+    public function configs(): HasMany
+    {
+       // return $this->hasMany(App\Models\Module::class, 'foreign_key', 'local_key');
+        return $this->hasMany(CertConfig::class, 'course');
+    }
+
 }

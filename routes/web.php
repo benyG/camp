@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,5 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
+});Route::get('/', function () {
+    return view('filament.auth.email.verif');
+})->name('verif');
+//Route::get('/boss/{id}/certapproval',[ListCertif::class,'CertRequest']);
