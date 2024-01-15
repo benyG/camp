@@ -87,12 +87,12 @@ class ExamResource extends Resource
                     }
                 })
                 ->required()->live(),
-                Forms\Components\Select::make('type')->label('Type')->required()->selectablePlaceholder(false)
+                Forms\Components\Select::make('type')->label('Type')->selectablePlaceholder(false)
                 ->options([
                     '0' => 'Test',
                     '1' => 'Exam',
                 ])->live(),
-                Forms\Components\Select::make('typee')->label('Configuration')->required()->selectablePlaceholder(false)
+                Forms\Components\Select::make('typee')->label('Configuration')->selectablePlaceholder(false)
                 ->options([
                     '0' => 'Custom',
                     '1' => 'Typical',
@@ -128,6 +128,9 @@ class ExamResource extends Resource
                  2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv}]),
                 Forms\Components\TextInput::make('quest')->numeric()->step(5)->required()->label('Nb. Questions')
                 ->rules(['min:'.$ix->minq,fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                    $ix=cache()->rememberForever('settings', function () {
+                        return \App\Models\Info::findOrFail(1);
+                    });
                     $mq=$get('type')=='1'? match (auth()->user()->ex) {1 => $ix->maxes,0 => 400000000,
                             2 => $ix->maxes, 3 => $ix->maxeu, 4 => $ix->maxep, 5 => $ix->maxev}
                             :match (auth()->user()->ex) {1 => $ix->maxes,0 => 4000000,
@@ -142,14 +145,14 @@ class ExamResource extends Resource
                         foreach ($arrk as $key) {
                         $rd+=intval($get('examods.'.$key.'.nb'));
                         }
-                    if ($rd >intval($value)) {
+                    if ($rd!=intval($value)) {
 
-                        $fail('Max questions in modules should not exceed'.$value.' . Actual :'.$rd);
+                        $fail('Max questions in modules should be '.$value.' . Actual :'.$rd);
                     }
                 }
                 ])->suffixAction(
                     Action::make('Randomize')
-                        ->icon('heroicon-m-arrows-pointing-out')
+                        ->icon('heroicon-m-arrows-pointing-out')->color('warning')
                         ->action(function (Set $set, $state,Get $get) {
                             // Notification::make()->success()->title($get('type'))->send();
                             $si=intval($state);
@@ -189,9 +192,13 @@ class ExamResource extends Resource
                 ]),
                 Forms\Components\Section::make('')
                 ->schema([
-                    Forms\Components\Repeater::make('examods')->grid(2)->label(function(){
-                        $nd=0;
-                        return 'Modules Configuration (Tt. Questions : '.$nd.')';
+                    Forms\Components\Repeater::make('examods')->grid(2)->label(function(Get $get){
+                        $arrk=array_keys($get('examods'));
+                        $rd=0;
+                        foreach ($arrk as $key) {
+                        $rd+=intval($get('examods.'.$key.'.nb'));
+                        }
+                        return 'Modules Configuration (Tt. Questions : '.$rd.')';
                     })
                     ->addActionLabel('Add a Module')->reorderable(false)->defaultItems(1)
                     ->relationship()
@@ -201,7 +208,7 @@ class ExamResource extends Resource
                         ->where('course',$get('../../certi')))
                         ->required()->disableOptionsWhenSelectedInSiblingRepeaterItems(),
                         Forms\Components\TextInput::make('nb')->numeric()->step(5)->required()->label('Questions')->rules(['numeric'])
-                        ->default($ix->minq),
+                        ->default($ix->minq)->live(onBlur: true),
                     ])->minItems(1)->maxItems(fn(Get $get):int=>$get('type')=='1'?Module::where('course',$get('certi'))->count():1)
                 ]),
             ]);
@@ -242,9 +249,9 @@ class ExamResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\Action::make('resend')->label('Results')
-                ->action(function (Smail $record) {
-
+                Tables\Actions\Action::make('resend')->label('Start')
+                ->action(function (Exam $record) {
+                    Notification::make()->warning()->title('Sorry, this certification doesn\'t have a typical configuration.')->send();
                 })->button()->color('success')->visible(fn (): bool =>auth()->user()->ex==0),
                 Tables\Actions\EditAction::make()->mutateFormDataUsing(function (array $data): array {
                     $data['from'] = auth()->id();
@@ -255,7 +262,7 @@ class ExamResource extends Resource
                     }
                     return $data;
                 }),
-           //     Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
              /*    Tables\Actions\BulkActionGroup::make([
