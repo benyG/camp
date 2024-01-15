@@ -19,8 +19,6 @@ class ManageExams extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('e')->label('Certifications')->color('info')
-            ->url(fn (): string => $this->getResource()::getUrl('certif')),
             Actions\CreateAction::make(),
         ];
     }

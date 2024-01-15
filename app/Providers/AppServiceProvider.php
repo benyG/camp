@@ -29,10 +29,10 @@ class AppServiceProvider extends ServiceProvider
                 }
             </script>'),
         );
-        $this->app->singleton(
+        /* $this->app->singleton(
             EmailVerificationResponse::class,
             \App\Http\Responses\EmailVerificationResponse::class
-        );
+        ); */
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch
                 ->locales(['en','fr']) // also accepts a closure

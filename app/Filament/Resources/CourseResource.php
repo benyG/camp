@@ -66,7 +66,7 @@ class CourseResource extends Resource
                     ->modalHeading(fn(Course $record):string=>$record->pub?'Unpublish':'Publish')
                     ->modalDescription(fn(Course $record):string=>$record->pub?'Are you sure you\'d like to unpublish \''.$record->name.'\' certification? This will hide it to the users.':
                         'Are you sure you\'d like to publish \''.$record->name.'\' certification? This will make it visible to the public.'),
-                Tables\Actions\Action::make('resend')->color('warning')->label('Config')
+                Tables\Actions\Action::make('resnd')->color('warning')->label('Config')
                 ->url(fn (Course $record): string => CourseResource::getUrl('config', ['record' => $record]))
                 ->button()->visible(fn (): bool =>auth()->user()->ex==0),
                 Tables\Actions\EditAction::make()->iconButton(),

@@ -22,6 +22,7 @@ use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
 //use Illuminate\Support\Facades\Mail;
 //use App\Mail\Imail;
 use Filament\Notifications\Notification;
@@ -86,7 +87,7 @@ class SmailResource extends Resource
                 Tables\Columns\TextColumn::make('sub')->label('Subject')
                 ->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('from')->label('Correspondants')
-                ->formatStateUsing(fn (Model $record): string => $record->from== auth()->user()->id? $record->users2->pluck('name') : $record->user1->name)
+                ->formatStateUsing(fn (Model $record): string => $record->from== auth()->user()->id? Str::remove(['"','[',']'],$record->users2->pluck('name')) : $record->user1->name)
                 ->sortable()->hidden(fn():bool=>auth()->user()->ex>=2),
              Tables\Columns\IconColumn::make('sent')->label('Sent via SMTP')->hidden(fn():bool=>auth()->user()->ex>=2)
              ->icon(fn($state):string=>$state==1?'heroicon-o-envelope':'')

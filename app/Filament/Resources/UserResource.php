@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use Rawilk\FilamentPasswordInput\Password;
 use App\Models\User;
+use App\Models\Course;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -65,7 +66,7 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->striped()
-        ->query(User::query()->where('ex','<>',0)->where('id','<>',auth()->user()->id))
+        ->query(User::where('ex','<>',0)->where('id','<>',auth()->user()->id))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
@@ -96,8 +97,38 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-      Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('resend')->color('success')->label('Portfolio')
+                ->fillForm(fn (User $record): array => [
+                    'cou' => \App\Models\Course::join('users_course', 'users_course.course', '=', 'courses.id')
+                    ->where('user',$record->id)->where('approve',true)->pluck('courses.id'),
+                ])
+                ->form([
+                    Forms\Components\Select::make('cou')
+                    ->options(\App\Models\Course::all()->pluck('name', 'id'))
+                        ->label('Certifications')
+                        ->multiple()->preload(),
+                ])
+                ->action(function ($data,$record):void {
+                      $record->courses()->sync($data['cou']);
+                    foreach ($data['cou'] as $va) {
+                        $record->courses()->updateExistingPivot($va, ['approve' => true]);
+                    }
+                    Notification::make('es')->success()->title('Certifications saved')->send();
+                      })->button()->visible(fn (): bool =>auth()->user()->ex==0)
+                    ->modalHeading('Manage a user portfolio')
+                    ->modalSubmitActionLabel('Grant access')
+                    ->modalDescription(fn(User $record):string=>$record->name),
+                Tables\Actions\Action::make('resend')->color(fn(User $record):string=>$record->ax?'danger':'info')->label(fn(User $record):string=>$record->ax?'Block':'Grant')
+                ->action(function (User $record) {
+                    $record->ax=$record->ax? false:true; $record->save();
+                  Notification::make('es')->success()->title('User '.$record->name.' is now '.($record->ax?'able to access the platform':'blocked'))->send();
+                    })->button()->visible(fn (): bool =>auth()->user()->ex==0)->iconButton()->icon(fn(User $record):string=>$record->ax?'heroicon-o-no-symbol':'heroicon-o-user-circle')
+                    ->requiresConfirmation()->modalIcon(fn(User $record):string=>$record->ax?'heroicon-o-no-symbol':'heroicon-o-user-circle')
+                    ->modalHeading(fn(User $record):string=>$record->ax?'Block access':'Grant access')
+                    ->modalDescription(fn(User $record):string=>$record->ax?'Are you sure you\'d like to block user \''.$record->name.'\'?':
+                        'Are you sure you\'d like to grant user \''.$record->name.'\' access to the platform ?'),
+      Tables\Actions\EditAction::make()->iconButton(),
+                Tables\Actions\DeleteAction::make()->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

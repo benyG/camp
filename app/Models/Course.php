@@ -47,6 +47,7 @@ class Course extends Model
     {
         //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
         return $this->belongsToMany(User::class, 'users_course', 'course', 'user')
+        ->withPivot('id')
         ->withPivot('approve')
         ->wherePivot('user', auth()->user()->id)
         ->using(UsersCourse::class);

@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Notifications\Notification;
+use Filament\Forms\Components\Actions\Action;
+
 use Closure;
 
 class ExamResource extends Resource
@@ -59,9 +61,9 @@ class ExamResource extends Resource
                 })
                 ->schema([
                 Forms\Components\Select::make('certi')->label('Certification')
-                ->options(Course::all()->pluck('name', 'id'))
+                ->options(Course::has('users1')->where('pub',true)->pluck('name', 'id'))
                 ->afterStateUpdated(function (?string $state, ?string $old,Get $get,Set $set) {
-                    if($get('type')=='1'){
+                    if($get('typee')=='1'){
                     $cert=CertConfig::where('course',$state)->get();
                     $set('examods',array());
                         if($cert->count()>0){
@@ -85,79 +87,20 @@ class ExamResource extends Resource
                     }
                 })
                 ->required()->live(),
-                Forms\Components\Select::make('type')->label('Type')->required()->selectablePlaceholder(false)->default('0')
+                Forms\Components\Select::make('type')->label('Type')->required()->selectablePlaceholder(false)
                 ->options([
                     '0' => 'Test',
                     '1' => 'Exam',
                 ])->live(),
-                Forms\Components\Select::make('typee')->label('Configuration')->required()
+                Forms\Components\Select::make('typee')->label('Configuration')->required()->selectablePlaceholder(false)
                 ->options([
-                    '0' => 'Random',
+                    '0' => 'Custom',
                     '1' => 'Typical',
-                    '2' => 'Custom',
                 ])->live()->afterStateUpdated(function (?string $state, ?string $old,Get $get,Set $set) {
                     $ix=cache()->rememberForever('settings', function () {
                         return \App\Models\Info::findOrFail(1);
                     });
-                    if($state=='0'){
-                       // Notification::make()->success()->title($get('type'))->send();
-                                $arrk=array_keys($get('examods'));
-                        switch (auth()->user()->ex) {
-                            case 2:
-                                $inn=$get('type')=='1'?$ix->maxes:$ix->maxs;
-                                $set('timer',rand($ix->mint,$ix->maxts));
-                                $rd=rand($ix->minq,$inn);
-                                $set('quest',$rd);
-                                foreach ($arrk as $key) {
-                                    $rd1=rand(0,$rd);
-                                    $set('examods.'.$key.'.nb',$rd1);
-                                $rd-=$rd1;
-                                }
-                                break;
-                            case 3:
-                                $inn=$get('type')=='1'?$ix->maxeu:$ix->maxu;
-                                $set('timer',rand($ix->mint,$ix->maxtu));
-                                $rd=rand($ix->minq,$inn);
-                                $set('quest',rand($ix->minq,$rd));
-                                foreach ($arrk as $key) {
-                                    $rd1=rand(0,$rd);
-                                    $set('examods.'.$key.'.nb',$rd1);
-                                    $rd-=$rd1;
-                                }
-                                break;
-                            case 4:
-                                $inn=$get('type')=='1'?$ix->maxes:$ix->maxp;
-                                $set('timer',rand($ix->mint,$ix->maxtp));
-                                $rd=rand($ix->minq,$inn);
-                                $set('quest',rand($ix->minq,$rd));
-                                foreach ($arrk as $key) {
-                                    $rd1=rand(0,$rd);
-                                    $set('examods.'.$key.'.nb',$rd1);
-                                $rd-=$rd1;
-                                }
-                                break;
-                            case 5:
-                                $inn=$get('type')=='1'?$ix->maxes:$ix->maxv;
-                                $set('timer',rand($ix->mint,$ix->maxtv));
-                                $rd=rand($ix->minq,$inn);
-                                $set('quest',rand($ix->minq,$rd));
-                                foreach ($arrk as $key) {
-                                    $rd1=rand(0,$rd);
-                                    $set('examods.'.$key.'.nb',$rd1);
-                                $rd-=$rd1;
-                                }
-                                break;
-
-                            default:
-                           /*  $inn=$get('type')=='1'?$ix->maxes:$ix->maxs;
-                            $set('timer',rand($ix->mint,$ix->maxts));
-                            $set('quest',rand($ix->minq,$get('type')=='1'?$ix->maxes:$ix->maxs));
-                            $arrk=array_keys($get('examods'));
-                            foreach ($arrk as $key) {$set('examods.'.$key.'.nb',rand($ix->minq,$inn));} */
-                            break;
-                        }
-                    }
-                    else if($state=='1'){
+                    if($state=='1'){
                         $cert=CertConfig::where('course',$get('certi'))->get();
                         $set('examods',array());
                         if($cert->count()>0){
@@ -204,7 +147,33 @@ class ExamResource extends Resource
                         $fail('Max questions in modules should not exceed'.$value.' . Actual :'.$rd);
                     }
                 }
-                ]),
+                ])->suffixAction(
+                    Action::make('Randomize')
+                        ->icon('heroicon-m-arrows-pointing-out')
+                        ->action(function (Set $set, $state,Get $get) {
+                            // Notification::make()->success()->title($get('type'))->send();
+                            $si=intval($state);
+                            if($si>0){
+                                $arrk=array_keys($get('examods'));
+                                if(count($arrk)>0){
+                                    if(count($arrk)==1)
+                                        foreach ($arrk as $key) {$set('examods.'.$key.'.nb',$state);}
+                                    else {
+                                        $ii=1;$ia=$si;
+                                        foreach ($arrk as $key) {
+                                            if($ii==count($arrk)) {$set('examods.'.$key.'.nb',$ia);break;}
+                                            else{
+                                                $rd1=rand(0,$ia);
+                                                $set('examods.'.$key.'.nb',$rd1);
+                                                $ia-=$rd1;
+                                            }
+                                            $ii++;
+                                        }
+                                    }
+                                }else Notification::make()->danger()->title('Please choose some modules')->send();
+                            }else Notification::make()->danger()->title('Please specify the number of questions')->send();
+                        })
+                ),
                 ]),
                 Forms\Components\Section::make('Users')->columns(3)->hidden(auth()->user()->ex!=0)
                 ->description('This part is for the S. Admin only. You may choose a class, or select individual users')
@@ -220,7 +189,10 @@ class ExamResource extends Resource
                 ]),
                 Forms\Components\Section::make('')
                 ->schema([
-                    Forms\Components\Repeater::make('examods')->grid(2)->label('Modules Configuration')
+                    Forms\Components\Repeater::make('examods')->grid(2)->label(function(){
+                        $nd=0;
+                        return 'Modules Configuration (Tt. Questions : '.$nd.')';
+                    })
                     ->addActionLabel('Add a Module')->reorderable(false)->defaultItems(1)
                     ->relationship()
                     ->schema([
@@ -238,8 +210,8 @@ class ExamResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-        ->query(auth()->user()->ex==0?Exam::where('from',auth()->id())->latest('added_at'):Exam::selectRaw('distinct(exam),exams.id,name,descr,due,type,timer,added_at,added,start_at,comp_at,exams.from')->join('exam_users', 'exams.id', '=', 'exam_users.exam')
-        ->where('exam_users.user',auth()->user()->id)->latest('added_at'))
+        ->query(auth()->user()->ex==0?Exam::where('from',auth()->id())->with('users')->latest('added_at'):Exam::has('users1')->with('users1')
+        ->latest('added_at'))
         ->columns([
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable()->label('Title')
                 ->description(fn (Exam $record): ?string => $record->descr),
@@ -250,14 +222,14 @@ class ExamResource extends Resource
                     ->sortable(),
                     Tables\Columns\TextColumn::make('users.name')->label('Users')
                     ->hidden(auth()->user()->ex!=0),
-                Tables\Columns\TextColumn::make('added_at')->label('Created on')
-                    ->dateTime()->hidden(auth()->user()->ex!=0)
-                    ->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('added')->label('Affected on')
                     ->dateTime()->hidden(auth()->user()->ex==0)->since()
                     ->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('due')->label('Due Date')
                     ->dateTime()->sortable(),
+                Tables\Columns\TextColumn::make('added_at')->label('Created on')
+                    ->dateTime()->hidden(auth()->user()->ex!=0)
+                    ->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('Start on')->label('Started on')
                     ->dateTime()->hidden(auth()->user()->ex==0)
                     ->sortable(),
@@ -299,7 +271,6 @@ class ExamResource extends Resource
         return [
             'index' => Pages\ManageExams::route('/'),
             'create' => Pages\AssessCreate::route('/create'),
-            'certif' => Pages\ListCertif::route('/certifications'),
         ];
     }
     protected function shouldPersistTableSortInSession(): bool

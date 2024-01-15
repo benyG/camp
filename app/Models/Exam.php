@@ -42,6 +42,11 @@ class Exam extends Model
       public function users1(): BelongsToMany
       {
           return $this->belongsToMany(User::class, 'exam_users', 'exam', 'user')
+          ->withPivot('added')
+          ->withPivot('comp_at')
+          ->withPivot('start_at')
+          ->withPivot('gen')
+           ->withPivot('id')
           ->wherePivot('user', auth()->user()->id);
       }
       public function userRel(): BelongsTo
