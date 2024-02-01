@@ -19,7 +19,7 @@
     td,th,div,p,a,h1,h2,h3,h4,h5,h6 {font-family: "Segoe UI", sans-serif; mso-line-height-rule: exactly;}
   </style>
   <![endif]-->
-  <title>New Exam</title>
+  <title>New message</title>
   <style>
     img {
       max-width: 100%;
@@ -67,25 +67,22 @@
               <tr>
                 <td class="sm-px-6" style="border-radius: 4px; background-color: #fff; padding: 40px; font-size: 16px; color: #334155; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)">
                   <h1 class="sm-leading-8" style="margin: 0 0 24px; font-size: 24px; font-weight: 600; color: #000">
-                    Hello <span style="color: #15803d">{{$name}}</span>,
+                    Congratulation! <span style="color: #15803d">{{$name}}</span>,
                   </h1>
                   <p style="margin: 0; line-height: 24px">
-                    An exam was affected to you on the <b>{{$para[0]}}
-                    <br>
-                        Title : {{$para[1]}}<br>
-                        Due Date : {{$para[2]}}</b>
+                    Your request for joining <b><span style="color: #15803d">{{$para[0]}}</span></b> certification has been approved.
                     <br>
                     <br>
-                    Please log in to your dashboad to complete the test.
+                    Please log in to your dashboad to start testing your knowledge.
                   </p>
                   <div role="separator" style="line-height: 10px">&zwj;</div>
                   <div>
-                    <a href="{{env('APP_URL')}}/boss/tests" style="display: inline-block; border-radius: 4px; background-color: #15803d; padding: 16px 24px; font-size: 16px; font-weight: 600; line-height: 1; color: #f8fafc; text-decoration: none">
+                    <a href="{{env('APP_URL')}}/boss" style="display: inline-block; border-radius: 4px; background-color: #15803d; padding: 16px 24px; font-size: 16px; font-weight: 600; line-height: 1; color: #f8fafc; text-decoration: none">
                       <!--[if mso]>
       <i style="mso-font-width: -100%; letter-spacing: 32px; mso-text-raise: 30px" hidden>&nbsp;</i>
     <![endif]-->
                       <span style="mso-text-raise: 16px">
-                  Take Exam &rarr;
+                  Login to Dashboard &rarr;
                 </span>
                       <!--[if mso]>
       <i style="mso-font-width: -100%; letter-spacing: 32px;" hidden>&nbsp;</i>
@@ -107,7 +104,7 @@
               <tr>
                 <td style="padding-left: 24px; padding-right: 24px; text-align: center; font-size: 12px; color: #475569">
                   <p style="margin: 0 0 4px; text-transform: uppercase">
-                    <img src="{{$message->embed(public_path('img/logo-mail.png'))}}" style="width:220px"/>
+                  <img src="{{$message->embed(public_path('img/logo-mail.png'))}}" style="width:220px"/>
                   </p>
                   <p style="margin: 0; font-style: italic;">
                     Test your knowledge, and let's claim your certificate !

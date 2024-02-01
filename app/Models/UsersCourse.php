@@ -8,5 +8,4 @@ class UsersCourse extends Pivot
 {
     public $incrementing = true;
     public $timestamps = true;
-
 }

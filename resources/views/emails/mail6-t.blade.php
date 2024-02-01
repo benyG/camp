@@ -1,14 +1,11 @@
 Hello {{$name}},
 
-An exam was affected to you on the {{$para[0]}}
+Your request for joining {{$para[0]}} certification has been approved.
 
-Title : {{$para[1]}}
-Due Date : {{$para[2]}}
-
-Please log in to your dashboad to complete the test.
+Please log in to your dashboad to start testing your knowledge.
 ‍
 
-Take Exam → {{env('APP_URL')}}/boss/tests
+Login to Dashboard → {{env('APP_URL')}}/boss
 
 Thanks, The ITExamBootCamp Team
 ‍
@@ -16,5 +13,5 @@ Thanks, The ITExamBootCamp Team
 This email was sent to {{$email}}
 If this is a mistake, you can safely ignore this email.
 
-IT Exam Boot Camp
+ITExamBootCamp
 Test your knowledge, and let's claim your certificate !

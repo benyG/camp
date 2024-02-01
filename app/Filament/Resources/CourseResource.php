@@ -21,7 +21,7 @@ class CourseResource extends Resource
     protected static ?int $navigationSort = 6;
     protected static ?string $navigationGroup = 'Teachers';
     protected static ?string $modelLabel = 'certification';
-
+    protected static ?string $slug = 'certifications';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -44,7 +44,9 @@ class CourseResource extends Resource
                     ->searchable()->sortable()->description(fn (Course $record): ?string => $record->descr),
                     Tables\Columns\TextColumn::make('modules_count')->counts('modules')->label('Modules')
                     ->numeric()->sortable(),
-                    Tables\Columns\TextColumn::make('users_count')->counts('users')->label('Joined users')
+                    Tables\Columns\TextColumn::make('questions_count')->counts('questions')->label('Questions')
+                    ->numeric()->sortable(),
+                    Tables\Columns\TextColumn::make('users_count')->counts('users')->label('Users')
                     ->numeric()->sortable(),
                     Tables\Columns\IconColumn::make('pub')->boolean()->label('Published')->sortable(),
                     Tables\Columns\TextColumn::make('added_at')
@@ -64,8 +66,11 @@ class CourseResource extends Resource
                     ->modalHeading(fn(Course $record):string=>$record->pub?'Unpublish':'Publish')
                     ->modalDescription(fn(Course $record):string=>$record->pub?'Are you sure you\'d like to unpublish \''.$record->name.'\' certification? This will hide it to the users.':
                         'Are you sure you\'d like to publish \''.$record->name.'\' certification? This will make it visible to the public.'),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('resnd')->color('warning')->label('Config')
+                ->url(fn (Course $record): string => CourseResource::getUrl('config', ['record' => $record]))
+                ->button()->visible(fn (): bool =>auth()->user()->ex==0),
+                Tables\Actions\EditAction::make()->iconButton(),
+                Tables\Actions\DeleteAction::make()->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -93,6 +98,8 @@ class CourseResource extends Resource
     {
         return [
             'index' => Pages\ManageCourses::route('/'),
+            'approve' => Pages\CertApproval::route('/approvals'),
+            'config' => Pages\CertConfig::route('/cfg-{record}'),
         ];
     }
 }

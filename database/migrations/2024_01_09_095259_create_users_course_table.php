@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user');
             $table->unsignedBigInteger('course');
+            $table->boolean('approve')->default(false);
            $table->timestamps();
            $table->foreign('user')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
            $table->foreign('course')->references('id')->on('courses')->cascadeOnUpdate()->cascadeOnDelete();

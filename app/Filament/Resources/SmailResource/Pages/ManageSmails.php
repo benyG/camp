@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Notification as Notif;
 use App\Models\User;
 use Exception;
 use App\Notifications\NewMail;
-
+use Filament\Resources\Components\Tab;
+use Illuminate\Database\Eloquent\Builder;
 class ManageSmails extends ManageRecords
 {
     protected static string $resource = SmailResource::class;
@@ -36,19 +37,19 @@ class ManageSmails extends ManageRecords
                         $para=[auth()->user()->name,auth()->user()->email];
                         $opt='4';
                     }
-                    try {
-                        foreach ($record->users2 as $us) {
+                    foreach ($record->users2 as $us) {
+                        try {
                             Notif::send($us, new NewMail($record->sub,$para,$opt));
                             $record->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
-                            }
-                        Notification::make()->success()->title('Sent via SMTP')->send();
-                    } catch (Exception $exception) {
-                        Notification::make()
-                            ->title('We were not able to reach some recipients via SMTP')
-                            ->danger()
-                            ->send();
+                            Notification::make()->success()->title('Sent via SMTP to '.$us->email)->send();
+                        } catch (Exception $exception) {
+                            Notification::make()
+                                ->title('We were not able to reach '.$us->email)
+                                ->danger()
+                                ->send();
+                        }
                     }
-                }
+            }
 
             })->createAnother(false),
         ];
@@ -57,4 +58,24 @@ class ManageSmails extends ManageRecords
     {
         return 'Inbox';
     }
+    public function getTabs(): array
+    {
+        return [
+            'inbox' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query
+                ->join('users_mail', 'smails.id', '=', 'users_mail.mail')
+                ->where('user',auth()->user()->id)->latest()
+                        ),
+            'outbox' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query
+                ->where(function (Builder $query) {
+                    $query->where('from',auth()->user()->id)
+                          ->where('hid',false);})->latest()
+            ),
+        ];
+    }
+    public function getDefaultActiveTab(): string | int | null
+{
+    return 'inbox';
+}
 }

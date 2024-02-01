@@ -33,10 +33,11 @@ class VagueResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->striped()
+        ->modifyQueryUsing(fn (Builder $query) => $query->withCount('users'))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                    Tables\Columns\TextColumn::make('users_count')->counts('users')->label('Students')
+                    Tables\Columns\TextColumn::make('users_count')->label('Students')
                     ->numeric()->sortable(),
                 ])
             ->filters([

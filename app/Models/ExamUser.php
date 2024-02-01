@@ -14,6 +14,9 @@ class ExamUser extends Pivot
     protected $fillable = [
         'gen'
       ];
+      protected $casts = [
+        'gen' => 'array',
+    ];
       public function questions(): BelongsToMany
       {
           //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');

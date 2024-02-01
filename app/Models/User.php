@@ -39,7 +39,7 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
-        'password','ex'
+        'password',
     ];
 
     /**
@@ -64,7 +64,7 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
     public function canAccessPanel(Panel $panel): bool
     {
         //return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
-        return true;
+        return $this->ax;
     }
     public function vagueRel(): BelongsTo
     {
@@ -107,6 +107,7 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
     {
         //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
         return $this->belongsToMany(Course::class, 'users_course', 'user', 'course')
+        ->withPivot('approve')
         ->using(UsersCourse::class);
     }
 

@@ -23,6 +23,7 @@ use App\Filament\Resources\InfoResource;
 use Filament\Navigation\MenuItem;
 use App\Filament\Pages\Auth\Register;
 use App\Filament\Pages\Auth\ResetPassword;
+use App\Filament\Pages\Auth\RequestPasswordReset;
 use App\Filament\Pages\Auth\EditProfile;
 
 class AdminPanelProvider extends PanelProvider
@@ -39,10 +40,10 @@ class AdminPanelProvider extends PanelProvider
             ->path('boss')
             ->login()
             ->registration(Register::class)
-            ->passwordReset(ResetPassword::class)
+            ->passwordReset(RequestPasswordReset::class,ResetPassword::class)
             ->emailVerification()
             ->profile(EditProfile::class)
-            ->defaultThemeMode(ThemeMode::Dark)
+            ->darkMode(true)
             ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Green,

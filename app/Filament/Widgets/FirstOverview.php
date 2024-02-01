@@ -32,11 +32,11 @@ class FirstOverview extends BaseWidget
             //    ->description('32k increase')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success');
-        }
         $bg[]= Stat::make('Nb. Questions', Question::count())
         //    ->description('32k increase')
             ->descriptionIcon('heroicon-m-arrow-trending-up')
             ->color('success');
+        }
         return $bg;
     }
 }

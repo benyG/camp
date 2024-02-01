@@ -11,6 +11,6 @@ class EmailVerificationResponse implements Responsable
 {
     public function toResponse($request): RedirectResponse | Redirector
     {
-        return redirect()->intended(Filament::getUrl());
+        return redirect(route('verif'));
     }
 }

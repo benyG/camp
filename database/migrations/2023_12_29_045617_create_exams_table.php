@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->text('descr')->nullable();
             $table->smallInteger('timer')->default(60)->unsigned();
+            $table->smallInteger('quest')->default(100)->unsigned();
             $table->boolean('type')->default(false);
             $table->timestamp('added_at')->useCurrent();
             $table->timestamp('due');

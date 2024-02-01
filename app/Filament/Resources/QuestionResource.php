@@ -60,7 +60,7 @@ class QuestionResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->paginated([50, 100,300,500,1000,2000, 'all'])
+        return $table->paginated([25,50,100,250, 'all'])
         ->modifyQueryUsing(fn (Builder $query) => $query->latest())
             ->columns([
                 Tables\Columns\TextColumn::make('text')->limit(100)->html()
@@ -82,6 +82,10 @@ class QuestionResource extends Resource
                 Tables\Filters\SelectFilter::make('module')
                     ->relationship(name: 'moduleRel', titleAttribute: 'name')
                     ->searchable()->label('Modules')->multiple()
+                    ->preload(),
+                    Tables\Filters\SelectFilter::make('certif')
+                    ->relationship(name: 'certif', titleAttribute: 'name')
+                    ->searchable()->label('Certifications')->multiple()
                     ->preload()
             ])
             ->actions([

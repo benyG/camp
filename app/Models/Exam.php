@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class Exam extends Model
 {
     public $timestamps = false;
@@ -27,7 +27,9 @@ class Exam extends Model
       }
     public function modules(): BelongsToMany
       {
-          return $this->belongsToMany(Module::class, 'exam_modules', 'exam', 'module')->using(ExamModule::class);
+          return $this->belongsToMany(Module::class, 'exam_modules', 'exam', 'module')
+          ->orderBy('modules.name')
+          ->withPivot('nb')->using(ExamModule::class);
       }
       public function users(): BelongsToMany
       {
@@ -42,11 +44,19 @@ class Exam extends Model
       public function users1(): BelongsToMany
       {
           return $this->belongsToMany(User::class, 'exam_users', 'exam', 'user')
-          ->wherePivot('user', auth()->user()->id);
+          ->withPivot('added')
+          ->withPivot('comp_at')
+          ->withPivot('start_at')
+          ->withPivot('gen')
+           ->withPivot('id')
+          ->wherePivot('user', auth()->user()->id)->using(ExamUser::class);;
       }
       public function userRel(): BelongsTo
       {
           return $this->belongsTo(User::class,'from','id');
       }
-
+      public function examods(): HasMany
+      {
+          return $this->hasMany(ExamModule::class,'exam','id');
+      }
 }

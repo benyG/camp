@@ -2,24 +2,24 @@
 
 namespace App\Policies;
 
-use App\Models\Exam;
+use App\Models\CertConfig;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class ExamPolicy
+class CertConfigPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->ex!=1;
+        return false;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Exam $exam): bool
+    public function view(User $user, CertConfig $certConfig): bool
     {
         return false;
     }
@@ -29,30 +29,29 @@ class ExamPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return false;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Exam $exam): bool
+    public function update(User $user, CertConfig $certConfig): bool
     {
-      //  return $user->id==$exam->from;
         return false;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Exam $exam): bool
+    public function delete(User $user, CertConfig $certConfig): bool
     {
-        return $user->id==$exam->from;
+        return false;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Exam $exam): bool
+    public function restore(User $user, CertConfig $certConfig): bool
     {
         return false;
     }
@@ -60,7 +59,7 @@ class ExamPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Exam $exam): bool
+    public function forceDelete(User $user, CertConfig $certConfig): bool
     {
         return false;
     }

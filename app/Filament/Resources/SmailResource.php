@@ -22,6 +22,7 @@ use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
 //use Illuminate\Support\Facades\Mail;
 //use App\Mail\Imail;
 use Filament\Notifications\Notification;
@@ -77,16 +78,11 @@ class SmailResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->striped()->paginated([10, 25, 50, 100, 200, 'all'])
-        ->query(Smail::selectRaw('distinct (mail),hid, smails.id,sub,content,smails.from,smails.created_at,smails.updated_at,users_mail.sent,users_mail.read,read_date,last_sent')->join('users_mail', 'smails.id', '=', 'users_mail.mail')
-       // ->join('users', 'users.id', '=', 'users_mail.user')
-       ->where(function (Builder $query) {
-        $query->where('from',auth()->user()->id)
-              ->where('hid',false);})->orwhere('user',auth()->user()->id)->latest())
             ->columns([
                 Tables\Columns\TextColumn::make('sub')->label('Subject')
                 ->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('from')->label('Correspondants')
-                ->formatStateUsing(fn (Model $record): string => $record->from== auth()->user()->id? $record->users2->pluck('name') : $record->user1->name)
+                ->formatStateUsing(fn (Model $record): string => $record->from== auth()->user()->id? Str::remove(['"','[',']'],$record->users2->pluck('name')) : $record->user1->name)
                 ->sortable()->hidden(fn():bool=>auth()->user()->ex>=2),
              Tables\Columns\IconColumn::make('sent')->label('Sent via SMTP')->hidden(fn():bool=>auth()->user()->ex>=2)
              ->icon(fn($state):string=>$state==1?'heroicon-o-envelope':'')
@@ -162,19 +158,19 @@ class SmailResource extends Resource
                         $para=[auth()->user()->name,auth()->user()->email];
                         $opt='4';
                     }
+                    foreach ($record->users2 as $us) {
                         try {
-                            foreach ($record->users2 as $us) {
                             Notif::send($us, new NewMail($record->sub,$para,$opt));
                             $record->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
-                            }
-                            Notification::make()->success()->title('Sent via SMTP')->send();
+                            Notification::make()->success()->title('Sent via SMTP to '.$us->email)->send();
                         } catch (Exception $exception) {
                             Notification::make()
-                                ->title('We were not able to reach some recipients via SMTP')
-                                ->danger()
-                                ->send();
+                            ->title('We were not able to reach '.$us->email)
+                            ->danger()
+                            ->send();
                         }
-                })
+                    }
+               })
                 ->visible(fn(Smail $record)=>($record->from== auth()->user()->id) && Info::first()->smtp),
                 Tables\Actions\Action::make('Delete')->modalHeading('Delete message')->label('Delete')
                 ->requiresConfirmation()->color('danger')->modalIcon('heroicon-o-trash')->modalIconColor('warning')

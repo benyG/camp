@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('exam_modules', function (Blueprint $table) {
             $table->id();
+            $table->smallInteger('nb')->default(5)->unsigned();
             $table->unsignedBigInteger('module');
             $table->unsignedBigInteger('exam');
             $table->foreign('module')->references('id')->on('modules')->cascadeOnUpdate()->cascadeOnDelete();
