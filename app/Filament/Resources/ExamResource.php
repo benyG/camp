@@ -273,7 +273,7 @@ class ExamResource extends Resource
               ->requiresConfirmation()
               ->modalIcon(fn(Exam $record):string=>$record->pub?'heroicon-o-eye-slash':'heroicon-m-play')
                     ->modalHeading('Start the Assessment')
-                    ->modalDescription(fn(Course $record):string=>'Are you sure you\'d like to start the assessement \''.$record->name.'\'? If it is an exam, you will be bound to complete it before closing the page.')
+                    ->modalDescription(fn(Exam $record):string=>'Are you sure you\'d like to start the assessement \''.$record->name.'\'? If it is an exam, you will be bound to complete it before closing the page.')
               ->action(function (Exam $record) {
                return redirect()->to(ExamResource::getUrl('assess', ['ex' => $record->name]));
               })
