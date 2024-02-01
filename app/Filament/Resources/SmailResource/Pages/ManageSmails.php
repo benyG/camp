@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Notification as Notif;
 use App\Models\User;
 use Exception;
 use App\Notifications\NewMail;
-
+use Filament\Resources\Components\Tab;
+use Illuminate\Database\Eloquent\Builder;
 class ManageSmails extends ManageRecords
 {
     protected static string $resource = SmailResource::class;
@@ -57,4 +58,24 @@ class ManageSmails extends ManageRecords
     {
         return 'Inbox';
     }
+    public function getTabs(): array
+    {
+        return [
+            'inbox' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query
+                ->join('users_mail', 'smails.id', '=', 'users_mail.mail')
+                ->where('user',auth()->user()->id)->latest()
+                        ),
+            'outbox' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query
+                ->where(function (Builder $query) {
+                    $query->where('from',auth()->user()->id)
+                          ->where('hid',false);})->latest()
+            ),
+        ];
+    }
+    public function getDefaultActiveTab(): string | int | null
+{
+    return 'inbox';
+}
 }

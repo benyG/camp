@@ -67,8 +67,6 @@ class InfoResource extends Resource
                Forms\Components\Section::make('Exams questions')->columns(5)
                ->description('For each type of users, set the number of questions that can be generated for EXAMS')
                ->schema([
-                    Forms\Components\TextInput::make('minq')->label('Overall min. Q.')
-                   ->required()->default(5),
                Forms\Components\TextInput::make('maxes')->label('Q. Limit-Starter')
                    ->required()->numeric()->default(10),
                Forms\Components\TextInput::make('maxeu')->label('Q. Limit-User')

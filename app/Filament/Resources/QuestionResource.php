@@ -60,7 +60,7 @@ class QuestionResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->paginated([25,50, 100,300,500,1000,2000, 'all'])
+        return $table->paginated([25,50,100,250, 'all'])
         ->modifyQueryUsing(fn (Builder $query) => $query->latest())
             ->columns([
                 Tables\Columns\TextColumn::make('text')->limit(100)->html()

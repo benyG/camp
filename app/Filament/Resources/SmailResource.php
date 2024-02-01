@@ -78,11 +78,6 @@ class SmailResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->striped()->paginated([10, 25, 50, 100, 200, 'all'])
-        ->query(Smail::selectRaw('distinct (mail),hid, smails.id,sub,content,smails.from,smails.created_at,smails.updated_at,users_mail.sent,users_mail.read,read_date,last_sent')->join('users_mail', 'smails.id', '=', 'users_mail.mail')
-       // ->join('users', 'users.id', '=', 'users_mail.user')
-       ->where(function (Builder $query) {
-        $query->where('from',auth()->user()->id)
-              ->where('hid',false);})->orwhere('user',auth()->user()->id)->latest())
             ->columns([
                 Tables\Columns\TextColumn::make('sub')->label('Subject')
                 ->searchable()->sortable(),

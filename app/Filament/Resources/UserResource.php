@@ -97,7 +97,7 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\Action::make('resend')->color('success')->label('Portfolio')
+                Tables\Actions\Action::make('jjj')->color('success')->label('Portfolio')
                 ->fillForm(fn (User $record): array => [
                     'cou' => \App\Models\Course::join('users_course', 'users_course.course', '=', 'courses.id')
                     ->where('user',$record->id)->where('approve',true)->pluck('courses.id'),
@@ -127,11 +127,11 @@ class UserResource extends Resource
                     ->modalHeading(fn(User $record):string=>$record->ax?'Block access':'Grant access')
                     ->modalDescription(fn(User $record):string=>$record->ax?'Are you sure you\'d like to block user \''.$record->name.'\'?':
                         'Are you sure you\'d like to grant user \''.$record->name.'\' access to the platform ?'),
-      Tables\Actions\EditAction::make()->iconButton(),
-                Tables\Actions\DeleteAction::make()->iconButton(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
+                        Tables\Actions\EditAction::make()->iconButton()->after(function (User $record,$data) { if($record->ex > auth()->user()->ex) {$record->ex=intval($data['ex']);$record->save();}}),
+                        Tables\Actions\DeleteAction::make()->iconButton(),
+      ])
+      ->bulkActions([
+          Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])

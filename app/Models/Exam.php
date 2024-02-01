@@ -27,7 +27,9 @@ class Exam extends Model
       }
     public function modules(): BelongsToMany
       {
-          return $this->belongsToMany(Module::class, 'exam_modules', 'exam', 'module')->using(ExamModule::class);
+          return $this->belongsToMany(Module::class, 'exam_modules', 'exam', 'module')
+          ->orderBy('modules.name')
+          ->withPivot('nb')->using(ExamModule::class);
       }
       public function users(): BelongsToMany
       {
@@ -47,7 +49,7 @@ class Exam extends Model
           ->withPivot('start_at')
           ->withPivot('gen')
            ->withPivot('id')
-          ->wherePivot('user', auth()->user()->id);
+          ->wherePivot('user', auth()->user()->id)->using(ExamUser::class);;
       }
       public function userRel(): BelongsTo
       {

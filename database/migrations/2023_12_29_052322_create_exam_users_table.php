@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamp('added')->useCurrent();
             $table->timestamp('start_at')->nullable();
             $table->timestamp('comp_at')->nullable();
-            $table->boolean('gen')->default(false);
+            $table->json('gen')->nullable();
             $table->unsignedBigInteger('user');
             $table->unsignedBigInteger('exam');
             $table->foreign('user')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();

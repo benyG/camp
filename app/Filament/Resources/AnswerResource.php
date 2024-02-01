@@ -37,7 +37,7 @@ class AnswerResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->striped()->paginated([25,50, 100,300,500,1000,2000, 5000,10000, 'all'])
+        return $table->striped()->paginated([25,50, 70,100,250, 'all'])
             ->columns([
                 Tables\Columns\TextColumn::make('text')
                 ->searchable()->sortable(),

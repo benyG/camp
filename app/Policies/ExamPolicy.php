@@ -21,7 +21,7 @@ class ExamPolicy
      */
     public function view(User $user, Exam $exam): bool
     {
-        return $exam->users1()->count()>0;
+        return false;
     }
 
     /**

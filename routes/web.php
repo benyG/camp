@@ -13,9 +13,7 @@ use App\Http\Controllers\PageController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});Route::get('/verif', function () {
+Route::get('/verif', function () {
     return view('filament.auth.email-verif');
 })->name('verif');
 //Route::get('/boss/{id}/certapproval',[ListCertif::class,'CertRequest']);

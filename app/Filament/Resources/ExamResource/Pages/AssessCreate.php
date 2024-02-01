@@ -35,12 +35,14 @@ class AssessCreate extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['from'] = auth()->id();
+        $data['type'] =$data['type']==null? '0':$data['type'];
         $data['name'] = ($data['type']==0?'Test':'Exam').'_'.Str::remove('-',now()->toDateString()).'_'.Str::random(5);
         if(auth()->user()->ex!=0){
             $data['due']=null;
         }
         else{
             $data['user5']=empty($data['classe'])?$data['user5']:User::whereIn('vague',$data['classe'])->get()->pluck('id');
+         // dd($data['user5']);
         }
         return $data;
     }
@@ -50,7 +52,8 @@ class AssessCreate extends CreateRecord
         if(auth()->user()->ex!=0){
             $datt['user5']=[auth()->id()];
         }
-    //    dd($datt);
+        else $datt['user5']=empty($datt['classe'])?$datt['user5']:User::whereIn('vague',$datt['classe'])->get()->pluck('id');
+        // dd($datt);
         $record=$this->getRecord();
         foreach($datt['user5'] as $us){
             $record->users()->attach($us,['added'=>now()]);
