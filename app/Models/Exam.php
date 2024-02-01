@@ -49,7 +49,7 @@ class Exam extends Model
           ->withPivot('start_at')
           ->withPivot('gen')
            ->withPivot('id')
-          ->wherePivot('user', auth()->user()->id)->using(ExamUser::class);;
+          ->wherePivot('user', auth()->user()->id);
       }
       public function userRel(): BelongsTo
       {
