@@ -240,7 +240,7 @@ class ExamResource extends Resource
                 Tables\Columns\TextColumn::make('type')
                 ->state(fn (Exam $record) => $record->type=='1'?(auth()->id()==$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
                 ->badge()
-                ->color(fn ($record): string =>$record->type=='1'?(auth()->id()!=$record->from?'primary': 'danger'):'info')
+                ->color(fn ($record): string =>$record->type=='1'?(auth()->id()==$record->from?'primary': 'danger'):'info')
             ->sortable(),
                     Tables\Columns\TextColumn::make('users.name')->label('Users')
                     ->hidden(auth()->user()->ex!=0),
