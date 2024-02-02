@@ -31,8 +31,7 @@ class Question extends Model
         ->as('qa')
         ->withPivot('added_at')
         ->withPivot('isok')
-        ->withPivot('id')
-        ->using(QuestAns::class);
+        ->withPivot('id');
     }
     public function exams(): BelongsToMany
     {

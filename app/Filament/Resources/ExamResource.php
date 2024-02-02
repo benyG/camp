@@ -131,10 +131,10 @@ class ExamResource extends Resource
                         }else Notification::make()->warning()->title('Sorry, this certification doesn\'t have a typical configuration.')->send();
                     }
                 }),
-                Forms\Components\TextInput::make('timer')->numeric()->step(5)->requiredIf('type', '1')->label('Timer (min)')
+                Forms\Components\TextInput::make('timer')->numeric()->requiredIf('type', '1')->label('Timer (min)')
                 ->rules(['min:'.$ix->mint,'max:'.match (auth()->user()->ex) {1 => $ix->maxts,0 => 40000000,
                  2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv}]),
-                Forms\Components\TextInput::make('quest')->numeric()->step(5)->required()->label('Nb. Questions')
+                Forms\Components\TextInput::make('quest')->numeric()->required()->label('Nb. Questions')
                 ->rules(['min:'.$ix->minq,fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
                     $ix=cache()->rememberForever('settings', function () {
                         return \App\Models\Info::findOrFail(1);
@@ -185,7 +185,9 @@ class ExamResource extends Resource
                             }else Notification::make()->danger()->title('Please specify the number of questions')->send();
                         })
                 ),
-                ]),
+                    Forms\Components\DatePicker::make('due')->label('Due Date')
+                    ->required()->minDate(now())
+            ]),
                 Forms\Components\Section::make('Users')->columns(3)->hidden(auth()->user()->ex!=0)
                 ->description('This part is for the S. Admin only. You may choose a class, or select individual users')
                 ->schema([
@@ -195,8 +197,6 @@ class ExamResource extends Resource
                     ->required(fn(Get $get):bool=>auth()->user()->ex==0 && $get('classe')==null)
                     ->options(fn(Get $get)=>$get('classe')==null?User::where('id','<>',auth()->id())->get()->pluck('name', 'id'):
                     User::where('id','<>',auth()->id())->where('vague',$get('classe'))->get()->pluck('name', 'id'))->preload(),
-                    Forms\Components\DatePicker::make('due')->label('Due Date')
-                    ->required(fn (Get $get): bool => $get('type')==1 && auth()->user()->ex==0)->minDate(now())
                 ]),
                 Forms\Components\Section::make('')
                 ->schema([
@@ -209,18 +209,17 @@ class ExamResource extends Resource
                         return 'Modules Configuration (Tt. Questions : '.$rd.')';
                     })
                     ->addActionLabel('Add a Module')->reorderable(false)->defaultItems(1)
-                    ->relationship()
+                  //  ->relationship()
                     ->schema([
                         Forms\Components\Select::make('module')->label('Name')
-                        ->relationship('moduleRel', 'name',modifyQueryUsing: fn (Builder $query,Get $get) => $query
-                        ->where('course',$get('../../certi')))
+                     //   ->relationship('moduleRel2', 'name',modifyQueryUsing: fn (Builder $query,Get $get) => $query
+                     ->options(fn(Get $get)=>Module::where('course',$get('../../certi'))->pluck('name', 'id'))
                         ->required()->disableOptionsWhenSelectedInSiblingRepeaterItems(),
-                        Forms\Components\TextInput::make('nb')->numeric()->step(5)->required()->label('Questions')
+                        Forms\Components\TextInput::make('nb')->numeric()->required()->label('Questions')
                         ->rules(['numeric',fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
                           //  dd($get('module'));
                             $rud=Question::where('module',$get('module'))->count();
                         if ($rud<intval($value)) {
-
                             $fail('Max questions for this module is '.$rud);
                         }
                     }])
@@ -239,9 +238,9 @@ class ExamResource extends Resource
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable()->label('Title')
                 ->description(fn (Exam $record): ?string => $record->descr),
                 Tables\Columns\TextColumn::make('type')
-                ->state(fn (Exam $record) => $record->type=='1'?(auth()->id()!=$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
+                ->state(fn (Exam $record) => $record->type=='1'?(auth()->id()==$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
                 ->badge()
-                ->color(fn ($record): string =>$record->type=='1'?(auth()->id()!=$record->from?'info': 'primary'):'warning')
+                ->color(fn ($record): string =>$record->type=='1'?(auth()->id()!=$record->from?'primary': 'danger'):'info')
             ->sortable(),
                     Tables\Columns\TextColumn::make('users.name')->label('Users')
                     ->hidden(auth()->user()->ex!=0),
@@ -277,6 +276,7 @@ class ExamResource extends Resource
               ->action(function (Exam $record) {
                return redirect()->to(ExamResource::getUrl('assess', ['ex' => $record->name]));
               })
+              ->visible(fn (Exam $record): bool =>empty($record->users1()->first()->pivot->comp_at) && !empty($record->due) && now()<$record->due)
               ->iconButton(),
                 Tables\Actions\Action::make('resend')->label('View the results')->iconButton()->icon('heroicon-o-document-check')
               //  ->action(fn (Exam $record) => $record->advance())
@@ -293,9 +293,9 @@ class ExamResource extends Resource
                     ->schema([
                         Infolists\Components\TextEntry::make('name')->label('Title'),
                         Infolists\Components\TextEntry::make('type')->label('Type')
-                        ->state(fn (Exam $record) => $record->type=='1'?(auth()->id()!=$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
+                        ->state(fn (Exam $record) => $record->type=='1'?(auth()->id()==$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
                         ->badge()
-                        ->color(fn ($record): string =>$record->type=='1'?(auth()->id()!=$record->from?'info': 'primary'):'warning'),
+                        ->color(fn ($record): string =>$record->type=='1'?(auth()->id()!=$record->from?'primary': 'danger'):'info'),
                         Infolists\Components\TextEntry::make('timer')->label('Time')
                         ->state(fn (Exam $record) => $record->type=='1'?$record->timer:'Unlimited'),
                         Infolists\Components\TextEntry::make('quest')->label('Questions'),
@@ -320,27 +320,14 @@ class ExamResource extends Resource
                         Infolists\Components\TextEntry::make('a2')->label('Completed in')
                         ->state(fn (Exam $record) => $record->type=='1'?$record->timer:'Unlimited'),
                         Infolists\Components\TextEntry::make('quest')->label('% Per Modules')
-                        ->state(function (Model $record): float {
+                        ->state(function (Exam $record): float {
                             return $record->amount * (1 + $record->vat_rate);
                         }),
                     ])
                     ->columns(),
                     Infolists\Components\Section::make('Details')->collapsible()->persistCollapsed()
                     ->schema([
-                        Infolists\Components\TextEntry::make('scor')->label('Score'),
-                        Infolists\Components\TextEntry::make('a1')->label('Correct Answers')
-                        ->state(fn (Exam $record) => $record->type=='1'?(auth()->id()!=$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
-                        ->badge(),
-                        Infolists\Components\TextEntry::make('a2')->label('Completed in')
-                        ->state(fn (Exam $record) => $record->type=='1'?$record->timer:'Unlimited'),
-                        Infolists\Components\TextEntry::make('quest')->label('% Per Modules')
-                        ->state(function (Exam $record): float {
-                            return $record->amount * (1 + $record->vat_rate);
-                        }),
-                        Infolists\Components\TextEntry::make('due')->label('Time'),
-                        Infolists\Components\TextEntry::make('added_at')->label('Created')->placeholder('N/A'),
-                        Infolists\Components\TextEntry::make('comp_at')->label('Completed on')->placeholder('N/A')
-                        ->state(fn (Exam $record) => $record->users1()->first()->pivot->comp_at??null),
+                        Infolists\Components\TextEntry::make('ddder')->label('Your choices'),
                     ])
                     ->columns(),
 

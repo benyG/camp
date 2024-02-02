@@ -1,7 +1,7 @@
 <x-filament-panels::page>
-<div>
+<div class="select-none">
     <form wire:submit="register">
-<div
+<div onmousedown="return false" onselectstart="return false" onpaste="return false;" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off
     class='fi-fo-wizard fi-contained rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10'>
     <ol
         role="list"
@@ -11,11 +11,13 @@
                 <button
                     type="button"
                     class="fi-fo-wizard-header-step-button flex h-full w-full items-center gap-x-4 px-6 py-4">
-                    @if ($qcur<$qtot)
-                    <div class="fi-fo-wizard-header-step-icon-ctn flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-600 dark:bg-primary-500">
-                           <span class="fi-fo-wizard-header-step-indicator text-sm font-medium">
-                                {{ str_pad($qcur+1<=$qtot?$qcur+1:$qtot, Str::length(''.$qtot), '0', STR_PAD_LEFT) }}
-                            </span>
+                    @if ($qcur2<$qtot)
+                    <div class="fi-fo-wizard-header-step-icon-ctn bg-primary-600 dark:bg-primary-500 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
+                        <x-filament::icon
+                            alias="forms::components.wizard.completed-step"
+                            icon="heroicon-o-information-circle"
+                            class="fi-fo-wizard-header-step-icon h-6 w-6 text-white"
+                        />
                     </div>
                     <div class="grid justify-items-start">
                             <span class="fi-fo-wizard-header-step-label text-sm font-medium">
@@ -74,10 +76,10 @@
 
                     <div class="grid justify-items-start">
                             <span class="fi-fo-wizard-header-step-label text-sm font-medium">
-                               Questions
+                               Questions left
                             </span>
                             <span class="fi-fo-wizard-header-step-description font-bold text-start text-sm text-gray-500 dark:text-gray-400">
-                                {{$qtot}}
+                                {{($qtot-$qcur)}}
                             </span>
                     </div>
                 </button>
@@ -111,6 +113,58 @@
                             class="fi-fo-wizard-header-step-icon h-6 w-6 text-white"
                         />
                     </div>
+                    <script>
+                            function timer(expiry2) {
+                            return {
+                                expiry: new Date().getTime()+(expiry2*60000),
+                                remaining:null,
+                                init() {
+                                setInterval(() => {
+                                    this.setRemaining();
+                                }, 1000);
+                                },
+                                setRemaining() {
+                                const diff = this.expiry- new Date().getTime();
+                                this.remaining =  parseInt(diff / 1000);
+                                },
+                                days() {
+                                return {
+                                    value:this.remaining / 86400,
+                                    remaining:this.remaining % 86400
+                                };
+                                },
+                                hours() {
+                                return {
+                                    value:this.days().remaining / 3600,
+                                    remaining:this.days().remaining % 3600
+                                };
+                                },
+                                minutes() {
+                                    return {
+                                    value:this.remaining / 60,
+                                    remaining:this.remaining % 60
+                                };
+                                },
+                                seconds() {
+                                    return {
+                                    value:this.minutes().remaining,
+                                };
+                                },
+                                format(value) {
+                                return ("0" + parseInt(value)).slice(-2)
+                                },
+                                time(){
+                                    return {
+                              //      days:this.format(this.days().value),
+                               //     hours:this.format(this.hours().value),
+                                    minutes:this.format(this.minutes().value),
+                                    seconds:this.format(this.seconds().value),
+                                }
+                                },
+                            }
+                            }
+
+                    </script>
                     <div class="grid justify-items-start">
                             <span class="fi-fo-wizard-header-step-label text-sm font-medium  text-primary-500 dark:text-primary-400">
                                Timer (minutes left)
@@ -118,7 +172,8 @@
                             @if ($record->type=='0')
                             <span class="fi-fo-wizard-header-step-description font-bold text-start text-sm text-gray-500 dark:text-gray-400">Unlimited</span>
                             @else
-                            <span x-data="{ tii: {{$tim}} }" x-text='tii' x-init="setInterval(function(){if(tii>0)tii--;}, 60000);setTimeout(() => { $wire.closeComp() }, tii*60000);" class="fi-fo-wizard-header-step-description font-bold text-start text-sm text-gray-500 dark:text-gray-400" />
+                            <span x-data="timer({{$tim}})" x-init="init();setTimeout(() => { $wire.closeComp() }, {{$tim}}*60000);" :class=" parseInt(time().minutes)<5 ? 'text-danger-500 dark:text-danger-400' : 'text-gray-500 dark:text-gray-400'" class="fi-fo-wizard-header-step-description font-bold text-start text-sm">
+                              <span x-text="time().minutes"></span>:<span x-text="time().seconds"></span></span>
                             @endif
                     </div>
                 </button>
@@ -157,13 +212,13 @@
          {!! $cans !!}
    </div>
     {!! $btext !!}
-    <div class='flex {{$qcur<$qtot ? 'justify-end':'justify-center'}} gap-x-3 px-6 pb-6'>
+    <div class='flex {{$qcur2<$qtot ? 'justify-end':'justify-center'}} gap-x-3 px-6 pb-6'>
        <x-filament::button
         icon="{{$ico}}"
                             type="submit"
                             size="sm"
                         >
-                            {{$qcur<$qtot ? 'Next':'Complete'}}
+                            {{$qcur2<$qtot ? ($qcur==$qtot?'Results':'Next'):'Complete'}}
                         </x-filament::button>
     </div>
 </div>

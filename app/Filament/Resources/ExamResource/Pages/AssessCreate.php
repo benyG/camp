@@ -37,8 +37,9 @@ class AssessCreate extends CreateRecord
         $data['from'] = auth()->id();
         $data['type'] =$data['type']==null? '0':$data['type'];
         $data['name'] = ($data['type']==0?'Test':'Exam').'_'.Str::remove('-',now()->toDateString()).'_'.Str::random(5);
+  //      dd($data);
         if(auth()->user()->ex!=0){
-            $data['due']=null;
+           // $data['due']=null;
         }
         else{
             $data['user5']=empty($data['classe'])?$data['user5']:User::whereIn('vague',$data['classe'])->get()->pluck('id');
@@ -58,6 +59,12 @@ class AssessCreate extends CreateRecord
         foreach($datt['user5'] as $us){
             $record->users()->attach($us,['added'=>now()]);
         }
+
+        // workaround for duplicates created by the repeater
+        foreach ($datt['examods'] as $es) {
+            $record->modules()->attach($es['module'],['nb'=>$es['nb']]);
+        }
+
         if(auth()->user()->ex==0 && $record->type=='1'){
             $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
             $ma = new SMail;

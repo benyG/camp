@@ -45,6 +45,8 @@ class AssessGen extends Page
     #[Locked]
     public $qcur=0;
     #[Locked]
+    public $qcur2=1;
+    #[Locked]
     public $tim;
     #[Locked]
     public $carr;
@@ -54,6 +56,10 @@ class AssessGen extends Page
     public $bm1;
     #[Locked]
     public $ico;
+    #[Locked]
+    public $in1;
+    #[Locked]
+    public $in2;
     #[Locked]
     public $cans;
     #[Locked]
@@ -78,7 +84,7 @@ class AssessGen extends Page
             else if(now()->diffInMinutes($this->record->users1()->first()->pivot->start_at)>
             $this->record->timer) abort(415);
         }
-     //   cache()->forget('carr_'.$this->record->id.'_'.auth()->id());
+        cache()->forget('carr_'.$this->record->id.'_'.auth()->id());
      // $this->record->users1()->first()->pivot->start_at=now();
        $this->ix=cache()->rememberForever('settings', function () {
         return \App\Models\Info::findOrFail(1);
@@ -89,7 +95,7 @@ class AssessGen extends Page
             $this->carr=cache()->remember('carr_'.$this->record->id.'_'.auth()->id(),87000, function () {
              $qt=array();
             foreach ($this->record->modules as $md) {
-                $qt=  $md->questions()->pluck('id')->random($md->pivot->nb);
+                $qt= array_merge($qt,$md->questions()->pluck('id')->random($md->pivot->nb)->toArray());
             }
             $rt=\App\Models\Question::whereIn('id',$qt)->with('answers')->get();
             $at=$rt->pluck('questions.text','questions.id');
@@ -103,7 +109,7 @@ class AssessGen extends Page
             $this->gen=$this->carr[5];
             $this->qtot=count($this->quest);
 
-           // $this->qcur=0;
+       $this->qcur=0;
             if($this->qcur<=$this->qtot-1){
                 $this->bm1=$this->quest[$this->qcur]->answers()->where('isok',true)->count()<=1;
                 $this->aa=$this->quest[$this->qcur]->answers()->pluck('text','answers.id');
@@ -123,6 +129,7 @@ class AssessGen extends Page
                 ";
             }
             $this->ico=$this->qcur<$this->qtot?'heroicon-m-play':'';
+            $this->qcur2=$this->qcur;
     }
     public function validateData(){
       // dd($this->qcur);
@@ -133,85 +140,103 @@ class AssessGen extends Page
         else $this->validate([
             'ans2'=>'required',
         ]);
+
     }
+    public function populate(){
+        $this->qcur2++;
+        $this->ico=$this->qcur<$this->qtot?'heroicon-m-play':'';
+                if($this->qcur<=$this->qtot-1){
+                    $this->aa=$this->quest[$this->qcur]->answers()->pluck('text','answers.id');
+                    $this->bm1=$this->quest[$this->qcur]->answers()->where('isok',true)->count()<=1;
+                    $this->qtext=$this->quest[$this->qcur]->text;
+                    $this->ans=null;$this->ans2=[];
+                    $this->cans=null;
+                    $this->bm2=false;
+                }else{
+                    $this->carr[0]=$this->qcur;
+                    $this->carr[1]=$this->score;
+                    cache(['carr_'.$this->record->id.'_'.auth()->id() => $this->carr], 86400);
+                    $this->record->users1()->updateExistingPivot(auth()->id(), [
+                        'comp_at' => now()]);
+                    $this->aa=[];
+                    $this->qtext=null;
+                    $this->ans=null;$this->ans2=[];
+                    $this->cans=null;
+                    $this->bm2=false;
+                    $sc=round(100*$this->score/$this->qtot,2);
+                    $this->btext="
+                    <div class=''>
+                        <div class='text-sm text-center'>You found $this->score correct answers over $this->qtot</div> <br>
+                        <div class='text-3xl text-center pb-9'>$sc % </div>
+                        <div class='text-center ' style='--c-50:var(--". ($sc>=$this->ix->wperc? "success":"danger")."-50);--c-400:var(--". ( $sc>=$this->ix->wperc? "success":"danger")."-400);--c-600:var(--". ( $sc>=$this->ix->wperc? "success":"danger")."-600);' >
+                        <br><span
+                        class='rounded-md text-lg font-medium ring-1 ring-inset px-2 min-w-[theme(spacing.6)] py-1 bg-custom-50 text-custom-600 ring-custom-600/10 dark:bg-custom-400/10 dark:text-custom-400 dark:ring-custom-400/30'
+                        >". ($sc>=$this->ix->wperc? "Passed":"Failed")."</span>
+                    </div>
+                    </div> <br> <br>
+                    ";
+                    if($this->qcur2>$this->qtot)return redirect()->to(ExamResource::getUrl());
+                    $this->qcur2++;
+            //
+                }
+
+      }
+    public function incrQuest(){
+            if($this->bm1){
+                $ab=$this->quest[$this->qcur]->answers()->where('isok',true)->where('answers.id',$this->ans)->count();
+                $au=$this->quest[$this->qcur]->answers()->where('isok',true)->first()->text;
+                $this->gen[$this->quest[$this->qcur]->id]=[$this->ans];
+                if($ab>0) $this->score++;
+                if($this->record->type=='0' && $this->bm2==false)
+                $this->cans=$ab>0?"
+                <span class='text-primary-600 text-xs'> <br>
+        Correct answer</span>":
+                "<span style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-custom-600 text-xs'>
+                <br>  Wrong answer <br> </span><span class='text-xs'>This was the correct answer : <br>
+                $au</span>";
+            }else{
+                $ab2=$this->quest[$this->qcur]->answers()->where('isok',false)->whereIn('answers.id',$this->ans2)->count();
+                $au2=$this->quest[$this->qcur]->answers()->where('isok',true)->pluck('answers.text');
+                $this->gen[$this->quest[$this->qcur]->id]=$this->ans2;
+            // dd($au2);
+            if($this->record->type=='0' && $this->bm2==false)
+            if($ab2==0) $this->score++;
+                $this->cans=$ab2==0?"
+                <span class='text-primary-600 text-xs'> <br>
+        Correct set of answers</span>":
+                "<span style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-custom-600 text-xs'>
+                <br>  Wrong set of answers <br> </span><span class='text-xs'>This was the correct set : <br>
+                ".$au2->join("<br>")."</span>";
+            }
+            $this->bm2=true;
+            $this->qcur++;
+            $this->carr[0]=$this->qcur;
+            $this->carr[1]=$this->score;
+            $this->carr[5]=$this->gen;
+            cache(['carr_'.$this->record->id.'_'.auth()->id() => $this->carr], 86400);
+            $this->record->users1()->updateExistingPivot(auth()->id(), [
+                'gen'=>$this->gen]);
+
+      }
     public function register($opt=false){
        $this->resetErrorBag();
        if($opt==false && $this->qcur<=$this->qtot-1) {$this->validateData();}
         if($opt || ($this->record->type=='1' && $this->record->timer-now()->diffInMinutes($this->record->users1()->first()->pivot->start_at))<0)
         {
             $this->qcur=$this->qtot; //dd($opt);
+            $this->qcur2=$this->qtot-1; //dd($opt);
         }
-        if($this->record->type=='1' || $opt ||  $this->qcur>=$this->qtot)  $this->bm2=true;
-            if($this->bm2){
-            if($this->qcur<=$this->qtot-2){
-       $this->qcur++;
-                $this->carr[0]=$this->qcur;
-                $this->carr[1]=$this->score;
-                $this->carr[5]=$this->gen;
-                cache(['carr_'.$this->record->id.'_'.auth()->id() => $this->carr], 86400);
-                //dd($this->ans);
-                $this->aa=$this->quest[$this->qcur]->answers()->pluck('text','answers.id');
-                $this->bm1=$this->quest[$this->qcur]->answers()->where('isok',true)->count()<=1;
-                $this->qtext=$this->quest[$this->qcur]->text;
-                $this->ans=null;$this->ans2=[];
-                $this->cans=null;
-                $this->bm2=false;
-            }else{
-                $this->qcur++;
-                $this->carr[0]=$this->qcur;
-                $this->carr[1]=$this->score;
-                $this->carr[5]=$this->gen;
-                cache(['carr_'.$this->record->id.'_'.auth()->id() => $this->carr], 86400);
-                $this->record->users1()->updateExistingPivot(auth()->id(), [
-                    'comp_at' => now(), 'gen'=>$this->gen]);
-                $this->aa=[];
-                $this->qtext=null;
-                $this->ans=null;$this->ans2=[];
-                $this->cans=null;
-                $this->bm2=false;
-                $sc=round(100*$this->score/$this->qtot,2);
-                $this->btext="
-                <div class=''>
-                    <div class='text-sm text-center'>You found $this->score correct answers over $this->qtot</div> <br>
-                    <div class='text-3xl text-center pb-9'>$sc % </div>
-                    <div class='text-center ' style='--c-50:var(--". ($sc>=$this->ix->wperc? "success":"danger")."-50);--c-400:var(--". ( $sc>=$this->ix->wperc? "success":"danger")."-400);--c-600:var(--". ( $sc>=$this->ix->wperc? "success":"danger")."-600);' >
-                    <br><span
-                    class='rounded-md text-lg font-medium ring-1 ring-inset px-2 min-w-[theme(spacing.6)] py-1 bg-custom-50 text-custom-600 ring-custom-600/10 dark:bg-custom-400/10 dark:text-custom-400 dark:ring-custom-400/30'
-                    >". ($sc>=$this->ix->wperc? "Passed":"Failed")."</span>
-                   </div>
-                </div> <br> <br>
-                ";
-
-                if($this->qcur>$this->qtot)return redirect()->to(ExamResource::getUrl());
-           //
+        if($this->qcur>=$this->qtot){
+            $this->populate();
+        }else {
+            if($this->record->type=='1'){
+                $this->incrQuest();
+                $this->populate();
             }
-        }else{
-            if($this->qcur<=$this->qtot-1){
-                if($this->bm1){
-                    $ab=$this->quest[$this->qcur]->answers()->where('isok',true)->where('answers.id',$this->ans)->count();
-                    $au=$this->quest[$this->qcur]->answers()->where('isok',true)->first()->text;
-                    $this->gen[$this->quest[$this->qcur]->id]=[$this->ans];
-                    if($ab>0) $this->score++;
-                    if($this->record->type=='0' && $this->bm2==false)
-                    $this->cans=$ab>0?"
-                    <span class='text-primary-600 text-xs'> <br>
-            Correct answer</span>":
-                    "<span style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-custom-600 text-xs'>
-                    <br>  Wrong answer <br> This was the correct answer : <br> $au</span>";
-                }else{
-                    $ab2=$this->quest[$this->qcur]->answers()->where('isok',false)->whereIn('answers.id',$this->ans2)->count();
-                    $au2=$this->quest[$this->qcur]->answers()->where('isok',true)->pluck('answers.text');
-                    $this->gen[$this->quest[$this->qcur]->id]=$this->ans2;
-                // dd($au2);
-                if($this->record->type=='0' && $this->bm2==false)
-                if($ab2==0) $this->score++;
-                    $this->cans=$ab2==0?"
-                    <span class='text-primary-600 text-xs'> <br>
-            Correct set of answers</span>":
-                    "<span style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-custom-600 text-xs'>
-                    <br>  Wrong set of answers <br> This was the correct set  : <br> ".$au2->join("<br>")."</span>";
-                }
-                $this->bm2=true;
+            else{
+                if($this->bm2){
+                    $this->populate();
+                }else $this->incrQuest();
             }
         }
     }
@@ -224,7 +249,7 @@ class AssessGen extends Page
         return $this->record->from !=auth()->id()?'Class Examiniation':($this->record->type==0?"Test your knowlegde":'Exam Simulation');
     }
     public function getSubheading() : string | Htmlable{
-        return "Passing score : ".$this->ix->wperc." | Timer: ".$this->record->timer." min";
+        return "Passing score : ".$this->ix->wperc.($this->record->type=='0'?"":"| Timer: ".$this->record->timer." min");
     }
 
 }

@@ -29,7 +29,7 @@ class Exam extends Model
       {
           return $this->belongsToMany(Module::class, 'exam_modules', 'exam', 'module')
           ->orderBy('modules.name')
-          ->withPivot('nb')->using(ExamModule::class);
+          ->withPivot('nb');
       }
       public function users(): BelongsToMany
       {
@@ -38,8 +38,7 @@ class Exam extends Model
           ->withPivot('comp_at')
           ->withPivot('start_at')
           ->withPivot('gen')
-           ->withPivot('id')
-            ->using(ExamUser::class);
+           ->withPivot('id');
       }
       public function users1(): BelongsToMany
       {
