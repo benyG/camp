@@ -63,8 +63,7 @@ class ManageSmails extends ManageRecords
         return [
             'inbox' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query
-                ->join('users_mail', 'smails.id', '=', 'users_mail.mail')
-                ->where('user',auth()->user()->id)->latest()
+                ->has('users1')->with('users1')->latest()
                         ),
             'outbox' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query

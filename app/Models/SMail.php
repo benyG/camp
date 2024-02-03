@@ -32,30 +32,29 @@ class SMail extends Model
       {
           //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
           return $this->belongsToMany(User::class, 'users_mail', 'mail', 'user')
-      //    ->as('um')
        //   ->withPivot('last-sent')
       //    ->withPivot('sent')
       //    ->withPivot('id')
-      //    ->using(UsersMail::class)
           ;
       }
       public function users1(): BelongsToMany
       {
           //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
           return $this->belongsToMany(User::class, 'users_mail', 'mail', 'user')
-          ->as('us1')
+          ->withPivot('last_sent')
+          ->withPivot('read_date')
+          ->withPivot('sent')
+          ->withPivot('read')
           ->wherePivot('user', auth()->user()->id);
       }
       public function users2(): BelongsToMany
       {
           //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
           return $this->belongsToMany(User::class, 'users_mail', 'mail', 'user')
-          ->as('um')
           ->withPivot('last_sent')
           ->withPivot('read_date')
           ->withPivot('sent')
-         ->withPivot('id')
-         ->using(UsersMail::class);
+         ->withPivot('id');
       }
 
 }

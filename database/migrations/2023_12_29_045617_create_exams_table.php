@@ -21,7 +21,9 @@ return new class extends Migration
             $table->timestamp('added_at')->useCurrent();
             $table->timestamp('due');
             $table->unsignedBigInteger('from')->nullable();
+            $table->unsignedBigInteger('certi')->nullable();
             $table->foreign('from')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreign('certi')->references('id')->on('courses')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 

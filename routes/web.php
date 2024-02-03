@@ -12,6 +12,9 @@ use App\Http\Controllers\PageController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/', function () {
+    return redirect('https://itexambootcamp.com/');
+})->name('home');
 
 Route::get('/verif', function () {
     return view('filament.auth.email-verif');

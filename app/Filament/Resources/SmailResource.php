@@ -82,16 +82,18 @@ class SmailResource extends Resource
                 Tables\Columns\TextColumn::make('sub')->label('Subject')
                 ->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('from')->label('Correspondants')
-                ->formatStateUsing(fn (Model $record): string => $record->from== auth()->user()->id? Str::remove(['"','[',']'],$record->users2->pluck('name')) : $record->user1->name)
+                ->formatStateUsing(fn (Model $record): string => $record->from== auth()->id()? Str::remove(['"','[',']'],$record->users2->pluck('name')) : $record->user1->name)
                 ->sortable()->hidden(fn():bool=>auth()->user()->ex>=2),
              Tables\Columns\IconColumn::make('sent')->label('Sent via SMTP')->hidden(fn():bool=>auth()->user()->ex>=2)
-             ->icon(fn($state):string=>$state==1?'heroicon-o-envelope':'')
-                 ->tooltip(fn (Smail $record): string =>$record->sent==1? "Last sent on {$record->last_sent}":"")
+             ->getStateUsing(fn (Smail $record) => $record->users1()->first()->pivot->sent??null)
+             ->icon(fn($state):string=>$state?'heroicon-o-envelope':'')
+                 ->tooltip(fn (Smail $record): string =>$record->users1()->first()->pivot->sent==1? "Last sent on {$record->users1()->first()->pivot->last_sent}":"")
                  ->sortable()->toggleable(isToggledHiddenByDefault: true),
                  Tables\Columns\IconColumn::make('read')->label('Read')
-                 ->color(fn($state):string=>$state==1?'success':'danger')
-                 ->icon(fn($state, Smail $record):string=>$record->from== auth()->user()->id? "":($state==1?'heroicon-o-envelope-open':'heroicon-o-envelope'))
-                     ->tooltip(fn (Smail $record): string =>$record->from== auth()->user()->id? "":($record->read==1? "Read on {$record->read_date}":""))
+                 ->getStateUsing(fn (Smail $record) => $record->users1()->first()->pivot->read??null)
+                 ->color(fn($state):string=>$state?'success':'danger')
+                 ->icon(fn($state, Smail $record):string=>$record->from== auth()->user()->id? "":($state?'heroicon-o-envelope-open':'heroicon-o-envelope'))
+                     ->tooltip(fn (Smail $record): string =>$record->from== auth()->user()->id? "":($record->users1()->first()->pivot->read? "Read on {$record->users1()->first()->pivot->read_date}":""))
                      ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')->label('Date')
                 ->dateTime()
@@ -105,9 +107,9 @@ class SmailResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->label('Read')->beforeFormFilled(function (Model $record)
+                Tables\Actions\ViewAction::make('jjhg')->label('Read')->beforeFormFilled(function (Model $record)
                 {
-                  if(!$record->read)  $record->users2()->updateExistingPivot(auth()->user()->id, ['read' => true,]);
+                  if($record->from!=auth()->id() && !$record->users1()->first()->pivot->read)  $record->users1()->updateExistingPivot(auth()->id(), ['read' => true,'read_date'=>now()]);
                 })->modalHeading(fn (Model $record): string=>$record->sub),
                 Tables\Actions\Action::make('transfer')->modalHeading('Transfer')->label('Transfer')->form([
                     Forms\Components\Select::make('user4')->label('To')
