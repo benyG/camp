@@ -264,10 +264,8 @@ class ExamResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
             ])
             ->actions([
-              //  Tables\Actions\ViewAction::make(),
               Tables\Actions\Action::make('sttr')->label('Start the Assessment')->icon('heroicon-o-play')->color('info')
               ->requiresConfirmation()
               ->modalIcon(fn(Exam $record):string=>$record->pub?'heroicon-o-eye-slash':'heroicon-m-play')
@@ -279,7 +277,6 @@ class ExamResource extends Resource
               ->visible(fn (Exam $record): bool =>empty($record->users1()->first()->pivot->comp_at) && !empty($record->due) && now()<$record->due)
               ->iconButton(),
                 Tables\Actions\Action::make('resend')->label('View the results')->iconButton()->icon('heroicon-o-document-check')
-              //  ->action(fn (Exam $record) => $record->advance())
               ->modalCancelAction(fn (\Filament\Actions\StaticAction $action) => $action->label('Close'))
               ->modalSubmitAction(false)
               ->modalHeading(fn (Exam $record):string=> 'Results')
@@ -307,8 +304,6 @@ class ExamResource extends Resource
                         ->listWithLineBreaks()->columnSpan(2)->limitList(3)
                         ->expandableLimitedList()
                         ->bulleted()
-                        ,
-
                     ])
                     ->columns(3),
                     Infolists\Components\Section::make('Performance')->collapsible()->persistCollapsed()
@@ -330,10 +325,9 @@ class ExamResource extends Resource
                         Infolists\Components\TextEntry::make('ddder')->label('Your choices'),
                     ])
                     ->columns(),
-
                 ])
                 ->color('success'),
-                Tables\Actions\DeleteAction::make()->iconButton(),
+                Tables\Actions\DeleteAction::make()->iconButton()->visible(fn(Exam $record):bool=>empty($record->users1()->first()->pivot->start_at)),
             ])
             ->bulkActions([
              /*    Tables\Actions\BulkActionGroup::make([
@@ -352,6 +346,7 @@ class ExamResource extends Resource
             'assess' => Pages\AssessGen::route('/assess/{ex}'),
         ];
     }
+
     protected function shouldPersistTableSortInSession(): bool
     {
         return true;
