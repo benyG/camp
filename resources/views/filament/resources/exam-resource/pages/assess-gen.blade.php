@@ -125,7 +125,9 @@
                                 },
                                 setRemaining() {
                                 const diff = this.expiry- new Date().getTime();
-                                this.remaining =  parseInt(diff / 1000);
+                                if(diff>0) this.remaining =  parseInt(diff / 1000);
+                                else this.remaining=0;
+
                                 },
                                 days() {
                                 return {

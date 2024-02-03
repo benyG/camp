@@ -73,9 +73,7 @@ class ListCertif extends Page implements HasTable
     public function table(Table $table): Table
     {
         return $table
-        ->query(Course::with('users1')->withCount('modules')->withCount('questions')->where('pub',true)
-        ->join('users_course', 'courses.id', '=', 'users_course.course')->where('user',auth()->id())
-        )
+        ->query(Course::has('users1')->with('users1')->withCount('modules')->withCount('questions')->where('pub',true))
         ->emptyStateHeading('No certification yet')->emptyStateIcon('heroicon-o-bookmark')
         ->emptyStateDescription('Please click on the Add button to see the list of available certifications.')
         ->columns([

@@ -84,7 +84,7 @@ class AssessGen extends Page
             else if(now()->diffInMinutes($this->record->users1()->first()->pivot->start_at)>
             $this->record->timer) abort(415);
         }
-        cache()->forget('carr_'.$this->record->id.'_'.auth()->id());
+      //  cache()->forget('carr_'.$this->record->id.'_'.auth()->id());
      // $this->record->users1()->first()->pivot->start_at=now();
        $this->ix=cache()->rememberForever('settings', function () {
         return \App\Models\Info::findOrFail(1);
@@ -109,7 +109,7 @@ class AssessGen extends Page
             $this->gen=$this->carr[5];
             $this->qtot=count($this->quest);
 
-       $this->qcur=0;
+       //$this->qcur=0;
             if($this->qcur<=$this->qtot-1){
                 $this->bm1=$this->quest[$this->qcur]->answers()->where('isok',true)->count()<=1;
                 $this->aa=$this->quest[$this->qcur]->answers()->pluck('text','answers.id');
@@ -189,9 +189,9 @@ class AssessGen extends Page
                 if($ab>0) $this->score++;
                 if($this->record->type=='0' && $this->bm2==false)
                 $this->cans=$ab>0?"
-                <span class='text-primary-600 text-xs'> <br>
+                <span class='text-primary-600 text-sm'> <br>
         Correct answer</span>":
-                "<span style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-custom-600 text-xs'>
+                "<span style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-custom-600 text-sm'>
                 <br>  Wrong answer <br> </span><span class='text-xs'>This was the correct answer : <br>
                 $au</span>";
             }else{
@@ -202,9 +202,9 @@ class AssessGen extends Page
             if($this->record->type=='0' && $this->bm2==false)
             if($ab2==0) $this->score++;
                 $this->cans=$ab2==0?"
-                <span class='text-primary-600 text-xs'> <br>
+                <span class='text-primary-600 text-sm'> <br>
         Correct set of answers</span>":
-                "<span style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-custom-600 text-xs'>
+                "<span style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-custom-600 text-sm'>
                 <br>  Wrong set of answers <br> </span><span class='text-xs'>This was the correct set : <br>
                 ".$au2->join("<br>")."</span>";
             }
@@ -249,7 +249,7 @@ class AssessGen extends Page
         return $this->record->from !=auth()->id()?'Class Examiniation':($this->record->type==0?"Test your knowlegde":'Exam Simulation');
     }
     public function getSubheading() : string | Htmlable{
-        return "Passing score : ".$this->ix->wperc.($this->record->type=='0'?"":"| Timer: ".$this->record->timer." min");
+        return "Title : ".$this->record->name." | Passing score : ".$this->ix->wperc.($this->record->type=='0'?"":"| Timer: ".$this->record->timer." min");
     }
 
 }

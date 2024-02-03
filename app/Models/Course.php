@@ -40,8 +40,7 @@ class Course extends Model
     {
         //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
         return $this->belongsToMany(User::class, 'users_course', 'course', 'user')
-        ->withPivot('approve')
-        ->using(UsersCourse::class);
+        ->withPivot('approve');
     }
     public function users1(): BelongsToMany
     {
@@ -49,9 +48,19 @@ class Course extends Model
         return $this->belongsToMany(User::class, 'users_course', 'course', 'user')
         ->withPivot('id')
         ->withPivot('approve')
-        ->wherePivot('user', auth()->user()->id)
-        ->using(UsersCourse::class);
+        ->wherePivot('user', auth()->user()->id);
     }
+    public function users2(): BelongsToMany
+    {
+        //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+        return $this->belongsToMany(User::class, 'users_course', 'course', 'user')
+        ->withPivot('id')
+        ->withPivot('created_at')
+        ->withPivot('approve')
+        ->wherePivot('approve', false)
+        ->latest('users_course.created_at');
+    }
+
     public function configs(): HasMany
     {
        // return $this->hasMany(App\Models\Module::class, 'foreign_key', 'local_key');
