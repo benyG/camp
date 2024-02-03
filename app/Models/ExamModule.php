@@ -19,7 +19,7 @@ class ExamModule extends Pivot
         return $this->belongsTo(Exam::class,'exam','id');
     }
 
-    public function moduleRel(): BelongsTo
+    public function moduleRel2(): BelongsTo
     {
         return $this->belongsTo(Module::class,'module','id');
     }

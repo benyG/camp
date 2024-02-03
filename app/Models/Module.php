@@ -37,6 +37,6 @@ class Module extends Model
     {
       //D'acc
         //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
-        return $this->belongsToMany(Exam::class, 'exam_modules', 'module', 'exam')->using(\App\Models\ExamModule::class);
+        return $this->belongsToMany(Exam::class, 'exam_modules', 'module', 'exam');
       }
 }
