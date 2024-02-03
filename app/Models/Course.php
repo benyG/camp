@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use App\Models\Module;
+use App\Models\Exam;
 use App\Models\CertConfig;
 use App\Models\User;
 use App\Models\UsersCourse;
@@ -30,6 +31,11 @@ class Course extends Model
     {
        // return $this->hasMany(App\Models\Module::class, 'foreign_key', 'local_key');
         return $this->hasMany(Module::class, 'course');
+    }
+    public function exams(): HasMany
+    {
+       // return $this->hasMany(App\Models\Module::class, 'foreign_key', 'local_key');
+        return $this->hasMany(Exam::class, 'certi');
     }
     public function questions(): HasManyThrough
     {

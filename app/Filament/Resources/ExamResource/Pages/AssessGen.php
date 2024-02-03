@@ -249,7 +249,7 @@ class AssessGen extends Page
         return $this->record->from !=auth()->id()?'Class Examiniation':($this->record->type==0?"Test your knowlegde":'Exam Simulation');
     }
     public function getSubheading() : string | Htmlable{
-        return "Title : ".$this->record->name." | Passing score : ".$this->ix->wperc.($this->record->type=='0'?"":"| Timer: ".$this->record->timer." min");
+        return "Certification : ".$this->record->name." | Passing score : ".$this->ix->wperc.($this->record->type=='0'?"":"| Timer: ".$this->record->timer." min");
     }
 
 }

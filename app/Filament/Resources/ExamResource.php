@@ -69,7 +69,9 @@ class ExamResource extends Resource
                 })
                 ->schema([
                 Forms\Components\Select::make('certi')->label('Certification')
-                ->options(auth()->user()->ex==0 ? Course::all()->pluck('name', 'id') : Course::has('users1')->where('pub',true)->pluck('name', 'id'))
+                ->relationship(name: 'certRel', titleAttribute: 'name',
+                modifyQueryUsing: fn (Builder $query) =>auth()->user()->ex==0 ?$query :$query->has('users1')->where('pub',true))
+               // ->options( Course::all()->pluck('name', 'id') : Course::->pluck('name', 'id'))
                 ->afterStateUpdated(function (?string $state, ?string $old,Get $get,Set $set) {
                     if($get('typee')=='1'){
                     $cert=CertConfig::where('course',$state)->get();
@@ -242,9 +244,10 @@ class ExamResource extends Resource
                 ->badge()
                 ->color(fn ($record): string =>$record->type=='1'?(auth()->id()==$record->from?'primary': 'danger'):'info')
             ->sortable(),
-                    Tables\Columns\TextColumn::make('users.name')->label('Users')
-                    ->hidden(auth()->user()->ex!=0),
-                Tables\Columns\TextColumn::make('added')->label('Affected on')
+            Tables\Columns\TextColumn::make('quest')->label('Questions')->sortable(),
+        Tables\Columns\TextColumn::make('users.name')->label('Users')
+            ->hidden(auth()->user()->ex!=0),
+        Tables\Columns\TextColumn::make('added')->label('Affected on')
                 ->getStateUsing(fn (Exam $record) => $record->users1()->first()->pivot->added??null)
                     ->dateTime()->hidden(auth()->user()->ex==0)->since()
                     ->sortable()->toggleable(isToggledHiddenByDefault: true),
@@ -256,15 +259,51 @@ class ExamResource extends Resource
                     ->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('start_at')->label('Started on')
                 ->getStateUsing(fn (Exam $record) => $record->users1()->first()->pivot->start_at??null)
-                    ->dateTime()->hidden(auth()->user()->ex==0)
+                    ->dateTime()->hidden(auth()->user()->ex==0)->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('comp_at')->label('Completed on')
                 ->getStateUsing(fn (Exam $record) => $record->users1()->first()->pivot->comp_at??null)
-                    ->dateTime()->hidden(auth()->user()->ex==0)
+                    ->dateTime()->hidden(auth()->user()->ex==0)->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('certi')->label('Certifications')
+                ->relationship(name: 'certRel', titleAttribute: 'name',
+                modifyQueryUsing: fn (Builder $query) =>auth()->user()->ex==0 ?$query :$query->has('users1')->where('pub',true))
+                ->searchable()->label('Certifications')->multiple()
+                ->preload(),
+                Tables\Filters\Filter::make('created_at')
+                ->form([
+                    Forms\Components\Select::make('type')->label('Type')->selectablePlaceholder(false)->default('0')
+                    ->options([
+                        '0' => 'Test your knowlegde',
+                        '1' => 'Exam Simulation',
+                        '2' => 'Class Exam',
+                    ])->live(),
+                    ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            empty($data['type']),
+                            fn (Builder $query, $date): Builder => $query->where('type', '0'),
+                        )
+                        ->when(
+                            $data['type']=='1',
+                            fn (Builder $query, $date): Builder => $query->where('type', '1')->where('from',  auth()->user()->ex!=0?'=':'<>', auth()->id()),
+                        )
+                        ->when(
+                            $data['type']=='2',
+                            fn (Builder $query, $date): Builder => $query->where('type', '1')->where('from', auth()->user()->ex==0?'=':'<>',auth()->id()),
+                        )
+                        ;
+                })
+
             ])
+            ->filtersTriggerAction(
+                fn (Tables\Actions\Action $action) => $action
+                    ->button()
+                    ->label('Filter'),
+            )
             ->actions([
               Tables\Actions\Action::make('sttr')->label('Start the Assessment')->icon('heroicon-o-play')->color('info')
               ->requiresConfirmation()
@@ -274,7 +313,7 @@ class ExamResource extends Resource
               ->action(function (Exam $record) {
                return redirect()->to(ExamResource::getUrl('assess', ['ex' => $record->name]));
               })
-              ->visible(fn (Exam $record): bool =>empty($record->users1()->first()->pivot->comp_at) && !empty($record->due) && now()<$record->due)
+              ->visible(fn (Exam $record): bool =>$record->users1()->count()>0 && empty($record->users1()->first()->pivot->comp_at) && !empty($record->due) && now()<$record->due)
               ->iconButton(),
                 Tables\Actions\Action::make('resend')->label('View the results')->iconButton()->icon('heroicon-o-document-check')
               ->modalCancelAction(fn (\Filament\Actions\StaticAction $action) => $action->label('Close'))
@@ -284,7 +323,7 @@ class ExamResource extends Resource
                     'filament.resources.exam-resource.pages.assess-res',
                     ['record' => $record],
                 )) */
-                ->visible(fn (Exam $record): bool =>!empty($record->users1()->first()->pivot->comp_at) || (!empty($record->due) && now()>$record->due))
+                ->visible(fn (Exam $record): bool =>$record->users1()->count()>0 &&!empty($record->users1()->first()->pivot->comp_at) || (!empty($record->due) && now()>$record->due))
                 ->infolist([
                     Infolists\Components\Section::make('Assessment summary')->collapsible()->persistCollapsed()
                     ->schema([
@@ -292,11 +331,11 @@ class ExamResource extends Resource
                         Infolists\Components\TextEntry::make('type')->label('Type')
                         ->state(fn (Exam $record) => $record->type=='1'?(auth()->id()==$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
                         ->badge()
-                        ->color(fn ($record): string =>$record->type=='1'?(auth()->id()!=$record->from?'primary': 'danger'):'info'),
+                        ->color(fn ($record): string =>$record->type=='1'?(auth()->id()==$record->from?'primary': 'danger'):'info'),
                         Infolists\Components\TextEntry::make('timer')->label('Time')
                         ->state(fn (Exam $record) => $record->type=='1'?$record->timer:'Unlimited'),
                         Infolists\Components\TextEntry::make('quest')->label('Questions'),
-                        Infolists\Components\TextEntry::make('due')->label('Time'),
+                        Infolists\Components\TextEntry::make('due')->label('Due Date'),
                         Infolists\Components\TextEntry::make('added_at')->label('Created')->placeholder('N/A'),
                         Infolists\Components\TextEntry::make('comp_at')->label('Completed on')->placeholder('N/A')
                         ->state(fn (Exam $record) => $record->users1()->first()->pivot->comp_at??null),

@@ -109,7 +109,7 @@ class SmailResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make('jjhg')->label('Read')->beforeFormFilled(function (Model $record)
                 {
-                  if(!$record->users1()->first()->pivot->read)  $record->users1()->updateExistingPivot(auth()->id(), ['read' => true,'read_date'=>now()]);
+                  if($record->from!=auth()->id() && !$record->users1()->first()->pivot->read)  $record->users1()->updateExistingPivot(auth()->id(), ['read' => true,'read_date'=>now()]);
                 })->modalHeading(fn (Model $record): string=>$record->sub),
                 Tables\Actions\Action::make('transfer')->modalHeading('Transfer')->label('Transfer')->form([
                     Forms\Components\Select::make('user4')->label('To')

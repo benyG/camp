@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Question;
+use App\Models\Course;
 use App\Models\User;
 use App\Models\ExamUser;
 use App\Models\ExamModule;
@@ -12,11 +13,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+
 class Exam extends Model
 {
     public $timestamps = false;
     protected $fillable = [
-        'name','type','descr','timer','from','due'
+        'name','type','descr','timer','from','due','quest','certi'
       ];
       protected function slug(): Attribute
       {
@@ -58,4 +61,8 @@ class Exam extends Model
       {
           return $this->hasMany(ExamModule::class,'exam','id');
       }
+      public function certRel(): BelongsTo
+      {
+        return $this->belongsTo(Course::class,'certi','id');
+    }
 }

@@ -79,7 +79,7 @@
                                Questions left
                             </span>
                             <span class="fi-fo-wizard-header-step-description font-bold text-start text-sm text-gray-500 dark:text-gray-400">
-                                {{($qtot-$qcur)}}
+                                {{($qtot-$qcur)}} / {{($qtot)}}
                             </span>
                     </div>
                 </button>
