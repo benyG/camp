@@ -276,23 +276,28 @@ class ExamResource extends Resource
                 ->form([
                     Forms\Components\Select::make('type')->label('Type')->selectablePlaceholder(false)->default('0')
                     ->options([
-                        '0' => 'Test your knowlegde',
-                        '1' => 'Exam Simulation',
-                        '2' => 'Class Exam',
+                        '0' => 'All',
+                        '1' => 'Test your knowledge',
+                        '2' => 'Exam Simulation',
+                        '3' => 'Class Exam',
                     ])->live(),
                     ])
                 ->query(function (Builder $query, array $data): Builder {
                     return $query
-                        ->when(
-                            empty($data['type']),
-                            fn (Builder $query, $date): Builder => $query->where('type', '0'),
-                        )
-                        ->when(
-                            $data['type']=='1',
+                    ->when(
+                        empty($data['type']),
+                        fn (Builder $query, $date): Builder => $query,
+                    )
+                    ->when(
+                        $data['type']=='1',
+                        fn (Builder $query, $date): Builder => $query->where('type', '0'),
+                    )
+                    ->when(
+                            $data['type']=='2',
                             fn (Builder $query, $date): Builder => $query->where('type', '1')->where('from',  auth()->user()->ex!=0?'=':'<>', auth()->id()),
                         )
                         ->when(
-                            $data['type']=='2',
+                            $data['type']=='3',
                             fn (Builder $query, $date): Builder => $query->where('type', '1')->where('from', auth()->user()->ex==0?'=':'<>',auth()->id()),
                         )
                         ;
