@@ -1,6 +1,6 @@
 Hello {{$name}},
 
-You have a new private message from the admin.
+You have a new private message from your coach.
 
 Please log in to your dashboad to read it.
 ‍
