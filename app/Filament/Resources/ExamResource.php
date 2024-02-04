@@ -235,7 +235,7 @@ class ExamResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->paginated([5,10,20,30,50,100, 'all'])
-        ->query(auth()->user()->ex==0?Exam::where('from',auth()->id())->with('users')->with('modules')->latest('added_at'):Exam::has('users1')->with('users1')->with('modules')
+        ->query(auth()->user()->ex==0?Exam::where('from',auth()->id())->with('users')->with('certRel')->with('modules')->latest('added_at'):Exam::has('users1')->with('certRel')->with('users1')->with('modules')
         ->latest('added_at'))
         ->columns([
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable()->label('Title')

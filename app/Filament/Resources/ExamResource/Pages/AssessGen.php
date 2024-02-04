@@ -189,9 +189,9 @@ class AssessGen extends Page
                 if($ab>0) $this->score++;
                 if($this->record->type=='0' && $this->bm2==false)
                 $this->cans=$ab>0?"
-                <span class='text-primary-600 text-sm'> <br>
+                <span class='text-sm text-primary-600'> <br>
         Correct answer</span>":
-                "<span style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-custom-600 text-sm'>
+                "<span style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-sm text-custom-600'>
                 <br>  Wrong answer <br> </span><span class='text-xs'>This was the correct answer : <br>
                 $au</span>";
             }else{
@@ -202,9 +202,9 @@ class AssessGen extends Page
             if($this->record->type=='0' && $this->bm2==false)
             if($ab2==0) $this->score++;
                 $this->cans=$ab2==0?"
-                <span class='text-primary-600 text-sm'> <br>
+                <span class='text-sm text-primary-600'> <br>
         Correct set of answers</span>":
-                "<span style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-custom-600 text-sm'>
+                "<span style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-sm text-custom-600'>
                 <br>  Wrong set of answers <br> </span><span class='text-xs'>This was the correct set : <br>
                 ".$au2->join("<br>")."</span>";
             }
@@ -249,7 +249,7 @@ class AssessGen extends Page
         return $this->record->from !=auth()->id()?'Class Examiniation':($this->record->type==0?"Test your knowlegde":'Exam Simulation');
     }
     public function getSubheading() : string | Htmlable{
-        return "Certification : ".$this->record->name." | Passing score : ".$this->ix->wperc.($this->record->type=='0'?"":"| Timer: ".$this->record->timer." min");
+        return "Certification : ".$this->record->certRel->name." | Passing score : ".$this->ix->wperc.($this->record->type=='0'?"":"| Timer: ".$this->record->timer." min");
     }
 
 }
