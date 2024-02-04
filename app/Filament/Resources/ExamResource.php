@@ -134,6 +134,7 @@ class ExamResource extends Resource
                     }
                 }),
                 Forms\Components\TextInput::make('timer')->numeric()->requiredIf('type', '1')->label('Timer (min)')
+                ->hidden(fn(Get $get):bool=>$get('type')!='1')
                 ->rules(['min:'.$ix->mint,'max:'.match (auth()->user()->ex) {1 => $ix->maxts,0 => 40000000,
                  2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv}]),
                 Forms\Components\TextInput::make('quest')->numeric()->required()->label('Nb. Questions')
