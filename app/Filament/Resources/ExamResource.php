@@ -436,11 +436,13 @@ class ExamResource extends Resource
                             return \App\Models\Info::findOrFail(1);
                         });
                         $cu=0;
-                        $mode="";
+                        $mode="<table class='w-full text-sm border-collapse table-auto'><thead><tr><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>Users</th><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>Time</th><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>Score</th></tr></thead><tbody class=''>";
                         foreach ($record->users as $us) {
-                            $mode.="<span class='text-lg font-bold'>".$us->name ." (Started : ".(empty($us->pivot->start_at)?'Not yet':$us->pivot->start_at.' | Completed on : '.($us->pivot->comp_at??'Not yet'));
-                        $mod=array();
-                            foreach ($record->modules as $gg) $mod[$gg->id]=[$gg->name,$gg->pivot->nb,0];
+                            $mode.="<tr><td class='p-4 pl-8 text-gray-500 border-b border-gray-100 dark:border-gray-700 dark:text-gray-400'>".$us->name ."</td><td class='p-4 pl-8 text-gray-500 border-b border-gray-100 dark:border-gray-700 dark:text-gray-400'>".(!empty($us->pivot->start_at) && !empty($us->pivot->comp_at)?
+                            \Illuminate\Support\Carbon::parse($record->users1()->first()->pivot->comp_at)->diffInMinutes($record->users1()->first()->pivot->start_at):
+                            'N/A')."</td>";
+                       // $mod=array();
+                           // foreach ($record->modules as $gg) $mod[$gg->id]=[$gg->name,$gg->pivot->nb,0];
                            // dd($mod);
                                 $ca=0;
                             if(!empty($us->pivot->gen) && Str::contains($us->pivot->gen,"{")){
@@ -451,34 +453,34 @@ class ExamResource extends Resource
                                     $bm=$quest->answers()->where('isok',true)->count()<=1;
                                     if($bm){
                                         $ab=$quest->answers()->where('isok',true)->where('answers.id',$res[$quest->id][0])->count();
-
                                         if($ab>0) {
                                             $ca++;
-                                            if(array_key_exists($quest->moduleRel->id,$mod)) $mod[$quest->moduleRel->id][2]++;
+                                          //  if(array_key_exists($quest->moduleRel->id,$mod)) $mod[$quest->moduleRel->id][2]++;
                                         }
                                     }else{
                                         $ab2=$quest->answers()->where('isok',false)->whereIn('answers.id',$res[$quest->id])->count();
                                         if($ab2==0) {
                                             $ca++;
-                                            if(array_key_exists($quest->moduleRel->id,$mod)) $mod[$quest->moduleRel->id][2]++;
+                                           // if(array_key_exists($quest->moduleRel->id,$mod)) $mod[$quest->moduleRel->id][2]++;
                                         }
                                     }
                                 }
                             }
                         }
                         $cu+=(round(100*$ca/$record->quest,2)>$ix->wperc?1:0);
-                        $mode.=" | Score : ".round(100*$ca/$record->quest,2)."%)</span><br><ul>";
+                        $mode.="<td class='p-4 pl-8 border-b border-gray-100 dark:border-gray-700 text-".(round(100*$ca/$record->quest,2)>$ix->wperc?'primary':'danger')."-600'>".round(100*$ca/$record->quest,2)."%</td>";
+                        $mode.="</tr></tbody></table>";
+                        /* $mode.=" | Score : ".round(100*$ca/$record->quest,2)."%)</span><br>";
                         if(!empty($us->pivot->start_at)){
                             $mode.="<ul>";
                             foreach ($mod as $va) {
                                 $mode.="<li>".$va[0]." (".round(100*$va[2]/$va[1],2)."%)</li>";
                             }
                             $mode.="</ul>";
-                        }
+                        } */
+
                         return [
-                        Infolists\Components\TextEntry::make('scfor')->label('Overall')
-                        ->state(fn ($record):string=>round(100*$cu/$record->users()->count(),2).'%'),
-                        Infolists\Components\TextEntry::make('scfcr')->label('Users performance')
+                        Infolists\Components\TextEntry::make('scfcr')->label('')
                         ->state(fn()=>$mode)->html()->columnSpanFull(),
                     ];
                     })

@@ -43,6 +43,10 @@ class UserResource extends Resource
                     ->options(['1' => 'Admin','2' => 'Starter','3' => 'User','4' => 'Pro','5' => 'VIP'])
                     ->rules([Rule::in(['1','2','3','4','5'])]),
                 Password::make('password')
+                ->regex('/^\S*(?=.*\d)(?=\S*[\W])[a-zA-Z\d]\S*$/i')
+                        ->validationMessages([
+                            'regex' => "There should be at least one uppercase and lowercase letter, one special character, and one digit. No spaces",
+                        ])
                     ->password()->copyable()->regeneratePassword()
                     ->generatePasswordUsing(function ($state) {
                         return Str::password(15);

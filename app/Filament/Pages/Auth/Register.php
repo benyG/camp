@@ -22,7 +22,7 @@ class Register extends BaseRegister
                         $this->getPasswordFormComponent()
                         ->regex('/^\S*(?=.*\d)(?=\S*[\W])[a-zA-Z\d]\S*$/i')
                         ->validationMessages([
-                            'regex' => "There should be at least one special character, and one digit. No spaces",
+                            'regex' => "There should be at least one uppercase and lowercase letter, one special character, and one digit. No spaces",
                         ])                        ,
                         $this->getPasswordConfirmationFormComponent(),
                     ])
