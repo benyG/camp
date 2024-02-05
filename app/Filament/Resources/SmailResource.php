@@ -218,11 +218,15 @@ class SmailResource extends Resource
     {
         return $infolist
             ->schema([
-                Infolists\Components\TextEntry::make('user.name')->label('From')
+                Infolists\Components\TextEntry::make('user.name')->label('From: ')
+                ->extraAttributes(['class' => 'font-bold'])
                 ->hidden(fn (Model $record): bool => $record->from== auth()->user()->id),
+                Infolists\Components\Section::make('Content')
+                ->schema([
+                Infolists\Components\TextEntry::make('content')->label('')->html()->columnSpanFull(),
+                ]),
                 Infolists\Components\TextEntry::make('users.name')->label('Sent to')
                 ->hidden(fn (Model $record): bool => $record->users->contains(auth()->user())),
-                Infolists\Components\TextEntry::make('content')->html()->columnSpanFull(),
             ]);
     }
     public static function getNavigationBadge(): ?string

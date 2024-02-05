@@ -66,12 +66,13 @@ class AssessCreate extends CreateRecord
             $record->modules()->attach($es['module'],['nb'=>$es['nb']]);
         }
 
-        if(auth()->user()->ex==0 && $record->type=='1'){
+        if(auth()->user()->ex==0){
             $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
             $ma = new SMail;
+            $ma->from=auth()->id();
             $ma->sub="New Exam for you !";
             $ma->content='Dear Bootcamper , <br>'.
-            'An exam was affected to you on the <b>'.$record->added_at.'<br>Title : '.$record->title.'<br>Due Date : '.$record->due.'</b>'
+            'An exam was affected to you on the <b>'.$record->added_at.'<br>Title : '.$record->name.'<br>Due Date : '.$record->due.'</b>'
                 .'<br><br> Please rush to the Bootcamp to take the exam !<br><br><i>The ITExamBootCamp Team</i>';
             $ma->save();
             foreach ($record->users as $us) {

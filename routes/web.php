@@ -13,10 +13,7 @@ use App\Http\Controllers\PageController;
 |
 */
 Route::get('/', function () {
-    return redirect('https://itexambootcamp.com/');
+    return view('welcome');
 })->name('home');
 
-Route::get('/verif', function () {
-    return view('filament.auth.email-verif');
-})->name('verif');
 //Route::get('/boss/{id}/certapproval',[ListCertif::class,'CertRequest']);
