@@ -66,7 +66,7 @@ class AssessCreate extends CreateRecord
             $record->modules()->attach($es['module'],['nb'=>$es['nb']]);
         }
 
-        if(auth()->user()->ex==0 && $record->type=='1'){
+        if(auth()->user()->ex==0){
             $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
             $ma = new SMail;
             $ma->from=auth()->id();

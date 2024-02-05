@@ -339,7 +339,7 @@ class ExamResource extends Resource
                 ->infolist([
                     Infolists\Components\Section::make('Assessment summary')->collapsible()->persistCollapsed()
                     ->schema([
-                        Infolists\Components\TextEntry::make('name')->label('Title'),
+                        Infolists\Components\TextEntry::make('certRel.name')->label('Cetification'),
                         Infolists\Components\TextEntry::make('type')->label('Type')
                         ->state(fn (Exam $record) => $record->type=='1'?(auth()->id()==$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
                         ->badge()
@@ -419,7 +419,7 @@ class ExamResource extends Resource
                 ->infolist([
                     Infolists\Components\Section::make('Assessment summary')->collapsible()->persistCollapsed()
                     ->schema([
-                        Infolists\Components\TextEntry::make('name')->label('Title'),
+                        Infolists\Components\TextEntry::make('certRel.name')->label('Certification'),
                         Infolists\Components\TextEntry::make('users.name')->label('Users'),
                         Infolists\Components\TextEntry::make('timer')->label('Time')
                         ->state(fn (Exam $record) => $record->type=='1'?$record->timer:'Unlimited'),
