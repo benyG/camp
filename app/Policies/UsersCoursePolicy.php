@@ -13,7 +13,7 @@ class UsersCoursePolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->ex ==0;
     }
 
     /**
@@ -21,7 +21,7 @@ class UsersCoursePolicy
      */
     public function view(User $user, UsersCourse $usersCourse): bool
     {
-        return false;
+        return $user->ex ==0;
     }
 
     /**
@@ -29,7 +29,7 @@ class UsersCoursePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->ex ==0;
     }
 
     /**
@@ -37,7 +37,7 @@ class UsersCoursePolicy
      */
     public function update(User $user, UsersCourse $usersCourse): bool
     {
-        return false;
+        return $user->ex ==0;
     }
 
     /**
@@ -45,7 +45,7 @@ class UsersCoursePolicy
      */
     public function delete(User $user, UsersCourse $usersCourse): bool
     {
-        return false;
+        return $user->ex ==0;
     }
 
     /**

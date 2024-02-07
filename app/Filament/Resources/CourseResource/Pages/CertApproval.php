@@ -8,6 +8,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Concerns\InteractsWithTable;
+use App\Models\UsersCourse;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -33,13 +34,13 @@ class CertApproval extends Page implements HasTable
     public function table(Table $table): Table
     {
         return $table
-        ->query(Course::has('users2')->with('users2')->where('pub',true))
+        ->query(UsersCourse::with('userRel')->with('courseRel')->where('approve',false))
         ->emptyStateHeading('No certification request yet')->emptyStateIcon('heroicon-o-bookmark')
         ->columns([
-            Tables\Columns\TextColumn::make('users2.name')->sortable()->searchable()->label('User')
-            ->description(fn (Course $record): ?string => $record->email),
-            Tables\Columns\TextColumn::make('name')->sortable()->searchable()->label('Certification'),
-            Tables\Columns\TextColumn::make('users2.created_at')->datetime()->sortable()->label('Request Date'),
+            Tables\Columns\TextColumn::make('userRel.name')->sortable()->searchable()->label('User')
+            ->description(fn (UsersCourse $record): ?string => $record->userRel->email),
+            Tables\Columns\TextColumn::make('courseRel.name')->sortable()->searchable()->label('Certification'),
+            Tables\Columns\TextColumn::make('created_at')->datetime()->sortable()->label('Request Date'),
             ])
             ->filters([
 
@@ -50,9 +51,9 @@ class CertApproval extends Page implements HasTable
             )
             ->actions([
                 Tables\Actions\Action::make('resend')->label('Approve')
-                ->action(function (Course $record) {
-                    $usc=$record->users2()->first();
-                    $record->users()->updateExistingPivot($usc->id, ['approve' => true]);
+                ->action(function (UsersCourse $record) {
+                    $usc=$record->userRel;
+                    $record->approve=true;$record->save();
                     Notification::make()->success()->title('Request approved.')->send();
                     $ma=new SMail();
                     $ma->from=auth()->id();
@@ -73,16 +74,13 @@ class CertApproval extends Page implements HasTable
                         }
                     }
                 })->button()->color('success'),
-                Tables\Actions\Action::make('dell')->label('Delete')->iconButton()->icon('heroicon-o-trash')
-                ->requiresConfirmation()
-                ->modalHeading('Delete approval')
-                ->modalDescription(fn(Course $record):string=>'Are you sure you want to do that?')
-                ->action(function (Course $record) {
-                    $record->users2()->detach($record->users2()->first()->id);
-                })->color('danger'),
+                Tables\Actions\DeleteAction::make()->iconButton(),
 
             ])
             ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ])
             ->deferLoading()->striped()->persistFiltersInSession()
             ->persistSearchInSession()->persistColumnSearchesInSession();

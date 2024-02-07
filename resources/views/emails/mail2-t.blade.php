@@ -8,7 +8,7 @@ Due Date : {{$para[2]}}
 Please log in to your dashboad to complete the test.
 ‍
 
-Take Exam → {{env('APP_URL')}}/boss/tests
+Take Exam → {{\App\Filament\Resources\ExamResource::getUrl()}}
 
 Thanks, The ITExamBootCamp Team
 ‍

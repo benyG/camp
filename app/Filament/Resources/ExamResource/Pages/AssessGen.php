@@ -80,9 +80,9 @@ class AssessGen extends Page
                 $this->record->users1()->updateExistingPivot(auth()->id(), [
                     'start_at' => now()]);
         if($this->record->type=='1'){
-            if(!empty($this->record->due) && now()>$this->record->due) abort(415);
+            if(!empty($this->record->due) && now()>$this->record->due) redirect()->to(ExamResource::getUrl());
             else if(now()->diffInMinutes($this->record->users1()->first()->pivot->start_at)>
-            $this->record->timer) abort(415);
+            $this->record->timer) redirect()->to(ExamResource::getUrl());
         }
       //  cache()->forget('carr_'.$this->record->id.'_'.auth()->id());
      // $this->record->users1()->first()->pivot->start_at=now();
@@ -246,7 +246,7 @@ class AssessGen extends Page
        $this->register(true);
     }
     public function getTitle() : string | Htmlable{
-        return $this->record->from !=auth()->id()?'Class Examiniation':($this->record->type==0?"Test your knowlegde":'Exam Simulation');
+        return $this->record->type==0?'Test your knowlegde':($this->record->from !=auth()->id()?"Class Examiniation":'Exam Simulation');
     }
     public function getSubheading() : string | Htmlable{
         return "Certification : ".$this->record->certRel->name." | Passing score : ".$this->ix->wperc.($this->record->type=='0'?"":"| Timer: ".$this->record->timer." min");
