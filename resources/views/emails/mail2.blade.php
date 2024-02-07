@@ -80,7 +80,7 @@
                   </p>
                   <div role="separator" style="line-height: 10px">&zwj;</div>
                   <div>
-                    <a href="{{env('APP_URL')}}/boss/tests" style="display: inline-block; border-radius: 4px; background-color: #15803d; padding: 16px 24px; font-size: 16px; font-weight: 600; line-height: 1; color: #f8fafc; text-decoration: none">
+                    <a href="{{\App\Filament\Resources\ExamResource::getUrl()}}" style="display: inline-block; border-radius: 4px; background-color: #15803d; padding: 16px 24px; font-size: 16px; font-weight: 600; line-height: 1; color: #f8fafc; text-decoration: none">
                       <!--[if mso]>
       <i style="mso-font-width: -100%; letter-spacing: 32px; mso-text-raise: 30px" hidden>&nbsp;</i>
     <![endif]-->

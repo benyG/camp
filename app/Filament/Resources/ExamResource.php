@@ -106,10 +106,12 @@ class ExamResource extends Resource
                     '1' => 'Exam Simulation',
                 ])->live(),
                 Forms\Components\Select::make('typee')->label('Configuration')->selectablePlaceholder(false)->default('0')
-                ->options([
-                    '0' => 'Custom',
-                    '1' => 'Typical',
-                ])->live()->afterStateUpdated(function (?string $state, ?string $old,Get $get,Set $set) {
+                ->options(function(Get $get, Set $set){
+                     if($get('type')=='1')
+                     return ['0' => 'Custom','1' => 'Typical'];
+                    else {$set('typee','0');return ['0' => 'Custom'];}
+                    })
+                ->live()->afterStateUpdated(function (?string $state, ?string $old,Get $get,Set $set) {
                     $ix=cache()->rememberForever('settings', function () {
                         return \App\Models\Info::findOrFail(1);
                     });
@@ -250,7 +252,8 @@ class ExamResource extends Resource
                 ->color(fn ($record): string =>$record->type=='1'?(auth()->id()==$record->from?'primary': 'danger'):'info')
             ->sortable(),
             Tables\Columns\TextColumn::make('quest')->label('Questions')->sortable(),
-        Tables\Columns\TextColumn::make('users.name')->label('Users')
+        Tables\Columns\TextColumn::make('users.name')->label('Users')->limit(30)
+        ->tooltip(fn($state):string=>implode(', ',$state))
             ->hidden(auth()->user()->ex!=0),
         Tables\Columns\TextColumn::make('added')->label('Affected on')
                 ->getStateUsing(fn (Exam $record) => $record->users1()->first()->pivot->added??null)
@@ -320,8 +323,9 @@ class ExamResource extends Resource
               ->color(fn (Exam $record): string =>empty($record->users1()->first()->pivot->start_at)?'info':'warning')
               ->requiresConfirmation()
               ->modalIcon(fn(Exam $record):string=>$record->pub?'heroicon-o-eye-slash':'heroicon-m-play')
-                    ->modalHeading('Start the Assessment')
-                    ->modalDescription(fn(Exam $record):string=>'Are you sure you\'d like to start the assessement \''.$record->name.'\'? If it is an exam, you will be bound to complete it before closing the page.')
+                    ->modalHeading(fn($record)=>empty($record->users1()->first()->pivot->start_at)?'Start the Assessment':'Continue the Assessment')
+                    ->modalDescription(fn(Exam $record):string=>empty($record->users1()->first()->pivot->start_at)?'Are you sure you\'d like to start the assessement \''.$record->name.'\'? If it is an exam, you will be bound to complete it before closing the page.':
+                        'Are you sure you\'d like to continue the assessement \''.$record->name.'\'? If it is an exam, you will be bound to complete it before closing the page.')
               ->action(function (Exam $record) {
                return redirect()->to(ExamResource::getUrl('assess', ['ex' => $record->name]));
               })
@@ -335,11 +339,12 @@ class ExamResource extends Resource
                     'filament.resources.exam-resource.pages.assess-res',
                     ['record' => $record],
                 )) */
-                ->visible(fn (Exam $record): bool =>$record->users1()->count()>0 &&!empty($record->users1()->first()->pivot->comp_at) || (!empty($record->due) && now()>$record->due))
+                ->visible(fn (Exam $record): bool =>$record->users1()->count()>0 && (!empty($record->users1()->first()->pivot->comp_at) || (!empty($record->due) && now()>$record->due)))
                 ->infolist([
                     Infolists\Components\Section::make('Assessment summary')->collapsible()->persistCollapsed()
                     ->schema([
                         Infolists\Components\TextEntry::make('certRel.name')->label('Cetification'),
+                        Infolists\Components\TextEntry::make('name')->label('Assessment Title'),
                         Infolists\Components\TextEntry::make('type')->label('Type')
                         ->state(fn (Exam $record) => $record->type=='1'?(auth()->id()==$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
                         ->badge()
@@ -420,6 +425,7 @@ class ExamResource extends Resource
                     Infolists\Components\Section::make('Assessment summary')->collapsible()->persistCollapsed()
                     ->schema([
                         Infolists\Components\TextEntry::make('certRel.name')->label('Certification'),
+                        Infolists\Components\TextEntry::make('name')->label('Assessment Title'),
                         Infolists\Components\TextEntry::make('users.name')->label('Users'),
                         Infolists\Components\TextEntry::make('timer')->label('Time')
                         ->state(fn (Exam $record) => $record->type=='1'?$record->timer:'Unlimited'),
@@ -439,7 +445,7 @@ class ExamResource extends Resource
                         $mode="<table class='w-full text-sm border-collapse table-auto'><thead><tr><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>Users</th><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>Time</th><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>Score</th></tr></thead><tbody class=''>";
                         foreach ($record->users as $us) {
                             $mode.="<tr><td class='p-4 pl-8 text-gray-500 border-b border-gray-100 dark:border-gray-700 dark:text-gray-400'>".$us->name ."</td><td class='p-4 pl-8 text-gray-500 border-b border-gray-100 dark:border-gray-700 dark:text-gray-400'>".(!empty($us->pivot->start_at) && !empty($us->pivot->comp_at)?
-                            \Illuminate\Support\Carbon::parse($record->users1()->first()->pivot->comp_at)->diffInMinutes($record->users1()->first()->pivot->start_at):
+                            \Illuminate\Support\Carbon::parse($us->pivot->comp_at)->diffInMinutes($us->pivot->start_at):
                             'N/A')."</td>";
                        // $mod=array();
                            // foreach ($record->modules as $gg) $mod[$gg->id]=[$gg->name,$gg->pivot->nb,0];

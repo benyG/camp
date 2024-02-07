@@ -3,7 +3,7 @@
 <html lang="fr-CA" style="--inner1Vh: 9.69px; --sbw: 17px;">
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!--<base href="/">-->
 <base href="."><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ITExamBootcamp</title>
+<title>ITExamBootcamp - Official website</title>
 <meta name="description" content="Access a comprehensive database of questions and simulate real exams to shine in your IT certifications path. Register now !">
 <link rel="icon" href="{{asset('favicon.ico')}}" type="image/png" sizes="16x16">
 <link rel="icon" href="{{asset('favicon.ico')}}" type="image/png" sizes="32x32">

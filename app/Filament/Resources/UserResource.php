@@ -70,7 +70,7 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->striped()
-        ->query(User::where('ex','<>',0)->where('id','<>',auth()->user()->id))
+        ->query(User::with('vagueRel')->where('ex','<>',0)->where('id','<>',auth()->user()->id))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
@@ -98,7 +98,10 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('vague')
+                ->relationship(name: 'vagueRel', titleAttribute: 'name')->multiple()
+                ->searchable()
+                ->preload()
             ])
             ->actions([
                 Tables\Actions\Action::make('jjj')->color('success')->label('Portfolio')

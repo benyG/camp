@@ -97,12 +97,12 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
     {
         //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
         return $this->belongsToMany(Exam::class, 'exam_users', 'user', 'exam')
-        ->as('um')
-        ->withPivot('last-sent')
-        ->withPivot('sent')
-        ->withPivot('id')
-        ->using(ExamUser::class);
-    }
+        ->withPivot('added')
+        ->withPivot('comp_at')
+        ->withPivot('start_at')
+        ->withPivot('gen')
+         ->withPivot('id');
+  }
     public function courses(): BelongsToMany
     {
         //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
