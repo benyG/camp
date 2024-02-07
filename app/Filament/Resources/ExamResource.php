@@ -245,7 +245,7 @@ class ExamResource extends Resource
         ->latest('added_at'))
         ->columns([
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable()->label('Title')
-                ->description(fn (Exam $record): ?string => $record->descr),
+                ->description(fn (Exam $record): ?string => $record->certRel->name),
                 Tables\Columns\TextColumn::make('type')
                 ->state(fn (Exam $record) => $record->type=='1'?(auth()->id()==$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
                 ->badge()
@@ -324,12 +324,19 @@ class ExamResource extends Resource
               ->requiresConfirmation()
               ->modalIcon(fn(Exam $record):string=>$record->pub?'heroicon-o-eye-slash':'heroicon-m-play')
                     ->modalHeading(fn($record)=>empty($record->users1()->first()->pivot->start_at)?'Start the Assessment':'Continue the Assessment')
-                    ->modalDescription(fn(Exam $record):string=>empty($record->users1()->first()->pivot->start_at)?'Are you sure you\'d like to start the assessement \''.$record->name.'\'? If it is an exam, you will be bound to complete it before closing the page.':
-                        'Are you sure you\'d like to continue the assessement \''.$record->name.'\'? If it is an exam, you will be bound to complete it before closing the page.')
+                    ->modalDescription(fn(Exam $record):string=>empty($record->users1()->first()->pivot->start_at)?'Are you sure you\'d like to start the assessement \''.$record->name.'\'? If it is an exam, the countdown will start even if you logout or close the page. At the timer end. the assessment will output the result.':
+                        'Are you sure you\'d like to continue the assessement \''.$record->name.'\'?')
               ->action(function (Exam $record) {
                return redirect()->to(ExamResource::getUrl('assess', ['ex' => $record->name]));
               })
-              ->visible(fn (Exam $record): bool =>$record->users1()->count()>0 && empty($record->users1()->first()->pivot->comp_at) && !empty($record->due) && now()<$record->due)
+              ->visible(function (Exam $record){
+               // $rr=(!empty($record->users1()->first()->pivot->start_at) && $record->timer-now()->diffInMinutes($record->users1()->first()->pivot->start_at)>0);
+               // if($record->id==5) dd($rr);
+               if(empty($record->users1()->first()->pivot->start_at))
+                return $record->users1()->count()>0 && empty($record->users1()->first()->pivot->comp_at) && !empty($record->due) && now()<$record->due;
+                else
+                    return ($record->users1()->count()>0 && empty($record->users1()->first()->pivot->comp_at) && !empty($record->due) && now()<$record->due) && $record->timer-now()->diffInMinutes($record->users1()->first()->pivot->start_at)>0;
+                })
               ->iconButton(),
                 Tables\Actions\Action::make('resend')->label('View the results')->iconButton()->icon('heroicon-o-document-check')
                 ->modalCancelAction(function (\Filament\Actions\StaticAction $action) {$action->color('primary');$action->label('Close');})
@@ -339,7 +346,7 @@ class ExamResource extends Resource
                     'filament.resources.exam-resource.pages.assess-res',
                     ['record' => $record],
                 )) */
-                ->visible(fn (Exam $record): bool =>$record->users1()->count()>0 && (!empty($record->users1()->first()->pivot->comp_at) || (!empty($record->due) && now()>$record->due)))
+                ->visible(fn (Exam $record): bool =>$record->users1()->count()>0 && (!empty($record->users1()->first()->pivot->comp_at) || (!empty($record->due) && now()>$record->due) || (!empty($record->users1()->first()->pivot->start_at) && $record->timer-now()->diffInMinutes($record->users1()->first()->pivot->start_at)<=0)))
                 ->infolist([
                     Infolists\Components\Section::make('Assessment summary')->collapsible()->persistCollapsed()
                     ->schema([
@@ -493,7 +500,7 @@ class ExamResource extends Resource
                     ->columns(),
                 ])
                 ->color('warning'),
-                Tables\Actions\DeleteAction::make()->iconButton()->visible(fn(Exam $record):bool=>empty($record->users1()->first()->pivot->start_at)),
+                Tables\Actions\DeleteAction::make()->iconButton(),
             ])
             ->bulkActions([
              /*    Tables\Actions\BulkActionGroup::make([
