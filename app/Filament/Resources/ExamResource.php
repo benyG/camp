@@ -479,9 +479,9 @@ class ExamResource extends Resource
                                     }
                                 }
                             }
+                        $mode.="<td class='p-4 pl-8 border-b border-gray-100 dark:border-gray-700 text-".(round(100*$ca/$record->quest,2)>$ix->wperc?'primary':'danger')."-600'>".round(100*$ca/$record->quest,2)."%</td>";
                         }
                         $cu+=(round(100*$ca/$record->quest,2)>$ix->wperc?1:0);
-                        $mode.="<td class='p-4 pl-8 border-b border-gray-100 dark:border-gray-700 text-".(round(100*$ca/$record->quest,2)>$ix->wperc?'primary':'danger')."-600'>".round(100*$ca/$record->quest,2)."%</td>";
                         $mode.="</tr></tbody></table>";
                         /* $mode.=" | Score : ".round(100*$ca/$record->quest,2)."%)</span><br>";
                         if(!empty($us->pivot->start_at)){
