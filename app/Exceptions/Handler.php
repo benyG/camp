@@ -29,7 +29,7 @@ class Handler extends ExceptionHandler
     }
     function render($request, Throwable $exception)
 {
-        if ($this->isHttpException($exception)) {
+        if ($this->isHttpException($exception) || ($request->hasHeader('X-Livewire') && app()->environment() != 'local')) {
             return response()->view('errors.err',['exception'=>$exception]);
         }
         return parent::render($request, $exception);

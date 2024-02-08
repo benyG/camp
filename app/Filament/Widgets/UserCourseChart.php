@@ -13,6 +13,11 @@ class UserCourseChart extends ChartWidget
 {
     protected static ?string $heading = 'Users per Certifications';
     protected static ?string $pollingInterval = null;
+    protected static ?string $maxHeight = '150px';
+    public function getColumns(): int | string | array
+    {
+        return 1;
+    }
     public static function canView(): bool
     {
         return auth()->user()->ex==0;
@@ -36,7 +41,7 @@ class UserCourseChart extends ChartWidget
                    // 'label' => 'Blog posts created',
                     'data' => $uc[1],
                     'backgroundColor' => $uc[2],
-                    //'borderColor' => '#9BD0F5',
+                    'borderColor' => $uc[2],
                 ],
             ],
             'labels' => $uc[0],

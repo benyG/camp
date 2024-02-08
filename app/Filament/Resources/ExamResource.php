@@ -335,7 +335,8 @@ class ExamResource extends Resource
                if(empty($record->users1()->first()->pivot->start_at))
                 return $record->users1()->count()>0 && empty($record->users1()->first()->pivot->comp_at) && !empty($record->due) && now()<$record->due;
                 else
-                    return ($record->users1()->count()>0 && empty($record->users1()->first()->pivot->comp_at) && !empty($record->due) && now()<$record->due) && $record->timer-now()->diffInMinutes($record->users1()->first()->pivot->start_at)>0;
+                    return $record->type==1? ($record->users1()->count()>0 && empty($record->users1()->first()->pivot->comp_at) && !empty($record->due) && now()<$record->due) && $record->timer-now()->diffInMinutes($record->users1()->first()->pivot->start_at)>0:
+                    ($record->users1()->count()>0 && empty($record->users1()->first()->pivot->comp_at) && !empty($record->due) && now()<$record->due);
                 })
               ->iconButton(),
                 Tables\Actions\Action::make('resend')->label('View the results')->iconButton()->icon('heroicon-o-document-check')
@@ -433,7 +434,6 @@ class ExamResource extends Resource
                     ->schema([
                         Infolists\Components\TextEntry::make('certRel.name')->label('Certification'),
                         Infolists\Components\TextEntry::make('name')->label('Assessment Title'),
-                        Infolists\Components\TextEntry::make('users.name')->label('Users'),
                         Infolists\Components\TextEntry::make('timer')->label('Time')
                         ->state(fn (Exam $record) => $record->type=='1'?$record->timer:'Unlimited'),
                         Infolists\Components\TextEntry::make('quest')->label('Questions'),
@@ -441,6 +441,8 @@ class ExamResource extends Resource
                         Infolists\Components\TextEntry::make('added_at')->label('Created')->placeholder('N/A'),
                         Infolists\Components\TextEntry::make('comp_at')->label('Completed on')->placeholder('N/A')
                         ->state(fn (Exam $record) => $record->users1()->first()->pivot->comp_at??null),
+                        Infolists\Components\TextEntry::make('modules.name')->label('Modules')->columnSpan(2)
+                        ->listWithLineBreaks()->bulleted()->limitList(3),
                     ])
                     ->columns(3),
                     Infolists\Components\Section::make('Performance')->collapsible()->persistCollapsed()
