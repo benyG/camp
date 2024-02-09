@@ -65,6 +65,8 @@ class QuestionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('text')->limit(100)->html()
                 ->searchable()->sortable(),
+             //   Tables\Columns\TextColumn::make('answers2_count')->label('True answers')->numeric()->sortable()
+              //  ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('moduleRel.name')->label('Module')->sortable(),
                 Tables\Columns\TextColumn::make('certif.name')->label('Certification')->sortable(),
                 Tables\Columns\TextColumn::make('answers_count')->counts('answers')->label('Answers')

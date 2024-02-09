@@ -7,6 +7,8 @@ use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Resources\Components\Tab;
+use Illuminate\Database\Eloquent\Builder;
 
 class ManageQuestions extends ManageRecords
 {
@@ -24,5 +26,24 @@ class ManageQuestions extends ManageRecords
                     'record' => $record->id,
                 ])) ->createAnother(false)
             ];
+    }
+    public function getTabs(): array
+    {
+        $b1=\App\Models\Question::withCount('answers2')->having('answers2_count','=',0)->count();
+        $b2=\App\Models\Question::withCount('answers')->having('answers_count','=',0)->count();
+
+        return [
+            'All' => Tab::make()->badge(\App\Models\Question::count())
+            ->badgeColor('gray'),
+            'No true answers' => Tab::make()
+            ->badgeColor(fn()=>$b1>0?'danger':'success')->badge($b1)
+                ->modifyQueryUsing(fn (Builder $query) => $query->withCount('answers2')
+                ->having('answers2_count','=',0)
+            ),
+            'No answers' => Tab::make()->badge($b2)
+            ->modifyQueryUsing(fn (Builder $query) => $query
+            ->having('answers_count','=',0))
+            ->badgeColor(fn()=>$b2>0?'danger':'success'),
+        ];
     }
 }

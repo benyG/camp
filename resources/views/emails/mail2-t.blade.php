@@ -3,6 +3,7 @@ Hello {{$name}},
 An exam was affected to you on the {{$para[0]}}
 
 Title : {{$para[1]}}
+Certification : {{$para[3]}}
 Due Date : {{$para[2]}}
 
 Please log in to your dashboad to complete the test.
