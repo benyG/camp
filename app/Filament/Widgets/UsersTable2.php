@@ -43,35 +43,26 @@ class UsersTable2 extends BaseWidget
     }
     public static function canView(): bool
     {
-        return false;
-       // return auth()->user()->ex!=0 || isset($this->record);
+       // return true;
+       return auth()->user()->ex>=2;
     }
     public function table(Table $table): Table
     {
         $ix=cache()->rememberForever('settings', function () {
             return \App\Models\Info::findOrFail(1);
         });
-      //  $uarr=User::where('ex','<>',0)->where('id','<>',auth()->user()->id)->with('exams2')->get();
-        $earr=Exam::has('users')->with('users')->with('modules')->get();
+      $this->record->loadMissing('exams2');
+      $us=$this->record;
+        $earr=Exam::has('users')->with('users')->get();
         $eall=$earr->pluck('id');
-        $rt=Question::with('answers')->with('moduleRel')->get();
-
-         $uarr2=[0,0,0,0,0];
-            $nt=$us->exams2()->whereNotNull('start_at')->pluck('exam')->intersect($earr->where('type','0')->pluck('id'))->count();
-            $ne=$us->exams2()->whereNotNull('start_at')->pluck('exam')->intersect($earr->where('type','1')->pluck('id'))->count();
-            $uarr2[$us->id][1]=$nt;$uarr2[$us->id][2]=$ne;
-            $qt=0;
-            $pes=0;
-            $pga=0;
-            $uqt=array();
+        $rt=Question::with('answers')->get();
+         $uarr2=array();
             foreach ($us->exams2 as $exa) {
                 if(!empty($exa->pivot->gen) &&  in_array($exa->pivot->exam,$eall->toArray())){
            // dd(array_keys(json_decode($exa->pivot->gen,true)));
+
                     $res=json_decode($exa->pivot->gen,true);
                     $arrk=array_keys($res);
-                    $qt+=collect($arrk)->reduce(function (?int $carry, int|string $item) {
-                        return $carry + (is_int($item)?1:0);
-                    });
                     $ca=0;
                     $rot=$rt->whereIn('id',$arrk);
                     foreach ($rot as $quest) {
@@ -79,46 +70,37 @@ class UsersTable2 extends BaseWidget
                         if($bm){
                             $ab=$quest->answers()->where('isok',true)->where('answers.id',$res[$quest->id][0])->count();
                             if($ab>0) {
-                                $ca++; $pga++;
-                                //  if(array_key_exists($quest->moduleRel->id,$mod)) $mod[$quest->moduleRel->id][2]++;
+                                $ca++;
                             }
                         }else{
                             $ab2=$quest->answers()->where('isok',false)->whereIn('answers.id',$res[$quest->id])->count();
                             if($ab2==0) {
-                                $ca++; $pga++;
-                                // if(array_key_exists($quest->moduleRel->id,$mod)) $mod[$quest->moduleRel->id][2]++;
+                                $ca++;
                             }
                         }
                     }
-                  //  if($earr->where('id',$exa->exam)->count()>0) dd('dk');
-                    if($earr->where('type','1')->where('id',$exa->pivot->exam)->count()>0) $pes+=(round(100*$ca/$earr->where('type','1')->where('id',$exa->pivot->exam)->first()->quest,2)>$ix->wperc?1:0);
+                 // dd('dk');
+                 $uarr2[$exa->pivot->exam]=round(100*$ca/$earr->where('id',$exa->pivot->exam)->first()->quest,2);
                 }
             }
-            $uarr2[$us->id][0]=$qt;$uarr2[$us->id][3]=round(100*$pes/($ne>0?$ne:1),2);$uarr2[$us->id][4]=round(100*$pga/($qt>0?$qt:1),2);
-
+           // dd($uarr2);
         return $table
-            ->query(
-                User::with('vagueRel')->where('ex','<>',0)->where('id','<>',auth()->user()->id)
-            )
+        ->query(Exam::with('certRel')->where('from',$this->record->id)->orWhereRelation('users', 'user', $this->record->id)->latest('added_at'))
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                ->description(fn (User $record): ?string => $record->email)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('ex')->label('Type')->badge()
-                ->formatStateUsing(fn (int $state): string => match ($state) {0 => "indigo",
-                    1 => "Admin", 2 => "Starter", 3 => "User", 4 => "Pro", 5 => "VIP"})
-                    ->color(fn (int $state): string => match ($state) {0 => "S. Admin",
-                        1 => "gray", 2 => "info", 3 => "success", 4 => "danger", 5 => "warning"})
-                ->sortable()
-                ->description(fn (User $record): ?string => 'Q'.$uarr2[$record->id][0]),
-                Tables\Columns\TextColumn::make('a4')->label('T. L.')->sortable()
-                ->state(fn (User $record) => $uarr2[$record->id][1]),
-                Tables\Columns\TextColumn::make('a1')->label('E. L.')->sortable()
-                ->state(fn (User $record) => $uarr2[$record->id][2]),
-                Tables\Columns\TextColumn::make('a2')->label('% P. Ex.')->sortable()
-                ->state(fn (User $record) => $uarr2[$record->id][3]),
-                Tables\Columns\TextColumn::make('a3')->label('% C. Ans.')->sortable()
-                ->state(fn (User $record) => $uarr2[$record->id][4]),
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('type')
+                ->state(fn (Exam $record) => $record->type=='1'?($this->record->id==$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
+                ->badge()
+                ->color(fn ($record): string =>$record->type=='1'?($this->record->id==$record->from?'primary': 'danger'):'info')
+            ->sortable(),
+                Tables\Columns\TextColumn::make('a4')->label('Result')->sortable()->badge()
+                ->state(fn (Exam $record) => $uarr2[$record->id]??0)
+                ->color(fn ($record): string =>isset($uarr2[$record->id])? ($uarr2[$record->id]>=$ix->wperc?'success': 'danger'):'gray')
+                ->formatStateUsing(fn ($state,$record): string => isset($uarr2[$record->id])? $state.'%':'Not started'),
+            Tables\Columns\TextColumn::make('quest')->label('Questions')->sortable(),
+            Tables\Columns\TextColumn::make('timer')->label('Timer')->sortable()
+            ->formatStateUsing(fn ($state):string=> intval($state)<=0? 'Unlimited': $state),
+            Tables\Columns\TextColumn::make('certRel.name')->label('Certification')->sortable(),
             ]);
     }
 }

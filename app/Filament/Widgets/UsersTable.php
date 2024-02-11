@@ -44,9 +44,9 @@ class UsersTable extends BaseWidget
         });
         $uarr=User::where('ex','<>',0)->where('id','<>',auth()->user()->id)->with('exams2')->get();
         $uarr2=array();
-        $earr=Exam::has('users')->with('users')->with('modules')->get();
+        $earr=Exam::has('users')->with('users')->get();
         $eall=$earr->pluck('id');
-        $rt=Question::with('answers')->with('moduleRel')->get();
+        $rt=Question::with('answers')->get();
      //   $etest=$earr->where('type','0')->pluck('id');
      //   $eexam=$earr->pluck('id');
         foreach ($uarr as $us) {
@@ -75,17 +75,14 @@ class UsersTable extends BaseWidget
                             $ab=$quest->answers()->where('isok',true)->where('answers.id',$res[$quest->id][0])->count();
                             if($ab>0) {
                                 $ca++; $pga++;
-                                //  if(array_key_exists($quest->moduleRel->id,$mod)) $mod[$quest->moduleRel->id][2]++;
                             }
                         }else{
                             $ab2=$quest->answers()->where('isok',false)->whereIn('answers.id',$res[$quest->id])->count();
                             if($ab2==0) {
                                 $ca++; $pga++;
-                                // if(array_key_exists($quest->moduleRel->id,$mod)) $mod[$quest->moduleRel->id][2]++;
                             }
                         }
                     }
-                  //  if($earr->where('id',$exa->exam)->count()>0) dd('dk');
                     if($earr->where('type','1')->where('id',$exa->pivot->exam)->count()>0) $pes+=(round(100*$ca/$earr->where('type','1')->where('id',$exa->pivot->exam)->first()->quest,2)>$ix->wperc?1:0);
                 }
             }
@@ -97,7 +94,7 @@ class UsersTable extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                ->description(fn (User $record): ?string => $record->email)
+               // ->description(fn (User $record): ?string => $record->email)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('ex')->label('Type')->badge()
                 ->formatStateUsing(fn (int $state): string => match ($state) {0 => "indigo",
@@ -105,15 +102,19 @@ class UsersTable extends BaseWidget
                     ->color(fn (int $state): string => match ($state) {0 => "S. Admin",
                         1 => "gray", 2 => "info", 3 => "success", 4 => "danger", 5 => "warning"})
                 ->sortable()
-                ->description(fn (User $record): ?string => 'Q'.$uarr2[$record->id][0]),
-                Tables\Columns\TextColumn::make('a4')->label('T. L.')->sortable()
-                ->state(fn (User $record) => $uarr2[$record->id][1]),
-                Tables\Columns\TextColumn::make('a1')->label('E. L.')->sortable()
-                ->state(fn (User $record) => $uarr2[$record->id][2]),
-                Tables\Columns\TextColumn::make('a2')->label('% P. Ex.')->sortable()
-                ->state(fn (User $record) => $uarr2[$record->id][3]),
-                Tables\Columns\TextColumn::make('a3')->label('% C. Ans.')->sortable()
-                ->state(fn (User $record) => $uarr2[$record->id][4]),
+                ->description(fn (User $record): ?string => 'Total Q. :'.$uarr2[$record->id][0]),
+                Tables\Columns\TextColumn::make('a4')->label('Assessments')
+                ->state(fn (User $record) => $uarr2[$record->id][1])
+                ->formatStateUsing(fn($state,$record):?string=>'Exams :'.$uarr2[$record->id][2])
+                ->description(fn ($state): ?string => 'Tests :'.$state),
+                Tables\Columns\TextColumn::make('a2')->label('Exam success avg.')->sortable()
+                ->state(fn (User $record) => $uarr2[$record->id][3])
+                ->formatStateUsing(fn($state):?string=>$state.'%')
+                ->color(fn($state):string=>intval($state)>=50?'success':'danger'),
+                Tables\Columns\TextColumn::make('a3')->label('% Good Ans.')->sortable()
+                ->state(fn (User $record) => $uarr2[$record->id][4])
+                ->formatStateUsing(fn($state):?string=>$state.'%')
+                ->color(fn($state):string=>intval($state)>=50?'success':'danger'),
             ])
             ->actions([
                 Tables\Actions\Action::make('r1')->label(fn($record)=>'Send message to \''.$record->name.'\'')->icon('heroicon-o-envelope')->iconButton()
@@ -150,8 +151,6 @@ class UsersTable extends BaseWidget
                 Tables\Actions\Action::make('r2')->label(fn($record)=>'\''.$record->name.'\' Dashboard')->icon('heroicon-o-eye')->iconButton()
                 ->color('warning')->modalCancelAction(fn (\Filament\Actions\StaticAction $action) => $action->label('Close'))
                 ->modalSubmitAction(false)
-                ->action(function ($record) {
-                })
                 ->modalContent(fn ($record): View => view(
                     'filament.pages.dash1',
                     ['record' => $record],

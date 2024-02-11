@@ -8,21 +8,42 @@ use App\Models\Course;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Filament\Support\RawJs;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
+use App\Models\Module;
+use App\Models\Question;
+use Filament\Forms\Components\Component;
 
-class UserCourseChart3 extends ChartWidget
+class UserCourseChart3 extends ChartWidget implements HasForms
 {
+    use InteractsWithForms;
+
     protected static ?string $heading = 'Users per Certifications';
     protected static ?string $pollingInterval = null;
     protected static ?string $maxHeight = '150px';
-    public $usrec;
+    public $record;
+
+    protected function getFormSchema(): array
+    {
+        return [
+            Forms\Components\TextInput::make('title')
+                ->default('My Chart')
+                ->live()
+                ->afterStateUpdated(function () {
+                    $this->updateChartOptions();
+                }),
+
+        ];
+    }
+
     public function getColumns(): int | string | array
     {
         return 1;
     }
     public static function canView(): bool
     {
-        return false;
-        //return auth()->user()->ex!=0 || isset($this->usrec);
+        return auth()->user()->ex!=0;
     }
     protected function getData(): array
     {
