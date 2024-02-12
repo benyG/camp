@@ -756,7 +756,7 @@ public function table(Table $table): Table
 To set the title of the relation manager, you can use the `$title` property on the relation manager class:
 
 ```php
-protected static string $title = 'Posts';
+protected static ?string $title = 'Posts';
 ```
 
 To set the title of the relation manager dynamically, you can override the `getTitle()` method on the relation manager class:
@@ -858,6 +858,8 @@ public static function getPages(): array
 > When using a relation page, you do not need to generate a relation manager with `make:filament-relation-manager`, and you do not need to register it in the `getRelations()` method of the resource.
 
 Now, you can customize the page in exactly the same way as a relation manager, with the same `table()` and `form()`.
+
+### Adding relation pages to resource sub-navigation
 
 If you're using [resource sub-navigation](getting-started#resource-sub-navigation), you can register this page as normal in `getRecordSubNavigation()` of the resource:
 

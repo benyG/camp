@@ -184,7 +184,10 @@ class AssessGen extends Page
     public function incrQuest(){
             if($this->bm1){
                 $ab=$this->quest[$this->qcur]->answers()->where('isok',true)->where('answers.id',$this->ans)->count();
+                $au="";
+                if($this->quest[$this->qcur]->answers()->where('isok',true)->count()>0)
                 $au=$this->quest[$this->qcur]->answers()->where('isok',true)->first()->text;
+
                 $this->gen[$this->quest[$this->qcur]->id]=[$this->ans];
                 if($ab>0) $this->score++;
                 if($this->record->type=='0' && $this->bm2==false)
@@ -196,6 +199,8 @@ class AssessGen extends Page
                 $au</span>";
             }else{
                 $ab2=$this->quest[$this->qcur]->answers()->where('isok',false)->whereIn('answers.id',$this->ans2)->count();
+                $au2="";
+                if($this->quest[$this->qcur]->answers()->where('isok',true)->count()>0)
                 $au2=$this->quest[$this->qcur]->answers()->where('isok',true)->pluck('answers.text');
                 $this->gen[$this->quest[$this->qcur]->id]=$this->ans2;
             // dd($au2);

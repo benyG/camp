@@ -72,7 +72,7 @@ class AssessCreate extends CreateRecord
             $ma->from=auth()->id();
             $ma->sub="New Exam for you !";
             $ma->content='Dear Bootcamper , <br>'.
-            'An exam was affected to you on the <b>'.$record->added_at.'<br>Title : '.$record->name.'<br>Due Date : '.$record->due.'</b>'
+            'An exam was affected to you on the <b>'.$record->added_at.'<br>Title : '.$record->name.'<br>Certification : '.$record->certRel->name.'<br>Due Date : '.$record->due.'</b>'
                 .'<br><br> Please rush to the Bootcamp to take the exam !<br><br><i>The ITExamBootCamp Team</i>';
             $ma->save();
             foreach ($record->users as $us) {
@@ -82,7 +82,7 @@ class AssessCreate extends CreateRecord
             if($ix->smtp ){
                 foreach ($record->users as $us) {
                     try {
-                        Notif::send($us, new NewMail($ma->sub,[now(),$record->name,$record->due],'2'));
+                        Notif::send($us, new NewMail($ma->sub,[now(),$record->name,$record->due,$record->certRel->name],'2'));
                         $ma->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
                         Notification::make()->success()->title('Successfully sent via SMTP to : '.$us->email)->send();
                     } catch (Exception $exception) {

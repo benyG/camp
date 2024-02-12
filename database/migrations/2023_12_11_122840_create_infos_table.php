@@ -27,9 +27,10 @@ return new class extends Migration
             $table->smallInteger('maxeu')->default(30)->unsigned();
             $table->smallInteger('maxev')->default(50)->unsigned();
             $table->smallInteger('maxep')->default(100)->unsigned();
-          $table->tinyInteger('wperc')->default(50);
+            $table->tinyInteger('wperc')->default(50);
             $table->string('efrom');
             $table->boolean('smtp')->default(true);
+            $table->tinyInteger('var1')->default(0);
         });
     }
 

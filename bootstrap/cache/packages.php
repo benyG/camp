@@ -1,9 +1,9 @@
 <?php return array (
-  'bezhansalleh/filament-language-switch' => 
+  'anourvalar/eloquent-serialize' => 
   array (
-    'providers' => 
+    'aliases' => 
     array (
-      0 => 'BezhanSalleh\\FilamentLanguageSwitch\\FilamentLanguageSwitchServiceProvider',
+      'EloquentSerialize' => 'AnourValar\\EloquentSerialize\\Facades\\EloquentSerializeFacade',
     ),
   ),
   'blade-ui-kit/blade-heroicons' => 

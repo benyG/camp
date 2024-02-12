@@ -30,7 +30,12 @@ class NewMail extends Notification
     {
         return ['mail'];
     }
-
+    public function viaConnections(): array
+    {
+        return [
+            'mail' => 'database',
+        ];
+    }
     /**
      * Get the mail representation of the notification.
      */

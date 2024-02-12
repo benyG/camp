@@ -65,6 +65,7 @@ return array(
     'Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
     'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src/PhpOption'),
+    'OpenSpout\\' => array($vendorDir . '/openspout/openspout/src'),
     'NunoMaduro\\Collision\\' => array($vendorDir . '/nunomaduro/collision/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'Mohamedsabil83\\FilamentFormsTinyeditor\\' => array($vendorDir . '/mohamedsabil83/filament-forms-tinyeditor/src'),
@@ -123,6 +124,6 @@ return array(
     'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
     'BladeUI\\Icons\\' => array($vendorDir . '/blade-ui-kit/blade-icons/src'),
     'BladeUI\\Heroicons\\' => array($vendorDir . '/blade-ui-kit/blade-heroicons/src'),
-    'BezhanSalleh\\FilamentLanguageSwitch\\' => array($vendorDir . '/bezhansalleh/filament-language-switch/src'),
     'App\\' => array($baseDir . '/app', $vendorDir . '/laravel/pint/app'),
+    'AnourValar\\EloquentSerialize\\' => array($vendorDir . '/anourvalar/eloquent-serialize/src'),
 );

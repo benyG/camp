@@ -33,6 +33,14 @@ class Question extends Model
         ->withPivot('isok')
         ->withPivot('id');
     }
+    public function answers2(): BelongsToMany
+    {
+        //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+        return $this->belongsToMany(Answer::class, 'quest_ans', 'question', 'answer')
+        ->withPivot('isok')
+        ->withPivot('id')
+        ->wherePivot('isok',true);
+    }
     public function exams(): BelongsToMany
     {
         return $this->belongsToMany(ExamUser::class, 'exam_quests', 'quest', 'exam')

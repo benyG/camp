@@ -73,6 +73,7 @@
                     An exam was affected to you on the <b>{{$para[0]}}
                     <br>
                         Title : {{$para[1]}}<br>
+                        Certification : {{$para[3]}}<br>
                         Due Date : {{$para[2]}}</b>
                     <br>
                     <br>
