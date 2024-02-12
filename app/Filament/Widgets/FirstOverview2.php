@@ -19,8 +19,8 @@ class FirstOverview2 extends BaseWidget
     protected static ?string $pollingInterval = null;
     public static function canView(): bool
     {
-       // return true;
-       return auth()->user()->ex>=2;
+        return false;
+      // return auth()->user()->ex>=2;
     }
 
     protected function getStats(): array
