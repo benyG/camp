@@ -43,7 +43,8 @@ class UserCourseChart3 extends ChartWidget implements HasForms
     }
     public static function canView(): bool
     {
-        return auth()->user()->ex!=0;
+        return false;
+       // return auth()->user()->ex!=0;
     }
     protected function getData(): array
     {

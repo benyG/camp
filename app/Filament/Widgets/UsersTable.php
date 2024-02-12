@@ -88,9 +88,9 @@ class UsersTable extends BaseWidget
             }
             $uarr2[$us->id][0]=$qt;$uarr2[$us->id][3]=round(100*$pes/($ne>0?$ne:1),2);$uarr2[$us->id][4]=round(100*$pga/($qt>0?$qt:1),2);
         }
-        return $table
+        return $table->paginated([5,10,25,50])
             ->query(
-                User::with('vagueRel')->where('ex','<>',0)->where('id','<>',auth()->user()->id)
+                User::with('vagueRel')->where('ex','>',1)->where('id','<>',auth()->id())
             )
             ->columns([
                 Tables\Columns\TextColumn::make('name')
@@ -107,11 +107,11 @@ class UsersTable extends BaseWidget
                 ->state(fn (User $record) => $uarr2[$record->id][1])
                 ->formatStateUsing(fn($state,$record):?string=>'Exams :'.$uarr2[$record->id][2])
                 ->description(fn ($state): ?string => 'Tests :'.$state),
-                Tables\Columns\TextColumn::make('a2')->label('Exam success avg.')->sortable()
+                Tables\Columns\TextColumn::make('a2')->label('Exam success avg.')
                 ->state(fn (User $record) => $uarr2[$record->id][3])
                 ->formatStateUsing(fn($state):?string=>$state.'%')
                 ->color(fn($state):string=>intval($state)>=50?'success':'danger'),
-                Tables\Columns\TextColumn::make('a3')->label('% Good Ans.')->sortable()
+                Tables\Columns\TextColumn::make('a3')->label('% Good Ans.')
                 ->state(fn (User $record) => $uarr2[$record->id][4])
                 ->formatStateUsing(fn($state):?string=>$state.'%')
                 ->color(fn($state):string=>intval($state)>=50?'success':'danger'),
