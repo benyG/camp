@@ -13,7 +13,7 @@ class UserClassChart extends ChartWidget
 {
     protected static ?string $heading = 'Users per Class';
     protected static ?string $pollingInterval = null;
-    protected static ?string $maxHeight = '150px';
+    protected static ?string $maxHeight = '200px';
     public function getColumns(): int | string | array
     {
         return 1;

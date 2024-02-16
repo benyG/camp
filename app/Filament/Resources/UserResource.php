@@ -98,7 +98,7 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('vague')
+                Tables\Filters\SelectFilter::make('vague')->label('Class')
                 ->relationship(name: 'vagueRel', titleAttribute: 'name')->multiple()
                 ->searchable()
                 ->preload()

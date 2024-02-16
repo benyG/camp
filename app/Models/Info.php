@@ -11,6 +11,7 @@ class Info extends Model
     public $timestamps = false;
     protected $fillable = [
       'wperc','smtp','maxu','maxs','maxv','maxp','mint','minq','efrom',
-      'maxtu','maxts','maxtv','maxtp','maxeu','maxes','maxev','maxep'
+      'maxtu','maxts','maxtv','maxtp','maxeu','maxes','maxev','maxep',
+      'apk','endp','cont1','cont2','cont3','maxcl'
     ];
 }

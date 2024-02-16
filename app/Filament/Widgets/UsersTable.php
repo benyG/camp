@@ -110,12 +110,21 @@ class UsersTable extends BaseWidget
                 Tables\Columns\TextColumn::make('a2')->label('Exam success avg.')
                 ->state(fn (User $record) => $uarr2[$record->id][3])
                 ->formatStateUsing(fn($state):?string=>$state.'%')
-                ->color(fn($state):string=>intval($state)>=50?'success':'danger'),
+                ->color(fn($state):string=>intval($state)>=$ix->wperc?'success':'danger'),
                 Tables\Columns\TextColumn::make('a3')->label('% Good Ans.')
                 ->state(fn (User $record) => $uarr2[$record->id][4])
                 ->formatStateUsing(fn($state):?string=>$state.'%')
-                ->color(fn($state):string=>intval($state)>=50?'success':'danger'),
+                ->color(fn($state):string=>intval($state)>=$ix->wperc?'success':'danger'),
             ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('courses')->label('Certifications')->multiple()
+                ->relationship('courses', 'name',
+                fn (Builder $query) =>$query->where('approve',true))->preload(),
+                Tables\Filters\SelectFilter::make('vague')->label('Classe')->multiple()
+                ->relationship('vagueRel', 'name')->preload(),
+                Tables\Filters\SelectFilter::make('ex')->label('Type')
+                ->options(['1' => 'Admin','2' => 'Starter','3' => 'User','4' => 'Pro','5' => 'VIP'])
+                ])
             ->actions([
                 Tables\Actions\Action::make('r1')->label(fn($record)=>'Send message to \''.$record->name.'\'')->icon('heroicon-o-envelope')->iconButton()
                     ->color('success')

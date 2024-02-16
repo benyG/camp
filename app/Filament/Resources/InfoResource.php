@@ -26,18 +26,20 @@ class InfoResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('General Settings')->columns(2)
+                Forms\Components\Section::make('General Settings')->columns(3)
                 ->description('Here you can find some common settings for your whole application')
                 ->schema([
-                    Forms\Components\TextInput::make('wperc')->label('Win Perc.')->default(80)
-                        ->rules(['required', 'numeric','max:100']),
                     Forms\Components\TextInput::make('efrom')->label('Admin Email')
                         ->required()->email()->default(env('MAIL_FROM_ADDRESS')),
                     Forms\Components\Toggle::make('smtp')->label('Auto send PM via SMTP')
-                        ->required()->inline(false)->default(true),
-                     Forms\Components\TextInput::make('minq')->label('Overall minimum Questions')
-                    ->required()->default(5),
-                ]),
+                        ->required()->inline(false)->default(true)->columnSpan(2),
+                    Forms\Components\TextInput::make('wperc')->label('Win Perc.')->default(80)
+                        ->rules(['required', 'numeric','max:100']),
+                        Forms\Components\TextInput::make('minq')->label('Overall minimum Questions')
+                        ->required()->default(5)->numeric(),
+                        Forms\Components\TextInput::make('maxcl')->label('Max students per class')
+                        ->required()->default(20)->numeric(),
+                        ]),
                 Forms\Components\Section::make('Timers')->columns(5)
                 ->description('For each type of users, set the maximum timer for exams (in minutes)')
                 ->schema([
@@ -76,6 +78,21 @@ class InfoResource extends Resource
                Forms\Components\TextInput::make('maxev')->label('Q. Limit-VIP')
                    ->required()->numeric()->default(200),
               ]),
+              Forms\Components\Section::make('IA Settings')->columns(2)
+              ->description('Some string fields contains parameters')
+              ->schema([
+              Forms\Components\TextInput::make('apk')->label('API Key')
+                  ->required(),
+              Forms\Components\TextInput::make('endp')->label('Endpoint URL')
+                  ->required()->rules(['url']),
+                  Forms\Components\Textarea::make('cont1')->label('Context 1')
+                  ->required(),
+                  Forms\Components\Textarea::make('cont2')->label('context 2')
+                  ->required(),
+              Forms\Components\Textarea::make('cont3')->label('Context 3')
+                  ->required(),
+             ]),
+
 
             ]);
     }

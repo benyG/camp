@@ -235,6 +235,12 @@ class ExamResource extends Resource
                         ->default($ix->minq)->live(onBlur: true),
                     ])->minItems(1)->maxItems(fn(Get $get):int=>$get('type')=='1'?Module::where('course',$get('certi'))->count():1)
                 ]),
+                Forms\Components\Section::make('Note')
+                ->description('Provide a small description of the assessment you are creating')
+                ->schema([
+                    Forms\Components\Textarea::make('desc')->label('')->autosize()
+                ]),
+
             ]);
     }
 
@@ -278,8 +284,7 @@ class ExamResource extends Resource
                 Tables\Filters\SelectFilter::make('certi')->label('Certifications')
                 ->relationship(name: 'certRel', titleAttribute: 'name',
                 modifyQueryUsing: fn (Builder $query) =>auth()->user()->ex==0 ?$query :$query->has('users1')->where('pub',true))
-                ->searchable()->label('Certifications')->multiple()
-                ->preload(),
+                ->label('Certifications')->multiple()->preload(),
                 Tables\Filters\Filter::make('created_at')
                 ->form([
                     Forms\Components\Select::make('type')->label('Type')->selectablePlaceholder(false)->default('0')
@@ -301,16 +306,14 @@ class ExamResource extends Resource
                         fn (Builder $query, $date): Builder => $query->where('type', '0'),
                     )
                     ->when(
-                            $data['type']=='2',
-                            fn (Builder $query, $date): Builder => $query->where('type', '1')->where('from',  auth()->user()->ex!=0?'=':'<>', auth()->id()),
-                        )
-                        ->when(
-                            $data['type']=='3',
-                            fn (Builder $query, $date): Builder => $query->where('type', '1')->where('from', auth()->user()->ex==0?'=':'<>',auth()->id()),
-                        )
-                        ;
+                        $data['type']=='2',
+                        fn (Builder $query, $date): Builder => $query->where('type', '1')->where('from',  auth()->user()->ex!=0?'=':'<>', auth()->id()),
+                    )
+                    ->when(
+                        $data['type']=='3',
+                        fn (Builder $query, $date): Builder => $query->where('type', '1')->where('from', auth()->user()->ex==0?'=':'<>',auth()->id()),
+                    );
                 })
-
             ])
             ->filtersTriggerAction(
                 fn (Tables\Actions\Action $action) => $action
@@ -318,6 +321,37 @@ class ExamResource extends Resource
                     ->label('Filter'),
             )
             ->actions([
+              Tables\Actions\Action::make('redddf')->label('Assessment summary')->iconButton()->icon('heroicon-o-document-text')
+              ->modalCancelAction(function (\Filament\Actions\StaticAction $action) {$action->color('primary');$action->label('Close');})
+              ->modalSubmitAction(false)
+            ->modalHeading(fn (Exam $record):string=> 'Assessment summary')
+            ->visible(function (Exam $record){
+                if(empty($record->users1()->first()->pivot->start_at))
+                 return $record->users1()->count()>0 && empty($record->users1()->first()->pivot->comp_at) && !empty($record->due) && now()<$record->due;
+                 else
+                     return $record->type==1? ($record->users1()->count()>0 && empty($record->users1()->first()->pivot->comp_at) && !empty($record->due) && now()<$record->due) && $record->timer-now()->diffInMinutes($record->users1()->first()->pivot->start_at)>0:
+                     ($record->users1()->count()>0 && empty($record->users1()->first()->pivot->comp_at) && !empty($record->due) && now()<$record->due);
+                 })
+               ->infolist([
+                  Infolists\Components\Section::make('Assessment summary')->collapsible()->persistCollapsed()
+                  ->schema([
+                    Infolists\Components\TextEntry::make('certRel.name')->label('Certification'),
+                    Infolists\Components\TextEntry::make('name')->label('Assessment Title'),
+                    Infolists\Components\TextEntry::make('timer')->label('Time')
+                    ->state(fn (Exam $record) => $record->type=='1'?$record->timer:'Unlimited'),
+                    Infolists\Components\TextEntry::make('quest')->label('Questions'),
+                    Infolists\Components\TextEntry::make('due')->label('Due Date'),
+                    Infolists\Components\TextEntry::make('added_at')->label('Created')->placeholder('N/A'),
+                    Infolists\Components\TextEntry::make('modules.name')->label('Modules')->columnSpan(2)
+                    ->listWithLineBreaks()->bulleted(),
+                ])
+                ->columns(3),
+                    Infolists\Components\Section::make('Note')->collapsible()->persistCollapsed()
+                    ->schema([
+                        Infolists\Components\TextEntry::make('desc')->label('')
+                    ]),
+              ])
+              ->color('gray'),
               Tables\Actions\Action::make('sttr')->icon('heroicon-o-play')
               ->label(fn (Exam $record): string =>empty($record->users1()->first()->pivot->start_at)?'Start the Assessment':'Continue')
               ->color(fn (Exam $record): string =>empty($record->users1()->first()->pivot->start_at)?'info':'warning')
@@ -343,12 +377,14 @@ class ExamResource extends Resource
                 ->modalCancelAction(function (\Filament\Actions\StaticAction $action) {$action->color('primary');$action->label('Close');})
                 ->modalSubmitAction(false)
               ->modalHeading(fn (Exam $record):string=> 'Results')
-                /* ->modalContent(fn (Exam $record): View => view(
-                    'filament.resources.exam-resource.pages.assess-res',
-                    ['record' => $record],
-                )) */
-                ->visible(fn (Exam $record): bool =>$record->users1()->count()>0 && (!empty($record->users1()->first()->pivot->comp_at) || (!empty($record->due) && now()>$record->due) || (!empty($record->users1()->first()->pivot->start_at) && $record->timer-now()->diffInMinutes($record->users1()->first()->pivot->start_at)<=0)))
-                ->infolist([
+                ->visible(function (Exam $record){
+                    if(empty($record->users1()->first()->pivot->start_at))
+                     return $record->users1()->count()>0 && (!empty($record->users1()->first()->pivot->comp_at) || (!empty($record->due) && now()>$record->due));
+                     else
+                         return $record->type==1? ($record->users1()->count()>0 && (!empty($record->users1()->first()->pivot->comp_at) || (!empty($record->due) && now()>$record->due) || $record->timer-now()->diffInMinutes($record->users1()->first()->pivot->start_at)<=0)):
+                         ($record->users1()->count()>0 && (!empty($record->users1()->first()->pivot->comp_at) || (!empty($record->due) && now()>$record->due)));
+                     })
+                     ->infolist([
                     Infolists\Components\Section::make('Assessment summary')->collapsible()->persistCollapsed()
                     ->schema([
                         Infolists\Components\TextEntry::make('certRel.name')->label('Cetification'),
@@ -364,6 +400,7 @@ class ExamResource extends Resource
                         Infolists\Components\TextEntry::make('added_at')->label('Created')->placeholder('N/A'),
                         Infolists\Components\TextEntry::make('comp_at')->label('Completed on')->placeholder('N/A')
                         ->state(fn (Exam $record) => $record->users1()->first()->pivot->comp_at??null),
+                        Infolists\Components\TextEntry::make('desc')->label('Note')->columnSpanFull(),
                     ])
                     ->columns(3),
                     Infolists\Components\Section::make('Performance')->collapsible()->persistCollapsed()
@@ -443,6 +480,7 @@ class ExamResource extends Resource
                         ->state(fn (Exam $record) => $record->users1()->first()->pivot->comp_at??null),
                         Infolists\Components\TextEntry::make('modules.name')->label('Modules')->columnSpan(2)
                         ->listWithLineBreaks()->bulleted()->limitList(3),
+                        Infolists\Components\TextEntry::make('desc')->label('Note')->columnSpanFull()
                     ])
                     ->columns(3),
                     Infolists\Components\Section::make('Performance')->collapsible()->persistCollapsed()

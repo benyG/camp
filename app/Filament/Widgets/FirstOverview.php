@@ -11,12 +11,11 @@ use App\Models\Question;
 
 class FirstOverview extends BaseWidget
 {
-    protected int | string | array $columnSpan = [
-        'sm' => 1,
-        'md' => 2,
-        'xl' => 3,
-    ];
     protected static ?string $pollingInterval = null;
+    protected function getColumns(): int
+    {
+        return 4;
+    }
     protected function getStats(): array
     {
         $bg = array();
