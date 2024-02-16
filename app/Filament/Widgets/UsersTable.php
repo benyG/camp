@@ -88,7 +88,7 @@ class UsersTable extends BaseWidget
             }
             $uarr2[$us->id][0]=$qt;$uarr2[$us->id][3]=round(100*$pes/($ne>0?$ne:1),2);$uarr2[$us->id][4]=round(100*$pga/($qt>0?$qt:1),2);
         }
-        return $table->paginated([5,10,25,50])
+        return $table->paginated([5,10,25,50])->queryStringIdentifier('us1')
             ->query(
                 User::with('vagueRel')->where('ex','>',1)->where('id','<>',auth()->id())
             )
@@ -114,7 +114,7 @@ class UsersTable extends BaseWidget
                 Tables\Columns\TextColumn::make('a3')->label('% Good Ans.')
                 ->state(fn (User $record) => $uarr2[$record->id][4])
                 ->formatStateUsing(fn($state):?string=>$state.'%')
-                ->color(fn($state):string=>intval($state)>=$ix->wperc?'success':'danger'),
+                ->color(fn($state):string=>intval($state)>=50?(intval($state)>=70?'success':'warning'):'danger'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('courses')->label('Certifications')->multiple()
@@ -157,12 +157,12 @@ class UsersTable extends BaseWidget
                                 }
                         }
                     }),
-                Tables\Actions\Action::make('r2')->label(fn($record)=>'\''.$record->name.'\' Dashboard')->icon('heroicon-o-eye')->iconButton()
+                Tables\Actions\Action::make('r2')->label('View Dashboard')->icon('heroicon-o-eye')->iconButton()
                 ->color('warning')->modalCancelAction(fn (\Filament\Actions\StaticAction $action) => $action->label('Close'))
                 ->modalSubmitAction(false)
                 ->modalContent(fn ($record): View => view(
                     'filament.pages.dash1',
-                    ['record' => $record],
+                    ['record' => $record->id],
                 )),
                 Tables\Actions\Action::make('r3')->label(fn($record)=>'Send assessment to \''.$record->name.'\'')->icon('heroicon-o-clipboard-document-list')->iconButton()
                 ->color('danger')

@@ -51,7 +51,7 @@ a:active
 }
 a:hover
 {
-   color: #5E1A0A;
+   color: #f1ce6a;
 }
 </style>
 <!--[if lt IE 7]>
@@ -64,7 +64,7 @@ a:hover
 <div id="space"><br></div>
 <div id="container">
 <div id="bv_Text2" style="margin:0;padding:0;position:absolute;left:295px;top:216px;width:361px;height:44px;text-align:left;z-index:0;">
-<font style="font-size:37px" color="#FFFFFF" face="Arial"><b>{{$exception->getStatusCode()}} </b>- </font><font style="font-size:29px" color="#FFFFFF" face="Arial">{{$exception->getMessage()}}</font></div>
+<font style="font-size:37px" color="#FFFFFF" face="Arial"><b>{{$exception->getStatusCode()}} </b>- </font><font style="font-size:29px" color="#FFFFFF" face="Arial"></font></div>
 <div id="Layer1" style="position:absolute;background-color:#22C55E;left:197px;top:0px;width:53px;height:309px;z-index:1" title="">
 </div>
 <div id="bv_Image1" style="margin:0;padding:0;position:absolute;left:261px;top:123px;width:252px;height:37px;text-align:left;z-index:2;">
@@ -83,7 +83,6 @@ a:hover
                         @case(500)
                         <font style="font-size:19px" color="#FFFFFF" face="Arial">An error occured during the process. Please contact the administrator.<br><br>
                           Try something else or contact support.</font>
-
                             @break
                         @default
                            {{$exception->getMessage()}}

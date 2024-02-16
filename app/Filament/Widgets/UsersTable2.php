@@ -30,6 +30,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Forms\Components\Actions\Action;
+use Illuminate\Contracts\Pagination\CursorPaginator;
 
 class UsersTable2 extends BaseWidget
 {
@@ -39,7 +40,8 @@ class UsersTable2 extends BaseWidget
     public $record;
     public function mount($usrec=null)
     {
-        $this->record=$usrec??auth()->user();
+       // dd($usrec);
+        $this->record=User::find($usrec)??auth()->user();
     }
     public static function canView(): bool
     {
@@ -51,40 +53,44 @@ class UsersTable2 extends BaseWidget
         $ix=cache()->rememberForever('settings', function () {
             return \App\Models\Info::findOrFail(1);
         });
+
       $this->record->loadMissing('exams2');
+
       $us=$this->record;
         $earr=Exam::has('users')->with('users')->get();
         $eall=$earr->pluck('id');
         $rt=Question::with('answers')->get();
          $uarr2=array();
             foreach ($us->exams2 as $exa) {
-                if(!empty($exa->pivot->gen) &&  in_array($exa->pivot->exam,$eall->toArray())){
-           // dd(array_keys(json_decode($exa->pivot->gen,true)));
+                if(in_array($exa->pivot->exam,$eall->toArray())){
+                    if(!empty($exa->pivot->gen)){
+            // dd(array_keys(json_decode($exa->pivot->gen,true)));
 
-                    $res=json_decode($exa->pivot->gen,true);
-                    $arrk=array_keys($res);
-                    $ca=0;
-                    $rot=$rt->whereIn('id',$arrk);
-                    foreach ($rot as $quest) {
-                        $bm=$quest->answers()->where('isok',true)->count()<=1;
-                        if($bm){
-                            $ab=$quest->answers()->where('isok',true)->where('answers.id',$res[$quest->id][0])->count();
-                            if($ab>0) {
-                                $ca++;
-                            }
-                        }else{
-                            $ab2=$quest->answers()->where('isok',false)->whereIn('answers.id',$res[$quest->id])->count();
-                            if($ab2==0) {
-                                $ca++;
+                        $res=json_decode($exa->pivot->gen,true);
+                        $arrk=array_keys($res);
+                        $ca=0;
+                        $rot=$rt->whereIn('id',$arrk);
+                        foreach ($rot as $quest) {
+                            $bm=$quest->answers()->where('isok',true)->count()<=1;
+                            if($bm){
+                                $ab=$quest->answers()->where('isok',true)->where('answers.id',$res[$quest->id][0])->count();
+                                if($ab>0) {
+                                    $ca++;
+                                }
+                            }else{
+                                $ab2=$quest->answers()->where('isok',false)->whereIn('answers.id',$res[$quest->id])->count();
+                                if($ab2==0) {
+                                    $ca++;
+                                }
                             }
                         }
-                    }
-                 // dd('dk');
-                 $uarr2[$exa->pivot->exam]=round(100*$ca/$earr->where('id',$exa->pivot->exam)->first()->quest,2);
+                    // dd('dk');
+                    $uarr2[$exa->pivot->exam]=round(100*$ca/$earr->where('id',$exa->pivot->exam)->first()->quest,2);
+                    }else if(!empty($exa->pivot->start_at)) {$uarr2[$exa->pivot->exam]=0;}
                 }
             }
-           // dd($uarr2);
-        return $table
+           // dd(Exam::with('certRel')->where('from',$this->record->id)->orWhereRelation('users', 'user', $this->record->id)->latest('added_at')->count());
+        return $table->paginated([5,10,25,50])->queryStringIdentifier('us2')
         ->query(Exam::with('certRel')->where('from',$this->record->id)->orWhereRelation('users', 'user', $this->record->id)->latest('added_at'))
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable(),
@@ -102,5 +108,9 @@ class UsersTable2 extends BaseWidget
             ->formatStateUsing(fn ($state):string=> intval($state)<=0? 'Unlimited': $state),
             Tables\Columns\TextColumn::make('certRel.name')->label('Certification')->sortable(),
             ]);
+    }
+    protected function paginateTableQuery(Builder $query): CursorPaginator
+    {
+        return $query->cursorPaginate(($this->getTableRecordsPerPage() === 'all') ? $query->count() : $this->getTableRecordsPerPage());
     }
 }
