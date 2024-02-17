@@ -17,7 +17,7 @@ class InfoResource extends Resource
 {
     protected static ?string $model = Info::class;
     protected static ?int $navigationSort = 9;
-    protected static ?string $navigationGroup = 'Other';
+    protected static ?string $navigationGroup = 'Admin';
     protected static ?string $modelLabel = 'setting';
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
