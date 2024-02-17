@@ -123,7 +123,7 @@ class UsersTable extends BaseWidget
                 Tables\Filters\SelectFilter::make('vague')->label('Classe')->multiple()
                 ->relationship('vagueRel', 'name')->preload(),
                 Tables\Filters\SelectFilter::make('ex')->label('Type')
-                ->options(['1' => 'Admin','2' => 'Starter','3' => 'User','4' => 'Pro','5' => 'VIP'])
+                ->options(['2' => 'Starter','3' => 'User','4' => 'Pro','5' => 'VIP'])
                 ])
             ->actions([
                 Tables\Actions\Action::make('r1')->label(fn($record)=>'Send message to \''.$record->name.'\'')->icon('heroicon-o-envelope')->iconButton()
@@ -188,7 +188,7 @@ class UsersTable extends BaseWidget
                     if($ix->smtp ){
                             try {
                               //  Notif::send($record, new NewMail($ma->sub,[now(),$exa->name,$exa->due,$exa->certRel->name],'2'));
-                                dispatch($record, new NewMail($ma->sub,[now(),$exa->name,$exa->due,$exa->certRel->name],'2'));
+                                //dispatch($record, new NewMail($ma->sub,[now(),$exa->name,$exa->due,$exa->certRel->name],'2'));
                                 $ma->users2()->updateExistingPivot($record->id, ['sent' => true,'last_sent' => now()]);
                                 Notification::make()->success()->title('Successfully sent via SMTP to : '.$record->email)->send();
                             } catch (Exception $exception) {
