@@ -238,7 +238,7 @@ class ExamResource extends Resource
                 Forms\Components\Section::make('Note')
                 ->description('Provide a small description of the assessment you are creating')
                 ->schema([
-                    Forms\Components\Textarea::make('desc')->label('')->autosize()
+                    Forms\Components\Textarea::make('descr')->label('')->autosize()
                 ]),
 
             ]);
@@ -348,7 +348,7 @@ class ExamResource extends Resource
                 ->columns(3),
                     Infolists\Components\Section::make('Note')->collapsible()->persistCollapsed()
                     ->schema([
-                        Infolists\Components\TextEntry::make('desc')->label('')
+                        Infolists\Components\TextEntry::make('descr')->label('')
                     ]),
               ])
               ->color('gray'),
@@ -400,7 +400,7 @@ class ExamResource extends Resource
                         Infolists\Components\TextEntry::make('added_at')->label('Created')->placeholder('N/A'),
                         Infolists\Components\TextEntry::make('comp_at')->label('Completed on')->placeholder('N/A')
                         ->state(fn (Exam $record) => $record->users1()->first()->pivot->comp_at??null),
-                        Infolists\Components\TextEntry::make('desc')->label('Note')->columnSpanFull(),
+                        Infolists\Components\TextEntry::make('descr')->label('Note')->columnSpanFull(),
                     ])
                     ->columns(3),
                     Infolists\Components\Section::make('Performance')->collapsible()->persistCollapsed()
@@ -480,7 +480,7 @@ class ExamResource extends Resource
                         ->state(fn (Exam $record) => $record->users1()->first()->pivot->comp_at??null),
                         Infolists\Components\TextEntry::make('modules.name')->label('Modules')->columnSpan(2)
                         ->listWithLineBreaks()->bulleted()->limitList(3),
-                        Infolists\Components\TextEntry::make('desc')->label('Note')->columnSpanFull()
+                        Infolists\Components\TextEntry::make('descr')->label('Note')->columnSpanFull()
                     ])
                     ->columns(3),
                     Infolists\Components\Section::make('Performance')->collapsible()->persistCollapsed()
