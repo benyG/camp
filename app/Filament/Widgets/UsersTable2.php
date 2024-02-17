@@ -93,7 +93,8 @@ class UsersTable2 extends BaseWidget
         return $table->paginated([5,10,25,50])->queryStringIdentifier('us2')
         ->query(Exam::with('certRel')->where('from',$this->record->id)->orWhereRelation('users', 'user', $this->record->id)->latest('added_at'))
             ->columns([
-                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('certRel.name')->sortable()->searchable()->label('Title')
+                ->description(fn (Exam $record): ?string => $record->name),
                 Tables\Columns\TextColumn::make('type')
                 ->state(fn (Exam $record) => $record->type=='1'?($this->record->id==$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
                 ->badge()
