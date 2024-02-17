@@ -327,6 +327,11 @@ class UsersTable extends BaseWidget
                             ->default($ix->minq)->live(onBlur: true),
                         ])->minItems(1)->maxItems(fn(Get $get):int=>$get('type')=='1'?Module::where('course',$get('certi'))->count():1)
                         ]),
+                        Forms\Components\Section::make('Note')
+                        ->description('Provide a small description of the assessment you are creating')
+                        ->schema([
+                            Forms\Components\Textarea::make('desc')->label('')->autosize()
+                        ]),
                 ]),
             ]);
     }
