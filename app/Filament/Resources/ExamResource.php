@@ -250,15 +250,16 @@ class ExamResource extends Resource
         ->query(auth()->user()->ex==0?Exam::where('from',auth()->id())->with('users')->with('certRel')->with('modules')->latest('added_at'):Exam::has('users1')->with('certRel')->with('users1')->with('modules')
         ->latest('added_at'))
         ->columns([
-                Tables\Columns\TextColumn::make('certRel.name')->sortable()->searchable()->label('Title')
-                ->description(fn (Exam $record): ?string => $record->name),
-                Tables\Columns\TextColumn::make('type')
+            Tables\Columns\TextColumn::make('certRel.name')->sortable()->searchable()->label('Title')
+            ->description(fn (Exam $record): ?string => $record->name),
+            Tables\Columns\TextColumn::make('name')->sortable()->searchable()->label('Code')->toggleable(isToggledHiddenByDefault: true),
+        Tables\Columns\TextColumn::make('type')
                 ->state(fn (Exam $record) => $record->type=='1'?(auth()->id()==$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
                 ->badge()
                 ->color(fn ($record): string =>$record->type=='1'?(auth()->id()==$record->from?'primary': 'danger'):'info')
             ->sortable(),
             Tables\Columns\TextColumn::make('quest')->label('Questions')->sortable(),
-        Tables\Columns\TextColumn::make('users.name')->label('Users')->limit(30)
+        Tables\Columns\TextColumn::make('users.name')->label('Users')->limit(30)->searchable()
         ->tooltip(fn($state):string=>implode(', ',$state))
             ->hidden(auth()->user()->ex!=0),
         Tables\Columns\TextColumn::make('added')->label('Affected on')
