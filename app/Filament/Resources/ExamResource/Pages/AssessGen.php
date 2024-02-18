@@ -22,6 +22,7 @@ use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Support\Enums\ActionSize;
 
 #[Lazy]
 class AssessGen extends Page implements HasForms, HasActions
@@ -141,7 +142,7 @@ class AssessGen extends Page implements HasForms, HasActions
     }
     public function revAction(): \Filament\Actions\Action
     {
-        return \Filament\Actions\Action::make('rev')->label('here')->link()
+        return \Filament\Actions\Action::make('rev')->label('here')->link()->size(ActionSize::Small)
             ->requiresConfirmation()->color('primary')->extraAttributes([
                 'style' => 'font-size:10px',
             ])
