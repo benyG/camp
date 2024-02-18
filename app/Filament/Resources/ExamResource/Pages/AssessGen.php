@@ -22,7 +22,6 @@ use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Support\Enums\ActionSize;
 
 #[Lazy]
 class AssessGen extends Page implements HasForms, HasActions
@@ -143,17 +142,19 @@ class AssessGen extends Page implements HasForms, HasActions
     public function revAction(): \Filament\Actions\Action
     {
         return \Filament\Actions\Action::make('rev')->label('here')->link()
-            ->requiresConfirmation()->color('warning')->size(ActionSize::Small)
+            ->requiresConfirmation()->color('primary')->extraAttributes([
+                'style' => 'font-size:10px',
+            ])
             ->modalIcon('heroicon-o-question-mark-circle')
             ->modalHeading('Question Review')
-            ->modalDescription('Do you want to request a review of this question?')
+            ->modalDescription('Do you want to send a review request of this question?')
             ->action(function () {
                 $rev = new \App\Models\Review;
                 $rev->user=auth()->id();
                 $rev->quest=$this->qid;
                 $rev->ans=json_encode($this->aid);
                 $rev->save();
-                Notification::make()->success()->title('Review submitted.')->send();
+                Notification::make()->success()->title("The request was sent. You'll be notified if there is an update. You can now continue the assessment.")->send();
             });
     }
 

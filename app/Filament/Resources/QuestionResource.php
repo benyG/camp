@@ -158,9 +158,20 @@ class QuestionResource extends Resource
                                 $ma = new \App\Models\SMail;
                                 $ma->from=auth()->id();
                                 $ma->sub="Question Reviewed !";
+                                $ans="";
+                                if($record->answers2()->count()==1){
+                                    $ans=$record->answers2()->first()->text;
+                                }else if($record->answers2()->count()<1){
+                                    $ans='None';
+                                }
+                                else{
+                                    $ans='<ul><li>'.implode('<li>',$record->answers2()->pluck('text')).'</ul>';
+                                }
                                 $ma->content='Dear Bootcamper , <br><br>'.
                                 'On '.Carbon::parse($rev->created_at)->toDayDateTimeString().', you requested a review of this question: <br><br> <b>'.$record->text.'</b>'
-                                    .'<br><br> We are pleased to let you know that the question was reviewed by our team and validated.<br> Thank you for your contribution !<br><i>The ITExamBootCamp Team</i>';
+                                    .'<br> We are pleased to let you know that the question was reviewed by our team, and this is the validated answer:<br><b>'.
+                                    $ans.'</b>
+                                    <br><br> Thank you for your contribution !<br><i>The ITExamBootCamp Team</i>';
                                 $ma->save();$ma->users2()->attach($rev->user);
                             }
                             Notification::make()->success()->title('Question reviewed.')->send();

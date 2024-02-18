@@ -214,7 +214,7 @@
          {!! $cans !!}
           @if (\Illuminate\Support\Str::contains($cans,"alt="))
           <br>
-        <div class='text-xs'> <br><br>If you do not agree, you can request a review of this question &nbsp;
+        <div style="font-size:10px"> <br><br>If you do not agree, you can request a review of this question &nbsp;
         {{$this->revAction}}
         </div>
          @endif
