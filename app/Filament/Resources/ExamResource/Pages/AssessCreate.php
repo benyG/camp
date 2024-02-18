@@ -37,7 +37,7 @@ class AssessCreate extends CreateRecord
         $data['from'] = auth()->id();
         $data['type'] =$data['type']==null? '0':$data['type'];
         $data['timer'] =$data['timer']??'0';
-        $data['name'] = ($data['type']==0?'Test':'Exam').'_'.Str::remove('-',now()->toDateString()).'_'.Str::random(5);
+        $data['name'] = ($data['type']==null?'Test':'Exam').'_'.Str::remove('-',now()->toDateString()).'_'.Str::random(5);
   //      dd($data);
         if(auth()->user()->ex!=0){
            // $data['due']=null;
