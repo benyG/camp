@@ -31,6 +31,7 @@ class ManageQuestions extends ManageRecords
     {
         $b1=\App\Models\Question::withCount('answers2')->having('answers2_count','=',0)->count();
         $b2=\App\Models\Question::withCount('answers')->having('answers_count','=',0)->count();
+        $b3=\App\Models\Question::has('reviews')->count();
 
         return [
             'All' => Tab::make()->badge(\App\Models\Question::count())
@@ -41,9 +42,12 @@ class ManageQuestions extends ManageRecords
                 ->having('answers2_count','=',0)
             ),
             'No answers' => Tab::make()->badge($b2)
-            ->modifyQueryUsing(fn (Builder $query) => $query
-            ->having('answers_count','=',0))
+            ->modifyQueryUsing(fn (Builder $query) => $query->having('answers_count','=',0))
             ->badgeColor(fn()=>$b2>0?'danger':'success'),
+            'To review' => Tab::make()->badge($b3)
+            ->modifyQueryUsing(fn (Builder $query) => $query->has('reviews'))
+            ->badgeColor(fn()=>$b3>0?'danger':'success'),
+
         ];
     }
 }

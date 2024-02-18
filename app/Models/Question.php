@@ -10,7 +10,9 @@ use App\Models\Course;
 use App\Models\Answer;
 use App\Models\QuestAns;
 use App\Models\ExamQuest;
+use App\Models\Review;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Question extends Model
 {
@@ -57,6 +59,9 @@ class Question extends Model
             'course' // Local key on the cars table...
         );
     }
-
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'quest');
+    }
 
 }

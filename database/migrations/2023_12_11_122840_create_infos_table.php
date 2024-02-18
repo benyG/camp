@@ -31,6 +31,12 @@ return new class extends Migration
             $table->string('efrom');
             $table->boolean('smtp')->default(true);
             $table->tinyInteger('var1')->default(0);
+            $table->text('apk')->nullable();
+            $table->text('endp')->nullable();
+            $table->text('cont1')->nullable();
+            $table->text('cont2')->nullable();
+            $table->text('cont3')->nullable();
+
         });
     }
 

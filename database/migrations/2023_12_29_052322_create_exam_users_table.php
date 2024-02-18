@@ -17,6 +17,7 @@ return new class extends Migration
             $table->timestamp('start_at')->nullable();
             $table->timestamp('comp_at')->nullable();
             $table->json('gen')->nullable();
+            $table->json('quest')->nullable();
             $table->unsignedBigInteger('user');
             $table->unsignedBigInteger('exam');
             $table->foreign('user')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();

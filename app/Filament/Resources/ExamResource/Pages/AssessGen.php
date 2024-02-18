@@ -8,7 +8,6 @@ use Filament\Forms\Form;
 use Filament\Forms;
 use Illuminate\Support\HtmlString;
 use Filament\Notifications\Notification;
-use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use App\Models\Exam;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Wizard\Step;
@@ -19,13 +18,20 @@ use Filament\Forms\Components\Component;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Illuminate\Contracts\Support\Htmlable;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Support\Enums\ActionSize;
 
 #[Lazy]
-class AssessGen extends Page
+class AssessGen extends Page implements HasForms, HasActions
 {
-    use InteractsWithRecord;
-    protected static string $resource = ExamResource::class;
+    use InteractsWithActions;
+    use InteractsWithForms;
 
+    protected static string $resource = ExamResource::class;
+    public Exam $record;
     #[Locked]
     public $quest;
     #[Locked]
@@ -64,6 +70,10 @@ class AssessGen extends Page
     public $cans;
     #[Locked]
     public $score=0;
+    #[Locked]
+    public $qid;
+    #[Locked]
+    public $aid;
 
     #[Validate('required',onUpdate: false,message:"No answer choosen")]
     public $ans;
@@ -74,8 +84,7 @@ class AssessGen extends Page
 
     public function mount($ex): void
     {
-        static::authorizeResourceAccess();
-        $this->record = $this->resolveRecord(Exam::has('users1')->where('name', $ex)->with('modules')->with('users1')->firstOrFail()->id);
+        $this->record = Exam::has('users1')->where('name', $ex)->with('modules')->with('users1')->firstOrFail();
         if(empty($this->record->users1()->first()->pivot->start_at))
                 $this->record->users1()->updateExistingPivot(auth()->id(), [
                     'start_at' => now()]);
@@ -131,6 +140,23 @@ class AssessGen extends Page
             $this->ico=$this->qcur<$this->qtot?'heroicon-m-play':'';
             $this->qcur2=$this->qcur;
     }
+    public function revAction(): \Filament\Actions\Action
+    {
+        return \Filament\Actions\Action::make('rev')->label('here')->link()
+            ->requiresConfirmation()->color('warning')->size(ActionSize::Small)
+            ->modalIcon('heroicon-o-question-mark-circle')
+            ->modalHeading('Question Review')
+            ->modalDescription('Do you want to request a review of this question?')
+            ->action(function () {
+                $rev = new \App\Models\Review;
+                $rev->user=auth()->id();
+                $rev->quest=$this->qid;
+                $rev->ans=json_encode($this->aid);
+                $rev->save();
+                Notification::make()->success()->title('Review submitted.')->send();
+            });
+    }
+
     public function validateData(){
       // dd($this->qcur);
          if($this->bm1)
@@ -189,12 +215,14 @@ class AssessGen extends Page
                 $au=$this->quest[$this->qcur]->answers()->where('isok',true)->first()->text;
 
                 $this->gen[$this->quest[$this->qcur]->id]=[$this->ans];
+                $this->aid=[$this->ans];$this->qid=$this->quest[$this->qcur]->id;
                 if($ab>0) $this->score++;
                 if($this->record->type=='0' && $this->bm2==false)
+                // DO NOT REMOVE ALT='', CODE NEEDED FOR REVIEW BUTTON
                 $this->cans=$ab>0?"
                 <span class='text-sm text-primary-600'> <br>
         Correct answer</span>":
-                "<span style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-sm text-custom-600'>
+                "<span alt='' style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-sm text-custom-600'>
                 <br>  Wrong answer <br> </span><span class='text-xs'>This was the correct answer : <br>
                 $au</span>";
             }else{
@@ -203,13 +231,14 @@ class AssessGen extends Page
                 if($this->quest[$this->qcur]->answers()->where('isok',true)->count()>0)
                 $au2=$this->quest[$this->qcur]->answers()->where('isok',true)->pluck('answers.text');
                 $this->gen[$this->quest[$this->qcur]->id]=$this->ans2;
-            // dd($au2);
+                $this->aid=$this->ans2;$this->qid=$this->quest[$this->qcur]->id;
             if($this->record->type=='0' && $this->bm2==false)
             if($ab2==0) $this->score++;
+             // DO NOT REMOVE ALT='', CODE NEEDED FOR REVIEW BUTTON
                 $this->cans=$ab2==0?"
                 <span class='text-sm text-primary-600'> <br>
         Correct set of answers</span>":
-                "<span style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-sm text-custom-600'>
+                "<span alt='' style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-sm text-custom-600'>
                 <br>  Wrong set of answers <br> </span><span class='text-xs'>This was the correct set : <br>
                 ".$au2->join("<br>")."</span>";
             }

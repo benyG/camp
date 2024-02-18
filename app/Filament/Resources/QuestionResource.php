@@ -17,6 +17,8 @@ use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use Filament\Forms\Get;
+use Filament\Notifications\Notification;
+use Illuminate\Support\Carbon;
 
 class QuestionResource extends Resource
 {
@@ -61,7 +63,7 @@ class QuestionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->paginated([25,50,100,250])
-        ->modifyQueryUsing(fn (Builder $query) => $query->latest())
+        ->modifyQueryUsing(fn (Builder $query) => $query->with('reviews')->latest())
             ->columns([
                 Tables\Columns\TextColumn::make('text')->limit(100)->html()
                 ->searchable()->sortable(),
@@ -131,6 +133,41 @@ class QuestionResource extends Resource
                 Infolists\Components\TextEntry::make('maxr')->label('Max. Answers'),
                 Infolists\Components\TextEntry::make('text')->html(),
                 Infolists\Components\TextEntry::make('descr')->html()->label('Explanation'),
+                Infolists\Components\TextEntry::make('reviews.id')->html()->label('Reviews')->columnSpanFull()->placeholder('None')
+                ->formatStateUsing(function ($state)
+                {
+                    $htm="<div class='text-sm text-gray-400 fi-in-placeholder dark:text-gray-500'>None</div>";
+                    $st=\App\Models\Review::with('userRel')->whereIn('id',explode(',',$state))->get();
+                   // dd($st);
+                    if(!empty($state)) {
+                        $htm="<ul class='list-disc list-inside'>";
+                        foreach ($st as $val) {
+                            $htm.="<li> User <b>".$val->userRel->name."</b> thinks that the answer to this question is <b>'".
+                            implode(', ',\App\Models\Answer::whereIn('id',json_decode($val->ans))->get()->pluck('text')->toArray()).
+                            "'</b></li>";
+                        }
+                        $htm.="</ul>";
+                    }
+                    return $htm;
+                })->hintAction(
+                    \Filament\Infolists\Components\Actions\Action::make('ooi')->label('Mark as Reviewed')->requiresConfirmation()
+                        ->icon('heroicon-m-check-circle')->color('warning')
+                        ->visible(fn($record):bool=> $record->reviews()->count()>0)
+                        ->action(function ($record) {
+                            foreach ($record->reviews as $rev) {
+                                $ma = new \App\Models\SMail;
+                                $ma->from=auth()->id();
+                                $ma->sub="Question Reviewed !";
+                                $ma->content='Dear Bootcamper , <br><br>'.
+                                'On '.Carbon::parse($rev->created_at)->toDayDateTimeString().', you requested a review of this question: <br><br> <b>'.$record->text.'</b>'
+                                    .'<br><br> We are pleased to let you know that the question was reviewed by our team and validated.<br> Thank you for your contribution !<br><i>The ITExamBootCamp Team</i>';
+                                $ma->save();$ma->users2()->attach($rev->user);
+                            }
+                            Notification::make()->success()->title('Question reviewed.')->send();
+                            \App\Models\Review::destroy($record->reviews()->pluck('id'));
+                            Notification::make()->success()->title('Users Notified.')->send();
+                        })
+                ),
             ]);
     }
     protected function getRedirectUrl(): string
