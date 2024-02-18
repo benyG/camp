@@ -3,6 +3,7 @@
 namespace Filament\Actions\Exports;
 
 use Carbon\CarbonInterface;
+use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Actions\Exports\Models\Export;
 use Filament\Forms\Components\Component;
 use Illuminate\Database\Eloquent\Model;
@@ -40,7 +41,7 @@ abstract class Exporter
         $data = [];
 
         foreach (array_keys($this->columnMap) as $column) {
-            $data[] = $columns[$column]->getState();
+            $data[] = $columns[$column]->getFormattedState();
         }
 
         return $data;
@@ -81,7 +82,7 @@ abstract class Exporter
         ];
     }
 
-    public function getJobRetryUntil(): CarbonInterface
+    public function getJobRetryUntil(): ?CarbonInterface
     {
         return now()->addDay();
     }
@@ -100,6 +101,11 @@ abstract class Exporter
     }
 
     public function getJobConnection(): ?string
+    {
+        return null;
+    }
+
+    public function getJobBatchName(): ?string
     {
         return null;
     }
@@ -151,5 +157,13 @@ abstract class Exporter
     public static function getCsvDelimiter(): string
     {
         return ',';
+    }
+
+    /**
+     * @return array<ExportFormat>
+     */
+    public function getFormats(): array
+    {
+        return [ExportFormat::Csv, ExportFormat::Xlsx];
     }
 }

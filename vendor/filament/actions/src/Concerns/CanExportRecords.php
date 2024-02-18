@@ -5,6 +5,7 @@ namespace Filament\Actions\Concerns;
 use AnourValar\EloquentSerialize\Facades\EloquentSerializeFacade;
 use Closure;
 use Filament\Actions\ExportAction;
+use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Actions\Exports\ExportColumn;
 use Filament\Actions\Exports\Exporter;
 use Filament\Actions\Exports\Jobs\CreateXlsxFile;
@@ -22,7 +23,9 @@ use Filament\Tables\Contracts\HasTable;
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Foundation\Bus\PendingChain;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 use function Filament\Support\format_number;
@@ -51,6 +54,13 @@ trait CanExportRecords
 
     protected string | Closure | null $fileName = null;
 
+    /**
+     * @var array<ExportFormat> | Closure | null
+     */
+    protected array | Closure | null $formats = null;
+
+    protected ?Closure $modifyQueryUsing = null;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -73,7 +83,7 @@ trait CanExportRecords
                             Forms\Components\Checkbox::make('isEnabled')
                                 ->label(__('filament-actions::export.modal.form.columns.form.is_enabled.label', ['column' => $column->getName()]))
                                 ->hiddenLabel()
-                                ->default(true)
+                                ->default($column->isEnabledByDefault())
                                 ->live()
                                 ->grow(false),
                             Forms\Components\TextInput::make('label')
@@ -99,6 +109,12 @@ trait CanExportRecords
                 $query = $action->getExporter()::getModel()::query();
             }
 
+            if ($this->modifyQueryUsing) {
+                $query = $this->evaluate($this->modifyQueryUsing, [
+                    'query' => $query,
+                ]) ?? $query;
+            }
+
             $records = $action instanceof ExportTableBulkAction ? $action->getRecords() : null;
 
             $totalRows = $records ? $records->count() : $query->count();
@@ -110,7 +126,7 @@ trait CanExportRecords
                     ->body(trans_choice('filament-actions::export.notifications.max_rows.body', $maxRows, [
                         'count' => format_number($maxRows),
                     ]))
-                    ->success()
+                    ->danger()
                     ->send();
 
                 return;
@@ -124,6 +140,10 @@ trait CanExportRecords
             );
 
             $columnMap = collect($data['columnMap'])
+                ->dot()
+                ->reduce(fn (Collection $carry, mixed $value, string $key): Collection => $carry->mergeRecursive([
+                    Str::beforeLast($key, '.') => [Str::afterLast($key, '.') => $value],
+                ]), collect())
                 ->filter(fn (array $column): bool => $column['isEnabled'] ?? false)
                 ->mapWithKeys(fn (array $column, string $columnName): array => [$columnName => $column['label']])
                 ->all();
@@ -144,12 +164,27 @@ trait CanExportRecords
             $export->file_name = $action->getFileName($export) ?? $exporter->getFileName($export);
             $export->save();
 
+            $formats = $action->getFormats() ?? $exporter->getFormats();
+            $hasCsv = in_array(ExportFormat::Csv, $formats);
+            $hasXlsx = in_array(ExportFormat::Xlsx, $formats);
+
             $query->withoutEagerLoads();
             $serializedQuery = EloquentSerializeFacade::serialize($query);
 
             $job = $action->getJob();
             $jobQueue = $exporter->getJobQueue();
             $jobConnection = $exporter->getJobConnection();
+            $jobBatchName = $exporter->getJobBatchName();
+
+            // We do not want to send the loaded user relationship to the queue in job payloads,
+            // in case it contains attributes that are not serializable, such as binary columns.
+            $export->unsetRelation('user');
+
+            $makeCreateXlsxFileJob = fn (): CreateXlsxFile => app(CreateXlsxFile::class, [
+                'export' => $export,
+                'columnMap' => $columnMap,
+                'options' => $options,
+            ]);
 
             Bus::chain([
                 Bus::batch([new $job(
@@ -168,17 +203,19 @@ trait CanExportRecords
                         filled($jobConnection),
                         fn (PendingBatch $batch) => $batch->onConnection($jobConnection),
                     )
+                    ->when(
+                        filled($jobBatchName),
+                        fn (PendingBatch $batch) => $batch->name($jobBatchName),
+                    )
                     ->allowFailures(),
+                ...(($hasXlsx && (! $hasCsv)) ? [$makeCreateXlsxFileJob()] : []),
                 app(ExportCompletion::class, [
                     'export' => $export,
                     'columnMap' => $columnMap,
+                    'formats' => $formats,
                     'options' => $options,
                 ]),
-                app(CreateXlsxFile::class, [
-                    'export' => $export,
-                    'columnMap' => $columnMap,
-                    'options' => $options,
-                ]),
+                ...(($hasXlsx && $hasCsv) ? [$makeCreateXlsxFileJob()] : []),
             ])
                 ->when(
                     filled($jobQueue),
@@ -324,5 +361,30 @@ trait CanExportRecords
         return $this->evaluate($this->fileName, [
             'export' => $export,
         ]);
+    }
+
+    /**
+     * @param  array<ExportFormat> | Closure | null  $formats
+     */
+    public function formats(array | Closure | null $formats): static
+    {
+        $this->formats = $formats;
+
+        return $this;
+    }
+
+    /**
+     * @return array<ExportFormat> | null
+     */
+    public function getFormats(): ?array
+    {
+        return $this->evaluate($this->formats);
+    }
+
+    public function modifyQueryUsing(?Closure $callback): static
+    {
+        $this->modifyQueryUsing = $callback;
+
+        return $this;
     }
 }

@@ -96,13 +96,24 @@ class ExportCsv implements ShouldQueue
         $filePath = $this->export->getFileDirectory() . DIRECTORY_SEPARATOR . str_pad(strval($this->page), 16, '0', STR_PAD_LEFT) . '.csv';
         $this->export->getFileDisk()->put($filePath, $csv->toString(), Filesystem::VISIBILITY_PRIVATE);
 
-        $this->export->increment('processed_rows', $processedRows);
-        $this->export->increment('successful_rows', $successfulRows);
+        $this->export->refresh();
+
+        $exportProcessedRows = $this->export->processed_rows + $processedRows;
+        $this->export->processed_rows = ($exportProcessedRows < $this->export->total_rows) ?
+            $exportProcessedRows :
+            $this->export->total_rows;
+
+        $exportSuccessfulRows = $this->export->successful_rows + $successfulRows;
+        $this->export->successful_rows = ($exportSuccessfulRows < $this->export->total_rows) ?
+            $exportSuccessfulRows :
+            $this->export->total_rows;
+
+        $this->export->save();
 
         $this->handleExceptions($exceptions);
     }
 
-    public function retryUntil(): CarbonInterface
+    public function retryUntil(): ?CarbonInterface
     {
         return $this->exporter->getJobRetryUntil();
     }

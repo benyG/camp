@@ -183,7 +183,7 @@ trait CanImportRecords
                     ->body(trans_choice('filament-actions::import.notifications.max_rows.body', $maxRows, [
                         'count' => format_number($maxRows),
                     ]))
-                    ->success()
+                    ->danger()
                     ->send();
 
                 return;
@@ -211,10 +211,14 @@ trait CanImportRecords
                 Arr::except($data, ['file', 'columnMap']),
             );
 
+            // We do not want to send the loaded user relationship to the queue in job payloads,
+            // in case it contains attributes that are not serializable, such as binary columns.
+            $import->unsetRelation('user');
+
             $importJobs = collect($importChunks)
                 ->map(fn (array $importChunk): object => new ($job)(
                     $import,
-                    rows: $importChunk,
+                    rows: base64_encode(serialize($importChunk)),
                     columnMap: $data['columnMap'],
                     options: $options,
                 ));
@@ -233,6 +237,10 @@ trait CanImportRecords
                 ->when(
                     filled($jobConnection = $importer->getJobConnection()),
                     fn (PendingBatch $batch) => $batch->onConnection($jobConnection),
+                )
+                ->when(
+                    filled($jobBatchName = $importer->getJobBatchName()),
+                    fn (PendingBatch $batch) => $batch->name($jobBatchName),
                 )
                 ->finally(function () use ($import) {
                     $import->touch('completed_at');
@@ -266,7 +274,8 @@ trait CanImportRecords
                                         'count' => format_number($failedRowsCount),
                                     ]))
                                     ->color('danger')
-                                    ->url(route('filament.imports.failed-rows.download', ['import' => $import])),
+                                    ->url(route('filament.imports.failed-rows.download', ['import' => $import], absolute: false), shouldOpenInNewTab: true)
+                                    ->markAsRead(),
                             ]),
                         )
                         ->sendToDatabase($import->user);
@@ -299,7 +308,7 @@ trait CanImportRecords
                     }
 
                     $csv->insertOne(array_map(
-                        fn (ImportColumn $column): string => $column->getName(),
+                        fn (ImportColumn $column): string => $column->getExampleHeader(),
                         $columns,
                     ));
 

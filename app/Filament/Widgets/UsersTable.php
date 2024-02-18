@@ -164,7 +164,7 @@ class UsersTable extends BaseWidget
                     'filament.pages.dash1',
                     ['record' => $record->id],
                 )),
-                Tables\Actions\Action::make('r3')->label(fn($record)=>'Send assessment to \''.$record->name.'\'')->icon('heroicon-o-clipboard-document-list')->iconButton()
+                Tables\Actions\Action::make('r3')->label(fn($record)=>'Send assessment')->icon('heroicon-o-clipboard-document-list')->iconButton()
                 ->color('danger')
                 ->modalSubmitActionLabel('Assign')
                 ->action(function ($record, $data) {

@@ -59,11 +59,16 @@ class PrepareCsvExport implements ShouldQueue
 
         $query = EloquentSerializeFacade::unserialize($this->query);
         $keyName = $query->getModel()->getKeyName();
+        $qualifiedKeyName = $query->getModel()->getQualifiedKeyName();
 
         $exportCsvJob = $this->getExportCsvJob();
 
         $totalRows = 0;
         $page = 1;
+
+        // We do not want to send the loaded user relationship to the queue in job payloads,
+        // in case it contains attributes that are not serializable, such as binary columns.
+        $this->export->unsetRelation('user');
 
         $dispatchRecords = function (array $records) use ($exportCsvJob, &$page, &$totalRows) {
             $recordsCount = count($records);
@@ -103,13 +108,41 @@ class PrepareCsvExport implements ShouldQueue
             return;
         }
 
-        $query->toBase()
-            ->select([$query->getModel()->getQualifiedKeyName()])
-            ->chunkById(
-                $this->chunkSize * 10,
+        $chunkKeySize = $this->chunkSize * 10;
+
+        $baseQuery = $query->toBase();
+        $baseQuery->distinct($qualifiedKeyName);
+
+        /** @phpstan-ignore-next-line */
+        $baseQueryOrders = $baseQuery->orders ?? [];
+        $baseQueryOrdersCount = count($baseQueryOrders);
+
+        if (
+            (
+                ($baseQueryOrdersCount === 1) &&
+                (! in_array($baseQueryOrders[0]['column'] ?? null, [$keyName, $qualifiedKeyName]))
+            ) ||
+            ($baseQueryOrdersCount > 1)
+        ) {
+            $baseQuery->chunk(
+                $this->chunkSize,
                 fn (Collection $records) => $dispatchRecords(
                     Arr::pluck($records->all(), $keyName),
                 ),
+            );
+
+            return;
+        }
+
+        $baseQuery
+            ->select([$qualifiedKeyName])
+            ->orderedChunkById(
+                $chunkKeySize,
+                fn (Collection $records) => $dispatchRecords(
+                    Arr::pluck($records->all(), $keyName),
+                ),
+                column: $keyName,
+                descending: ($baseQueryOrders[0]['direction'] ?? 'asc') === 'desc',
             );
     }
 

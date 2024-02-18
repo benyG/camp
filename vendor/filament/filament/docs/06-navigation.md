@@ -33,7 +33,7 @@ To customize a navigation item's [icon](https://blade-ui-kit.com/blade-icons?set
 protected static ?string $navigationIcon = 'heroicon-o-document-text';
 ```
 
-If you set `$navigationIcon = null` on all items within the same navigation group, those items will be joined with a vertical bar below the Group name.
+If you set `$navigationIcon = null` on all items within the same navigation group, those items will be joined with a vertical bar below the group label.
 
 ### Switching navigation item icon when it is active
 
@@ -70,6 +70,21 @@ If a badge value is returned by `getNavigationBadge()`, it will display using th
 public static function getNavigationBadgeColor(): ?string
 {
     return static::getModel()::count() > 10 ? 'warning' : 'primary';
+}
+```
+
+A custom tooltip for the navigation badge can be set in `$navigationBadgeTooltip`:
+
+```php
+protected static ?string $navigationBadgeTooltip = 'The number of users';
+```
+
+Or it can be returned from `getNavigationBadgeTooltip()`:
+
+```php
+public static function getNavigationBadgeTooltip(): ?string
+{
+    return 'The number of users';
 }
 ```
 
@@ -148,7 +163,7 @@ $panel
     ])
 ```
 
-### Making navigation groups not collapsible
+#### Making navigation groups not collapsible
 
 By default, navigation groups are collapsible. You may disable this behavior by calling `collapsible(false)` on the `NavigationGroup` object:
 
@@ -173,6 +188,18 @@ public function panel(Panel $panel): Panel
         ->collapsibleNavigationGroups(false);
 }
 ```
+
+#### Adding extra HTML attributes to navigation groups
+
+You can pass extra HTML attributes to the navigation group, which will be merged onto the outer DOM element. Pass an array of attributes to the `extraSidebarAttributes()` or `extraTopbarAttributes()` method, where the key is the attribute name and the value is the attribute value:
+
+```php
+NavigationGroup::make()
+    ->extraSidebarAttributes(['class' => 'featured-sidebar-group']),
+    ->extraTopbarAttributes(['class' => 'featured-topbar-group']),
+```
+
+The `extraSidebarAttributes()` will be applied to navigation group elements contained in the sidebar, and the `extraTopbarAttributes()` will only be applied to topbar navigation group dropdowns when using [top navigation](#using-top-navigation).
 
 ## Collapsible sidebar on desktop
 
@@ -201,6 +228,16 @@ public function panel(Panel $panel): Panel
         ->sidebarFullyCollapsibleOnDesktop();
 }
 ```
+
+### Navigation groups in a collapsible sidebar on desktop
+
+> This section only applies to `sidebarCollapsibleOnDesktop()`, not `sidebarFullyCollapsibleOnDesktop()`, since the fully collapsible UI just hides the entire sidebar instead of changing its design.
+
+When using a collapsible sidebar on desktop, you will also often be using [navigation groups](#grouping-navigation-items). By default, the labels of each navigation group will be hidden when the sidebar is collapsed, since there is no space to display them. Even if the navigation group itself is [collapsible](#making-navigation-groups-not-collapsible), all items will still be visible in the collapsed sidebar, since there is no group label to click on to expand the group.
+
+These issues can be solved, to achieve a very minimal sidebar design, by [passing an `icon()`](#customizing-navigation-groups) to the navigation group objects. When an icon is defined, the icon will be displayed in the collapsed sidebar instead of the items at all times. When the icon is clicked, a dropdown will open to the side of the icon, revealing the items in the group.
+
+When passing an icon to a navigation group, even if the items also have icons, the expanded sidebar UI will not show the item icons. This is to keep the navigation hierarchy clear, and the design minimal. However, the icons for the items will be shown in the collapsed sidebar's dropdowns though, since the hierarchy is already clear from the fact that the dropdown is open.
 
 ## Registering custom navigation items
 

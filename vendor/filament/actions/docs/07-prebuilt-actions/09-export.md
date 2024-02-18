@@ -4,7 +4,7 @@ title: Export action
 
 ## Overview
 
-Filament v3.1 introduced a prebuilt action that is able to export rows to a CSV or XLSX file. When the trigger button is clicked, a modal asks for the columns that they want to export, and what they should be labeled. This feature uses [job batches](https://laravel.com/docs/queues#job-batching) and [database notifications](../../notifications/database-notifications#overview), so you need to publish those migrations from Laravel. Also, you need to publish the migrations for tables that Filament uses to store information about exports:
+Filament v3.2 introduced a prebuilt action that is able to export rows to a CSV or XLSX file. When the trigger button is clicked, a modal asks for the columns that they want to export, and what they should be labeled. This feature uses [job batches](https://laravel.com/docs/queues#job-batching) and [database notifications](../../notifications/database-notifications#overview), so you need to publish those migrations from Laravel. Also, you need to publish the migrations for tables that Filament uses to store information about exports:
 
 ```bash
 php artisan queue:batches-table
@@ -96,7 +96,7 @@ public function getColumns(): array
     return [
         ExportColumn::make('name'),
         ExportColumn::make('sku')
-            ->label('SKU')),
+            ->label('SKU'),
         ExportColumn::make('price'),
     ];
 }
@@ -111,6 +111,17 @@ use Filament\Actions\Exports\ExportColumn;
 
 ExportColumn::make('sku')
     ->label('SKU')
+```
+
+### Configuring the default column selection
+
+By default, all columns will be selected when the user is asked which columns they would like to export. You can customize the default selection state for a column with the `enabledByDefault()` method:
+
+```php
+use Filament\Actions\Exports\ExportColumn;
+
+ExportColumn::make('description')
+    ->enabledByDefault(false)
 ```
 
 ### Calculated export column state
@@ -266,6 +277,56 @@ ExportColumn::make('users_avg_age')->avg([
 ], 'age')
 ```
 
+## Configuring the export formats
+
+By default, the export action will allow the user to choose between both CSV and XLSX formats. You can use the `ExportFormat` enum to customize this, by passing an array of formats to the `formats()` method on the action:
+
+```php
+use App\Filament\Exports\ProductExporter;
+use Filament\Actions\Exports\Enums\ExportFormat;
+
+ExportAction::make()
+    ->exporter(ProductExporter::class)
+    ->formats([
+        ExportFormat::Csv,
+    ])
+    // or
+    ->formats([
+        ExportFormat::Xlsx,
+    ])
+    // or
+    ->formats([
+        ExportFormat::Xlsx,
+        ExportFormat::Csv,
+    ])
+```
+
+Alternatively, you can override the `getFormats()` method on the exporter class, which will set the default formats for all actions that use that exporter:
+
+```php
+use Filament\Actions\Exports\Enums\ExportFormat;
+
+public function getFormats(): array
+{
+    return [
+        ExportFormat::Csv,
+    ];
+}
+```
+
+## Modifying the export query
+
+By default, if you are using the `ExportAction` with a table, the action will use the table's currently filtered and sorted query to export the data. If you don't have a table, it will use the model's default query. To modify the query builder before exporting, you can use the `modifyQueryUsing()` method on the action:
+
+```php
+use App\Filament\Exports\ProductExporter;
+use Illuminate\Database\Eloquent\Builder;
+
+ExportAction::make()
+    ->exporter(ProductExporter::class)
+    ->modifyQueryUsing(fn (Builder $query) => $query->where('is_active', true))
+```
+
 ## Configuring the export filesystem
 
 ### Customizing the storage disk
@@ -275,8 +336,6 @@ By default, exported files will be uploaded to the storage disk defined in the [
 If you want to use a different disk for a specific export, you can pass the disk name to the `disk()` method on the action:
 
 ```php
-use Filament\Actions\ExportAction;
-
 ExportAction::make()
     ->exporter(ProductExporter::class)
     ->fileDisk('s3')
@@ -296,12 +355,11 @@ public function getFileDisk(): string
 By default, exported files will have a name generated based on the ID and type of the export. You can also use the `fileName()` method on the action to customize the file name:
 
 ```php
-use Filament\Actions\ExportAction;
 use Filament\Actions\Exports\Models\Export;
 
 ExportAction::make()
     ->exporter(ProductExporter::class)
-    ->fileName(fn (Export): string => "products-{$export->getKey()}.csv")
+    ->fileName(fn (Export $export): string => "products-{$export->getKey()}.csv")
 ```
 
 Alternatively, you can override the `getFileName()` method on the exporter class, returning a string:
@@ -336,8 +394,6 @@ public static function getOptionsFormComponents(): array
 Alternatively, you can pass a set of static options to the exporter through the `options()` method on the action:
 
 ```php
-use Filament\Actions\ExportAction;
-
 ExportAction::make()
     ->exporter(ProductExporter::class)
     ->options([
@@ -445,7 +501,7 @@ The default job for processing exports is `Filament\Actions\Exports\Jobs\Prepare
 
 ```php
 use App\Jobs\PrepareCsvExport;
-use Filament\Actions\Exports\Jobs\PrepareCsvExport::class as BasePrepareCsvExport;
+use Filament\Actions\Exports\Jobs\PrepareCsvExport as BasePrepareCsvExport;
 
 $this->app->bind(BasePrepareCsvExport::class, PrepareCsvExport::class);
 ```
@@ -502,7 +558,7 @@ By default, the export system will retry a job for 24 hours. This is to allow fo
 ```php
 use Carbon\CarbonInterface;
 
-public function getJobRetryUntil(): CarbonInterface
+public function getJobRetryUntil(): ?CarbonInterface
 {
     return now()->addDay();
 }
@@ -522,3 +578,41 @@ public function getJobTags(): array
 ```
 
 If you'd like to customize the tags that are applied to jobs of a certain exporter, you may override this method in your exporter class.
+
+### Customizing the export job batch name
+
+By default, the export system doesn't define any name for the job batches. If you'd like to customize the name that is applied to job batches of a certain exporter, you may override the `getJobBatchName()` method in your exporter class:
+
+```php
+public function getJobBatchName(): ?string
+{
+    return 'product-export';
+}
+```
+
+## Authorization
+
+By default, only the user who started the export may download files that get generated. If you'd like to customize the authorization logic, you may create an `ExportPolicy` class, and [register it in your `AuthServiceProvider`](https://laravel.com/docs/10.x/authorization#registering-policies):
+
+```php
+use App\Policies\ExportPolicy;
+use Filament\Actions\Exports\Models\Export;
+
+protected $policies = [
+    Export::class => ExportPolicy::class,
+];
+```
+
+The `view()` method of the policy will be used to authorize access to the downloads.
+
+Please note that if you define a policy, the existing logic of ensuring only the user who started the export can access it will be removed. You will need to add that logic to your policy if you want to keep it:
+
+```php
+use App\Models\User;
+use Filament\Actions\Exports\Models\Export;
+
+public function view(User $user, Export $export): bool
+{
+    return $export->user()->is($user);
+}
+```

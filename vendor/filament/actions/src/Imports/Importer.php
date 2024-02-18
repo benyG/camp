@@ -241,7 +241,7 @@ abstract class Importer
         ];
     }
 
-    public function getJobRetryUntil(): CarbonInterface
+    public function getJobRetryUntil(): ?CarbonInterface
     {
         return now()->addDay();
     }
@@ -260,6 +260,11 @@ abstract class Importer
     }
 
     public function getJobConnection(): ?string
+    {
+        return null;
+    }
+
+    public function getJobBatchName(): ?string
     {
         return null;
     }

@@ -38,7 +38,7 @@ trait InteractsWithTableQuery
 
     public function applyEagerLoading(EloquentBuilder | Relation $query): EloquentBuilder | Relation
     {
-        if (! $this->queriesRelationships($query->getModel())) {
+        if (! $this->hasRelationship($query->getModel())) {
             return $query;
         }
 
@@ -76,7 +76,7 @@ trait InteractsWithTableQuery
 
         $isSearchForcedCaseInsensitive = $this->isSearchForcedCaseInsensitive();
 
-        $search = generate_search_term_expression($search, $isSearchForcedCaseInsensitive, $databaseConnection);
+        $nonTranslatableSearch = generate_search_term_expression($search, $isSearchForcedCaseInsensitive, $databaseConnection);
 
         $translatableContentDriver = $this->getLivewire()->makeFilamentTranslatableContentDriver();
 
@@ -87,17 +87,17 @@ trait InteractsWithTableQuery
                 $translatableContentDriver?->isAttributeTranslatable($model::class, attribute: $searchColumn),
                 fn (EloquentBuilder $query): EloquentBuilder => $translatableContentDriver->applySearchConstraintToQuery($query, $searchColumn, $search, $whereClause, $isSearchForcedCaseInsensitive),
                 fn (EloquentBuilder $query) => $query->when(
-                    $this->queriesRelationships($query->getModel()),
+                    $this->hasRelationship($query->getModel()),
                     fn (EloquentBuilder $query): EloquentBuilder => $query->{"{$whereClause}Relation"}(
                         $this->getRelationshipName(),
                         generate_search_column_expression($searchColumn, $isSearchForcedCaseInsensitive, $databaseConnection),
                         'like',
-                        "%{$search}%",
+                        "%{$nonTranslatableSearch}%",
                     ),
                     fn (EloquentBuilder $query): EloquentBuilder => $query->{$whereClause}(
                         generate_search_column_expression($searchColumn, $isSearchForcedCaseInsensitive, $databaseConnection),
                         'like',
-                        "%{$search}%",
+                        "%{$nonTranslatableSearch}%",
                     ),
                 ),
             );
