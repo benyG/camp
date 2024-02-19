@@ -322,7 +322,7 @@ class ExamResource extends Resource
                     ->label('Filter'),
             )
             ->actions([
-              Tables\Actions\Action::make('redddf')->label('Assessment summary')->iconButton()->icon('heroicon-o-document-text')
+              Tables\Actions\Action::make('redddf')->label('Assessment summary')->iconButton()->icon('heroicon-o-eye')
               ->modalCancelAction(function (\Filament\Actions\StaticAction $action) {$action->color('primary');$action->label('Close');})
               ->modalSubmitAction(false)
             ->modalHeading(fn (Exam $record):string=> 'Assessment summary')

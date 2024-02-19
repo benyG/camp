@@ -169,8 +169,8 @@ class UsersTable extends BaseWidget
                 ->modalSubmitActionLabel('Assign')
                 ->action(function ($record, $data) {
                     $exa = Exam::create(
-                        ['name' => ($data['type']==null?'Test':'Exam').'_'.Str::remove('-',now()->toDateString()).'_'.Str::random(5),
-                        'type' => $data['type']==null? '0':$data['type'],'from' => auth()->id(),'certi'=>$data['certi'],
+                        ['name' => ($data['type']!='1'?'Test':'Exam').'_'.Str::remove('-',now()->toDateString()).'_'.Str::random(5),
+                        'type' => $data['type']!='1'? '0':$data['type'],'from' => auth()->id(),'certi'=>$data['certi'],
                         'due'=>$data['due'],
                     ]);
                     $exa->users()->attach($record->id,['added'=>now()]);

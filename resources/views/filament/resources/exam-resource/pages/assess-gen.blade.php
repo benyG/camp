@@ -214,7 +214,10 @@
          {!! $cans !!}
           @if (\Illuminate\Support\Str::contains($cans,"alt="))
           <br>
-        <div style="font-size:10px"> <br><br>If you do not agree, you can request a review of this question &nbsp;
+        <style>
+            #dd4 span {font-size:10px !important; }
+        </style>
+        <div id='dd4' style="font-size:10px"> <br><br>If you do not agree, you can request a review of this question
         {{$this->revAction}}
         </div>
          @endif

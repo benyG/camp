@@ -28,7 +28,8 @@ class Handler extends ExceptionHandler
         });
     }
     function render($request, Throwable $exception)
-{
+    {
+        if($exception->getStatusCode()==419) return redirect()->to(filament()->getLoginUrl());
         if ($this->isHttpException($exception) || ($request->hasHeader('X-Livewire') && app()->environment() != 'local')) {
             return response()->view('errors.err',['exception'=>$exception]);
         }
