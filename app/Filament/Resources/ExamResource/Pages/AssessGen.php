@@ -103,8 +103,12 @@ class AssessGen extends Page implements HasForms, HasActions
         if(empty($this->carr)){
             $this->carr=cache()->remember('carr_'.$this->record->id.'_'.auth()->id(),87000, function () {
              $qt=array();
-            foreach ($this->record->modules as $md) {
-                $qt= array_merge($qt,$md->questions()->pluck('id')->random($md->pivot->nb)->toArray());
+            if(empty($this->record->users1()->first()->pivot->quest)){
+                foreach ($this->record->modules as $md) {
+                    $qt= array_merge($qt,$md->questions()->pluck('id')->random($md->pivot->nb)->toArray());
+                }
+            }else{
+                $qt=json_decode($this->record->users1()->first()->pivot->quest);
             }
             $rt=\App\Models\Question::whereIn('id',$qt)->with('answers')->get();
             $at=$rt->pluck('questions.text','questions.id');

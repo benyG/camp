@@ -407,15 +407,18 @@ class ExamResource extends Resource
                     Infolists\Components\Section::make('Performance')->collapsible()->persistCollapsed()
                     ->schema(function($record){
                         $mod=array();
+
                         $ix=cache()->rememberForever('settings', function () {
                             return \App\Models\Info::findOrFail(1);
                         });
                             foreach ($record->modules as $gg) $mod[$gg->id]=[$gg->name,$gg->pivot->nb,0];
                            // dd($mod);
                                 $ca=0;
+
                             if(!empty($record->users1()->first()->pivot->gen) && Str::contains($record->users1()->first()->pivot->gen,"{")){
                                 $res=json_decode($record->users1()->first()->pivot->gen,true);
                                 $arrk=array_keys($res);
+                                $qrr=array();
                                 $rt=Question::whereIn('id',$arrk)->with('answers')->with('moduleRel')->get();
                                 foreach ($rt as $quest) {
                                     $bm=$quest->answers()->where('isok',true)->count()<=1;
@@ -425,15 +428,16 @@ class ExamResource extends Resource
                                         if($ab>0) {
                                             $ca++;
                                             if(array_key_exists($quest->moduleRel->id,$mod)) $mod[$quest->moduleRel->id][2]++;
-                                        }
+                                        }else $qrr[]=$quest->id;
                                     }else{
                                         $ab2=$quest->answers()->where('isok',false)->whereIn('answers.id',$res[$quest->id])->count();
                                         if($ab2==0) {
                                             $ca++;
                                             if(array_key_exists($quest->moduleRel->id,$mod)) $mod[$quest->moduleRel->id][2]++;
-                                        }
+                                        }else $qrr[]=$quest->id;
                                     }
                                 }
+                                $record->llo=$qrr;
                             }
                         $mode="<ul>";
                         foreach ($mod as $va) {
@@ -445,14 +449,36 @@ class ExamResource extends Resource
                         ->color(fn ($state): string =>intval($state)>=$ix->wperc?'primary': 'danger')
                         ->state(fn ($record):string=>round(100*$ca/$record->quest,2).'%')->badge(),
                         Infolists\Components\TextEntry::make('a1')->label('Correct Answers')
-                        ->state(fn($record):string=>$ca.' / '.$record->quest),
+                        ->state(fn($record):string=>$ca.' / '.$record->quest)
+                        ,
                         Infolists\Components\TextEntry::make('a2')->label('Completed in')
                         ->state(fn (Exam $record) =>!empty($record->users1()->first()->pivot->start_at)
                         && !empty($record->users1()->first()->pivot->comp_at)?
                         \Illuminate\Support\Carbon::parse($record->users1()->first()->pivot->comp_at)->diffInMinutes($record->users1()->first()->pivot->start_at).' min'
                         :'N/A'),
+                        Infolists\Components\Actions::make([
+                            Infolists\Components\Actions\Action::make('opoi')->label('Generate a test with failed questions')
+                                ->color('primary')->icon('heroicon-o-cog-8-tooth')->link()
+                                ->action(function ($record) {
+                                    if(isset($record->llo)){
+                                        $ess=new Exam();
+                                        $ess->name='TestRX_'.Str::remove('-',now()->toDateString()).'_'.Str::random(5);
+                                        $ess->due=now()->addDays(5);$ess->from=auth()->id();$ess->certi=$record->certi;
+                                        $ess->timer=0;$ess->quest=count($record->llo);
+                                        $ess->descr='Generated from '.$record->name;
+                                        $ess->save();
+                                        $rt=Question::selectRaw('count(id) as mcount, module')->whereIn('id',$record->llo)->groupBy('module')->get();
+                                        foreach ($rt as $mod) {
+                                            $ess->modules()->attach($mod->module,['nb'=>$mod->mcount]);
+                                        }
+                                        $ess->users()->attach(auth()->id(),['added'=>now(),'quest'=>json_encode($record->llo)]);
+                                        Notification::make()->success()->title("Assessment generated.")->send();
+                                    }else
+                                    Notification::make()->success()->title("That assessment was never started.")->send();
+                                })
+                        ]),
                         Infolists\Components\TextEntry::make('sccr')->label('% Per Modules')
-                        ->state(fn()=>$mode)->html(),
+                        ->state(fn()=>$mode)->html()->columnSpan(2),
                     ];
                     })
                     ->columns(),
