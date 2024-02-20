@@ -80,7 +80,7 @@ class InfoResource extends Resource
                Forms\Components\TextInput::make('maxev')->label('Q. Limit-VIP')
                    ->required()->numeric()->default(200),
               ]),
-              Forms\Components\Section::make('IA Settings')->columns(2)
+              Forms\Components\Section::make('AI Settings')->columns(2)
               ->description('Some string fields contains parameters')
               ->schema([
               Password::make('apk')->label('API Key')

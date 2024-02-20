@@ -345,7 +345,7 @@ class ExamResource extends Resource
                     ->listWithLineBreaks()->bulleted(),
                 ])
                 ->columns(3),
-                    Infolists\Components\Section::make('Note')->collapsible()->persistCollapsed()
+                    Infolists\Components\Section::make('Note')->compact()
                     ->schema([
                         Infolists\Components\TextEntry::make('descr')->label('')
                     ]),

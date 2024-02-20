@@ -26,7 +26,7 @@ use Filament\Support\Enums\ActionSize;
 use Illuminate\Support\Facades\Http;
 use Filament\Actions\Action as Action1;
 use Illuminate\Support\Facades\Crypt;
-
+use Illuminate\Contracts\Encryption\DecryptException;
 
 
 #[Lazy]
@@ -75,12 +75,21 @@ class AssessGen extends Page implements HasForms, HasActions
     public $cans;
     #[Locked]
     public $score=0;
+
     #[Locked]
     public $qid;
     #[Locked]
     public $aid;
     #[Locked]
+    public $qtx;
+
+
+    #[Locked]
     public $iatext;
+    #[Locked]
+    public $iatt;
+    #[Locked]
+    public $iati=false;
 
     #[Validate('required',onUpdate: false,message:"No answer choosen")]
     public $ans;
@@ -169,11 +178,56 @@ class AssessGen extends Page implements HasForms, HasActions
     }
     public function invAction(): Action1
     {
-        return Action1::make('inv')->label('here')->link()->size(ActionSize::Small)
+        return Action1::make('inv')->label('Tips')->size(ActionSize::Small)
+        ->iconPosition(\Filament\Support\Enums\IconPosition::After)
             ->requiresConfirmation()->color('primary')
-            ->modalIcon('heroicon-o-question-mark-circle')
+            ->extraAttributes([
+                'tc' => '',
+            ])
+            ->modalIcon('heroicon-o-light-bulb')
             ->modalHeading('Question Review')
-            ->modalDescription('Do you want to send a review request of this question?')
+            ->modalDescription('Do you want a tip for that question?')
+            ->action(function () {
+               cache()->forget('settings');
+                $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
+                $ik=1;
+                $aitx="";
+                foreach ($this->aa as $value) {
+                   $aitx.=$ik.". ".$value."\n ";
+                }
+                $stats="CISSP certification exam:
+                    - Question :
+                    $this->qtext
+                    - Answers choice :".$aitx.". Give a hint without giving answer.";
+                try {
+                    $apk=Crypt::decryptString($ix->apk);
+                  //  dd($apk);
+                    $response = Http::withToken($apk)->post($ix->endp, [
+                        "model" => $ix->model,
+                        'messages' => [
+                            ["role" => "system", "content" => str_replace("XoXo",auth()->user()->name,$ix->cont1)],
+                            ["role" => "user","content" => $stats],
+                        ],
+                    ])
+                    ->json();
+                   // dd($response["choices"][0]["message"]["content"]);
+                   $this->iati=true;
+                    $this->iatext=$response["choices"][0]["message"]["content"];
+                } catch (DecryptException $e) {
+                    Notification::make()->danger()->title("There was a problem during encryption.")->send();
+                }
+
+        //   Notification::make()->success()->title("The request was sent. You'll be notified if there is an update. You can now continue the assessment.")->send();
+            });
+    }
+    public function inaAction(): Action1
+    {
+        return Action1::make('ina')->label('Tips')->size(ActionSize::Small)
+        ->iconPosition(\Filament\Support\Enums\IconPosition::After)
+            ->requiresConfirmation()->color('primary')
+            ->modalIcon('heroicon-o-light-bulb')
+            ->modalHeading('Question Review')
+            ->modalDescription('Do you want a tip for that question?')
             ->action(function () {
                 $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
                 $stats="Analyzes and proposes relevant recommendations for the following results.
@@ -208,6 +262,7 @@ class AssessGen extends Page implements HasForms, HasActions
         //   Notification::make()->success()->title("The request was sent. You'll be notified if there is an update. You can now continue the assessment.")->send();
             });
     }
+
     public function validateData(){
       // dd($this->qcur);
          if($this->bm1)

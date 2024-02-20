@@ -217,25 +217,64 @@
         <style>
             #dd4 span {font-size:10px !important; }
         </style>
-        <div id='dd4' style="font-size:10px"> <br><br>If you do not agree, you can request a review of this question
-
-        </div>
+        <div id='dd4' style="font-size:10px"> <br><br>If you do not agree, you can request a review of this question {{$this->revAction}}</div>
          @endif
-         {{$this->invAction}}
-         {{$this->iatext}}
    </div>
     {!! $btext !!}
-    <div class='flex {{$qcur2<$qtot ? 'justify-end':'justify-center'}} gap-x-3 px-6 pb-6'>
-       <x-filament::button
-        icon="{{$ico}}"
-                            type="submit"
-                            size="sm"
-                        >
-                            {{$qcur2<$qtot ? ($qcur==$qtot?'Results':'Next'):'Complete'}}
-                        </x-filament::button>
-    </div>
+ @if (!empty($iatext))
+
+ @endif
+        <div class='grid grid-flow-col px-6 pb-6 justify-stretch gap-x-3'>
+    @if ($qcur2<$qtot)
+    @endif
+            <div class='flex {{$qcur2<$qtot ? 'justify-end':'justify-center'}}'>
+            <x-filament::button
+                icon="{{$ico}}"
+                                    type="submit"
+                                    size="sm"
+                                >
+                                    {{$qcur2<$qtot ? ($qcur==$qtot?'Results':'Next'):'Complete'}}
+                                </x-filament::button>
+            </div>
+        </div>
 </div>
     </form>
     <x-filament-actions::modals />
+</div>
+<div class="flex gap-2 p-6 bg-white shadow-sm fi-section rounded-xl ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
+    <div class="grow-0">
+        <div class='flex flex-col gap-3'>
+            <div class='flex flex-col justify-center font-bold text-center text-primary-500'>
+            <img src='{{asset('img/ac.png')}}' class="row-span-2 mx-auto border-2 rounded-full w-11 h-11" />
+            <div id='kj5'><span style="font-size:10px">AI Coach</span></div>
+            </div>
+            <div class='self-center'>
+            {{$this->invAction}}
+            </div>
+            <div class='self-center'>
+            {{$this->inaAction}}
+        </div>
+    </div>
+
+    </div>
+    <div class="p-4 bg-black border-2 border-green-500
+    @if (empty($iatext))
+        hidden
+    @endif
+     grow rounded-xl"
+    x-data='{
+                    text: "",
+                    charIndex: 0,
+                    typeSpeed: 10,
+                 }'
+         x-init="setInterval(function(){
+            if($wire.iati){
+                    let current = $wire.iatext;
+                    $data.text = current.substring(0, $data.charIndex);
+                    $data.charIndex += 1;
+               if($data.charIndex>=$wire.iatext.length) {$wire.iatext=false; $data.charIndex=0;}  }}, $data.typeSpeed)">
+    <span x-text="text"></span>
+    </div>
+
 </div>
 </x-filament-panels::page>
