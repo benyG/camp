@@ -109,7 +109,7 @@ class AssessGen extends Page implements HasForms, HasActions
             else if(now()->diffInMinutes($this->record->users1()->first()->pivot->start_at)>
             $this->record->timer) redirect()->to(ExamResource::getUrl());
         }
-      //  cache()->forget('carr_'.$this->record->id.'_'.auth()->id());
+        cache()->forget('carr_'.$this->record->id.'_'.auth()->id());
      // $this->record->users1()->first()->pivot->start_at=now();
        $this->ix=cache()->rememberForever('settings', function () {
         return \App\Models\Info::findOrFail(1);
