@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Notification as Notif;
 use Exception;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Models\Vague;
 use App\Notifications\NewMail;
 
 class AssessCreate extends CreateRecord
@@ -38,14 +39,6 @@ class AssessCreate extends CreateRecord
         $data['type'] =$data['type']!='1'? '0':$data['type'];
         $data['timer'] =$data['timer']??'0';
         $data['name'] = ($data['type']!='1'?'Test':'Exam').'_'.Str::remove('-',now()->toDateString()).'_'.Str::random(5);
-  //      dd($data);
-        if(auth()->user()->ex!=0){
-           // $data['due']=null;
-        }
-        else{
-            $data['user5']=empty($data['classe'])?$data['user5']:User::whereIn('vague',$data['classe'])->get()->pluck('id');
-        }
-        //  dd($data);
         return $data;
     }
     protected function afterCreate(): void
@@ -54,7 +47,17 @@ class AssessCreate extends CreateRecord
         if(auth()->user()->ex!=0){
             $datt['user5']=[auth()->id()];
         }
-        else $datt['user5']=empty($datt['classe'])?$datt['user5']:User::whereIn('vague',$datt['classe'])->get()->pluck('id');
+        else {
+            if(empty($datt['classe']))
+            $datt['user5']=$datt['user5'];
+        else{
+            $vg=Vague::whereIn('id',$datt['classe'])->get();
+            foreach ($vg as $val) {
+                $datt['user5']=  array_merge($datt['user5'],$val->users()->pluck('user')->toArray());
+            }
+            $datt['user5']=array_unique($datt['user5']);
+        }
+        }
         // dd($datt);
         $record=$this->getRecord();
         foreach($datt['user5'] as $us){

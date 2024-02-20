@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Rawilk\FilamentPasswordInput\Password;
+use Illuminate\Support\Facades\Crypt;
 
 class InfoResource extends Resource
 {
@@ -81,15 +83,19 @@ class InfoResource extends Resource
               Forms\Components\Section::make('IA Settings')->columns(2)
               ->description('Some string fields contains parameters')
               ->schema([
-              Forms\Components\TextInput::make('apk')->label('API Key')
-                  ->required(),
-              Forms\Components\TextInput::make('endp')->label('Endpoint URL')
+              Password::make('apk')->label('API Key')
+                  ->required()
+                  ->dehydrateStateUsing(fn (string $state): string => Crypt::encryptString($state))
+                  ->dehydrated(fn (?string $state): bool => filled($state)),
+                  Forms\Components\TextInput::make('endp')->label('Endpoint URL')
                   ->required()->rules(['url']),
-                  Forms\Components\Textarea::make('cont1')->label('Context 1')
+                  Forms\Components\TextInput::make('model')->label('AI Model')
+                  ->required()->rules(['max:255']),
+                  Forms\Components\Textarea::make('cont1')->label('Tips context')
                   ->required(),
-                  Forms\Components\Textarea::make('cont2')->label('context 2')
+                  Forms\Components\Textarea::make('cont2')->label('A&E context')
                   ->required(),
-              Forms\Components\Textarea::make('cont3')->label('Context 3')
+              Forms\Components\Textarea::make('cont3')->label('Perf Analysis context')
                   ->required(),
              ]),
 

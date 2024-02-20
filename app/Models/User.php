@@ -67,10 +67,10 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
         //return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
         return $this->ax;
     }
-    public function vagueRel(): BelongsTo
+    public function vagues(): BelongsToMany
     {
    //    return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');
-        return $this->belongsTo(Vague::class,'vague','id');
+        return $this->belongsToMany(Vague::class,'user_classes', 'user', 'clas');
     }
     public function exams(): HasMany
     {

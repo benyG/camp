@@ -218,9 +218,11 @@
             #dd4 span {font-size:10px !important; }
         </style>
         <div id='dd4' style="font-size:10px"> <br><br>If you do not agree, you can request a review of this question
-        {{$this->revAction}}
+
         </div>
          @endif
+         {{$this->invAction}}
+         {{$this->iatext}}
    </div>
     {!! $btext !!}
     <div class='flex {{$qcur2<$qtot ? 'justify-end':'justify-center'}} gap-x-3 px-6 pb-6'>

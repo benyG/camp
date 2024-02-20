@@ -90,7 +90,7 @@ class UsersTable extends BaseWidget
         }
         return $table->paginated([5,10,25,50])->queryStringIdentifier('us1')
             ->query(
-                User::with('vagueRel')->where('ex','>',1)->where('id','<>',auth()->id())
+                User::with('vagues')->where('ex','>',1)->where('id','<>',auth()->id())
             )
             ->columns([
                 Tables\Columns\TextColumn::make('name')
@@ -120,8 +120,8 @@ class UsersTable extends BaseWidget
                 Tables\Filters\SelectFilter::make('courses')->label('Certifications')->multiple()
                 ->relationship('courses', 'name',
                 fn (Builder $query) =>$query->where('approve',true))->preload(),
-                Tables\Filters\SelectFilter::make('vague')->label('Classe')->multiple()
-                ->relationship('vagueRel', 'name')->preload(),
+                Tables\Filters\SelectFilter::make('vagues')->label('Class')->multiple()
+                ->relationship('vagues', 'name')->preload(),
                 Tables\Filters\SelectFilter::make('ex')->label('Type')
                 ->options(['2' => 'Starter','3' => 'User','4' => 'Pro','5' => 'VIP'])
                 ])
@@ -171,7 +171,7 @@ class UsersTable extends BaseWidget
                     $exa = Exam::create(
                         ['name' => ($data['type']!='1'?'Test':'Exam').'_'.Str::remove('-',now()->toDateString()).'_'.Str::random(5),
                         'type' => $data['type']!='1'? '0':$data['type'],'from' => auth()->id(),'certi'=>$data['certi'],
-                        'due'=>$data['due'],
+                        'due'=>$data['due'],'quest'=>$data['quest']
                     ]);
                     $exa->users()->attach($record->id,['added'=>now()]);
                     foreach ($data['examods'] as $es) $exa->modules()->attach($es['module'],['nb'=>$es['nb']]);

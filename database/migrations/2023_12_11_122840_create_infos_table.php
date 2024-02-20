@@ -27,12 +27,14 @@ return new class extends Migration
             $table->smallInteger('maxeu')->default(30)->unsigned();
             $table->smallInteger('maxev')->default(50)->unsigned();
             $table->smallInteger('maxep')->default(100)->unsigned();
-            $table->tinyInteger('wperc')->default(50);
+            $table->tinyInteger('wperc')->default(50)->unsigned();
+            $table->tinyInteger('maxcl')->default(20)->unsigned();
             $table->string('efrom');
             $table->boolean('smtp')->default(true);
             $table->tinyInteger('var1')->default(0);
             $table->text('apk')->nullable();
             $table->text('endp')->nullable();
+            $table->text('model')->nullable();
             $table->text('cont1')->nullable();
             $table->text('cont2')->nullable();
             $table->text('cont3')->nullable();

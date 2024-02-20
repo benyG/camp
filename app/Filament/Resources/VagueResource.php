@@ -22,11 +22,15 @@ class VagueResource extends Resource
     protected static ?string $modelLabel = 'Class';
     public static function form(Form $form): Form
     {
+        $ix=cache()->rememberForever('settings', function () { return \App\Models\Info::findOrFail(1);});
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                    Forms\Components\Select::make('users')->label('Users')->multiple()
+                    ->relationship(name: 'users', titleAttribute: 'name')
+                    ->preload()->maxItems(fn():int=>$ix->maxcl)
             ]);
     }
 

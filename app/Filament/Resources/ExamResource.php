@@ -56,9 +56,7 @@ class ExamResource extends Resource
                 //
                 Forms\Components\Section::make('General Settings')->columns(3)
                 ->description(function(Get $get){
-                    $ix=cache()->rememberForever('settings', function () {
-                        return \App\Models\Info::findOrFail(1);
-                    });
+                    $ix=cache()->rememberForever('settings', function () { return \App\Models\Info::findOrFail(1);});
                    return $get('type')=='1'? 'Max timer is '.
                    match (auth()->user()->ex) {1 => $ix->maxts,0 => '(inf.)',
                     2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv}.' min.'.
@@ -205,7 +203,7 @@ class ExamResource extends Resource
                     Forms\Components\Select::make('user5')->label('Users')->multiple()
                     ->required(fn(Get $get):bool=>auth()->user()->ex==0 && $get('classe')==null)
                     ->options(fn(Get $get)=>$get('classe')==null?User::where('id','<>',auth()->id())->get()->pluck('name', 'id'):
-                    User::where('id','<>',auth()->id())->where('vague',$get('classe'))->get()->pluck('name', 'id'))->preload(),
+                    User::where('id','<>',auth()->id())->whereRelation('vagues','clas',$get('classe'))->get()->pluck('name', 'id'))->preload(),
                 ]),
                 Forms\Components\Section::make('')->disabled(fn(Get $get):bool=>$get('typee')=='1')
                 ->schema([
@@ -254,13 +252,13 @@ class ExamResource extends Resource
             ->description(fn (Exam $record): ?string => $record->name),
             Tables\Columns\TextColumn::make('name')->sortable()->searchable()->label('Code')->toggleable(isToggledHiddenByDefault: true),
         Tables\Columns\TextColumn::make('type')
-                ->state(fn (Exam $record) => $record->type=='1'?(auth()->id()==$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
+                ->formatStateUsing(fn (Exam $record) => $record->type=='1'?(auth()->id()==$record->from?'Exam Simulation': 'Class Exam'):(Str::contains($record->name,'TestRX')?'Test based on failures':'Test your knowledge'))
                 ->badge()
-                ->color(fn ($record): string =>$record->type=='1'?(auth()->id()==$record->from?'primary': 'danger'):'info')
+                ->color(fn ($record): string =>$record->type=='1'?(auth()->id()==$record->from?'primary': 'danger'):(Str::contains($record->name,'TestRX')?'warning':'info'))
             ->sortable(),
             Tables\Columns\TextColumn::make('quest')->label('Questions')->sortable(),
         Tables\Columns\TextColumn::make('users.name')->label('Users')->limit(30)->searchable()
-        ->tooltip(fn($state):string=>implode(', ',$state))
+        ->tooltip(fn($state):?string=>is_array($state)?implode(', ',$state):$state)
             ->hidden(auth()->user()->ex!=0),
         Tables\Columns\TextColumn::make('added')->label('Affected on')
                 ->getStateUsing(fn (Exam $record) => $record->users1()->first()->pivot->added??null)
@@ -377,7 +375,7 @@ class ExamResource extends Resource
                 Tables\Actions\Action::make('resend')->label('View the results')->iconButton()->icon('heroicon-o-document-check')
                 ->modalCancelAction(function (\Filament\Actions\StaticAction $action) {$action->color('primary');$action->label('Close');})
                 ->modalSubmitAction(false)
-              ->modalHeading(fn (Exam $record):string=> 'Results')
+                ->modalHeading(fn (Exam $record):string=> 'Results')
                 ->visible(function (Exam $record){
                     if(empty($record->users1()->first()->pivot->start_at))
                      return $record->users1()->count()>0 && (!empty($record->users1()->first()->pivot->comp_at) || (!empty($record->due) && now()>$record->due));
@@ -449,16 +447,16 @@ class ExamResource extends Resource
                         ->color(fn ($state): string =>intval($state)>=$ix->wperc?'primary': 'danger')
                         ->state(fn ($record):string=>round(100*$ca/$record->quest,2).'%')->badge(),
                         Infolists\Components\TextEntry::make('a1')->label('Correct Answers')
-                        ->state(fn($record):string=>$ca.' / '.$record->quest)
-                        ,
+                        ->state(fn($record):string=>$ca.' / '.$record->quest),
                         Infolists\Components\TextEntry::make('a2')->label('Completed in')
                         ->state(fn (Exam $record) =>!empty($record->users1()->first()->pivot->start_at)
                         && !empty($record->users1()->first()->pivot->comp_at)?
                         \Illuminate\Support\Carbon::parse($record->users1()->first()->pivot->comp_at)->diffInMinutes($record->users1()->first()->pivot->start_at).' min'
                         :'N/A'),
                         Infolists\Components\Actions::make([
-                            Infolists\Components\Actions\Action::make('opoi')->label('Generate a test with failed questions')
+                            Infolists\Components\Actions\Action::make('opoi')->label('Generate a test based on the failed questions')
                                 ->color('primary')->icon('heroicon-o-cog-8-tooth')->link()
+                                ->disabled(fn($record):bool=>Course::where('id',$record->certi)->whereRelation('users1','approve',true)->count()<=0)
                                 ->action(function ($record) {
                                     if(isset($record->llo)){
                                         $ess=new Exam();

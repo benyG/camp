@@ -23,6 +23,11 @@ use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Support\Enums\ActionSize;
+use Illuminate\Support\Facades\Http;
+use Filament\Actions\Action as Action1;
+use Illuminate\Support\Facades\Crypt;
+
+
 
 #[Lazy]
 class AssessGen extends Page implements HasForms, HasActions
@@ -74,6 +79,8 @@ class AssessGen extends Page implements HasForms, HasActions
     public $qid;
     #[Locked]
     public $aid;
+    #[Locked]
+    public $iatext;
 
     #[Validate('required',onUpdate: false,message:"No answer choosen")]
     public $ans;
@@ -144,25 +151,63 @@ class AssessGen extends Page implements HasForms, HasActions
             $this->ico=$this->qcur<$this->qtot?'heroicon-m-play':'';
             $this->qcur2=$this->qcur;
     }
-    public function revAction(): \Filament\Actions\Action
+    public function revAction(): Action1
     {
-        return \Filament\Actions\Action::make('rev')->label('here')->link()->size(ActionSize::Small)
-            ->requiresConfirmation()->color('primary')->extraAttributes([
-                'style' => 'font-size:10px',
-            ])
+        return Action1::make('rev')->label('here')->link()
+            ->requiresConfirmation()->color('primary')
             ->modalIcon('heroicon-o-question-mark-circle')
             ->modalHeading('Question Review')
             ->modalDescription('Do you want to send a review request of this question?')
             ->action(function () {
-                $rev = new \App\Models\Review;
+                 $rev = new \App\Models\Review;
                 $rev->user=auth()->id();
                 $rev->quest=$this->qid;
                 $rev->ans=json_encode($this->aid);
                 $rev->save();
                 Notification::make()->success()->title("The request was sent. You'll be notified if there is an update. You can now continue the assessment.")->send();
+                });
+    }
+    public function invAction(): Action1
+    {
+        return Action1::make('inv')->label('here')->link()->size(ActionSize::Small)
+            ->requiresConfirmation()->color('primary')
+            ->modalIcon('heroicon-o-question-mark-circle')
+            ->modalHeading('Question Review')
+            ->modalDescription('Do you want to send a review request of this question?')
+            ->action(function () {
+                $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
+                $stats="Analyzes and proposes relevant recommendations for the following results.
+                Exam Name: CISSP, Passing score = 80
+                Results obtained:
+                Score 01 = 50
+                Score 02 = 65
+                Score 03 = 80
+                Percentage of correct answers per domain
+                domain 01 =80
+                domain 02 = 30
+                domain 03 = 15
+                domain 04 = 60
+                domain 05 = 32
+                domain 06 = 14
+                domain 07 = 58
+                domain 08 = 44";
+                $data = ['model' => "gpt-3.5-turbo",
+                    'messages' => ['role' => "system",
+                            'content' => "You are an IT coach for professionals who seek to compose and pass certification exams and advance their careers. You formulate your answers like a coach talking to his learner called XoXo."
+                            ],
+                        ['role' => "user", 'content' => $stats]
+                    ];
+                $response = Http::withToken(Crypt::decryptString($ix->apk))->post($ix->endp, [
+                    "model" => "gpt-3.5-turbo",
+                    'messages' => [
+                        ["role" => "user","content" => 'what is Laravel?']
+                    ],
+                ])
+                ->json();
+                dd($response);
+        //   Notification::make()->success()->title("The request was sent. You'll be notified if there is an update. You can now continue the assessment.")->send();
             });
     }
-
     public function validateData(){
       // dd($this->qcur);
          if($this->bm1)
@@ -172,7 +217,6 @@ class AssessGen extends Page implements HasForms, HasActions
         else $this->validate([
             'ans2'=>'required',
         ]);
-
     }
     public function populate(){
         $this->qcur2++;
@@ -229,7 +273,7 @@ class AssessGen extends Page implements HasForms, HasActions
                 <span class='text-sm text-primary-600'> <br>
         Correct answer</span>":
                 "<span alt='' style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-sm text-custom-600'>
-                <br>  Wrong answer <br> </span><span class='text-xs'>This was the correct answer : <br>
+                <br>  Wrong answer <br> </span><span class='text-xs'>Correct answer : <br>
                 $au</span>";
             }else{
                 $ab2=$this->quest[$this->qcur]->answers()->where('isok',false)->whereIn('answers.id',$this->ans2)->count();
@@ -245,7 +289,7 @@ class AssessGen extends Page implements HasForms, HasActions
                 <span class='text-sm text-primary-600'> <br>
         Correct set of answers</span>":
                 "<span alt='' style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-sm text-custom-600'>
-                <br>  Wrong set of answers <br> </span><span class='text-xs'>This was the correct set : <br>
+                <br>  Wrong set of answers <br> </span><span class='text-xs'>Correct set : <br>
                 ".$au2->join("<br>")."</span>";
             }
             $this->bm2=true;

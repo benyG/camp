@@ -45,7 +45,7 @@ class SmailResource extends Resource
                 ->relationship(name: 'users', titleAttribute: 'name')
                 ->options(function(){
                     $vagues= Vague::with('users')->get();
-                    $users= User::where('vague',null)->where('id','<>',auth()->user()->id)->get();
+                    $users= User::doesntHave('vagues')->where('id','<>',auth()->user()->id)->get();
                     $bg=array();
                     $er=array();
                     foreach($users as $uy){
@@ -118,7 +118,7 @@ class SmailResource extends Resource
                     ->relationship(name: 'users', titleAttribute: 'name')
                     ->options(function(){
                         $vagues= Vague::with('users')->get();
-                        $users= User::where('vague',null)->where('id','<>',auth()->user()->id)->get();
+                        $users= User::doesntHave('vagues')->where('id','<>',auth()->user()->id)->get();
                         $bg=array();
                         $er=array();
                         foreach($users as $uy){

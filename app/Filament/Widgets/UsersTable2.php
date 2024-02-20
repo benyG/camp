@@ -96,9 +96,9 @@ class UsersTable2 extends BaseWidget
                 Tables\Columns\TextColumn::make('certRel.name')->sortable()->searchable()->label('Title')
                 ->description(fn (Exam $record): string => $record->name),
                 Tables\Columns\TextColumn::make('type')
-                ->state(fn (Exam $record) => $record->type=='1'?($this->record->id==$record->from?'Exam Simulation': 'Class Exam'):'Test your knowledge')
+                ->formatStateUsing(fn (Exam $record) => $record->type=='1'?($this->record->id==$record->from?'Exam Simulation': 'Class Exam'):(Str::contains($record->name,'TestRX')?'Test based on failures':'Test your knowledge'))
                 ->badge()
-                ->color(fn ($record): string =>$record->type=='1'?($this->record->id==$record->from?'primary': 'danger'):'info')
+                ->color(fn ($record): string =>$record->type=='1'?($this->record->id==$record->from?'primary': 'danger'):(Str::contains($record->name,'TestRX')?'warning':'info'))
             ->sortable(),
                 Tables\Columns\TextColumn::make('a4')->label('Result')->sortable()->badge()
                 ->state(fn (Exam $record) => $uarr2[$record->id]??0)

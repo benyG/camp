@@ -29,6 +29,7 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $ix=cache()->rememberForever('settings', function () { return \App\Models\Info::findOrFail(1);});
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
@@ -62,15 +63,17 @@ class UserResource extends Resource
                 ->password()
                 ->required()
                 ->maxLength(255),
-                Forms\Components\Select::make('vague')->label('Class')
-                ->relationship(name: 'vagueRel', titleAttribute: 'name')
+                Forms\Components\Select::make('vagues')->label('Class')->multiple()
+                ->relationship(name: 'vagues', titleAttribute: 'name',
+                modifyQueryUsing: fn (Builder $query) =>$query->withCount('users')->having('users_count','<=',$ix->maxcl))
+                ->preload()
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table->striped()
-        ->query(User::with('vagueRel')->where('ex','<>',0)->where('id','<>',auth()->user()->id))
+        ->query(User::with('vagues')->where('ex','<>',0)->where('id','<>',auth()->user()->id))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
@@ -81,7 +84,7 @@ class UserResource extends Resource
                 ->color('success')->placeholder('No')->icon('heroicon-o-check-circle')
                     ->tooltip(fn (User $record): string => "{$record->email_verified_at}")
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('vagueRel.name')->label('Class')->sortable(),
+                    Tables\Columns\TextColumn::make('vagues.name')->label('Class')->sortable(),
                 Tables\Columns\TextColumn::make('ex')->label('Type')->badge()
                 ->formatStateUsing(fn (int $state): string => match ($state) {0 => "indigo",
                     1 => "Admin", 2 => "Starter", 3 => "User", 4 => "Pro", 5 => "VIP"})
@@ -98,8 +101,8 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('vague')->label('Class')
-                ->relationship(name: 'vagueRel', titleAttribute: 'name')->multiple()
+                Tables\Filters\SelectFilter::make('vagues')->label('Class')
+                ->relationship(name: 'vagues', titleAttribute: 'name')->multiple()
                 ->searchable()
                 ->preload()
             ])
