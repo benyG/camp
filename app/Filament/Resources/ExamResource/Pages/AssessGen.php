@@ -100,7 +100,7 @@ class AssessGen extends Page implements HasForms, HasActions
 
     public function mount($ex): void
     {
-        $this->record = Exam::has('users1')->where('name', $ex)->with('modules')->with('users1')->firstOrFail();
+        $this->record = Exam::has('users1')->where('name', $ex)->with('modules')->with('certRel')->with('users1')->firstOrFail();
         if(empty($this->record->users1()->first()->pivot->start_at))
                 $this->record->users1()->updateExistingPivot(auth()->id(), [
                     'start_at' => now()]);
@@ -109,7 +109,7 @@ class AssessGen extends Page implements HasForms, HasActions
             else if(now()->diffInMinutes($this->record->users1()->first()->pivot->start_at)>
             $this->record->timer) redirect()->to(ExamResource::getUrl());
         }
-        cache()->forget('carr_'.$this->record->id.'_'.auth()->id());
+      //  cache()->forget('carr_'.$this->record->id.'_'.auth()->id());
      // $this->record->users1()->first()->pivot->start_at=now();
        $this->ix=cache()->rememberForever('settings', function () {
         return \App\Models\Info::findOrFail(1);
@@ -178,27 +178,23 @@ class AssessGen extends Page implements HasForms, HasActions
     }
     public function invAction(): Action1
     {
-        return Action1::make('inv')->label('Tips')->size(ActionSize::Small)
+        return Action1::make('inv')->label('Help?')->size(ActionSize::Small)
         ->iconPosition(\Filament\Support\Enums\IconPosition::After)
             ->requiresConfirmation()->color('primary')
-            ->extraAttributes([
-                'tc' => '',
-            ])
             ->modalIcon('heroicon-o-light-bulb')
-            ->modalHeading('Question Review')
             ->modalDescription('Do you want a tip for that question?')
             ->action(function () {
-               cache()->forget('settings');
+               //cache()->forget('settings');
                 $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
                 $ik=1;
                 $aitx="";
                 foreach ($this->aa as $value) {
                    $aitx.=$ik.". ".$value."\n ";
                 }
-                $stats="CISSP certification exam:
+                $stats=$this->record->certRel->name."certification exam:
                     - Question :
                     $this->qtext
-                    - Answers choice :".$aitx.". Give a hint without giving answer.";
+                    - Answers choice :".$aitx.".";
                 try {
                     $apk=Crypt::decryptString($ix->apk);
                   //  dd($apk);
@@ -222,11 +218,10 @@ class AssessGen extends Page implements HasForms, HasActions
     }
     public function inaAction(): Action1
     {
-        return Action1::make('ina')->label('Tips')->size(ActionSize::Small)
+        return Action1::make('ina')->label('Answer?')->size(ActionSize::Small)
         ->iconPosition(\Filament\Support\Enums\IconPosition::After)
             ->requiresConfirmation()->color('primary')
             ->modalIcon('heroicon-o-light-bulb')
-            ->modalHeading('Question Review')
             ->modalDescription('Do you want a tip for that question?')
             ->action(function () {
                 $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});

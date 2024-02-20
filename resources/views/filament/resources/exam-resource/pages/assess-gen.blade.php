@@ -241,7 +241,8 @@
     </form>
     <x-filament-actions::modals />
 </div>
-<div class="flex gap-2 p-6 bg-white shadow-sm fi-section rounded-xl ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
+<div onmousedown="return false" onselectstart="return false" onpaste="return false;" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off
+ class="flex gap-2 p-6 bg-white shadow-sm select-none fi-section rounded-xl ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
     <div class="grow-0">
         <div class='flex flex-col gap-3'>
             <div class='flex flex-col justify-center font-bold text-center text-primary-500'>
