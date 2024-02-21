@@ -182,16 +182,20 @@ class AssessGen extends Page implements HasForms, HasActions
     {
         return Action1::make('inv')->label('Need explanation?')->size(ActionSize::Small)
        ->link()->disabled(function():bool{
-                if(empty($this->qtext)) return true;
-                else{
-                    return !empty($this->iatext);
-                }
+                if(empty($this->iatext2)){
+                    if(empty($this->qtext)) return true;
+                    else{
+                        return !empty($this->iatext);
+                    }
+                }else return true;
             })
             ->color(function(){
-                if(empty($this->qtext)) return 'gray';
-                else{
-                    return empty($this->iatext)?'primary':'gray';
-                }
+                if(empty($this->iatext2)){
+                    if(empty($this->qtext)) return 'gray';
+                    else{
+                        return empty($this->iatext)?'primary':'gray';
+                    }
+                } else return 'gray';
             })
             ->icon('heroicon-o-question-mark-circle')
             ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
@@ -236,7 +240,7 @@ class AssessGen extends Page implements HasForms, HasActions
     }
     public function inaAction(): Action1
     {
-        return Action1::make('ina')->label('Give answer?')->size(ActionSize::Small)->modalSubmitActionLabel('Yes')
+        return Action1::make('ina')->label('Explain answer?')->size(ActionSize::Small)->modalSubmitActionLabel('Yes')
         ->icon('heroicon-o-light-bulb')->disabled(function():bool{
             if(empty($this->cans)) return true;
             else{
@@ -250,7 +254,7 @@ class AssessGen extends Page implements HasForms, HasActions
                 }
             })
         ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
-        ->modalContent(fn (): View =>view('filament.pages.actions.iamod',['txt' => 'do you want me to give the answer to this question?']))
+        ->modalContent(fn (): View =>view('filament.pages.actions.iamod',['txt' => 'do you want me to explain the answer of this question?']))
         ->action(function () {
             //cache()->forget('settings');
              $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
@@ -276,7 +280,7 @@ class AssessGen extends Page implements HasForms, HasActions
                  ->json();
                 // dd($response["choices"][0]["message"]["content"]);
                 if(is_array($response["choices"]))   {
-                    $this->iati2=true;$this->iatext2=$response["choices"][0]["message"]["content"].".";
+                    $this->iati2=true;$this->iatext2=$response["choices"][0]["message"]["content"].". Keep in mind that this is just my point of view.;-";
                     \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
                 }
                 else Notification::make()->danger()->title("Query error.")->send();

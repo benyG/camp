@@ -249,23 +249,23 @@
         </style>
 <div onmousedown="return false" class='flex' onselectstart="return false" onpaste="return false;" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off>
     <div class="flex gap-6 p-2 bg-white shadow-sm select-none shrink rounded-xl ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
-        <div class="grow-0">
+        <div class="shrink-0">
             <div class='flex flex-col' id='kj5'>
                 <div class='flex flex-col justify-center font-bold text-center text-primary-500'>
                 <img src='{{asset('img/ac.png')}}'class="row-span-2 mx-auto border-2 rounded-full w-11 h-11" />
                 <div ><span style="font-size:10px">AI Coach</span></div>
                 </div>
-                <div class='self-center grow'>
+                <div class='self-center '>
                 {{$this->invAction}}
                 </div>
-                <div class='self-center grow'>
+                <div class='self-center '>
                 {{$this->inaAction}}
                 </div>
             </div>
         </div>
         <div class="flex flex-col gap-3 grow">
             <div :class="localStorage.theme!='dark' ? 'bgcu2' : 'bgcu1'"
-            id='rr12' class="p-4 border-2
+            id='rr12' class="p-4 border-2 text-xs
             @if (empty($iatext))
                 hidden
             @endif
@@ -287,7 +287,7 @@
             @if (empty($iatext2))
                 hidden
             @endif
-            grow rounded-xl"
+            grow rounded-xl text-xs"
             x-data='{
                             text: "",
                             charIndex: 0,
