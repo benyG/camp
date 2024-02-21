@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->tinyInteger('ex')->default(2)->unsigned();
             $table->boolean('ax')->default(true);
+            $table->integer('ix')->default(0)->unsigned();
+            $table->string('cx')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('vague')->nullable();

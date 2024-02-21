@@ -241,41 +241,68 @@
     </form>
     <x-filament-actions::modals />
 </div>
-<div onmousedown="return false" onselectstart="return false" onpaste="return false;" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off
- class="flex gap-2 p-6 bg-white shadow-sm select-none fi-section rounded-xl ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
-    <div class="grow-0">
-        <div class='flex flex-col gap-3'>
-            <div class='flex flex-col justify-center font-bold text-center text-primary-500'>
-            <img src='{{asset('img/ac.png')}}' class="row-span-2 mx-auto border-2 rounded-full w-11 h-11" />
-            <div id='kj5'><span style="font-size:10px">AI Coach</span></div>
+        <style>
+            #kj5 span {font-size:10px !important; }
+            #kj5 img, #rr12,#rr13 {border-color:green !important; }
+            .bgcu1 {background-color:black !important; }
+            .bgcu2 {background-color:white !important; }
+        </style>
+<div onmousedown="return false" class='flex' onselectstart="return false" onpaste="return false;" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off>
+    <div class="flex gap-6 p-2 bg-white shadow-sm select-none shrink rounded-xl ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
+        <div class="grow-0">
+            <div class='flex flex-col' id='kj5'>
+                <div class='flex flex-col justify-center font-bold text-center text-primary-500'>
+                <img src='{{asset('img/ac.png')}}'class="row-span-2 mx-auto border-2 rounded-full w-11 h-11" />
+                <div ><span style="font-size:10px">AI Coach</span></div>
+                </div>
+                <div class='self-center grow'>
+                {{$this->invAction}}
+                </div>
+                <div class='self-center grow'>
+                {{$this->inaAction}}
+                </div>
             </div>
-            <div class='self-center'>
-            {{$this->invAction}}
+        </div>
+        <div class="flex flex-col gap-3 grow">
+            <div :class="localStorage.theme!='dark' ? 'bgcu2' : 'bgcu1'"
+            id='rr12' class="p-4 border-2
+            @if (empty($iatext))
+                hidden
+            @endif
+            grow rounded-xl"
+            x-data='{
+                            text: "",
+                            charIndex: 0,
+                            typeSpeed: 10,
+                        }'
+                x-init="setInterval(function(){
+                    if($wire.iati){
+                            let current = $wire.iatext;
+                            $data.text = current.substring(0, $data.charIndex);
+                            $data.charIndex += 1;
+                    if($data.charIndex>=$wire.iatext.length) {$wire.iati=false; $data.charIndex=0;}  }}, $data.typeSpeed)">
+            <span x-text="text"></span>
             </div>
-            <div class='self-center'>
-            {{$this->inaAction}}
+            <div id='rr13' :class="localStorage.theme!='dark' ? 'bgcu2' : 'bgcu1'" class="p-4 bg-black border-2
+            @if (empty($iatext2))
+                hidden
+            @endif
+            grow rounded-xl"
+            x-data='{
+                            text: "",
+                            charIndex: 0,
+                            typeSpeed: 10,
+                        }'
+                x-init="setInterval(function(){
+                    if($wire.iati2){
+                            let current = $wire.iatext2;
+                            $data.text = current.substring(0, $data.charIndex);
+                            $data.charIndex += 1;
+                    if($data.charIndex>=$wire.iatext2.length) {$wire.iati2=false; $data.charIndex=0;}  }}, $data.typeSpeed)">
+            <span x-text="text"></span>
+            </div>
         </div>
     </div>
-
-    </div>
-    <div class="p-4 bg-black border-2 border-green-500
-    @if (empty($iatext))
-        hidden
-    @endif
-     grow rounded-xl"
-    x-data='{
-                    text: "",
-                    charIndex: 0,
-                    typeSpeed: 10,
-                 }'
-         x-init="setInterval(function(){
-            if($wire.iati){
-                    let current = $wire.iatext;
-                    $data.text = current.substring(0, $data.charIndex);
-                    $data.charIndex += 1;
-               if($data.charIndex>=$wire.iatext.length) {$wire.iatext=false; $data.charIndex=0;}  }}, $data.typeSpeed)">
-    <span x-text="text"></span>
-    </div>
-
 </div>
+
 </x-filament-panels::page>

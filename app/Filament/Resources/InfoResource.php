@@ -85,17 +85,17 @@ class InfoResource extends Resource
               ->schema([
               Password::make('apk')->label('API Key')
                   ->required()
-                  ->dehydrateStateUsing(fn (string $state): string => Crypt::encryptString($state))
+                  ->dehydrateStateUsing(fn (string $state): string =>$state!=Info::first()->apk? Crypt::encryptString($state):$state)
                   ->dehydrated(fn (?string $state): bool => filled($state)),
                   Forms\Components\TextInput::make('endp')->label('Endpoint URL')
                   ->required()->rules(['url']),
                   Forms\Components\TextInput::make('model')->label('AI Model')
                   ->required()->rules(['max:255']),
-                  Forms\Components\Textarea::make('cont1')->label('Tips context')
+                  Forms\Components\Textarea::make('cont1')->label('Explanation context')
                   ->required(),
-                  Forms\Components\Textarea::make('cont2')->label('A&E context')
+                  Forms\Components\Textarea::make('cont2')->label('Answering context')
                   ->required(),
-              Forms\Components\Textarea::make('cont3')->label('Perf Analysis context')
+              Forms\Components\Textarea::make('cont3')->label('PA context')
                   ->required(),
              ]),
 

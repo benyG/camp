@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Http;
 use Filament\Actions\Action as Action1;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
-
+use Illuminate\Contracts\View\View;
 
 #[Lazy]
 class AssessGen extends Page implements HasForms, HasActions
@@ -87,9 +87,11 @@ class AssessGen extends Page implements HasForms, HasActions
     #[Locked]
     public $iatext;
     #[Locked]
-    public $iatt;
-    #[Locked]
     public $iati=false;
+    #[Locked]
+    public $iatext2;
+    #[Locked]
+    public $iati2=false;
 
     #[Validate('required',onUpdate: false,message:"No answer choosen")]
     public $ans;
@@ -178,11 +180,23 @@ class AssessGen extends Page implements HasForms, HasActions
     }
     public function invAction(): Action1
     {
-        return Action1::make('inv')->label('Help?')->size(ActionSize::Small)
-        ->iconPosition(\Filament\Support\Enums\IconPosition::After)
-            ->requiresConfirmation()->color('primary')
-            ->modalIcon('heroicon-o-light-bulb')
-            ->modalDescription('Do you want a tip for that question?')
+        return Action1::make('inv')->label('Need explanation?')->size(ActionSize::Small)
+       ->link()->disabled(function():bool{
+                if(empty($this->qtext)) return true;
+                else{
+                    return !empty($this->iatext);
+                }
+            })
+            ->color(function(){
+                if(empty($this->qtext)) return 'gray';
+                else{
+                    return empty($this->iatext)?'primary':'gray';
+                }
+            })
+            ->icon('heroicon-o-question-mark-circle')
+            ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
+            ->modalSubmitActionLabel('Yes')
+            ->modalContent(fn (): View =>view('filament.pages.actions.iamod',['txt' => 'do you want me to give an explanation of this question?']))
             ->action(function () {
                //cache()->forget('settings');
                 $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
@@ -191,7 +205,7 @@ class AssessGen extends Page implements HasForms, HasActions
                 foreach ($this->aa as $value) {
                    $aitx.=$ik.". ".$value."\n ";
                 }
-                $stats=$this->record->certRel->name."certification exam:
+                $stats=$this->record->certRel->name." certification exam:
                     - Question :
                     $this->qtext
                     - Answers choice :".$aitx.".";
@@ -207,8 +221,12 @@ class AssessGen extends Page implements HasForms, HasActions
                     ])
                     ->json();
                    // dd($response["choices"][0]["message"]["content"]);
-                   $this->iati=true;
-                    $this->iatext=$response["choices"][0]["message"]["content"];
+                 if(is_array($response["choices"]))   {
+                    $this->iati=true;$this->iatext=$response["choices"][0]["message"]["content"].".";
+                    \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
+                   // dd(auth()->user()->ix);
+                }
+                 else Notification::make()->danger()->title("Query error.")->send();
                 } catch (DecryptException $e) {
                     Notification::make()->danger()->title("There was a problem during encryption.")->send();
                 }
@@ -218,44 +236,54 @@ class AssessGen extends Page implements HasForms, HasActions
     }
     public function inaAction(): Action1
     {
-        return Action1::make('ina')->label('Answer?')->size(ActionSize::Small)
-        ->iconPosition(\Filament\Support\Enums\IconPosition::After)
-            ->requiresConfirmation()->color('primary')
-            ->modalIcon('heroicon-o-light-bulb')
-            ->modalDescription('Do you want a tip for that question?')
-            ->action(function () {
-                $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
-                $stats="Analyzes and proposes relevant recommendations for the following results.
-                Exam Name: CISSP, Passing score = 80
-                Results obtained:
-                Score 01 = 50
-                Score 02 = 65
-                Score 03 = 80
-                Percentage of correct answers per domain
-                domain 01 =80
-                domain 02 = 30
-                domain 03 = 15
-                domain 04 = 60
-                domain 05 = 32
-                domain 06 = 14
-                domain 07 = 58
-                domain 08 = 44";
-                $data = ['model' => "gpt-3.5-turbo",
-                    'messages' => ['role' => "system",
-                            'content' => "You are an IT coach for professionals who seek to compose and pass certification exams and advance their careers. You formulate your answers like a coach talking to his learner called XoXo."
-                            ],
-                        ['role' => "user", 'content' => $stats]
-                    ];
-                $response = Http::withToken(Crypt::decryptString($ix->apk))->post($ix->endp, [
-                    "model" => "gpt-3.5-turbo",
-                    'messages' => [
-                        ["role" => "user","content" => 'what is Laravel?']
-                    ],
-                ])
-                ->json();
-                dd($response);
-        //   Notification::make()->success()->title("The request was sent. You'll be notified if there is an update. You can now continue the assessment.")->send();
-            });
+        return Action1::make('ina')->label('Explain answer?')->size(ActionSize::Small)->modalSubmitActionLabel('Yes')
+        ->icon('heroicon-o-light-bulb')->disabled(function():bool{
+            if(empty($this->cans)) return true;
+            else{
+                return !empty($this->iatext2);
+            }
+        })
+        ->link()->color(function(){
+                if(empty($this->cans)) return 'gray';
+                else{
+                    return empty($this->iatext2)?'primary':'gray';
+                }
+            })
+        ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
+        ->modalContent(fn (): View =>view('filament.pages.actions.iamod',['txt' => 'do you want me to give the answer to this question?']))
+        ->action(function () {
+            //cache()->forget('settings');
+             $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
+             $ik=1;
+             $aitx="";
+             foreach ($this->aa as $value) {
+                $aitx.=$ik.". ".$value."\n ";
+             }
+             $stats=$this->record->certRel->name." certification exam:
+                 - Question :
+                 $this->qtext
+                 - Answers choice :".$aitx.".";
+             try {
+                 $apk=Crypt::decryptString($ix->apk);
+               //  dd($apk);
+                 $response = Http::withToken($apk)->post($ix->endp, [
+                     "model" => $ix->model,
+                     'messages' => [
+                         ["role" => "system", "content" => str_replace("XoXo",auth()->user()->name,$ix->cont2)],
+                         ["role" => "user","content" => $stats],
+                     ],
+                 ])
+                 ->json();
+                // dd($response["choices"][0]["message"]["content"]);
+                if(is_array($response["choices"]))   {
+                    $this->iati2=true;$this->iatext2=$response["choices"][0]["message"]["content"].".";
+                    \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
+                }
+                else Notification::make()->danger()->title("Query error.")->send();
+            } catch (DecryptException $e) {
+                 Notification::make()->danger()->title("There was a problem during encryption.")->send();
+             }
+             });
     }
 
     public function validateData(){
@@ -270,6 +298,7 @@ class AssessGen extends Page implements HasForms, HasActions
     }
     public function populate(){
         $this->qcur2++;
+        $this->iatext=$this->iatext2="";$this->iati1=$this->iati=false;
         $this->ico=$this->qcur<$this->qtot?'heroicon-m-play':'';
                 if($this->qcur<=$this->qtot-1){
                     $this->aa=$this->quest[$this->qcur]->answers()->pluck('text','answers.id');
