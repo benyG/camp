@@ -251,7 +251,7 @@
     <div class="flex gap-6 p-2 bg-white shadow-sm select-none shrink rounded-xl ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
         <div class="shrink-0">
             <div class='flex flex-col' id='kj5'>
-                <div class='flex flex-col justify-center font-bold text-center text-primary-500'>
+                <div class='flex flex-col justify-center text-center text-primary-500'>
                 <img src='{{asset('img/ac.png')}}'class="row-span-2 mx-auto border-2 rounded-full w-11 h-11" />
                 <div ><span style="font-size:10px">AI Coach</span></div>
                 </div>
