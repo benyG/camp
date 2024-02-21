@@ -226,7 +226,7 @@ class AssessGen extends Page implements HasForms, HasActions
                     ->json();
                    // dd($response["choices"][0]["message"]["content"]);
                  if(is_array($response["choices"]))   {
-                    $this->iati=true;$this->iatext=$response["choices"][0]["message"]["content"].".";
+                    $this->iati=true;$this->iatext=$response["choices"][0]["message"]["content"].". \n hhh";
                     \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
                    // dd(auth()->user()->ix);
                 }

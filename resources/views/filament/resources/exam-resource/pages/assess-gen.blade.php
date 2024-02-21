@@ -244,8 +244,6 @@
         <style>
             #kj5 span {font-size:10px !important; }
             #kj5 img, #rr12,#rr13 {border-color:green !important; }
-            .bgcu1 {background-color:black !important; }
-            .bgcu2 {background-color:white !important; }
         </style>
 <div onmousedown="return false" class='flex' onselectstart="return false" onpaste="return false;" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off>
     <div class="flex gap-6 p-2 bg-white shadow-sm select-none shrink rounded-xl ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
@@ -264,8 +262,8 @@
             </div>
         </div>
         <div class="flex flex-col gap-3 grow">
-            <div :class="localStorage.theme!='dark' ? 'bgcu2' : 'bgcu1'"
-            id='rr12' class="p-4 border-2 text-sm
+            <div
+            id='rr12' class="p-4 border-2 text-sm dark:bg-gray-950 bg-gray-50
             @if (empty($iatext))
                 hidden
             @endif
@@ -283,11 +281,11 @@
                     if($data.charIndex>=$wire.iatext.length) {$wire.iati=false; $data.charIndex=0;}  }}, $data.typeSpeed)">
             <span x-text="text"></span>
             </div>
-            <div id='rr13' :class="localStorage.theme!='dark' ? 'bgcu2' : 'bgcu1'" class="p-4 bg-black border-2
+            <div id='rr13'  class="p-4 border-2
             @if (empty($iatext2))
                 hidden
             @endif
-            grow rounded-xl text-sm"
+            grow rounded-xl text-sm dark:bg-gray-950 bg-gray-50"
             x-data='{
                             text: "",
                             charIndex: 0,
