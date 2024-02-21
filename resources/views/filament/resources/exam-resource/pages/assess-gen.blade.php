@@ -265,7 +265,7 @@
         </div>
         <div class="flex flex-col gap-3 grow">
             <div :class="localStorage.theme!='dark' ? 'bgcu2' : 'bgcu1'"
-            id='rr12' class="p-4 border-2 text-xs
+            id='rr12' class="p-4 border-2 text-sm
             @if (empty($iatext))
                 hidden
             @endif
@@ -287,7 +287,7 @@
             @if (empty($iatext2))
                 hidden
             @endif
-            grow rounded-xl text-xs"
+            grow rounded-xl text-sm"
             x-data='{
                             text: "",
                             charIndex: 0,
