@@ -236,7 +236,7 @@ class AssessGen extends Page implements HasForms, HasActions
     }
     public function inaAction(): Action1
     {
-        return Action1::make('ina')->label('Explain answer?')->size(ActionSize::Small)->modalSubmitActionLabel('Yes')
+        return Action1::make('ina')->label('Give answer?')->size(ActionSize::Small)->modalSubmitActionLabel('Yes')
         ->icon('heroicon-o-light-bulb')->disabled(function():bool{
             if(empty($this->cans)) return true;
             else{
