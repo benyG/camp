@@ -241,16 +241,19 @@
     </form>
     <x-filament-actions::modals />
 </div>
+@if ($record->type=='0')
+
+
         <style>
             #kj5 span {font-size:10px !important; }
-            #kj5 img, #rr12,#rr13 {border-color:green !important; }
         </style>
 <div onmousedown="return false" class='flex' onselectstart="return false" onpaste="return false;" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off>
     <div class="flex gap-6 p-2 bg-white shadow-sm select-none shrink rounded-xl ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
         <div class="shrink-0">
             <div class='flex flex-col' id='kj5'>
                 <div class='flex flex-col justify-center text-center text-primary-500'>
-                <img src='{{asset('img/ac.png')}}'class="row-span-2 mx-auto border-2 rounded-full w-11 h-11" />
+                <img style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
+                src='{{asset('img/ac.png')}}' class="row-span-2 mx-auto rounded-full ring-custom-600 dark:ring-custom-400 ring-2 w-11 h-11" />
                 <div ><span style="font-size:10px">AI Coach</span></div>
                 </div>
                 <div class='self-center '>
@@ -262,8 +265,8 @@
             </div>
         </div>
         <div class="flex flex-col gap-3 grow">
-            <div
-            id='rr12' class="p-4 border-2 text-sm dark:bg-gray-950 bg-gray-50
+            <div style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
+            id='rr12' class="p-4 text-sm dark:bg-gray-950 bg-gray-50 ring-custom-600 dark:ring-custom-400 ring-2
             @if (empty($iatext))
                 hidden
             @endif
@@ -279,9 +282,10 @@
                             $data.text = current.substring(0, $data.charIndex);
                             $data.charIndex += 1;
                     if($data.charIndex>=$wire.iatext.length) {$wire.iati=false; $data.charIndex=0;}  }}, $data.typeSpeed)">
-            <span x-text="text"></span>
+            <span x-html="text"></span>
             </div>
-            <div id='rr13'  class="p-4 border-2
+            <div id='rr13' style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
+             class="p-4 ring-custom-600 dark:ring-custom-400 ring-2
             @if (empty($iatext2))
                 hidden
             @endif
@@ -297,10 +301,10 @@
                             $data.text = current.substring(0, $data.charIndex);
                             $data.charIndex += 1;
                     if($data.charIndex>=$wire.iatext2.length) {$wire.iati2=false; $data.charIndex=0;}  }}, $data.typeSpeed)">
-            <span x-text="text"></span>
+            <span x-html="text"></span>
             </div>
         </div>
     </div>
 </div>
-
+@endif
 </x-filament-panels::page>

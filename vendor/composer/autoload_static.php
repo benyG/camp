@@ -49,6 +49,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'a1cfe24d14977df6878b9bf804af2d1c' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Phpunit/Autoload.php',
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
         '320163ac6b93aebe3dc25b60a0533d56' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/helpers.php',
+        '559dba61bcaafa74db6aa5e7e8759117' => __DIR__ . '/../..' . '/app/Http/Helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -803,6 +804,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Models\\Review' => __DIR__ . '/../..' . '/app/Models/Review.php',
         'App\\Models\\SMail' => __DIR__ . '/../..' . '/app/Models/SMail.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\UserClass' => __DIR__ . '/../..' . '/app/Models/UserClass.php',
         'App\\Models\\UsersCourse' => __DIR__ . '/../..' . '/app/Models/UsersCourse.php',
         'App\\Models\\UsersMail' => __DIR__ . '/../..' . '/app/Models/UsersMail.php',
         'App\\Models\\Vague' => __DIR__ . '/../..' . '/app/Models/Vague.php',
@@ -820,6 +822,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Policies\\QuestionPolicy' => __DIR__ . '/../..' . '/app/Policies/QuestionPolicy.php',
         'App\\Policies\\ReviewPolicy' => __DIR__ . '/../..' . '/app/Policies/ReviewPolicy.php',
         'App\\Policies\\SmailPolicy' => __DIR__ . '/../..' . '/app/Policies/SmailPolicy.php',
+        'App\\Policies\\UserClassPolicy' => __DIR__ . '/../..' . '/app/Policies/UserClassPolicy.php',
         'App\\Policies\\UserPolicy' => __DIR__ . '/../..' . '/app/Policies/UserPolicy.php',
         'App\\Policies\\UsersCoursePolicy' => __DIR__ . '/../..' . '/app/Policies/UsersCoursePolicy.php',
         'App\\Policies\\UsersMailPolicy' => __DIR__ . '/../..' . '/app/Policies/UsersMailPolicy.php',
