@@ -226,7 +226,7 @@ class AssessGen extends Page implements HasForms, HasActions
                     ->json();
                    // dd($response["choices"][0]["message"]["content"]);
                  if(is_array($response["choices"]))   {
-                    $this->iati=true;$this->iatext=$response["choices"][0]["message"]["content"].".";
+                    $this->iati=true;$this->iatext=$response["choices"][0]["message"]["content"]."";
                     \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
                    // dd(auth()->user()->ix);
                 }
@@ -280,7 +280,7 @@ class AssessGen extends Page implements HasForms, HasActions
                  ->json();
                 // dd($response["choices"][0]["message"]["content"]);
                 if(is_array($response["choices"]))   {
-                    $this->iati2=true;$this->iatext2=$response["choices"][0]["message"]["content"].". Keep in mind that this is just my point of view.;-";
+                    $this->iati2=true;$this->iatext2=$response["choices"][0]["message"]["content"]."<br> Keep in mind that this is just my point of view.;-";
                     \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
                 }
                 else Notification::make()->danger()->title("Query error.")->send();

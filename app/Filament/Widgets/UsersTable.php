@@ -103,6 +103,7 @@ class UsersTable extends BaseWidget
                         1 => "gray", 2 => "info", 3 => "success", 4 => "danger", 5 => "warning"})
                 ->sortable()
                 ->description(fn (User $record): ?string => 'Total Q. :'.$uarr2[$record->id][0]),
+                Tables\Columns\TextColumn::make('ix')->label('AI Calls'),
                 Tables\Columns\TextColumn::make('a4')->label('Assessments')
                 ->state(fn (User $record) => $uarr2[$record->id][1])
                 ->formatStateUsing(fn($state,$record):?string=>'Exams :'.$uarr2[$record->id][2])
