@@ -24,7 +24,7 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 70;
     protected static ?string $navigationGroup = 'Admin';
 
     public static function form(Form $form): Form
@@ -66,7 +66,16 @@ class UserResource extends Resource
                 Forms\Components\Select::make('vagues')->label('Class')->multiple()
                 ->relationship(name: 'vagues', titleAttribute: 'name',
                 modifyQueryUsing: fn (Builder $query) =>$query->withCount('users')->having('users_count','<=',$ix->maxcl))
-                ->preload()
+                ->preload(),
+                Forms\Components\Select::make('tz')->label('Timezone')->required()
+                ->options(function(){
+                    $oo=mtz();
+                    $ap=array();
+                    foreach ($oo as $timezone) {
+                        $ap[$timezone['timezone']]= '(GMT '.$timezone['offset'].') '.$timezone['name'];
+                    }
+                    return $ap;
+                })
             ]);
     }
 
@@ -76,9 +85,7 @@ class UserResource extends Resource
         ->query(User::with('vagues')->where('ex','<>',0)->where('id','<>',auth()->user()->id))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
+                ->searchable()->description(fn($record):string=>$record->email),
                 Tables\Columns\IconColumn::make('email_verified_at')->label('Verified ?')
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->color('success')->placeholder('No')->icon('heroicon-o-check-circle')
@@ -91,14 +98,12 @@ class UserResource extends Resource
                     ->color(fn (int $state): string => match ($state) {0 => "S. Admin",
                         1 => "gray", 2 => "info", 3 => "success", 4 => "danger", 5 => "warning"})
                 ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
+                Tables\Columns\TextColumn::make('ix')->label('AI Calls')
                     ->toggleable(isToggledHiddenByDefault: true),
+                    Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('vagues')->label('Class')

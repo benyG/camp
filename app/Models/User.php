@@ -20,7 +20,8 @@ use App\Models\Exam;
 use App\Models\Course;
 use App\Models\UsersCourse;
 use App\Models\Review;
-
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Carbon;
 
 
 class User extends Authenticatable implements FilamentUser,MustVerifyEmail
@@ -41,6 +42,7 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
         'name',
         'email',
         'password',
+        'tz'
     ];
 
     /**
@@ -62,6 +64,19 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    protected function createdAt(): Attribute
+    {
+        return Attribute::make(
+         get: fn (string $value) => Carbon::parse($value, auth()->user()->tz),
+      );
+    }
+    protected function updatedAt(): Attribute
+    {
+        return Attribute::make(
+         get: fn (string $value) => Carbon::parse($value, auth()->user()->tz),
+      );
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         //return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();

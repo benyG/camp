@@ -23,7 +23,7 @@ use Illuminate\Support\Carbon;
 class QuestionResource extends Resource
 {
     protected static ?string $model = Question::class;
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 30;
 
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
     protected static ?string $navigationGroup = 'Teachers';

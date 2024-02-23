@@ -34,7 +34,7 @@ class SmailResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
     protected static ?string $modelLabel = 'message';
     protected static ?string $slug = 'messages';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 20;
     public static function form(Form $form): Form
     {
         return $form

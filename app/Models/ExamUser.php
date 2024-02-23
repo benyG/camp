@@ -6,22 +6,38 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\ExamQuest;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Carbon;
 
 class ExamUser extends Pivot
 {
     public $incrementing = true;
     public $timestamps = false;
     protected $fillable = [
-        'gen'
+        'gen','added','comp_at','start_at','quest'
       ];
       protected $casts = [
         'gen' => 'array',
     ];
-      public function questions(): BelongsToMany
-      {
-          //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
-          return $this->belongsToMany(Question::class, 'exam_quests', 'exam', 'quest')
-          ->using(ExamQuest::class);
-      }
+    protected function added(): Attribute
+    {
+        return Attribute::make(
+         get: fn (string $value) => Carbon::parse($value, auth()->user()->tz),
+      );
+    }
+    protected function compAt(): Attribute
+    {
+        return Attribute::make(
+         get: fn (?string $value) => empty($value)? "": Carbon::parse($value, auth()->user()->tz),
+      );
+    }
+    protected function startAt(): Attribute
+    {
+        return Attribute::make(
+         get: fn (?string $value) => empty($value)? "": Carbon::parse($value, auth()->user()->tz),
+      );
+    }
 
 }
+
+

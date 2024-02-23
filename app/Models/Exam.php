@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Carbon;
 
 class Exam extends Model
 {
@@ -28,6 +29,14 @@ class Exam extends Model
               get: fn (mixed $value, array $attributes) => Str::slug($attributes['name'], '-')
           );
       }
+      protected function due(): Attribute
+      {
+          return Attribute::make(
+           get: fn (string $value) => Carbon::parse($value, auth()->user()->tz),
+           set: fn (string $value) => Carbon::parse($value, 'UTC')
+        );
+      }
+
     public function modules(): BelongsToMany
       {
           return $this->belongsToMany(Module::class, 'exam_modules', 'exam', 'module')
@@ -41,7 +50,7 @@ class Exam extends Model
           ->withPivot('comp_at')
           ->withPivot('start_at')
           ->withPivot('gen')
-           ->withPivot('id');
+           ->withPivot('id')->using(ExamUser::class);
       }
       public function users1(): BelongsToMany
       {
@@ -51,7 +60,7 @@ class Exam extends Model
           ->withPivot('start_at')
           ->withPivot('gen')
            ->withPivot('id')
-          ->wherePivot('user', auth()->user()->id);
+          ->wherePivot('user', auth()->user()->id)->using(ExamUser::class);
       }
       public function userRel(): BelongsTo
       {

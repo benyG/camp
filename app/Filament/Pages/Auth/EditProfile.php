@@ -4,6 +4,7 @@ namespace App\Filament\Pages\Auth;
 
 use Filament\Forms\Form;
 use Filament\Pages\Auth\EditProfile as BaseEditProfile;
+use Filament\Forms;
 
 /**
  * @property Form $form
@@ -22,6 +23,15 @@ class EditProfile extends BaseEditProfile
                     'regex' => "There should be at least one special character, and one digit. No spaces",
                 ]),
                 $this->getPasswordConfirmationFormComponent(),
+                Forms\Components\Select::make('tz')->label('Timezone')->required()
+                ->options(function(){
+                    $oo=mtz();
+                    $ap=array();
+                    foreach ($oo as $timezone) {
+                        $ap[$timezone['timezone']]= '(GMT '.$timezone['offset'].') '.$timezone['name'];
+                    }
+                    return $ap;
+                })
             ]);
             /* Min 8 chars long
 Min One Digit

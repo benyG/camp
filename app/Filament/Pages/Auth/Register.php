@@ -4,6 +4,7 @@ namespace App\Filament\Pages\Auth;
 
 use Filament\Forms\Form;
 use Filament\Pages\Auth\Register as BaseRegister;
+use Filament\Forms;
 
 class Register extends BaseRegister
 {
@@ -25,6 +26,15 @@ class Register extends BaseRegister
                             'regex' => "There should be at least one uppercase and lowercase letter, one special character, and one digit. No spaces",
                         ])                        ,
                         $this->getPasswordConfirmationFormComponent(),
+                        Forms\Components\Select::make('tz')->label('Timezone')->required()
+                        ->options(function(){
+                            $oo=mtz();
+                            $ap=array();
+                            foreach ($oo as $timezone) {
+                                $ap[$timezone['timezone']]= '(GMT '.$timezone['offset'].') '.$timezone['name'];
+                            }
+                            return $ap;
+                        })
                     ])
                     ->statePath('data'),
             ),

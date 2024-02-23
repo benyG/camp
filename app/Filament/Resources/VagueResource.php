@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class VagueResource extends Resource
 {
     protected static ?string $model = Vague::class;
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 80;
     protected static ?string $navigationGroup = 'Admin';
     protected static ?string $navigationIcon = 'heroicon-o-folder-open';
     protected static ?string $modelLabel = 'Class';

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
 use App\Models\UsersMail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Carbon;
 
 class SMail extends Model
 {
@@ -18,6 +20,19 @@ class SMail extends Model
       protected $casts = [
         'user' => 'array',
     ];
+    protected function createdAt(): Attribute
+    {
+        return Attribute::make(
+         get: fn (string $value) => Carbon::parse($value, auth()->user()->tz),
+      );
+    }
+    protected function updatedAt(): Attribute
+    {
+        return Attribute::make(
+         get: fn (string $value) => Carbon::parse($value, auth()->user()->tz),
+      );
+    }
+
       public function user(): BelongsTo
       {
      //    return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');

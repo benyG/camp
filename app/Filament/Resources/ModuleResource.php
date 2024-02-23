@@ -16,7 +16,7 @@ use Filament\Actions\Action;
 class ModuleResource extends Resource
 {
     protected static ?string $model = Module::class;
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 50;
     protected static ?string $navigationGroup = 'Teachers';
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';

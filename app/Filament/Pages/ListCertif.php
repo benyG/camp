@@ -26,6 +26,7 @@ class ListCertif extends Page implements HasTable
     protected ?string $subheading = 'Check the list of the certifications you are following. Use the button Add to request for more.';
     protected static string $view = 'filament.pages.list-certif';
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?int $navigationSort = 5;
 
     public function mount(): void
     {

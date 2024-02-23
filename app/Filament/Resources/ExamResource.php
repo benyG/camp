@@ -39,7 +39,7 @@ class ExamResource extends Resource
     protected static ?string $modelLabel = 'assessment';
     protected static ?string $navigationLabel = 'Bootcamp';
     protected static ?string $slug = 'bootcamp';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 10;
 
     public static function form(Form $form): Form
     {
@@ -268,15 +268,16 @@ class ExamResource extends Resource
                     ->dateTime()->since()->sortable()
                     ->tooltip(fn (Exam $record): ?string => $record->due),
                 Tables\Columns\TextColumn::make('added_at')->label('Created on')
-                    ->dateTime()->hidden(auth()->user()->ex!=0)
+                ->tooltip(fn ($state) => $state)
+                    ->dateTime()->hidden(auth()->user()->ex!=0)->since()
                     ->sortable()->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('start_at')->label('Started on')
-                ->getStateUsing(fn (Exam $record) => $record->users1()->first()->pivot->start_at??null)
-                    ->dateTime()->hidden(auth()->user()->ex==0)->toggleable(isToggledHiddenByDefault: true)
+                Tables\Columns\TextColumn::make('start_at')->label('Started on')->since()
+                ->tooltip(fn (Exam $record) => $record->users1()->first()->pivot->start_at??null)
+                    ->dateTime()->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('comp_at')->label('Completed on')
-                ->getStateUsing(fn (Exam $record) => $record->users1()->first()->pivot->comp_at??null)
-                    ->dateTime()->hidden(auth()->user()->ex==0)->toggleable(isToggledHiddenByDefault: true)
+                Tables\Columns\TextColumn::make('comp_at')->label('Completed on')->since()
+                ->tooltip(fn (Exam $record) => $record->users1()->first()->pivot->comp_at??null)
+                    ->dateTime()->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
             ])
             ->filters([
