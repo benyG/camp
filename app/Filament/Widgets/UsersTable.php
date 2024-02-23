@@ -108,7 +108,7 @@ class UsersTable extends BaseWidget
                 ->state(fn (User $record) => $uarr2[$record->id][1])
                 ->formatStateUsing(fn($state,$record):?string=>'Exams :'.$uarr2[$record->id][2])
                 ->description(fn ($state): ?string => 'Tests :'.$state),
-                Tables\Columns\TextColumn::make('a2')->label('Exam success avg.')
+                Tables\Columns\TextColumn::make('a2')->label('Exam pass avg.')
                 ->state(fn (User $record) => $uarr2[$record->id][3])
                 ->formatStateUsing(fn($state):?string=>$state.'%')
                 ->color(fn($state):string=>intval($state)>=$ix->wperc?'success':'danger'),
