@@ -22,19 +22,19 @@ class ExamUser extends Pivot
     protected function added(): Attribute
     {
         return Attribute::make(
-         get: fn (string $value) => Carbon::parse($value, auth()->user()->tz),
+         get: fn (string $value) => (new Carbon($value))->setTimezone(auth()->user()->tz),
       );
     }
     protected function compAt(): Attribute
     {
         return Attribute::make(
-         get: fn (?string $value) => empty($value)? "": Carbon::parse($value, auth()->user()->tz),
+         get: fn (?string $value) => empty($value)? "": (new Carbon($value))->setTimezone(auth()->user()->tz),
       );
     }
     protected function startAt(): Attribute
     {
         return Attribute::make(
-         get: fn (?string $value) => empty($value)? "": Carbon::parse($value, auth()->user()->tz),
+         get: fn (?string $value) => empty($value)? "": (new Carbon($value))->setTimezone(auth()->user()->tz),
       );
     }
 

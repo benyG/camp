@@ -32,11 +32,16 @@ class Exam extends Model
       protected function due(): Attribute
       {
           return Attribute::make(
-           get: fn (string $value) => Carbon::parse($value, auth()->user()->tz),
-           set: fn (string $value) => Carbon::parse($value, 'UTC')
+           get: fn (string $value) => (new Carbon($value))->setTimezone(auth()->user()->tz),
+           set: fn (string $value) => (new Carbon($value))->setTimezone("UTC")
         );
       }
-
+       protected function addedAt(): Attribute
+      {
+          return Attribute::make(
+           get: fn (string $value) => (new Carbon($value))->setTimezone(auth()->user()->tz),
+        );
+      }
     public function modules(): BelongsToMany
       {
           return $this->belongsToMany(Module::class, 'exam_modules', 'exam', 'module')

@@ -31,6 +31,7 @@ use Illuminate\Contracts\View\View;
 use Filament\Infolists\Infolist;
 use Filament\Infolists;
 use Closure;
+use Illuminate\Support\Carbon;
 
 class ExamResource extends Resource
 {
@@ -262,6 +263,7 @@ class ExamResource extends Resource
             ->hidden(auth()->user()->ex!=0),
         Tables\Columns\TextColumn::make('added')->label('Affected on')
                 ->getStateUsing(fn (Exam $record) => $record->users1()->first()->pivot->added??null)
+                ->tooltip(fn (Exam $record): ?string => $record->users1()->first()->pivot->added??null)
                     ->dateTime()->hidden(auth()->user()->ex==0)->since()
                     ->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('due')->label('Due Date')
@@ -350,7 +352,7 @@ class ExamResource extends Resource
                     ->schema([
                         Infolists\Components\TextEntry::make('descr')->label('')
                     ]),
-              ])
+                ])
               ->color('gray'),
               Tables\Actions\Action::make('sttr')->icon('heroicon-o-play')
               ->label(fn (Exam $record): string =>empty($record->users1()->first()->pivot->start_at)?'Start the Assessment':'Continue')
