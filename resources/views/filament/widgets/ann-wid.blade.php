@@ -1,6 +1,7 @@
 <x-filament-widgets::widget class="row-span-2 fi-filament-info-widget">
+<x-filament::section>
 <div class="text-center " x-data="{
-        duration: 5000,
+        duration: 10000,
         active: 0,
         progress: 0,
         firstFrameTime: 0,
@@ -58,4 +59,5 @@
     </div>
     <!-- Buttons -->
 </div>
+</x-filament::section>
 </x-filament-widgets::widget>
