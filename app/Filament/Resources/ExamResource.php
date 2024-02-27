@@ -416,8 +416,8 @@ class ExamResource extends Resource
                            // dd($mod);
                                 $ca=0;
 
-                            if(!empty($record->users1()->first()->pivot->gen) && Str::contains($record->users1()->first()->pivot->gen,"{")){
-                                $res=json_decode($record->users1()->first()->pivot->gen,true);
+                            if(!empty($record->users1()->first()->pivot->gen) && is_array($record->users1()->first()->pivot->gen)){
+                                $res=$record->users1()->first()->pivot->gen;
                                 $arrk=array_keys($res);
                                 $qrr=array();
                                 $rt=Question::whereIn('id',$arrk)->with('answers')->with('moduleRel')->get();
@@ -479,10 +479,10 @@ class ExamResource extends Resource
                                 })
                         ]),
                         Infolists\Components\TextEntry::make('sccr')->label('% Per Modules')
-                        ->state(fn()=>$mode)->html()->columnSpan(2),
+                        ->state(fn()=>$mode)->html(),
                     ];
                     })
-                    ->columns(),
+                    ->columns(2),
                 ])
                 ->color('success'),
                 Tables\Actions\Action::make('redds')->label('View the results')->iconButton()->icon('heroicon-o-document-check')
@@ -527,7 +527,7 @@ class ExamResource extends Resource
                            // dd($mod);
                                 $ca=0;
                             if(!empty($us->pivot->gen) && Str::contains($us->pivot->gen,"{")){
-                                $res=json_decode($us->pivot->gen,true);
+                                $res=$us->pivot->gen;
                                 $arrk=array_keys($res);
                                 $rt=Question::whereIn('id',$arrk)->with('answers')->with('moduleRel')->get();
                                 foreach ($rt as $quest) {

@@ -5,6 +5,10 @@ use Filament\Http\Responses\Auth\Contracts\EmailVerificationResponse;
 use Illuminate\Support\ServiceProvider;
 use Filament\Support\Facades\FilamentView;
 use Illuminate\Support\Facades\Blade;
+use Filament\Support\Assets\Css;
+use Filament\Support\Facades\FilamentAsset;
+use Filament\Support\Assets\Js;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -28,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
                 }
             </script>'),
         );
+        FilamentAsset::register([
+            Css::make('extra', asset('css/extra.css')),
+            Js::make('extra', asset('js/extra.js')),
+        ]);
         /* $this->app->singleton(
             EmailVerificationResponse::class,
             \App\Http\Responses\EmailVerificationResponse::class

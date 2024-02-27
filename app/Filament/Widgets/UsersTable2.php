@@ -106,7 +106,7 @@ class UsersTable2 extends BaseWidget
                 ->formatStateUsing(fn ($state,$record): string => isset($uarr2[$record->id])? $state.'%':'Not started'),
             Tables\Columns\TextColumn::make('quest')->label('Questions')->sortable(),
             Tables\Columns\TextColumn::make('timer')->label('Timer')->sortable()
-            ->formatStateUsing(fn ($state):string=> intval($state)<=0? 'Unlimited': $state),
+            ->formatStateUsing(fn ($state, $record):string=> $record->type!='1'? 'Unlimited': $state),
             ]);
     }
     protected function paginateTableQuery(Builder $query): CursorPaginator

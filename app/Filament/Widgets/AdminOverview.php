@@ -9,7 +9,7 @@ class AdminOverview extends Widget
     protected static ?int $sort = -1;
     protected static bool $isLazy = true;
     protected static string $view = 'filament.widgets.adm-ovv';
-    protected int | string | array $columnSpan = 'full';
+   // protected int | string | array $columnSpan = 'full';
 
     #[Locked]
     public $va;

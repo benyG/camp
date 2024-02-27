@@ -200,7 +200,7 @@ class AssessGen extends Page implements HasForms, HasActions
             ->icon('heroicon-o-question-mark-circle')
             ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
             ->modalSubmitActionLabel('Yes')
-            ->modalContent(fn (): View =>view('filament.pages.actions.iamod',['txt' => 'do you want me to give an explanation of this question?']))
+            ->modalContent(fn (): View =>view('filament.pages.actions.iamod',['txt' => 'do you want me to give an explanation for this question?']))
             ->action(function () {
                //cache()->forget('settings');
                 $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
