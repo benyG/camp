@@ -13,6 +13,7 @@ class AnnWid extends Widget
     #[Locked]
     public $items;
     public function mount(){
-        $this->items=\App\Models\Ann::where('hid',true)->get()->toArray();
+        $this->items=auth()->user()->ex==0?\App\Models\Ann::where('hid',true)->whereDate('due','>',now())->get()->toArray():
+        \App\Models\Ann::where('hid',true)->whereDate('due','>',now())->where('type','like','%'.auth()->user()->ex.'%')->get()->toArray();
     }
 }
