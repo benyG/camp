@@ -516,7 +516,7 @@ class ExamResource extends Resource
                         $ix=cache()->rememberForever('settings', function () {
                             return \App\Models\Info::findOrFail(1);
                         });
-                        $cu=0;
+                        $cu=0;$ca=0;
                         $mode="<table class='w-full text-sm border-collapse table-auto'><thead><tr><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>Users</th><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>Time</th><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>Score</th></tr></thead><tbody class=''>";
                         foreach ($record->users as $us) {
                             $mode.="<tr><td class='p-4 pl-8 text-gray-500 border-b border-gray-100 dark:border-gray-700 dark:text-gray-400'>".$us->name ."</td><td class='p-4 pl-8 text-gray-500 border-b border-gray-100 dark:border-gray-700 dark:text-gray-400'>".(!empty($us->pivot->start_at) && !empty($us->pivot->comp_at)?
