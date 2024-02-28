@@ -28,6 +28,7 @@ use Filament\Actions\Action as Action1;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Client\ConnectionException;
 
 #[Lazy]
 class AssessGen extends Page implements HasForms, HasActions
@@ -226,13 +227,16 @@ class AssessGen extends Page implements HasForms, HasActions
                     ->json();
                    // dd($response["choices"][0]["message"]["content"]);
                  if(is_array($response["choices"]))   {
-                    $this->iati=true;$this->iatext=$response["choices"][0]["message"]["content"]."";
+                    $this->iati=true;
+                    $this->iatext=str_replace(array(':','-'),array(':<br>','<br>-'), $response["choices"][0]["message"]["content"]);
                     \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
                    // dd(auth()->user()->ix);
                 }
                  else Notification::make()->danger()->title("Query error.")->send();
                 } catch (DecryptException $e) {
                     Notification::make()->danger()->title("There was a problem during encryption.")->send();
+                } catch (ConnectionException $e) {
+                    Notification::make()->danger()->title("The query took too much time.")->send();
                 }
 
         //   Notification::make()->success()->title("The request was sent. You'll be notified if there is an update. You can now continue the assessment.")->send();
@@ -280,13 +284,16 @@ class AssessGen extends Page implements HasForms, HasActions
                  ->json();
                 // dd($response["choices"][0]["message"]["content"]);
                 if(is_array($response["choices"]))   {
-                    $this->iati2=true;$this->iatext2=$response["choices"][0]["message"]["content"]."<br> Keep in mind that this is just my point of view.;-";
+                    $this->iati2=true;
+                    $this->iatext2=str_replace(array(':','-'),array(':<br>','<br>-'), $response["choices"][0]["message"]["content"])."<br> Keep in mind that this is just my point of view.;-";
                     \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
                 }
                 else Notification::make()->danger()->title("Query error.")->send();
             } catch (DecryptException $e) {
                  Notification::make()->danger()->title("There was a problem during encryption.")->send();
-             }
+                } catch (ConnectionException $e) {
+                    Notification::make()->danger()->title("The query took too much time.")->send();
+                }
              });
     }
 
