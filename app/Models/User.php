@@ -117,7 +117,8 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
         ->withPivot('comp_at')
         ->withPivot('start_at')
         ->withPivot('gen')
-         ->withPivot('id');
+         ->withPivot('id')
+         ->using(ExamUser::class);
   }
     public function courses(): BelongsToMany
     {

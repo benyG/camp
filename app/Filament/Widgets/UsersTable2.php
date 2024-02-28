@@ -37,6 +37,7 @@ class UsersTable2 extends BaseWidget
     protected int | string | array $columnSpan = 'full';
     protected static ?string $heading = 'Performance summary';
     protected static ?string $pollingInterval = null;
+    protected static ?int $sort = 10;
     public $record;
     public function mount($usrec=null)
     {
@@ -64,9 +65,7 @@ class UsersTable2 extends BaseWidget
             foreach ($us->exams2 as $exa) {
                 if(in_array($exa->pivot->exam,$eall->toArray())){
                     if(!empty($exa->pivot->gen)){
-            // dd(array_keys(json_decode($exa->pivot->gen,true)));
-
-                        $res=json_decode($exa->pivot->gen,true);
+                        $res=$exa->pivot->gen;
                         $arrk=array_keys($res);
                         $ca=0;
                         $rot=$rt->whereIn('id',$arrk);
@@ -95,6 +94,7 @@ class UsersTable2 extends BaseWidget
             ->columns([
                 Tables\Columns\TextColumn::make('certRel.name')->sortable()->searchable()->label('Title')
                 ->description(fn (Exam $record): string => $record->name),
+                Tables\Columns\TextColumn::make('name')->sortable()->searchable()->label('Code')->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('type')
                 ->formatStateUsing(fn (Exam $record) => $record->type=='1'?($this->record->id==$record->from?'Exam Simulation': 'Class Exam'):(Str::contains($record->name,'TestRX')?'Test based on failures':'Test your knowledge'))
                 ->badge()

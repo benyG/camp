@@ -19,6 +19,7 @@ class ExamUser extends Pivot
       protected $casts = [
         'gen' => 'array',
     ];
+    protected $table = 'exam_users';
     protected function added(): Attribute
     {
         return Attribute::make(

@@ -47,10 +47,7 @@ class UsersTable extends BaseWidget
         $earr=Exam::has('users')->with('users')->get();
         $eall=$earr->pluck('id');
         $rt=Question::with('answers')->get();
-     //   $etest=$earr->where('type','0')->pluck('id');
-     //   $eexam=$earr->pluck('id');
         foreach ($uarr as $us) {
-          //if($us->id==15)  dd($userex);
          $uarr2[$us->id]=[0,0,0,0,0];
             $nt=$us->exams2()->whereNotNull('start_at')->pluck('exam')->intersect($earr->where('type','0')->pluck('id'))->count();
             $ne=$us->exams2()->whereNotNull('start_at')->pluck('exam')->intersect($earr->where('type','1')->pluck('id'))->count();
@@ -61,8 +58,7 @@ class UsersTable extends BaseWidget
             $uqt=array();
             foreach ($us->exams2 as $exa) {
                 if(!empty($exa->pivot->gen) &&  in_array($exa->pivot->exam,$eall->toArray())){
-           // dd(array_keys(json_decode($exa->pivot->gen,true)));
-                    $res=json_decode($exa->pivot->gen,true);
+                    $res=$exa->pivot->gen;
                     $arrk=array_keys($res);
                     $qt+=collect($arrk)->reduce(function (?int $carry, int|string $item) {
                         return $carry + (is_int($item)?1:0);
@@ -94,7 +90,6 @@ class UsersTable extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-               // ->description(fn (User $record): ?string => $record->email)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('ex')->label('Type')->badge()
                 ->formatStateUsing(fn (int $state): string => match ($state) {0 => "indigo",

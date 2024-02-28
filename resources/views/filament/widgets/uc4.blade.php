@@ -15,10 +15,10 @@
                     class="w-max sm:-my-2"
                 >
                 <x-slot name="prefix">
-                    Modules
+                    Cert.
                 </x-slot>
                     <x-filament::input.select
-                        wire:model.live='mod'
+                        wire:model.live='cs'
                     >
                         @foreach ($filters as $value => $label)
                             <option value="{{ $value }}">

@@ -5,37 +5,69 @@ namespace App\Filament\Widgets;
 use Filament\Widgets\ChartWidget;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\Module;
+use App\Models\Question;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Filament\Support\RawJs;
 
 class UserCourseChart2 extends ChartWidget
 {
-    protected static ?string $heading = 'Users per Certifications';
+    protected static ?string $heading = '% Questions answered per Module';
+    protected static string $view = 'filament.widgets.uc2';
     protected static ?string $pollingInterval = null;
-    protected static ?string $maxHeight = '150px';
-    public function getColumns(): int | string | array
+    protected static ?string $maxHeight = '300px';
+    protected static ?int $sort = 0;
+    public $cs=0;
+    #[Locked]
+    public $cos;
+
+    public function mount(): void
     {
-        return 1;
+        $this->cos=Course::get();
+        if($this->cos->count()>0) {
+            $this->cs=$this->cos->first()->id;
+            $this->dispatch('cs-upd',csu:$this->cs)->to(\App\Filament\Widgets\UserCourseChart3::class);
+            $this->dispatch('cs-upd',csu:$this->cs)->to(\App\Filament\Widgets\UserCourseChart5::class);
+            $this->dispatch('cs-upd',csu:$this->cs)->to(\App\Filament\Widgets\UserCourseChart4::class);
+        }
     }
     public static function canView(): bool
     {
-        return false;
-       // return auth()->user()->ex!=0 || isset($this->usrec);
+    //    return false;
+      //  return auth()->user()->ex!=0 || isset($this->usrec);
+      return auth()->user()->ex>1 && Course::has('users1')->where('pub',true)->count()>0;
     }
+    protected function getFilters(): ?array
+    {
+        return $this->cos->pluck("name",'id')->toArray();
+    }
+    public function updatedCs()
+    {
+        $this->updateChartData();
+        $this->dispatch('cs-upd',csu:$this->cs)->to(UserCourseChart3::class);
+        $this->dispatch('cs-upd',csu:$this->cs)->to(UserCourseChart5::class);
+        $this->dispatch('cs-upd',csu:$this->cs)->to(UserCourseChart4::class);
+    }
+
     protected function getData(): array
     {
-        $uc=[array(),array(),array()];
-        $us=Course::withCount('users')->get();
-        foreach ($us as $val) {
-            // dd($val);
-            if($val->users_count>0){
-                    $uc[0][]=$val->name;
-                    $uc[1][]=$val->users_count;
-                    $uc[2][]=$this->dynColors();
+        $mod=Module::where('course',$this->cs)->get()->pluck('name','id')->toArray();
+        $exa=auth()->user()->exams2()->where('certi',$this->cs)->get();
+        $que=array();
+        foreach ($exa as $ex) {
+            if(!empty($ex->pivot->gen) && is_array($ex->pivot->gen)){
+             $que=array_merge($que,array_keys($ex->pivot->gen));
             }
         }
-       // dd($uc[2]);
+        $que=Question::selectRaw('count(id) as quest, module')->whereIn('id',$que)->groupBy('module')->get()->pluck('quest','module')->toArray();
+        $uc=[array(),array(),array()];
+        foreach ($mod as $key => $mm) {
+            $uc[0][]=$mm;
+            $uc[1][]=array_key_exists($key,$que)? $que[$key]:0;
+            $uc[2][]=$this->dynColors();
+        }
+      //  dd($uc);
         return [
             'datasets' => [
                 [

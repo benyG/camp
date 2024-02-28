@@ -27,8 +27,12 @@ class UserOverview extends Widget
     public $qu;
     #[Locked]
     public $iac;
+    #[Locked]
+    public $co1;
+    #[Locked]
+    public $co2;
 
-    public function mount(){
+    public function mount():void{
         $ix=cache()->rememberForever('settings', function () {
             return \App\Models\Info::findOrFail(1);
         });
@@ -45,8 +49,7 @@ class UserOverview extends Widget
         $uqt=array();
         foreach (auth()->user()->exams2 as $exa) {
             if(!empty($exa->pivot->gen) &&  in_array($exa->pivot->exam,$eall->toArray())){
-       // dd(array_keys(json_decode($exa->pivot->gen,true)));
-                $res=json_decode($exa->pivot->gen,true);
+                $res=$exa->pivot->gen;
                 $arrk=array_keys($res);
                 $qt+=collect($arrk)->reduce(function (?int $carry, int|string $item) {
                     return $carry + (is_int($item)?1:0);
@@ -71,6 +74,8 @@ class UserOverview extends Widget
             }
         }
         $this->va=$qt;$this->qu=round(100*$pes/($ne>0?$ne:1),2);$this->iac=round(100*$pga/($qt>0?$qt:1),2);
+        $this->co1=$this->qu>0?'primary':'danger';
+        $this->co2=$this->iac>=50?($this->iac>=70?'success':'warning'):'danger';
     }
     public static function canView(): bool
     {

@@ -12,13 +12,13 @@ use App\Models\Module;
 use App\Models\Question;
 use Livewire\Attributes\On;
 
-class UserCourseChart3 extends ChartWidget
+class UserCourseChart5 extends ChartWidget
 {
-    protected static ?string $heading = '% Good/Bad Ans.';
-    protected static string $view = 'filament.widgets.uc3';
+    protected static ?string $heading = 'Performance evolution';
+    protected static string $view = 'filament.widgets.uc5';
     protected static ?string $pollingInterval = null;
-    protected static ?string $maxHeight = '250px';
-    protected static ?int $sort = 1;
+    protected static ?string $maxHeight = '300px';
+    protected static ?int $sort = 3;
     public $record;
     public $cs=0;
     public $mod=0;
@@ -33,31 +33,20 @@ class UserCourseChart3 extends ChartWidget
     public function csupdated($csu){
       //  dd('dd');
         $this->cs=intval($csu);
-        $this->cos=Module::where('course',$this->cs)->get();
-        $this->mod=$this->cos->count()>0?$this->cos->first()->id:0;
         $this->updateChartData();
-    }
-    public function updatedMod()
-    {
-        $this->updateChartData();
-    }
-
-    protected function getFilters(): ?array
-    {
-        return empty($this->cos)? array(): $this->cos->pluck("name",'id')->toArray();
     }
     protected function getData(): array
     {
         $uc=[array(),array(),array()];
-        if(!empty($this->cos)>0){
-            $exa=auth()->user()->exams2()->where('certi',$this->cs)->get();
-            $md1=0;$md2=0;
+            $exa=auth()->user()->exams2()->where('certi',$this->cs)->latest('added_at')->get();
             foreach ($exa as $ex) {
+            $md1=0;$md2=0;
+                $uc[0][]=$ex->name;
                 if(!empty($ex->pivot->gen) && is_array($ex->pivot->gen)){
                     $res=$ex->pivot->gen;
                     $arrk=array_keys($ex->pivot->gen);
                     $qrr=array();
-                    $rt=Question::whereIn('id',$arrk)->where('module',$this->mod)->get();
+                    $rt=Question::whereIn('id',$arrk)->get();
                     foreach ($rt as $quest) {
                         $bm=$quest->answers()->where('isok',true)->count()<=1;
                         if($bm){
@@ -73,24 +62,21 @@ class UserCourseChart3 extends ChartWidget
                         }
                     }
                 }
+                $uc[1][]=$md1;$uc[2][]=$md2;
             }
-            $uc[0][]="Good Answers";
-            $uc[1][]=$md1;
-            $uc[2][]="#00FF00";
-
-            $uc[0][]="Bad Answers";
-            $uc[1][]=$md2;
-            $uc[2][]="#FF0000";
-
-        }
         return [
             'datasets' => [
                 [
-                   // 'label' => 'Blog posts created',
+                    'label' => 'Good Answers',
                     'data' => $uc[1],
-                    'backgroundColor' => $uc[2],
-                    'borderColor' => $uc[2],
+                    'borderColor' => "#00FF00",
                 ],
+                [
+                    'label' => 'Bad Answers',
+                    'data' => $uc[2],
+                    'borderColor' => "#FF0000",
+                ],
+
             ],
             'labels' => $uc[0],
         ];
@@ -98,7 +84,7 @@ class UserCourseChart3 extends ChartWidget
 
     protected function getType(): string
     {
-        return 'doughnut';
+        return 'line';
     }
     protected function getOptions(): RawJs
     {
@@ -107,18 +93,18 @@ class UserCourseChart3 extends ChartWidget
                 scales: {
                     y: {
                         grid: {
-                            display: false,
+                            display: true,
                         },
                         ticks: {
-                            display: false,
+                            display: true,
                         },
                     },
                     x: {
                         grid: {
-                            display: false,
+                            display: true,
                         },
                         ticks: {
-                            display: false,
+                            display: true,
                         },
                     },
                 },
