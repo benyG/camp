@@ -39,7 +39,7 @@ class Exam extends Model
        protected function addedAt(): Attribute
       {
           return Attribute::make(
-           get: fn (string $value) => (new Carbon($value))->setTimezone(auth()->user()->tz),
+           get: fn (?string $value) => $value??(new Carbon($value))->setTimezone(auth()->user()->tz),
         );
       }
     public function modules(): BelongsToMany

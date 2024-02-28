@@ -36,6 +36,6 @@ class SendEmail implements ShouldQueue
      */
     public function handle(): void
     {
-        Notif::send($this->user, new NewMail($this->mai,$this->para,$this->opt));
+        Notif::send($this->user, new NewMail($this->mail,$this->para,$this->opt));
     }
 }

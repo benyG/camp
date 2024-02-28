@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Vague;
 use App\Notifications\NewMail;
-
+use App\Jobs\SendEmail;
 class AssessCreate extends CreateRecord
 {
     protected static string $resource = ExamResource::class;
@@ -85,8 +85,9 @@ class AssessCreate extends CreateRecord
             if($ix->smtp ){
                 foreach ($record->users as $us) {
                     try {
-                        Notif::send($us, new NewMail($ma->sub,[now(),$record->name,$record->due,$record->certRel->name],'2'));
+                     //   Notif::send($us, new NewMail($ma->sub,[now(),$record->name,$record->due,$record->certRel->name],'2'));
                         $ma->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
+                        SendEmail::dispatch($us,$ma->sub,[now(),$record->name,$record->due,$record->certRel->name],'2');
                         Notification::make()->success()->title('Successfully sent via SMTP to : '.$us->email)->send();
                     } catch (Exception $exception) {
                         Notification::make()
