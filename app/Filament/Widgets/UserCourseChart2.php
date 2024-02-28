@@ -24,7 +24,7 @@ class UserCourseChart2 extends ChartWidget
 
     public function mount(): void
     {
-        $this->cos=Course::get();
+        $this->cos=Course::has('users1')->where('pub',true)->get();
         if($this->cos->count()>0) {
             $this->cs=$this->cos->first()->id;
             $this->dispatch('cs-upd',csu:$this->cs)->to(\App\Filament\Widgets\UserCourseChart3::class);
