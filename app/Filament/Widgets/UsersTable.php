@@ -30,6 +30,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Forms\Components\Actions\Action;
+use App\Jobs\SendEmail;
 
 class UsersTable extends BaseWidget
 {
@@ -141,8 +142,8 @@ class UsersTable extends BaseWidget
                         if(\App\Models\Info::first()->smtp){
                             $para=array(); $opt='1';
                                 try {
-                                    Notif::send($record, new NewMail($ma->sub,$para,$opt));
-                                //  dispatch(new \App\Jobs\SendEmail($record, $ma->sub,$para,'2'));
+                                //    Notif::send($record, new NewMail($ma->sub,$para,$opt));
+                                SendEmail::dispatch($record,$ma->sub,$para,$opt);
                                     $ma->users2()->updateExistingPivot($record->id, ['sent' => true,'last_sent' => now()]);
                                     Notification::make()->success()->title('Sent via SMTP to '.$record->email)->send();
                                 } catch (Exception $exception) {
@@ -184,7 +185,7 @@ class UsersTable extends BaseWidget
                     if($ix->smtp ){
                             try {
                               //  Notif::send($record, new NewMail($ma->sub,[now(),$exa->name,$exa->due,$exa->certRel->name],'2'));
-                                //dispatch($record, new NewMail($ma->sub,[now(),$exa->name,$exa->due,$exa->certRel->name],'2'));
+                                SendEmail::dispatch($record,$ma->sub,[now(),$exa->name,$exa->due,$exa->certRel->name],'2');
                                 $ma->users2()->updateExistingPivot($record->id, ['sent' => true,'last_sent' => now()]);
                                 Notification::make()->success()->title('Successfully sent via SMTP to : '.$record->email)->send();
                             } catch (Exception $exception) {
