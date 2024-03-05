@@ -164,6 +164,7 @@ class UsersTable extends BaseWidget
                 Tables\Actions\Action::make('r3')->label(fn($record)=>'Send assessment')->icon('heroicon-o-clipboard-document-list')->iconButton()
                 ->color('danger')
                 ->modalSubmitActionLabel('Assign')
+                ->modalSubmitAction(fn (\Filament\Actions\StaticAction $action) => $action->color('primary'))
                 ->action(function ($record, $data) {
                     $exa = Exam::create(
                         ['name' => ($data['type']!='1'?'Test':'Exam').'_'.Str::remove('-',now()->toDateString()).'_'.Str::random(5),

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Notification as Notif;
 use App\Notifications\NewMail;
 use Filament\Notifications\Notification;
 use App\Models\SMail;
+use App\Jobs\SendEmail;
 
 class CertApproval extends Page implements HasTable
 {
@@ -64,7 +65,8 @@ class CertApproval extends Page implements HasTable
                         $ma->users2()->attach($usc->id);
                     if(\App\Models\Info::first()->smtp){
                         try {
-                            Notif::send(User::findorFail($usc->id), new NewMail($ma->sub,[$usc->name],'6'));
+                          //  Notif::send(User::findorFail($usc->id), new NewMail($ma->sub,[$usc->name],'6'));
+                          SendEmail::dispatch(User::findorFail($usc->id),$ma->sub,[$usc->name],'6');
                             $ma->users2()->updateExistingPivot($usc->id, ['sent' => true,'last_sent' => now()]);
                         } catch (Exception $exception) {
                             Notification::make()

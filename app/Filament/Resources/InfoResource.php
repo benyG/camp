@@ -34,8 +34,10 @@ class InfoResource extends Resource
                     Forms\Components\TextInput::make('efrom')->label('Admin Email')
                         ->required()->email()->default(env('MAIL_FROM_ADDRESS')),
                     Forms\Components\Toggle::make('smtp')->label('Auto send PM via SMTP')
-                        ->required()->inline(false)->default(true)->columnSpan(2),
-                    Forms\Components\TextInput::make('wperc')->label('Win Perc.')->default(80)
+                        ->required()->inline(false)->default(true),
+                        Forms\Components\TextInput::make('taff')->label('Total Assess. displayed')->default(30)
+                        ->rules(['required', 'numeric','max:255'])->numeric()->step(5),
+                        Forms\Components\TextInput::make('wperc')->label('Win Perc.')->default(80)
                         ->rules(['required', 'numeric','max:100']),
                         Forms\Components\TextInput::make('minq')->label('Overall minimum Questions')
                         ->required()->default(5)->numeric(),

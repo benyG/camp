@@ -21,22 +21,19 @@ class UserCourseChart2 extends ChartWidget
     public $cs=0;
     #[Locked]
     public $cos;
+    #[Locked]
+    public $record;
 
-    public function mount(): void
+    public function mount($usrec=null): void
     {
-        $this->cos=Course::has('users1')->where('pub',true)->get();
-        if($this->cos->count()>0) {
-            $this->cs=$this->cos->first()->id;
-            $this->dispatch('cs-upd',csu:$this->cs)->to(\App\Filament\Widgets\UserCourseChart3::class);
-            $this->dispatch('cs-upd',csu:$this->cs)->to(\App\Filament\Widgets\UserCourseChart5::class);
-            $this->dispatch('cs-upd',csu:$this->cs)->to(\App\Filament\Widgets\UserCourseChart4::class);
-        }
+        $this->record=is_int($usrec)?User::with('exams2')->findOrFail($usrec):auth()->user();
+        $arr=array_unique($this->record->exams2()->pluck('certi')->toArray());
+        $this->cos=count($arr)>0? Course::whereIn('id',$arr)->get():Course::has('users1')->where('pub',true)->get();
+       // $this->cos=Course::get();
     }
     public static function canView(): bool
     {
-    //    return false;
-      //  return auth()->user()->ex!=0 || isset($this->usrec);
-      return auth()->user()->ex>1 && Course::has('users1')->where('pub',true)->count()>0;
+       return auth()->user()->ex>1;
     }
     protected function getFilters(): ?array
     {
@@ -53,7 +50,8 @@ class UserCourseChart2 extends ChartWidget
     protected function getData(): array
     {
         $mod=Module::where('course',$this->cs)->get()->pluck('name','id')->toArray();
-        $exa=auth()->user()->exams2()->where('certi',$this->cs)->get();
+        $this->record=$this->record??auth()->user();
+        $exa=$this->record->exams2()->where('certi',$this->cs)->get();
         $que=array();
         foreach ($exa as $ex) {
             if(!empty($ex->pivot->gen) && is_array($ex->pivot->gen)){
@@ -80,7 +78,14 @@ class UserCourseChart2 extends ChartWidget
             'labels' => $uc[0],
         ];
     }
-
+    public function updman(){
+        if($this->cos->count()>0) {
+            $this->cs=$this->cos->first()->id;
+            $this->dispatch('cs-upd',csu:$this->cs)->to(\App\Filament\Widgets\UserCourseChart3::class);
+            $this->dispatch('cs-upd',csu:$this->cs)->to(\App\Filament\Widgets\UserCourseChart5::class);
+            $this->dispatch('cs-upd',csu:$this->cs)->to(\App\Filament\Widgets\UserCourseChart4::class);
+        }
+    }
     protected function getType(): string
     {
         return 'doughnut';

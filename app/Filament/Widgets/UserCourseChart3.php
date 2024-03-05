@@ -19,15 +19,21 @@ class UserCourseChart3 extends ChartWidget
     protected static ?string $pollingInterval = null;
     protected static ?string $maxHeight = '250px';
     protected static ?int $sort = 1;
+
+    #[Locked]
     public $record;
     public $cs=0;
     public $mod=0;
     #[Locked]
     public $cos;
+    public function mount($usrec=null): void
+    {
+        $this->record=is_int($usrec)?User::with('exams2')->findOrFail($usrec):auth()->user();
+    }
 
     public static function canView(): bool
     {
-        return auth()->user()->ex>1 && Course::has('users1')->where('pub',true)->count()>0;
+        return auth()->user()->ex>1;
     }
     #[On('cs-upd')]
     public function csupdated($csu){
@@ -50,7 +56,8 @@ class UserCourseChart3 extends ChartWidget
     {
         $uc=[array(),array(),array()];
         if(!empty($this->cos)>0){
-            $exa=auth()->user()->exams2()->where('certi',$this->cs)->get();
+            $this->record=$this->record??auth()->user();
+            $exa=$this->record->exams2()->where('certi',$this->cs)->get();
             $md1=0;$md2=0;
             foreach ($exa as $ex) {
                 if(!empty($ex->pivot->gen) && is_array($ex->pivot->gen)){

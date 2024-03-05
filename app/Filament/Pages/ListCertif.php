@@ -17,6 +17,7 @@ use App\Models\SMail;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Actions;
+use App\Jobs\SendEmail;
 
 class ListCertif extends Page implements HasTable
 {
@@ -56,8 +57,9 @@ class ListCertif extends Page implements HasTable
                 Notification::make()->success()->title('Request for joining \''.$rec->name.'\' was sent to the administrators. Please wait for the reply.')->send();
                 if($ix->smtp){
                     try {
-                        Notif::send($us, new NewMail($ma->sub,[auth()->user()->name,auth()->user()->email,$rec->name],'5'));
-                        $ma->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
+                     //   Notif::send($us, new NewMail($ma->sub,[auth()->user()->name,auth()->user()->email,$rec->name],'5'));
+                     SendEmail::dispatch($us,$ma->sub,[auth()->user()->name,auth()->user()->email,$rec->name],'5');
+                      $ma->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
                     } catch (Exception $exception) {
                         Notification::make()
                             ->title('Error occured.')

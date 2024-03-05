@@ -31,7 +31,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Forms\Components\Actions\Action;
 use Illuminate\Contracts\Pagination\CursorPaginator;
-
+use Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint;
 class UsersTable2 extends BaseWidget
 {
     protected int | string | array $columnSpan = 'full';
@@ -107,7 +107,17 @@ class UsersTable2 extends BaseWidget
             Tables\Columns\TextColumn::make('quest')->label('Questions')->sortable(),
             Tables\Columns\TextColumn::make('timer')->label('Timer')->sortable()
             ->formatStateUsing(fn ($state, $record):string=> $record->type!='1'? 'Unlimited': $state),
-            ]);
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('certi')->label('Certifications')->multiple()
+                ->options(function(){
+                    $arr=array_unique($this->record->exams2()->pluck('certi')->toArray());
+                    $rre=count($arr)>0? Course::whereIn('id',$arr)->get():Course::has('users1')->where('pub',true)->get();
+                    return $rre->pluck("name",'id')->toArray();
+                })->preload(),
+                Tables\Filters\SelectFilter::make('type')->label('Type')
+                ->options(['0' => 'Test','1' => 'Exam']),
+                ]);
     }
     protected function paginateTableQuery(Builder $query): CursorPaginator
     {

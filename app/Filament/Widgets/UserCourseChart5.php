@@ -19,15 +19,22 @@ class UserCourseChart5 extends ChartWidget
     protected static ?string $pollingInterval = null;
     protected static ?string $maxHeight = '300px';
     protected static ?int $sort = 3;
+
+    #[Locked]
     public $record;
+
     public $cs=0;
-    public $mod=0;
+    public $cs2=0;
     #[Locked]
     public $cos;
+    public function mount($usrec=null): void
+    {
+        $this->record=is_int($usrec)?User::with('exams2')->findOrFail($usrec):auth()->user();
+    }
 
     public static function canView(): bool
     {
-        return auth()->user()->ex>1 && Course::has('users1')->where('pub',true)->count()>0;
+        return auth()->user()->ex>1;
     }
     #[On('cs-upd')]
     public function csupdated($csu){
@@ -35,10 +42,23 @@ class UserCourseChart5 extends ChartWidget
         $this->cs=intval($csu);
         $this->updateChartData();
     }
+    public function updatedCs2()
+    {
+        $this->updateChartData();
+    }
+    protected function getFilters(): ?array
+    {
+        return ['X'=>'All','0' => 'Test','1'=>'Exam'];
+    }
     protected function getData(): array
     {
+        $ix=cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+        });
+        $arx=$this->cs2=='X'?[0,1]:[intval($this->cs2)];
         $uc=[array(),array(),array()];
-            $exa=auth()->user()->exams2()->where('certi',$this->cs)->latest('added_at')->get();
+        $this->record=$this->record??auth()->user();
+            $exa=$this->record->exams2()->where('certi',$this->cs)->whereIn('type',$arx)->limit($ix->taff)->latest('added_at')->get();
             foreach ($exa as $ex) {
             $md1=0;$md2=0;
                 $uc[0][]=$ex->name;
@@ -69,11 +89,13 @@ class UserCourseChart5 extends ChartWidget
                 [
                     'label' => 'Good Answers',
                     'data' => $uc[1],
+                    'backgroundColor' => "#00FF00",
                     'borderColor' => "#00FF00",
                 ],
                 [
                     'label' => 'Bad Answers',
                     'data' => $uc[2],
+                    'backgroundColor' => "#FF0000",
                     'borderColor' => "#FF0000",
                 ],
 
@@ -104,7 +126,7 @@ class UserCourseChart5 extends ChartWidget
                             display: true,
                         },
                         ticks: {
-                            display: true,
+                            display: false,
                         },
                     },
                 },

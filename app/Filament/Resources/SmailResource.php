@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 //use Illuminate\Support\Facades\Mail;
-//use App\Mail\Imail;
+use App\Jobs\SendEmail;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Notification as Notif;
 
@@ -162,7 +162,8 @@ class SmailResource extends Resource
                     }
                     foreach ($record->users2 as $us) {
                         try {
-                            Notif::send($us, new NewMail($record->sub,$para,$opt));
+                         //   Notif::send($us, new NewMail($record->sub,$para,$opt));
+                         SendEmail::dispatch($us,$record->sub,$para,$opt);
                             $record->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
                             Notification::make()->success()->title('Sent via SMTP to '.$us->email)->send();
                         } catch (Exception $exception) {
