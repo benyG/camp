@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Blade;
 use App\Filament\Resources\InfoResource;
 use Filament\Navigation\MenuItem;
 use App\Filament\Pages\Auth\Register;
+use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\Auth\ResetPassword;
 use App\Filament\Pages\Auth\RequestPasswordReset;
 use App\Filament\Pages\Auth\EditProfile;
@@ -40,7 +41,7 @@ class AdminPanelProvider extends PanelProvider
             //->brandLogoHeight('3rem')
             ->id('admin')
             ->path('boss')
-            ->login()
+            ->login(Login::class)
             ->registration(Register::class)
             ->passwordReset(RequestPasswordReset::class,ResetPassword::class)
             ->emailVerification()
@@ -82,6 +83,6 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-cog-6-tooth')
                     ->visible(fn (): bool => auth()->user()->can('viewAny', \App\Models\Info::class)),
                 // ...
-            ]);
+            ])->unsavedChangesAlerts();
     }
 }

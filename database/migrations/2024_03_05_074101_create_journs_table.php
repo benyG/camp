@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('anns', function (Blueprint $table) {
+        Schema::create('journs', function (Blueprint $table) {
             $table->id();
-            $table->string('descr')->nullable();
-            $table->string('url',500)->nullable();
-            $table->boolean('hid')->default(true);
             $table->text('text');
-            $table->text('type');
-            $table->timestamp('due')->nullable();
+            $table->string('fen')->nullable();
+            $table->unsignedBigInteger('user');
+            $table->tinyInteger('ac')->default(0)->unsigned();
             $table->timestamps();
+            $table->foreign('user')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('anns');
+        Schema::dropIfExists('journs');
     }
 };

@@ -39,6 +39,7 @@ return new class extends Migration
             $table->text('cont2')->nullable();
             $table->text('cont3')->nullable();
             $table->tinyInteger('taff')->default(30)->unsigned();
+            $table->tinyInteger('log')->default(1)->unsigned();
         });
     }
 

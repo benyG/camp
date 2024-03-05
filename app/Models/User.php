@@ -20,6 +20,7 @@ use App\Models\Exam;
 use App\Models\Course;
 use App\Models\UsersCourse;
 use App\Models\Review;
+use App\Models\Journ;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Carbon;
 
@@ -129,6 +130,10 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, 'user');
+    }
+    public function logs(): HasMany
+    {
+        return $this->hasMany(Journ::class, 'user');
     }
 
 }
