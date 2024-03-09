@@ -198,6 +198,7 @@ class QuestionResource extends Resource
                             - Question :
                             $record->text
                             - Answers choice :".$aitx.".";
+                           $txot="";
                         try {
                             $apk=\Illuminate\Support\Facades\Crypt::decryptString($ix->apk);
                           //  dd($apk);
@@ -209,9 +210,8 @@ class QuestionResource extends Resource
                                 ],
                             ])
                             ->json();
-                           $txt="";
                            if(is_array($response["choices"]))   {
-                               $txt=$response["choices"][0]["message"]["content"];
+                               $txot=$response["choices"][0]["message"]["content"];
                                \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
                            }
                            else Notification::make()->danger()->title("Query error.")->send();
@@ -220,7 +220,7 @@ class QuestionResource extends Resource
                            } catch (ConnectionException $e) {
                                Notification::make()->danger()->title("The query took too much time.")->send();
                            }
-                      return  view('filament.pages.actions.iamod2',['txt' => $txt]);
+                      return  view('filament.pages.actions.iamod2',['txt' => $txot]);
                     })
                 ])
             ]);

@@ -339,10 +339,13 @@ class AssessGen extends Page implements HasForms, HasActions
                         <div class='text-center ' style='--c-50:var(--". ($sc>=$this->ix->wperc? "success":"danger")."-50);--c-400:var(--". ( $sc>=$this->ix->wperc? "success":"danger")."-400);--c-600:var(--". ( $sc>=$this->ix->wperc? "success":"danger")."-600);' >
                         <br><span
                         class='rounded-md text-lg font-medium ring-1 ring-inset px-2 min-w-[theme(spacing.6)] py-1 bg-custom-50 text-custom-600 ring-custom-600/10 dark:bg-custom-400/10 dark:text-custom-400 dark:ring-custom-400/30'
-                        >". ($sc>=$this->ix->wperc? "Passed":"Failed")."</span>
+                        >".($sc>=$this->ix->wperc? "Passed":"Failed")."</span>
                     </div>
                     </div> <br> <br>
                     ";
+                    $tkxt="Completed Assessment ".$this->record->title." (".$this->record->certRel->name.") ";
+                    \App\Models\Journ::add(auth()->user(),'Assessments',2,$tkxt);
+
                     if($this->qcur2>$this->qtot)return redirect()->to(ExamResource::getUrl());
                     $this->qcur2++;
             //

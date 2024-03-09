@@ -98,6 +98,18 @@ class AssessCreate extends CreateRecord
                 }
             }
         }
+        $txt="Assessment created ! <br>
+        Title: $record->title <br>
+        Cert: ".$record->certRel->name." <br>
+        Type: ".($record->type=='1'?'Exam':'Test')." <br>
+        Timer: ".($record->type=='1'?$record->timer:'N/A')." <br>
+        Nb. Questions: $record->quest <br>
+        Due date: $record->due <br>
+        Users: ".implode(',',$record->users()->pluck('name')->toArray())."<br>
+        Module configuration: ".json_encode($datt['examods'][array_key_first($datt['examods'])])." <br>
+        ";
+        \App\Models\Journ::add(auth()->user(),'Assessments',1,$txt);
+
     }
 
 }

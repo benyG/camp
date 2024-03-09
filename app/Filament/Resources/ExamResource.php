@@ -363,6 +363,11 @@ class ExamResource extends Resource
                     ->modalDescription(fn(Exam $record):string=>empty($record->users1()->first()->pivot->start_at)?'Are you sure you\'d like to start the assessement \''.$record->name.'\'? If it is an exam, the countdown will start even if you logout or close the page. At the timer end. the assessment will output the result.':
                         'Are you sure you\'d like to continue the assessement \''.$record->name.'\'?')
               ->action(function (Exam $record) {
+                    $txt=(empty($record->users1()->first()->pivot->start_at)?'Starting the Assessment':'Continuing the Assessment')."
+                    Name: $record->title <br>
+                    Certification: ".$record->certRel->name." <br>
+                    ";
+                    \App\Models\Journ::add(auth()->user(),'Assessment',2,$txt);
                return redirect()->to(ExamResource::getUrl('assess', ['ex' => $record->name]));
               })
               ->visible(function (Exam $record){
@@ -474,6 +479,18 @@ class ExamResource extends Resource
                                             }
                                             $ess->users()->attach(auth()->id(),['added'=>now(),'quest'=>json_encode($record->llo)]);
                                             Notification::make()->success()->title("Assessment generated.")->send();
+
+                                            $txt="Assessment generated from another ! <br>
+                                            Title: $ess->title <br>
+                                            Cert: ".$ess->certRel->name." <br>
+                                            Type: Test <br>
+                                            Nb. Questions: $ess->quest <br>
+                                            Due date: $ess->due <br>
+                                            Users: ".auth()->user()->name."<br>
+                                            Modules: ".implode(',',$ess->modules()->pluck('name')->toArray())." <br>
+                                            ";
+                                            \App\Models\Journ::add(auth()->user(),'Assessments',1,$txt);
+
                                         }else
                                         Notification::make()->success()->title("That assessment was never started.")->send();
                                     })
@@ -568,7 +585,12 @@ class ExamResource extends Resource
                     ->columns(),
                 ])
                 ->color('warning'),
-                Tables\Actions\DeleteAction::make()->iconButton(),
+                Tables\Actions\DeleteAction::make()->iconButton()->after(function ($record) {
+                    $txt="Removed assessment ID $record->id.
+                    Title: $record->title <br>
+                    ";
+                    \App\Models\Journ::add(auth()->user(),'Assessments',4,$txt);
+                }),
             ])
             ->bulkActions([
              /*    Tables\Actions\BulkActionGroup::make([

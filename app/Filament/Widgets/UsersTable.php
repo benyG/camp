@@ -153,6 +153,10 @@ class UsersTable extends BaseWidget
                                         ->send();
                                 }
                         }
+                        $txt="New message sent ! <br>
+                        To: $record->name <br>
+                        Subject: ".$data['sub'];
+                        \App\Models\Journ::add(auth()->user(),'A. Dashboard',1,$txt);
                     }),
                 Tables\Actions\Action::make('r2')->label('View Dashboard')->icon('heroicon-o-eye')->iconButton()
                 ->color('warning')->modalCancelAction(fn (\Filament\Actions\StaticAction $action) => $action->label('Close'))
@@ -196,6 +200,18 @@ class UsersTable extends BaseWidget
                                     ->send();
                             }
                     }
+                    $txt="Assessment created ! <br>
+                    Title: $exa->title <br>
+                    Cert: ".$exa->certRel->name." <br>
+                    Type: ".($exa->type=='1'?'Exam':'Test')." <br>
+                    Timer: ".($exa->type=='1'?$record->timer:'N/A')." <br>
+                    Nb. Questions: $exa->quest <br>
+                    Due date: $exa->due <br>
+                    Users: ".implode(',',$exa->users()->pluck('name')->toArray())."<br>
+                    Module configuration: ".json_encode($data['examods'][array_key_first($data['examods'])])." <br>
+                    ";
+                    \App\Models\Journ::add(auth()->user(),'A. Dashboard',1,$txt);
+
                 })
                 ->form([
                     //hidden fields
