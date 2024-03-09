@@ -115,7 +115,6 @@ class SmailResource extends Resource
                     Forms\Components\Select::make('user4')->label('To')
                     ->multiple()->hidden(fn():bool=>auth()->user()->ex>=2)
                     ->required(fn():bool=>auth()->user()->ex<2)
-                    ->relationship(name: 'users', titleAttribute: 'name')
                     ->options(function(){
                         $vagues= Vague::with('users')->get();
                         $users= User::doesntHave('vagues')->where('id','<>',auth()->user()->id)->get();
@@ -152,8 +151,32 @@ class SmailResource extends Resource
                     $data['from']=auth()->user()->id;
                     $rec=$model::create($data);
                     $rec->users()->attach($data['user4']);
+                    Notification::make()->success()->title('Message sent.')->send();
+                        $txt="Message ID $record->id tranfered
+                        Sub: $record->sub <br>
+                        To: ".implode(',',$rec->users2()->pluck('name')->toArray());
+                        \App\Models\Journ::add(auth()->user(),'Inbox',1,$txt);
+                        foreach ($rec->users2 as $us) {
+                            try {
+                             //   Notif::send($us, new NewMail($record->sub,$para,$opt));
+                             SendEmail::dispatch($us,$rec->sub,$para,$opt);
+                                $record->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
+                                Notification::make()->success()->title('Sent via SMTP to '.$us->email)->send();
+                            } catch (Exception $exception) {
+                                Notification::make()
+                                ->title('We were not able to reach '.$us->email)
+                                ->danger()
+                                ->send();
+                            }
+                        }
                 })->hidden(fn():bool=>auth()->user()->ex>=2),
                 Tables\Actions\Action::make('resend')->color('warning')->label('Resend')
+                ->after(function ($record) {
+                    $txt="Message ID $record->id, resent via SMTP
+                    Sub: $record->sub <br>
+                    To: ".implode(',',$record->users2()->pluck('name')->toArray());
+                    \App\Models\Journ::add(auth()->user(),'Inbox',8,$txt);
+                })
                 ->action(function (Smail $record) {
                     $para=array(); $opt='1';
                     if(auth()->user()->ex>=2){
@@ -177,6 +200,11 @@ class SmailResource extends Resource
                 ->visible(fn(Smail $record)=>($record->from== auth()->user()->id) && Info::first()->smtp),
                 Tables\Actions\Action::make('Delete')->modalHeading('Delete message')->label('Delete')
                 ->requiresConfirmation()->color('danger')->modalIcon('heroicon-o-trash')->modalIconColor('warning')
+                ->after(function ($record) {
+                    $txt="Deleted message ID $record->id.
+                    Sub: $record->sub";
+                    \App\Models\Journ::add(auth()->user(),'Inbox',4,$txt);
+                })
                 ->action(function (Smail $record) {
                     if($record->from==auth()->user()->id){
                         $record->hid=true;
@@ -192,6 +220,13 @@ class SmailResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\BulkAction::make('Delete')->modalHeading('Delete messages')->label('Delete selected')
                     ->requiresConfirmation()->color('danger')->modalIcon('heroicon-o-trash')->modalIconColor('warning')
+                    ->after(function (Collection $record) {
+                        foreach ($record as $value) {
+                          $txt="Deleted message ID $value->id
+                         Sub: $value->sub";
+                         \App\Models\Journ::add(auth()->user(),'Inbox',4,$txt);
+                        }
+                     })
                     ->action(function (Collection $record) {
                         $record->each(function (Smail $rec, int $key) {
                         if($rec->from==auth()->user()->id){

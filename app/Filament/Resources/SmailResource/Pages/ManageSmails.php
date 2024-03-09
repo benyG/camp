@@ -25,21 +25,19 @@ class ManageSmails extends ManageRecords
                 $data['from'] = auth()->id();
                 return $data;
             })->after(function(Model $record){
-/*                 foreach ($record->users as $rec) {
-                Mail::to($rec->email)->send(new Imail($record,[$rec->name,$rec->email],'1'));
-                Notification::make()->success()->title('Successfully sent via SMTP to : '.$rec->email)->send();
+                if(auth()->user()->ex>=2){
+                    $record->users()->attach(User::where('ex',0)->first()->id);
                 }
- */
                 if(\App\Models\Info::first()->smtp){
                     $para=array(); $opt='1';
                     if(auth()->user()->ex>=2){
-                        $record->users()->attach(User::where('ex',0)->first()->id);
                         $para=[auth()->user()->name,auth()->user()->email];
                         $opt='4';
                     }
                     foreach ($record->users2 as $us) {
                         try {
-                            Notif::send($us, new NewMail($record->sub,$para,$opt));
+                         //   Notif::send($us, new NewMail($record->sub,$para,$opt));
+                         \App\Jobs\SendEmail::dispatch($us,$ma->sub,$para,$opt);
                             $record->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
                             Notification::make()->success()->title('Sent via SMTP to '.$us->email)->send();
                         } catch (Exception $exception) {
@@ -49,6 +47,10 @@ class ManageSmails extends ManageRecords
                                 ->send();
                         }
                     }
+                    $txt="New message sent ! <br>
+                    To: ".implode(',',$record->users2()->pluck('name')->toArray())." <br>
+                    Subject: ".$record->sub;
+                    \App\Models\Journ::add(auth()->user(),'Inbox',1,$txt);
             }
 
             })->createAnother(false),

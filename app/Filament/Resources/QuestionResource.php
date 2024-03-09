@@ -178,12 +178,14 @@ class QuestionResource extends Resource
                             \App\Models\Review::destroy($record->reviews()->pluck('id'));
                             Notification::make()->success()->title('Users Notified.')->send();
                         }),
-                    \Filament\Infolists\Components\Actions\Action::make('otoi')->label('Question the IA')//->requiresConfirmation()
+                    \Filament\Infolists\Components\Actions\Action::make('otoi')->label('Question the AI')//->requiresConfirmation()
                     ->icon('heroicon-m-question-mark-circle')->color('primary')
                     ->visible(fn($record):bool=> $record->reviews()->count()>0)
                     ->action(function () {})
                    ->modalWidth(\Filament\Support\Enums\MaxWidth::Medium)
-                    ->modalSubmitActionLabel('Yes')
+                    ->modalCancelActionLabel('OK')
+                    ->modalCancelAction(fn (\Filament\Actions\StaticAction $action) => $action->color('primary'))
+                    ->modalSubmitAction(false)
                     ->modalContent(function ($record): \Illuminate\Contracts\View\View
                     {
                         $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});

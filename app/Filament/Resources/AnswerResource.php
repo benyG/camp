@@ -78,8 +78,7 @@ class AnswerResource extends Resource
                     Tables\Actions\DeleteBulkAction::make()->after(function (\Illuminate\Database\Eloquent\Collection $record) {
                        foreach ($record as $value) {
                          $txt="Removed answer ID $value->id
-                        Text: $value->text <br>
-                        ";
+                        Text: $value->text";
                         \App\Models\Journ::add(auth()->user(),'Answers',4,$txt);
                        }
                     }),

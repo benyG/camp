@@ -35,9 +35,9 @@ class Handler extends ExceptionHandler
     }
     function render($request, Throwable $exception)
     {
-        /* if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
+        if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
            return redirect()->to(filament()->getLoginUrl());
-        } */
+        }
         if(method_exists($exception,'getStatusCode') && $exception->getStatusCode()==419) return redirect()->to(filament()->getLoginUrl());
         if ($this->isHttpException($exception) || ($request->hasHeader('X-Livewire') && app()->environment() != 'local')) {
             return response()->view('errors.err',['exception'=>$exception]);

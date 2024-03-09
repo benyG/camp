@@ -23,13 +23,13 @@ class SMail extends Model
     protected function createdAt(): Attribute
     {
         return Attribute::make(
-         get: fn (string $value) => Carbon::parse($value, auth()->user()->tz),
+         get: fn (string $value) => (new Carbon($value))->setTimezone(auth()->user()->tz),
       );
     }
     protected function updatedAt(): Attribute
     {
         return Attribute::make(
-         get: fn (string $value) => Carbon::parse($value, auth()->user()->tz),
+         get: fn (string $value) => (new Carbon($value))->setTimezone(auth()->user()->tz),
       );
     }
 

@@ -48,12 +48,35 @@ class VagueResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
+                    $reco=$record->replicate();
+                    $record->update($data);
+                    $txt="";
+                    if($record->wasChanged()){
+                        if($record->wasChanged('name')){
+                            $txt.="Class name was changed from '$reco->name' <br>to '$record->name' <br>";
+                        }
+                       if(strlen($txt)>0) \App\Models\Journ::add(auth()->user(),'Classes',3,$txt);
+                    }
+                    return $record;
+                }),
+                Tables\Actions\DeleteAction::make()
+                ->after(function ($record) {
+                    $txt="Removed class ID $record->id.
+                    Name: $record->name <br>
+                    ";
+                    \App\Models\Journ::add(auth()->user(),'Classes',4,$txt);
+                }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->after(function (\Illuminate\Database\Eloquent\Collection $record) {
+                        foreach ($record as $value) {
+                          $txt="Removed class ID $value->id
+                         Name: $value->name";
+                         \App\Models\Journ::add(auth()->user(),'Classes',4,$txt);
+                        }
+                     }),
                 ]),
             ]);
     }

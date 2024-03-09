@@ -93,7 +93,7 @@ class UserResource extends Resource
                     ->sortable(),
                     Tables\Columns\TextColumn::make('vagues.name')->label('Class')->sortable(),
                 Tables\Columns\TextColumn::make('ex')->label('Type')->badge()
-                ->formatStateUsing(fn (int $state): string => match ($state) {0 => "indigo",
+                ->formatStateUsing(fn (int $state): string => match ($state) {0 => "S. Admin",
                     1 => "Admin", 2 => "Starter", 3 => "User", 4 => "Pro", 5 => "VIP"})
                     ->color(fn (int $state): string => match ($state) {0 => "S. Admin",
                         1 => "gray", 2 => "info", 3 => "success", 4 => "danger", 5 => "warning"})
@@ -129,11 +129,17 @@ class UserResource extends Resource
                         $record->courses()->updateExistingPivot($va, ['approve' => true]);
                     }
                     Notification::make('es')->success()->title('Certifications saved')->send();
+                    $txt="User $record->name ($record->email) portfolio saved.";
+                    \App\Models\Journ::add(auth()->user(),'Users',3,$txt);
                       })->button()->visible(fn (): bool =>auth()->user()->ex==0)
                     ->modalHeading('Manage a user portfolio')
                     ->modalSubmitActionLabel('Grant access')
                     ->modalDescription(fn(User $record):string=>$record->name),
                 Tables\Actions\Action::make('resend')->color(fn(User $record):string=>$record->ax?'danger':'info')->label(fn(User $record):string=>$record->ax?'Block':'Grant')
+                ->after(function ($record) {
+                    $txt='User '.$record->name.' ('.$record->email.') is now '.($record->ax?'able to access the platform':'blocked');
+                    \App\Models\Journ::add(auth()->user(),'Users',3,$txt);
+                })
                 ->action(function (User $record) {
                     $record->ax=$record->ax? false:true; $record->save();
                   Notification::make('es')->success()->title('User '.$record->name.' is now '.($record->ax?'able to access the platform':'blocked'))->send();
@@ -142,12 +148,51 @@ class UserResource extends Resource
                     ->modalHeading(fn(User $record):string=>$record->ax?'Block access':'Grant access')
                     ->modalDescription(fn(User $record):string=>$record->ax?'Are you sure you\'d like to block user \''.$record->name.'\'?':
                         'Are you sure you\'d like to grant user \''.$record->name.'\' access to the platform ?'),
-                        Tables\Actions\EditAction::make()->iconButton()->after(function (User $record,$data) { if($record->ex > auth()->user()->ex) {$record->ex=intval($data['ex']);$record->save();}}),
-                        Tables\Actions\DeleteAction::make()->iconButton(),
+                        Tables\Actions\EditAction::make()->iconButton()
+                        ->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
+                            $reco=$record->replicate();
+                            $record->update($data);
+                            $txt="";
+                                if($record->wasChanged('name')){
+                                    $txt.="Name was changed from '$reco->name' <br>to '$record->name' <br>";
+                                }
+                                if($record->wasChanged('email')){
+                                    $txt.="Email was changed from '$reco->email' <br>to '$record->email' <br>";
+                                }
+                                if($record->ex!=intval($data['ex'])){
+                                    $txt.="Rank was changed from '".match (intval($data['ex'])) {0 => "S. Admin",
+                                        1 => "Admin", 2 => "Starter", 3 => "User", 4 => "Pro", 5 => "VIP"}
+                                        ."' <br>to '".match ($record->ex) {0 => "S. Admin",
+                                            1 => "Admin", 2 => "Starter", 3 => "User", 4 => "Pro", 5 => "VIP"}."' <br>";
+                                }
+                                if($record->wasChanged('tz')){
+                                    $txt.="Timezone was changed from '$reco->tz' <br>to '$record->tz' <br>";
+                                }
+                                if($record->password!=$reco->password){
+                                    $txt.="Password was changed <br>";
+                                }
+                                if($record->vagues!=$reco->vagues){
+                                    $txt.="Class was changed <br>";
+                                }
+                               if(strlen($txt)>0) \App\Models\Journ::add(auth()->user(),'Users',3,"User $record->name ($record->email) was changed<br>".$txt);
+                            return $record;
+                        })->after(function (User $record,$data) { if($record->ex > auth()->user()->ex) {$record->ex=intval($data['ex']);$record->save();}}),
+                        Tables\Actions\DeleteAction::make()->iconButton()->after(function ($record) {
+                            $txt="Removed User ID $record->id.
+                            Name: $record->name ($record->email) <br>
+                            ";
+                            \App\Models\Journ::add(auth()->user(),'Users',4,$txt);
+                        }),
       ])
       ->bulkActions([
           Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->after(function (\Illuminate\Database\Eloquent\Collection $record) {
+                        foreach ($record as $value) {
+                          $txt="Removed user ID $value->id
+                         Name: $value->name ($value->email)";
+                         \App\Models\Journ::add(auth()->user(),'Users',4,$txt);
+                        }
+                     }),
                 ]),
             ])
             ->deferLoading()->persistFiltersInSession()

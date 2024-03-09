@@ -13,7 +13,12 @@ class ManageVagues extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->after(function ($data) {
+                $txt="New Class created ! <br>
+                Name: ".$data['name']." <br>
+                ";
+                \App\Models\Journ::add(auth()->user(),'Classes',1,$txt);
+        }),
         ];
     }
 }
