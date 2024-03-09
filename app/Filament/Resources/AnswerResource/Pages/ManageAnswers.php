@@ -13,7 +13,12 @@ class ManageAnswers extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->after(function ($data) {
+                $txt="New answer created ! <br>
+                Text: ".$data['text']." <br>
+                ";
+                \App\Models\Journ::add(auth()->user(),'Answers',1,$txt);
+        }),
         ];
     }
 }

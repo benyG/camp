@@ -58,6 +58,10 @@ class CourseResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('resend')->color(fn(Course $record):string=>$record->pub?'danger':'info')->label(fn(Course $record):string=>$record->pub?'Unpublish':'Publish')
+                ->after(function ($record) {
+                    $txt="Certification '$record->name' ".($record->pub?'':'un')."published..";
+                    \App\Models\Journ::add(auth()->user(),'Certifications',3,$txt);
+                })
                 ->action(function (Course $record) {
                     $record->pub=$record->pub? false:true; $record->save();
                   Notification::make('es')->success()->title($record->name.' certiication sucessfully '.($record->pub?'':'un').'published')->send();
@@ -69,13 +73,37 @@ class CourseResource extends Resource
                 Tables\Actions\Action::make('resnd')->color('warning')->label('Config')
                 ->url(fn (Course $record): string => CourseResource::getUrl('config', ['record' => $record]))
                 ->button()->visible(fn (): bool =>auth()->user()->ex==0),
-                Tables\Actions\EditAction::make()->iconButton(),
-                Tables\Actions\DeleteAction::make()->iconButton(),
+                Tables\Actions\EditAction::make()->iconButton()
+                ->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
+                    $reco=$record->replicate();
+                    $record->update($data);
+                    $txt="";
+                    if($record->wasChanged()){
+                        if($record->wasChanged('name')){
+                            $txt.="Name was changed from '$reco->name' to '$record->name' <br>";
+                        }
+                        if($record->wasChanged('descr')){
+                            $txt.="Description was changed from '$reco->descr' <br>to '$record->descr' <br>";
+                        }
+                       if(strlen($txt)>0) \App\Models\Journ::add(auth()->user(),'Certifications',3,"Course ID ".$record->id."<br>".$txt);
+                    }
+                    return $record;
+                }),
+                Tables\Actions\DeleteAction::make()->iconButton()->after(function ($record) {
+                    $txt="Removed certification $record->name";
+                    \App\Models\Journ::add(auth()->user(),'Certifications',4,$txt);
+                }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\BulkAction::make('def')->modalHeading('Publish')->label('Publish selected')
                     ->requiresConfirmation()->color('success')->modalIcon('heroicon-o-eye')
+                    ->after(function (\Illuminate\Database\Eloquent\Collection $record) {
+                        foreach ($record as $value) {
+                            $txt="Certification '$value->name' published.";
+                         \App\Models\Journ::add(auth()->user(),'Certifications',3,$txt);
+                        }
+                     })
                     ->action(function (Collection $record) {
                         $record->each(function (Course $rec, int $key) { $rec->pub=true;$rec->save();});
                         Notification::make('e')->title('Certifications published successfully')
@@ -83,13 +111,24 @@ class CourseResource extends Resource
                     })->deselectRecordsAfterCompletion(),
                     Tables\Actions\BulkAction::make('Delete')->modalHeading('Unpublish')->label('Unpublish selected')
                     ->requiresConfirmation()->color('danger')->modalIcon('heroicon-o-eye-slash')->modalIconColor('warning')
+                    ->after(function (\Illuminate\Database\Eloquent\Collection $record) {
+                        foreach ($record as $value) {
+                            $txt="Certification '$value->name' unpublished.";
+                         \App\Models\Journ::add(auth()->user(),'Certifications',3,$txt);
+                        }
+                     })
                     ->action(function (Collection $record) {
                         $record->each(function (Course $rec, int $key) { $rec->pub=false;$rec->save();});
                         Notification::make('e7')->title('Certifications hidden successfully')->icon('heroicon-o-eye-slash')
                         ->iconColor('success')->send();
                     })->deselectRecordsAfterCompletion(),
 
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->after(function (\Illuminate\Database\Eloquent\Collection $record) {
+                        foreach ($record as $value) {
+                            $txt="Removed certification $value->name";
+                         \App\Models\Journ::add(auth()->user(),'Certifications',4,$txt);
+                        }
+                     }),
                 ]),
             ])->striped();
     }

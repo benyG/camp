@@ -50,12 +50,36 @@ class ModuleResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                ->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
+                    $reco=$record->replicate();
+                    $record->update($data);
+                    $txt="";
+                    if($record->wasChanged()){
+                        if($record->wasChanged('name')){
+                            $txt.="Module was changed from '$reco->name' <br>to '$record->name' <br>";
+                        }
+                       if(strlen($txt)>0) \App\Models\Journ::add(auth()->user(),'Modules',3,$txt);
+                    }
+                    return $record;
+                }),
+                Tables\Actions\DeleteAction::make()->after(function ($record) {
+                    $txt="Removed module ID $record->id.
+                    Name: $record->name <br>
+                    ";
+                    \App\Models\Journ::add(auth()->user(),'Moduled',4,$txt);
+                }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->after(function (\Illuminate\Database\Eloquent\Collection $record) {
+                        foreach ($record as $value) {
+                          $txt="Removed module ID $value->id
+                         Name: $value->name <br>
+                         ";
+                         \App\Models\Journ::add(auth()->user(),'Modules',4,$txt);
+                        }
+                     }),
                 ]),
             ])->striped();
     }

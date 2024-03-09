@@ -53,12 +53,36 @@ class AnswerResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                ->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
+                    $reco=$record->replicate();
+                    $record->update($data);
+                    $txt="";
+                    if($record->wasChanged()){
+                        if($record->wasChanged('text')){
+                            $txt.="Answer was changed from '$reco->text' <br>to '$record->text' <br>";
+                        }
+                       if(strlen($txt)>0) \App\Models\Journ::add(auth()->user(),'Answers',3,$txt);
+                    }
+                    return $record;
+                }),
+                Tables\Actions\DeleteAction::make()->after(function ($record) {
+                    $txt="Removed answer ID $record->id.
+                    Text: $record->text <br>
+                    ";
+                    \App\Models\Journ::add(auth()->user(),'Answers',4,$txt);
+                }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->after(function (\Illuminate\Database\Eloquent\Collection $record) {
+                       foreach ($record as $value) {
+                         $txt="Removed answer ID $value->id
+                        Text: $value->text <br>
+                        ";
+                        \App\Models\Journ::add(auth()->user(),'Answers',4,$txt);
+                       }
+                    }),
                 ]),
             ])
             ->deferLoading()->persistFiltersInSession()

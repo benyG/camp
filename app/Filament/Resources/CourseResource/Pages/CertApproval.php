@@ -52,6 +52,13 @@ class CertApproval extends Page implements HasTable
             )
             ->actions([
                 Tables\Actions\Action::make('resend')->label('Approve')
+                ->after(function ($record) {
+                    $txt="Certification Request Approved
+                    User: ".$record->userRel->name."<br>
+                    Certification: ".$record->courseRel->name."
+                    ";
+                    \App\Models\Journ::add(auth()->user(),'Cert. Approval',6,$txt);
+                })
                 ->action(function (UsersCourse $record) {
                     $usc=$record->userRel;
                     $record->approve=true;$record->save();
@@ -59,7 +66,7 @@ class CertApproval extends Page implements HasTable
                     $ma=new SMail();
                     $ma->from=auth()->id();
                     $ma->sub='Certification Request Approved';
-                    $ma->content='We\'re glad to announce you that your request for joining <b><span style="color: #15803d">'.$usc->name.'</span></b> certification has been approved. <br>'.
+                    $ma->content='We\'re glad to announce you that your request for joining <b><span style="color: #15803d">'.$record->courseRel->name.'</span></b> certification has been approved. <br>'.
                         'It is now available in the Bootcamp. <i>Rush there and start testing your knowledge !</i> ';
                         $ma->save();
                         $ma->users2()->attach($usc->id);
@@ -76,12 +83,27 @@ class CertApproval extends Page implements HasTable
                         }
                     }
                 })->button()->color('success'),
-                Tables\Actions\DeleteAction::make()->iconButton(),
+                Tables\Actions\DeleteAction::make()->iconButton()
+                ->after(function ($record) {
+                    $txt="Certification Request deleted
+                    User: ".$record->userRel->name ."<br>
+                    Certification: ".$record->courseRel->name."
+                    ";
+                    \App\Models\Journ::add(auth()->user(),'Cert. Approval',7,$txt);
+                }),
 
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->after(function (\Illuminate\Database\Eloquent\Collection $record) {
+                        foreach ($record as $value) {
+                            $txt="Certification Request deleted
+                            User: ".$value->userRel->name ."<br>
+                            Certification: ".$value->courseRel->name."
+                            ";
+                            \App\Models\Journ::add(auth()->user(),'Cert. Approval',7,$txt);
+                                }
+                     }),
                 ]),
             ])
             ->deferLoading()->striped()->persistFiltersInSession()

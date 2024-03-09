@@ -41,6 +41,8 @@ class Login extends BaseLogin
         $data = $this->form->getState();
 
         if (! Filament::auth()->attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
+            $txt="Failed login with email ".$data["email"];
+            \App\Models\Journ::add(null,'Login',5,$txt);
             $this->throwFailureValidationException();
         }
 

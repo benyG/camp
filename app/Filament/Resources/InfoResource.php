@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Crypt;
 class InfoResource extends Resource
 {
     protected static ?string $model = Info::class;
-    protected static ?int $navigationSort = 90;
+    protected static ?int $navigationSort = 500;
     protected static ?string $navigationGroup = 'Admin';
     protected static ?string $modelLabel = 'setting';
 

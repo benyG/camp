@@ -13,6 +13,7 @@ use App\Models\ExamQuest;
 use App\Models\Review;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Question extends Model
 {
@@ -20,6 +21,12 @@ class Question extends Model
     protected $fillable = [
         'text','isexam','module','maxr','descr'
       ];
+      protected function text2(): Attribute
+      {
+          return Attribute::make(
+           get: fn (mixed $value, array $attributes) => \Illuminate\Support\Str::of($attributes['text'])->stripTags(),
+        );
+      }
     public function moduleRel(): BelongsTo
     {
     //    return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');

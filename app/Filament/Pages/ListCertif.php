@@ -73,7 +73,7 @@ class ListCertif extends Page implements HasTable
             foreach ($data['cou'] as $cer) {
                 $rec=Course::findorFail($cer);
                 $txt="Request to join '$rec->name' ";
-                \App\Models\Journ::add(auth()->user(),'Portfolio',1,$txt);
+                \App\Models\Journ::add(auth()->user(),'Portfolio',8,$txt);
             }
         })->color('success')->modalHeading('Add to portfolio')
         ->modalSubmitActionLabel('Request to join')
@@ -127,7 +127,7 @@ class ListCertif extends Page implements HasTable
             ->actions([
             Tables\Actions\DeleteAction::make()->label('Remove')->after(function ($record) {
                     $txt="Removed '$record->name' certification from his/her portfolio.";
-                    \App\Models\Journ::add(auth()->user(),'Portfolio',4,$txt);
+                    \App\Models\Journ::add(auth()->user(),'Portfolio',8,$txt);
             })
             ->action(function ($record) {
                $record->users1()->detach(auth()->id());

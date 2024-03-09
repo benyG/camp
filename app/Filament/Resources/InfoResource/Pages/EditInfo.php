@@ -32,4 +32,13 @@ class EditInfo extends EditRecord
             return \App\Models\Info::findOrFail(1);
         });
     }
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+        $record->update($data);
+        if($record->wasChanged()){
+           \App\Models\Journ::add(auth()->user(),'Settings',3,"Settings was changed");
+        }
+
+        return $record;
+    }
 }

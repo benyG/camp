@@ -60,7 +60,7 @@ Min One Special Chars
             if($record->wasChanged('tz')){
                 $txt.="Timezone was changed from '$reco->tz' to '$record->tz' <br>";
             }
-           if(strlen($txt)>0) \App\Models\Journ::add(auth()->user(),'Profile',2,$txt);
+           if(strlen($txt)>0) \App\Models\Journ::add(auth()->user(),'Profile',3,$txt);
         }
 
         return $record;

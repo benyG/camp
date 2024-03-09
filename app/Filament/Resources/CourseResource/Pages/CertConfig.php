@@ -68,8 +68,18 @@ public ?string $content = null;
     }
     public function create(): void
     {
+            $txt="";
         if($this->ie){
             $cert=CertConf::where('course',$this->record->id)->first();
+            if($cert->timer!=$this->timer){
+                $txt.="Timer was changed from '$cert->timer' to '$this->timer' <br>";
+            }
+            if($cert->quest!=$this->quest){
+                $txt.="Nb. of questions was changed from '$cert->quest' to '$this->quest' <br>";
+            }
+            if($cert->mods[array_key_first($cert->mods)]!=$this->mods[array_key_first($this->mods)]){
+                $txt.="Module configuration was changed";
+            }
             $cert->timer=$this->timer;
             $cert->quest=$this->quest;
             $cert->mods=$this->mods;
@@ -79,8 +89,16 @@ public ?string $content = null;
             $cert->quest=$this->quest;
             $cert->mods=$this->mods;
             $cert->course=$this->record->id;
+            $txt="Cert. Config created ! <br>
+            Timer: $cert->timer <br>
+            Nb. Questions: $cert->quest <br>
+            Module configuration: ".json_encode($cert->mods[array_key_first($cert->mods)])." <br>
+            Certification: ".$this->record->name." <br>
+            ";
         }
         $cert->save();
+        if(strlen($txt)>0) \App\Models\Journ::add(auth()->user(),'Cert. Config',$this->ie?3:1,$txt);
+
         Notification::make()->success()->title('Config saved.')->send();
     }
 }

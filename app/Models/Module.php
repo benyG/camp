@@ -16,7 +16,7 @@ class Module extends Model
     protected $fillable = [
         'name','course',
       ];
-    protected function Slug(): Attribute
+    protected function slug(): Attribute
     {
         return Attribute::make(
          //   get: fn (string $value) => ucfirst($value),

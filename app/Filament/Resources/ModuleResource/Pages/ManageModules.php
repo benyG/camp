@@ -13,7 +13,14 @@ class ManageModules extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->after(function ($record) {
+              //  dd($record);
+                $txt="New module created ! <br>
+                Name: $record->name <br>
+                Certification: $record->certRel->name <br>
+                ";
+                \App\Models\Journ::add(auth()->user(),'Modules',1,$txt);
+        }),
         ];
     }
 }

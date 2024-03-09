@@ -41,7 +41,14 @@ class JournResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('ac')->label('Action')->sortable()->badge()
                 ->formatStateUsing(fn($state)=>match ($state) {
-                    0 => 'Login',1 => 'Create',2 => 'Read',3 => 'Update',4 => 'Delete',_=>'N/A'
+                    0 => 'S. Login',1 => 'Create',2 => 'Read',3 => 'Update',4 => 'Delete',5 => 'F. Login',
+                    6 => 'Attach',7 => 'Detach',8 => 'Request',9 => 'Pass. Reset',//10 => 'Delete',11 => 'F. Login',
+                    _=>'N/A'
+                })
+                ->color(fn($state)=>match ($state) {
+                    0 => 'info',1 => 'primary',2 => 'gray',3 => 'warning',4 => 'danger',5 => 'danger',
+                    6 => 'primary',7 => 'danger',8 => 'warning',9 => 'info',//10 => 'Delete',11 => 'F. Login',
+                    _=>'gray'
                 }),
                 Tables\Columns\TextColumn::make('text')->label('Details')->limit(15),
                 Tables\Columns\TextColumn::make('userRel.name')->label('User')->sortable(),
@@ -54,7 +61,10 @@ class JournResource extends Resource
                 ->searchable()
                 ->preload(),
                 Tables\Filters\SelectFilter::make('type')->label('Action')->multiple()
-                ->options([0 => 'Login',1 => 'Create',2 => 'Read',3 => 'Update',4 => 'Delete'])
+                ->options([
+                    0 => 'S. Login',1 => 'Create',2 => 'Read',3 => 'Update',4 => 'Delete',5 => 'F. Login',
+                    6 => 'Attach',7 => 'Detach',8 => 'Request',9 => 'Pass. Reset',//10 => 'Delete',11 => 'F. Login',
+                    ])
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -80,8 +90,14 @@ class JournResource extends Resource
             ->schema([
                 Infolists\Components\TextEntry::make('userRel.name')->label('User'),
                 Infolists\Components\TextEntry::make('ac')->label('Action')->formatStateUsing(fn($state)=>match ($state) {
-                    0 => 'Login',1 => 'Create',2 => 'Read',3 => 'Update',4 => 'Delete',_=>'N/A'
-                })->badge(),
+                    0 => 'S. Login',1 => 'Create',2 => 'Read',3 => 'Update',4 => 'Delete',5 => 'F. Login',
+                    6 => 'Attach',7 => 'Detach',8 => 'Request',9 => 'Pass. Reset',//10 => 'Delete',11 => 'F. Login',
+                    _=>'N/A'
+                })->badge()->color(fn($state)=>match ($state) {
+                    0 => 'info',1 => 'primary',2 => 'gray',3 => 'warning',4 => 'danger',5 => 'danger',
+                    6 => 'primary',7 => 'danger',8 => 'warning',9 => 'info',//10 => 'Delete',11 => 'F. Login',
+                    _=>'gray'
+                }),
                 Infolists\Components\TextEntry::make('fen')->label('Page'),
                 Infolists\Components\TextEntry::make('created_at')->label('Date')->dateTime(),
                 Infolists\Components\TextEntry::make('text')->label('Content')->html()->columnSpanFull(),

@@ -149,7 +149,7 @@ class QuestionResource extends Resource
                         $htm.="</ul>";
                     }
                     return $htm;
-                })->hintAction(
+                })->hintActions([
                     \Filament\Infolists\Components\Actions\Action::make('ooi')->label('Mark as Reviewed')->requiresConfirmation()
                         ->icon('heroicon-m-check-circle')->color('warning')
                         ->visible(fn($record):bool=> $record->reviews()->count()>0)
@@ -177,8 +177,50 @@ class QuestionResource extends Resource
                             Notification::make()->success()->title('Question reviewed.')->send();
                             \App\Models\Review::destroy($record->reviews()->pluck('id'));
                             Notification::make()->success()->title('Users Notified.')->send();
-                        })
-                ),
+                        }),
+                    \Filament\Infolists\Components\Actions\Action::make('otoi')->label('Question the IA')//->requiresConfirmation()
+                    ->icon('heroicon-m-question-mark-circle')->color('primary')
+                    ->visible(fn($record):bool=> $record->reviews()->count()>0)
+                    ->action(function () {})
+                   ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
+                    ->modalSubmitActionLabel('Yes')
+                    ->modalContent(function ($record): \Illuminate\Contracts\View\View
+                    {
+                        $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
+                        $ik=1;
+                        $aitx="";
+                        foreach ($record->answers as $value) {
+                           $aitx.=$ik.". ".$value."\n ";
+                        }
+                        $stats=$record->certif->name." certification exam:
+                            - Question :
+                            $record->text
+                            - Answers choice :".$aitx.".";
+                        try {
+                            $apk=\Illuminate\Support\Facades\Crypt::decryptString($ix->apk);
+                          //  dd($apk);
+                            $response = \Illuminate\Support\Facades\Http::withToken($apk)->post($ix->endp, [
+                                "model" => $ix->model,
+                                'messages' => [
+                                    ["role" => "system", "content" => str_replace("XoXo",auth()->user()->name,$ix->cont2)],
+                                    ["role" => "user","content" => $stats],
+                                ],
+                            ])
+                            ->json();
+                           $txt="";
+                           if(is_array($response["choices"]))   {
+                               $txt=$response["choices"][0]["message"]["content"];
+                               \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
+                           }
+                           else Notification::make()->danger()->title("Query error.")->send();
+                       } catch (DecryptException $e) {
+                            Notification::make()->danger()->title("There was a problem during encryption.")->send();
+                           } catch (ConnectionException $e) {
+                               Notification::make()->danger()->title("The query took too much time.")->send();
+                           }
+                      return  view('filament.pages.actions.iamod2',['txt' => $txt]);
+                    })
+                ])
             ]);
     }
     protected function getRedirectUrl(): string

@@ -13,8 +13,9 @@ class ManageAnns extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()->after(function ($data) {
-                    $txt="New announcement
+            Actions\CreateAction::make()
+            ->after(function ($data) {
+                    $txt="New announcement created ! <br>
                     Description: ".$data['descr']." <br>
                     Url: ".$data['url']." <br>
                     Users: ".str_replace(array('1','2','3','4','5'),array('Admin','Starter','User','Pro','VIP'),implode(',',$data['type']))." <br>

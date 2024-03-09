@@ -19,9 +19,9 @@ class Journ extends Model
    //    return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');
         return $this->belongsTo(User::class,'user','id');
     }
-    public static function add($us,$fen,$ac,$txt){
+    public static function add($us=null,$fen,$ac,$txt){
         $fl = new Journ;
-        $fl->user = $us->id;$fl->fen = $fen;$fl->ac = $ac;$fl->text = $txt;
+        $fl->user = isset($us)?$us->id:null;$fl->fen = $fen;$fl->ac = $ac;$fl->text = $txt;
         $fl->save();
     }
 }

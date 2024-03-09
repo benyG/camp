@@ -15,7 +15,14 @@ class ManageCourses extends ManageRecords
         return [
             Actions\Action::make('e')->label('Approvals')->color('info')
             ->url(fn (): string => $this->getResource()::getUrl('approve')),
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->after(function ($data) {
+                $txt="New Certification created ! <br>
+                Name: ".$data['name']." <br>
+                Description: ".$data['descr']." <br>
+                ";
+                \App\Models\Journ::add(auth()->user(),'Certifications',1,$txt);
+        }),
         ];
     }
 }

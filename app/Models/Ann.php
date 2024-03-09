@@ -22,20 +22,20 @@ class Ann extends Model
     protected function createdAt(): Attribute
     {
         return Attribute::make(
-         get: fn (string $value) => Carbon::parse($value, auth()->user()->tz),
+         get: fn (string $value) => (new Carbon($value))->setTimezone(auth()->user()->tz),
       );
     }
     protected function updatedAt(): Attribute
     {
         return Attribute::make(
-         get: fn (string $value) => Carbon::parse($value, auth()->user()->tz),
+         get: fn (string $value) => (new Carbon($value))->setTimezone(auth()->user()->tz),
       );
     }
     protected function due(): Attribute
     {
         return Attribute::make(
-         get: fn (string $value) => Carbon::parse($value, auth()->user()->tz),
-         set: fn (?string $value) => $value??Carbon::parse($value, 'UTC')
+         get: fn (?string $value) => isset($value)?(new Carbon($value))->setTimezone(auth()->user()->tz):null,
+         set: fn (?string $value) => isset($value)?(new Carbon($value))->setTimezone("UTC"):null
       );
     }
 
