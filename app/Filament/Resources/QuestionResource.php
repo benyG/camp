@@ -182,7 +182,7 @@ class QuestionResource extends Resource
                     ->icon('heroicon-m-question-mark-circle')->color('primary')
                     ->visible(fn($record):bool=> $record->reviews()->count()>0)
                     ->action(function () {})
-                   ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
+                   ->modalWidth(\Filament\Support\Enums\MaxWidth::Medium)
                     ->modalSubmitActionLabel('Yes')
                     ->modalContent(function ($record): \Illuminate\Contracts\View\View
                     {
