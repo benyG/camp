@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,4 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-//Route::get('/boss/{id}/certapproval',[ListCertif::class,'CertRequest']);
+Route::post('login', 'App\Filament\Pages\Auth\LoginController@authenticate2');
+// OAuth2 routes
+Route::post('auth/{driver}', 'App\Http\Controllers\SSOController@redirectToProvider')->name('oauth.redirect');
+Route::get('auth/{driver}/callback', 'App\Http\Controllers\SSOController@handleProviderCallback')->name('oauth.callback');
