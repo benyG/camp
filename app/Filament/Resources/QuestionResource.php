@@ -49,6 +49,8 @@ class QuestionResource extends Resource
                 ->required()
                 ->default(4)->inputMode('numeric')
                 ->rules(['numeric']),
+                Forms\Components\Toggle::make('smtp')->label('To review ?')
+                ->required()->inline(false)->default(true),
                 TinyEditor::make('text')
                     ->required()
                     ->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads')
@@ -180,7 +182,6 @@ class QuestionResource extends Resource
                         }),
                     \Filament\Infolists\Components\Actions\Action::make('otoi')->label('Question the AI')//->requiresConfirmation()
                     ->icon('heroicon-m-question-mark-circle')->color('primary')
-                    ->visible(fn($record):bool=> $record->reviews()->count()>0)
                     ->action(function () {})
                    ->modalWidth(\Filament\Support\Enums\MaxWidth::Medium)
                     ->modalCancelActionLabel('OK')

@@ -37,10 +37,9 @@ class UserCourseChart3 extends ChartWidget
     }
     #[On('cs-upd')]
     public function csupdated($csu){
-      //  dd('dd');
         $this->cs=intval($csu);
         $this->cos=Module::where('course',$this->cs)->get();
-        $this->mod=$this->cos->count()>0?$this->cos->first()->id:0;
+        $this->mod=0;
         $this->updateChartData();
     }
     public function updatedMod()
@@ -50,7 +49,8 @@ class UserCourseChart3 extends ChartWidget
 
     protected function getFilters(): ?array
     {
-        return empty($this->cos)? array(): $this->cos->pluck("name",'id')->toArray();
+        $arr=[0=>'All'];
+        return empty($this->cos)? array(): array_merge($arr,$this->cos->pluck("name",'id')->toArray());
     }
     protected function getData(): array
     {
@@ -64,7 +64,8 @@ class UserCourseChart3 extends ChartWidget
                     $res=$ex->pivot->gen;
                     $arrk=array_keys($ex->pivot->gen);
                     $qrr=array();
-                    $rt=Question::whereIn('id',$arrk)->where('module',$this->mod)->get();
+                    $rt=$this->mod==0?Question::whereIn('id',$arrk)->get():
+                    Question::whereIn('id',$arrk)->where('module',$this->mod)->get();
                     foreach ($rt as $quest) {
                         $bm=$quest->answers()->where('isok',true)->count()<=1;
                         if($bm){

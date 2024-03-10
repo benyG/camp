@@ -48,14 +48,14 @@ class UserCourseChart5 extends ChartWidget
     }
     protected function getFilters(): ?array
     {
-        return ['X'=>'All','0' => 'Test','1'=>'Exam'];
+        return ['0'=>'All','1' => 'Test','2'=>'Exam'];
     }
     protected function getData(): array
     {
         $ix=cache()->rememberForever('settings', function () {
             return \App\Models\Info::findOrFail(1);
         });
-        $arx=$this->cs2=='X'?[0,1]:[intval($this->cs2)];
+        $arx=$this->cs2=='0'?[0,1]:[intval($this->cs2)-1];
         $uc=[array(),array(),array()];
         $this->record=$this->record??auth()->user();
             $exa=$this->record->exams2()->where('certi',$this->cs)->whereIn('type',$arx)->limit($ix->taff)->latest('added_at')->get();
@@ -96,6 +96,13 @@ class UserCourseChart5 extends ChartWidget
                     'label' => 'Bad Answers',
                     'data' => $uc[2],
                     'backgroundColor' => "#FF0000",
+                    'hoverBorderColor' => "#FF0000",
+                    'pointBackgroundColor' => "#FF0000",
+                    'pointBorderColor' => "#FF0000",
+                    'pointHoverBackgroundColor' => "#FF0000",
+                    'pointHoverBorderColor' => "#FF0000",
+                    'pointBorderColor' => "#FF0000",
+                    'hoverBackgroundColor' => "#FF0000",
                     'borderColor' => "#FF0000",
                 ],
 

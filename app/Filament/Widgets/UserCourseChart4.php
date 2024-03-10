@@ -74,8 +74,8 @@ class UserCourseChart4 extends ChartWidget
             'datasets' => [
                 [
                     'data' => $uc[1],
-                    'backgroundColor' => '#555555',
-                    'borderColor' => '#888',
+                    'backgroundColor' => '#22c55e',
+                    'borderColor' => '#249e77',
                 ],
             ],
             'labels' => $uc[0],
