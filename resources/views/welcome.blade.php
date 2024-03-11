@@ -20,7 +20,6 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         :root {
             --ffsd: 0px;
@@ -4248,6 +4247,7 @@
                                                 <br></p>
                                             <p id="cHYtoFCwzhWSYZSL"
                                                 style="color:#ffffff;font-family:YAEnXArs1iQ-0;line-height:1.08198878em;">
+                                                <style>#gi2MVqHPzZvo2O6m{color:#22c45d;} #gi2MVqHPzZvo2O6m:hover {color:#53e19a;}</style>
                                                 <a id="s7on6ivubvA6pTeD" target="_blank" rel="noopener"
                                                     href="http://cisspbootcamp.online/boss"
                                                     style="color:#ffffff;pointer-events:all;"
@@ -4255,25 +4255,18 @@
                                                     questions and simulate real world-Like exams to</a><a
                                                     id="gi2MVqHPzZvo2O6m" target="_blank" rel="noopener"
                                                     href="http://cisspbootcamp.online/boss"
-                                                    style="color:#22c55e;pointer-events:all;"
+                                                    style="pointer-events:all;"
                                                     data-interstitial-link=""> unlock your full potential</a><br></p>
                                             <p id="sMZpcqbx2RXAiB9a"
                                                 style="color:#ffffff;font-family:YAEnXArs1iQ-0;line-height:1.08198878em;white-space:pre;">
                                                 <br></p>
                                             <p id="kZXQn25lKBS9Vhcn"
-                                                style="color:#22c45d;font-family:YAEnXArs1iQ-0;line-height:1.08198878em;text-transform:none;letter-spacing:0em;">
+                                                style="font-family:YAEnXArs1iQ-0;line-height:1.08198878em;text-transform:none;letter-spacing:0em;">
+                                               <style>#tWDYrPuRruJPOZtI{color:#22c45d;} #tWDYrPuRruJPOZtI:hover {color:#53e19a;}</style>
                                                 <a id="tWDYrPuRruJPOZtI" target="_blank" rel="noopener"
                                                     href="http://cisspbootcamp.online/boss"
-                                                    style="color:#22c45d;font-weight:700;pointer-events:all;"
-                                                    data-interstitial-link="">Register now</a><a id="XYbyENxef1QJW4p2"
-                                                    target="_blank" rel="noopener"
-                                                    href="http://cisspbootcamp.online/boss"
-                                                    style="color:#22c45d;font-weight:700;white-space:pre-wrap;pointer-events:all;"
-                                                    data-interstitial-link=""> </a><a id="K7EypYpqVnRL5rNf"
-                                                    target="_blank" rel="noopener"
-                                                    href="http://cisspbootcamp.online/boss"
-                                                    style="color:#22c45d;font-weight:700;pointer-events:all;"
-                                                    data-interstitial-link="">!</a><br></p>
+                                                    style="font-weight:700;pointer-events:all;"
+                                                    data-interstitial-link="">Register now !</a><br></p>
                                         </div>
                                     </div>
                                 </div>
@@ -4313,10 +4306,11 @@
                                         <div id="cl54QTn4xL2QZDUa"
                                             style="opacity:1.0;display:flex;box-sizing:border-box;flex-direction:column;justify-content:flex-start;width:100%;height:100%;">
                                             <p id="xXbbwV93SmnB4UgQ"
-                                                style="color:#0c3b2e;font-family:YAEnS2G4JLg-0;line-height:1.39407481em;text-align:center;text-transform:uppercase;letter-spacing:0.03em;">
+                                                style="font-family:YAEnS2G4JLg-0;line-height:1.39407481em;text-align:center;text-transform:uppercase;letter-spacing:0.03em;">
+                                                <style>#jnC8K9RBNbzrYr8e{color:#0c3b2e;} #jnC8K9RBNbzrYr8e:hover {color:black;}</style>
                                                 <a id="jnC8K9RBNbzrYr8e" target="_blank" rel="noopener"
                                                     href="https://itexambootcamp.com/boss"
-                                                    style="color:#0c3b2e;font-weight:700;pointer-events:all;"
+                                                    style="font-weight:700;pointer-events:all;"
                                                     data-interstitial-link="">START</a><br></p>
                                         </div>
                                     </div>
@@ -4669,11 +4663,12 @@
                                         style="width: 100%; height: 100%; animation: 500ms ease 100ms 1 normal both running fade-RIGHT-04cfae24-4ac4-4fd4-ac86-59b277555f0d;">
                                         <div id="qKKsJV2xMFr8jdoM"
                                             style="opacity:1.0;display:flex;box-sizing:border-box;flex-direction:column;justify-content:flex-start;width:100%;height:100%;">
+                                            <style>#M80GOll0nP3S6Q3b{color:#0c3b2e;} #M80GOll0nP3S6Q3b:hover {color:black;}</style>
                                             <p id="m0crykgfTJZxZoST"
-                                                style="color:#0c3b2e;font-family:YAEnS2G4JLg-0;line-height:1.39115071em;text-align:center;text-transform:uppercase;letter-spacing:0.03em;">
+                                                style="font-family:YAEnS2G4JLg-0;line-height:1.39115071em;text-align:center;text-transform:uppercase;letter-spacing:0.03em;">
                                                 <a id="M80GOll0nP3S6Q3b" target="_blank" rel="noopener"
                                                     href="https://itexambootcamp.com/boss"
-                                                    style="color:#0c3b2e;font-weight:700;pointer-events:all;"
+                                                    style="font-weight:700;pointer-events:all;"
                                                     data-interstitial-link="">Test your skilLS GAPS</a><br></p>
                                         </div>
                                     </div>
@@ -4937,10 +4932,10 @@
                                             <div id="IqE1Oxm1s4co4Mpe"
                                                 style="opacity:1.0;display:flex;box-sizing:border-box;flex-direction:column;justify-content:flex-start;width:100%;height:100%;">
                                                 <p id="KSVTEOTsGUguhCtT"
-                                                    style="color:#ffffff;font-family:YAEnS2G4JLg-0;line-height:1.29098597em;white-space:pre;">
+                                                    style="color:#ffffff;font-family:YAEnS2G4JLg-0;line-height:0.5em;white-space:pre;">
                                                     <br></p>
                                                 <p id="hDxbtXCUuB8PG0TZ"
-                                                    style="color:#ffffff;font-family:YAEnS2G4JLg-0;line-height:1.29098597em;">
+                                                    style="color:#ffffff;font-family:YAEnS2G4JLg-0;">
                                                     <span id="F5HU7Zj4iuJALxjz"
                                                         style="color:#ffffff;">contact@itexambootcamp.com</span></p>
                                             </div>
@@ -4953,587 +4948,28 @@
                 </div>
             </div>
         </section>
-        <script src="js/939898b427480d700449229ff00dbb8a6f9f77442b532f697866e6914ab8843a.js" async="" nonce=""></script>
-        <script src="js/388fb330498371d4935abbff11d34d4c30842ca3c4a128cdd290d29db98acb41.js" async="" nonce=""></script>
     </div>
     <style>
         .footer-overflow-container {
-            overflow-x: auto;
-            display: flex;
             background-color: #000000;
+            padding: 10px;
+            font-family:YAEnS2G4JLg-0;
+            text-align:center;
+            color:white;
         }
-
-        .footer-container {
-            flex-grow: 1;
-            position: relative;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            padding: 16px;
-        }
-
-        .footer-pill-link {
-            appearance: none;
-            text-decoration: none;
-        }
-
-        .footer-pill {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            border-radius: 1000px;
-            border: none;
-            background: none;
-            padding: 8px 12px;
-            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
-            white-space: nowrap;
-            text-decoration: none;
-            font-weight: 600;
-            font-style: normal;
-            font-size: calc(13px * var(--rfso, var(--bfso, 1)));
-            color: #ffffff;
-            transition: background-color 0.2s;
-        }
-
-        .footer-pill:hover {
-            cursor: pointer;
-        }
-
-        .footer-pill+.footer-pill {
-            margin-left: 8px;
-        }
-
-        .footer-pill-primary {
-            position: relative;
-            z-index: 1;
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-pill-primary:hover>.footer-pill-primary-background {
-            opacity: 1;
-        }
-
-        .footer-pill-primary-background {
-            position: absolute;
-            z-index: -1;
-            border-radius: 1000px;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, #00C4CC 0%, #7D2AE8 100%);
-            opacity: 0;
-            overflow: hidden;
-            transition: opacity 0.2s;
-        }
-
-        /* Subtle wipe effect */
-        .footer-pill-primary-background::after {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            left: 0;
-            top: 0;
-            background: linear-gradient(to right, rgba(125, 42, 232, 0) 0%, #1a1a1a calc(50px + 20%), #1a1a1a 100%);
-            transform: translateX(0);
-            transition: transform 0.7s;
-        }
-
-        .footer-pill-primary:hover>.footer-pill-primary-background::after {
-            transform: translateX(110%);
-        }
-
-        .footer-pill-primary-background>svg {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            transform-origin: center;
-            transform: translateY(-50%);
-            width: 100%;
-        }
-
-        .animation-container {
-            animation: spin linear 12s infinite;
-            animation-play-state: paused;
-        }
-
-        .footer-pill-primary:hover>.footer-pill-primary-background .animation-container {
-            animation-play-state: running;
-        }
-
-        .footer-pill-secondary {
-            background-color: rgba(255, 255, 255, 0);
-        }
-
-        .footer-pill-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-pill-secondary:active,
-        .footer-pill-secondary.active {
-            background-color: rgba(255, 255, 255, 0.15)
-        }
-
-        .inline-icon {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            margin-right: 5px;
-        }
-
-        .inline-icon>svg {
-            fill: rgba(218, 218, 218, 1);
-        }
-
-        .inline-icon-logo {
-            display: inline-block;
-            height: 16px;
-            margin-left: 5px;
-        }
-
-        .inline-icon-logo>svg {
-            height: 100%;
-        }
-
-        .modal-backdrop {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-            transition: opacity 0.35s, visibility 0.35s;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .modal-backdrop.active {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: all;
-        }
-
-        .report-form-modal {
-            display: block;
-            box-sizing: border-box;
-            position: absolute;
-            left: 16px;
-            width: 367px;
-            /* min width for the gcaptcha to fit*/
-            transform: translate3d(0, calc(-100% + 24px), 0);
-            z-index: 10000;
-            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
-            border-radius: 8px;
-            margin: 0;
-            box-shadow: 0px 2px 18px 0px rgba(14, 19, 24, 0.25), 0px 0px 1px 0px rgba(14, 19, 24, 0.02);
-            transition-duration: 0.35s;
-            transition-property: opacity, transform, visibility;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .report-form-modal.active {
-            transform: translate3d(0, calc(-100% + 8px), 0);
-            opacity: 1;
-            visibility: visible;
-            pointer-events: all;
-        }
-
-        .form-content {
-            margin: 32px;
-            outline-offset: 34px;
-        }
-
-        .form-content>* {
-            margin: 16px 0;
-        }
-
-        .form-title {
-            font-size: calc(24px * var(--rfso, var(--bfso, 1)));
-            font-weight: 700;
-        }
-
-        .form-body {
-            font-size: calc(14px * var(--rfso, var(--bfso, 1)));
-            font-weight: 400;
-            color: rgba(14, 19, 24, 0.7);
-        }
-
-        .form-body-bold {
-            font-size: calc(14px * var(--rfso, var(--bfso, 1)));
-            font-weight: 600;
-            line-height: 22.4px;
-            color: rgba(14, 19, 24, 1);
-        }
-
-        .form-radio-input {
-            display: grid;
-            grid-template-columns: 24px auto;
-            grid-template-rows: auto;
-            grid-template-areas:
-                "radio-button radio-label"
-                ". radio-description"
-        }
-
-        .form-radio-input:hover {
-            cursor: pointer;
-        }
-
-        .radio-button-input {
-            opacity: 0;
-            margin: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .radio-button {
-            align-self: flex-start;
-            grid-area: radio-button;
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            margin: 4px 8px 0 0;
-            vertical-align: middle;
-            border-radius: 50%;
-            box-shadow: inset 0 0 0 1px rgba(53, 71, 90, .2);
-            outline: none;
-            background-color: #ffffff;
-            flex-shrink: 0;
-        }
-
-        .radio-button-input:checked+.radio-button {
-            background: #fff;
-            box-shadow: inset 0 0 0 5px #8b3dff;
-            transition: box-shadow .1s ease-in-out, background-color .1s ease-in-out;
-        }
-
-        .form-radio-input:hover .radio-button-input:not(:checked)+.radio-button {
-            box-shadow: inset 0 0 0 1px rgba(30, 41, 51, .45);
-        }
-
-        .radio-button-input+.radio-button::after {
-            content: "";
-            width: 6px;
-            height: 6px;
-            background-color: transparent;
-            display: block;
-            margin: 5px;
-            border-radius: 50%;
-        }
-
-        .radio-button-input:checked+.radio-button::after {
-            background-color: #ffffff;
-            transition: background-color .1s ease-in-out;
-        }
-
-        .form-radio-label {
-            grid-area: radio-label;
-            font-size: calc(14px * var(--rfso, var(--bfso, 1)));
-            font-weight: 600;
-            line-height: 22.4px;
-            color: rgba(14, 19, 24, 1);
-        }
-
-        .form-radio-desc {
-            grid-area: radio-description;
-            font-size: calc(12px * var(--rfso, var(--bfso, 1)));
-            font-weight: 400;
-            color: rgba(14, 19, 24, 0.7);
-            margin: 0;
-        }
-
-        .g-recaptcha {
-            width: 300px;
-        }
-
-        .form-buttons {
-            margin-top: 32px;
-            display: grid;
-            grid-gap: 8px;
-            grid-template-columns: auto auto;
-            justify-content: flex-end;
-        }
-
-        .tertiary-button {
-            border: 2px solid transparent;
-            box-sizing: border-box;
-            background-color: rgba(13, 18, 22, 0);
-            border-radius: 4px;
-            color: rgb(13, 18, 22);
-            cursor: pointer;
-            display: inline-flex;
-            height: 40px;
-            margin: 0;
-            max-width: 100%;
-            min-width: 80px;
-            width: 100%;
-            padding: 0 6px;
-            vertical-align: middle;
-            align-items: center;
-            justify-content: center;
-            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
-            font-weight: 400;
-            line-height: 1.6;
-            outline-offset: 2px;
-            transition: background-color 0.2s;
-        }
-
-        .tertiary-button:hover {
-            background-color: rgba(64, 87, 109, .07);
-        }
-
-        .tertiary-button:active {
-            background-color: rgba(57, 76, 96, .15);
-        }
-
-        .button {
-            border: 2px solid transparent;
-            box-sizing: border-box;
-            background-color: rgba(64, 87, 109, 0.07);
-            border-radius: 4px;
-            color: #0e1318;
-            cursor: pointer;
-            display: inline-flex;
-            height: 40px;
-            margin: 0;
-            max-width: 100%;
-            min-width: 80px;
-            width: 100%;
-            padding: 0 6px;
-            vertical-align: middle;
-            align-items: center;
-            justify-content: center;
-            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
-            font-weight: 400;
-            line-height: 1.6;
-            outline-offset: 2px;
-            transition: background-color 0.2s;
-        }
-
-        .button:hover {
-            background-color: rgba(57, 76, 96, .15);
-        }
-
-        .button:active {
-            background-color: rgba(53, 71, 90, .2);
-        }
-
-        .submit-button {
-            border: 2px solid transparent;
-            box-sizing: border-box;
-            background-color: #7d2ae8;
-            border-radius: 4px;
-            color: #ffffff;
-            cursor: pointer;
-            display: inline-flex;
-            height: 40px;
-            margin: 0;
-            max-width: 100%;
-            min-width: 80px;
-            width: 100%;
-            padding: 0 6px;
-            vertical-align: middle;
-            align-items: center;
-            justify-content: center;
-            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
-            font-weight: 400;
-            line-height: 1.6;
-            outline-offset: 4px;
-            transition: background-color 0.2s;
-        }
-
-        .submit-button:hover {
-            background-color: #8d39fa;
-        }
-
-        .submit-button:active {
-            background-color: #6718cf;
-        }
-
-        .button-text {
-            font-size: calc(14px * var(--rfso, var(--bfso, 1)));
-            display: inline-block;
-            max-width: 100%;
-            overflow: hidden;
-            padding: 0 8px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .submit-button.loading .button-text {
-            visibility: hidden;
-            opacity: 0;
-        }
-
-        .submit-button.loading::after {
-            content: "";
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            margin: auto;
-            border: 4px solid transparent;
-            border-top-color: #ffffff;
-            border-radius: 50%;
-            animation: spin 1s ease infinite;
-        }
-
-        .text-danger {
-            text-align: left;
-            margin: 4px 0 0;
-            color: #f84856;
-            font-size: calc(12px * var(--rfso, var(--bfso, 1)));
-        }
-
-        .a-link:visited {
-            color: rgba(14, 19, 24, 0.7)
-        }
-
-        .a-link {
-            text-decoration: underline;
-            color: rgba(14, 19, 24, 0.7)
-        }
-
-        .a-link:hover {
-            color: #7d2ae8;
-        }
-
-        @keyframes spin {
-            from {
-                transform: rotate(0turn);
-            }
-
-            to {
-                transform: rotate(1turn);
-            }
-        }
-
-        @supports selector(:focus-visible) {
-            .radio-button-input:focus-visible+.radio-button {
-                outline: auto;
-            }
-
-            .footer-pill-primary:focus-visible>.footer-pill-primary-background::after {
-                transform: translateX(110%);
-            }
-
-            .footer-pill-primary:focus-visible>.footer-pill-primary-background {
-                opacity: 1;
-            }
-
-            .footer-pill-primary:focus-visible>.footer-pill-primary-background .animation-container {
-                animation-play-state: running;
-            }
-        }
-
-        @supports not selector(:focus-visible) {
-            .radio-button-input:focus+.radio-button {
-                outline: auto;
-            }
-
-            .footer-pill-primary:focus>.footer-pill-primary-background::after {
-                transform: translateX(110%);
-            }
-
-            .footer-pill-primary:focus>.footer-pill-primary-background {
-                opacity: 1;
-            }
-
-            .footer-pill-primary:focus>.footer-pill-primary-background .animation-container {
-                animation-play-state: running;
-            }
-        }
-
-        /* stylelint-disable-next-line media-feature-name-disallowed-list */
-        @media only screen and (max-width: 600px) {
-            .modal-backdrop {
-                background-color: rgba(14, 19, 24, 0.45);
-                backdrop-filter: blur(4px);
-                -webkit-backdrop-filter: blur(4px);
-            }
-
-            .report-form-modal {
-                width: 100%;
-                position: fixed;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                border-radius: 8px 8px 0 0;
-                transform: translate3d(0, 33%, 0);
-            }
-
-            .report-form-modal.active {
-                transform: translate3d(0, 0, 0);
-            }
-
-            .form-content {
-                margin: 16px;
-            }
-
-            .form-buttons {
-                display: grid;
-                grid-gap: 8px;
-                grid-template-columns: 1fr;
-            }
-
-            .submit-button {
-                order: -1;
-            }
-
-            @supports (padding: env(safe-area-inset-bottom)) {
-                .footer-container {
-                    padding: 16px 16px calc(16px + env(safe-area-inset-bottom)) 16px;
-                }
-
-                .form-content {
-                    margin: 16px 16px calc(16px + env(safe-area-inset-bottom)) 16px;
-                }
-            }
-        }
-
-        @media (prefers-reduced-motion) {
-
-            .report-form-modal,
-            .report-form-modal.active {
-                transition-property: opacity, visibility;
-                transform: translate3d(0, calc(-100% + 8px), 0);
-            }
-
-            @media only screen and (max-width: 600px) {
-
-                .report-form-modal,
-                .report-form-modal.active {
-                    transform: translate3d(0, 0, 0);
-                }
-            }
-
-            .animation-container {
-                animation-play-state: paused !important;
-            }
-
-            .footer-pill-primary-background::after {
-                transform: translateX(0);
-                opacity: 0;
-                transition: opacity 0.7s;
-            }
-
-            .footer-pill-primary-background>svg {
-                display: none;
-            }
-        }
+    .footer-overflow-container a:hover{
+        color:#53e19a;
+    }
+    .footer-overflow-container a{
+        color:#22c45d;
+    }
     </style>
-    <div class="footer-overflow-container" lang="fr-FR">
-        <div class="footer-container">
-        </div>
+    <div class="footer-overflow-container">
+    <p> &copy; 2024 <span >IT EXAM BOOT CAMP.</span> All rights reserved.
+                <a href="https://www.termsfeed.com/live/2214b8f2-eb0d-4feb-9afa-f4bdce142c37" target='_blank'>
+                   {{ __('main.pol') }}
+                </a>
+    </p>
     </div>
 </body>
 
