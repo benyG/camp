@@ -82,630 +82,630 @@
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/80e6615d78e74dc4e030071b84f0de05.woff2);
+            src: url({{asset('fonts/80e6615d78e74dc4e030071b84f0de05.woff2')}});
             font-style: normal;
             font-weight: 400;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/d8472b3b7676e19ea9aa5aae086ee1d9.woff2);
+            src: url({{asset('fonts/d8472b3b7676e19ea9aa5aae086ee1d9.woff2')}});
             font-style: normal;
             font-weight: 700;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/c0d99f5cd9366c40d64a7572f793a852.woff2);
+            src: url({{asset('fonts/c0d99f5cd9366c40d64a7572f793a852.woff2')}});
             font-style: italic;
             font-weight: 400;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/a95c6b67ca0089b9e9a358173e8b22ac.woff2);
+            src: url({{asset('fonts/a95c6b67ca0089b9e9a358173e8b22ac.woff2')}});
             font-style: italic;
             font-weight: 700;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/80e6615d78e74dc4e030071b84f0de05.woff2);
+            src: url({{asset('fonts/80e6615d78e74dc4e030071b84f0de05.woff2')}});
             font-style: normal;
             font-weight: 100;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/c0d99f5cd9366c40d64a7572f793a852.woff2);
+            src: url({{asset('fonts/c0d99f5cd9366c40d64a7572f793a852.woff2')}});
             font-style: italic;
             font-weight: 100;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/80e6615d78e74dc4e030071b84f0de05.woff2);
+            src: url({{asset('fonts/80e6615d78e74dc4e030071b84f0de05.woff2')}});
             font-style: normal;
             font-weight: 200;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/c0d99f5cd9366c40d64a7572f793a852.woff2);
+            src: url({{asset('fonts/c0d99f5cd9366c40d64a7572f793a852.woff2')}});
             font-style: italic;
             font-weight: 200;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/80e6615d78e74dc4e030071b84f0de05.woff2);
+            src: url({{asset('fonts/80e6615d78e74dc4e030071b84f0de05.woff2')}});
             font-style: normal;
             font-weight: 300;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/c0d99f5cd9366c40d64a7572f793a852.woff2);
+            src: url({{asset('fonts/c0d99f5cd9366c40d64a7572f793a852.woff2')}});
             font-style: italic;
             font-weight: 300;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/80e6615d78e74dc4e030071b84f0de05.woff2);
+            src: url({{asset('fonts/80e6615d78e74dc4e030071b84f0de05.woff2')}});
             font-style: normal;
             font-weight: 500;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/c0d99f5cd9366c40d64a7572f793a852.woff2);
+            src: url({{asset('fonts/c0d99f5cd9366c40d64a7572f793a852.woff2')}});
             font-style: italic;
             font-weight: 500;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/d8472b3b7676e19ea9aa5aae086ee1d9.woff2);
+            src: url({{asset('fonts/d8472b3b7676e19ea9aa5aae086ee1d9.woff2')}});
             font-style: normal;
             font-weight: 600;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/a95c6b67ca0089b9e9a358173e8b22ac.woff2);
+            src: url({{asset('fonts/a95c6b67ca0089b9e9a358173e8b22ac.woff2')}});
             font-style: italic;
             font-weight: 600;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/d8472b3b7676e19ea9aa5aae086ee1d9.woff2);
+            src: url({{asset('fonts/d8472b3b7676e19ea9aa5aae086ee1d9.woff2')}});
             font-style: normal;
             font-weight: 800;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/a95c6b67ca0089b9e9a358173e8b22ac.woff2);
+            src: url({{asset('fonts/a95c6b67ca0089b9e9a358173e8b22ac.woff2')}});
             font-style: italic;
             font-weight: 800;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/d8472b3b7676e19ea9aa5aae086ee1d9.woff2);
+            src: url({{asset('fonts/d8472b3b7676e19ea9aa5aae086ee1d9.woff2')}});
             font-style: normal;
             font-weight: 900;
         }
 
         @font-face {
             font-family: YAEnS2G4JLg-0;
-            src: url(fonts/a95c6b67ca0089b9e9a358173e8b22ac.woff2);
+            src: url({{asset('fonts/a95c6b67ca0089b9e9a358173e8b22ac.woff2')}});
             font-style: italic;
             font-weight: 900;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/d954110daa4dffdab74344d788b06b1b.woff2);
+            src: url({{asset('fonts/d954110daa4dffdab74344d788b06b1b.woff2')}});
             font-style: normal;
             font-weight: 400;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/d11a480601943401442f285f82517c30.woff2);
+            src: url({{asset('fonts/d11a480601943401442f285f82517c30.woff2')}});
             font-style: normal;
             font-weight: 700;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/198e77d126edac25bc46470b985c3006.woff2);
+            src: url({{asset('fonts/198e77d126edac25bc46470b985c3006.woff2')}});
             font-style: italic;
             font-weight: 400;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/211fc13d5453b82622fef244632e3214.woff2);
+            src: url({{asset('fonts/211fc13d5453b82622fef244632e3214.woff2')}});
             font-style: italic;
             font-weight: 700;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/d954110daa4dffdab74344d788b06b1b.woff2);
+            src: url({{asset('fonts/d954110daa4dffdab74344d788b06b1b.woff2')}});
             font-style: normal;
             font-weight: 100;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/198e77d126edac25bc46470b985c3006.woff2);
+            src: url({{asset('fonts/198e77d126edac25bc46470b985c3006.woff2')}});
             font-style: italic;
             font-weight: 100;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/d954110daa4dffdab74344d788b06b1b.woff2);
+            src: url({{asset('fonts/d954110daa4dffdab74344d788b06b1b.woff2')}});
             font-style: normal;
             font-weight: 200;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/198e77d126edac25bc46470b985c3006.woff2);
+            src: url({{asset('fonts/198e77d126edac25bc46470b985c3006.woff2')}});
             font-style: italic;
             font-weight: 200;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/d954110daa4dffdab74344d788b06b1b.woff2);
+            src: url({{asset('fonts/d954110daa4dffdab74344d788b06b1b.woff2')}});
             font-style: normal;
             font-weight: 300;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/198e77d126edac25bc46470b985c3006.woff2);
+            src: url({{asset('fonts/198e77d126edac25bc46470b985c3006.woff2')}});
             font-style: italic;
             font-weight: 300;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/d954110daa4dffdab74344d788b06b1b.woff2);
+            src: url({{asset('fonts/d954110daa4dffdab74344d788b06b1b.woff2')}});
             font-style: normal;
             font-weight: 500;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/198e77d126edac25bc46470b985c3006.woff2);
+            src: url({{asset('fonts/198e77d126edac25bc46470b985c3006.woff2')}});
             font-style: italic;
             font-weight: 500;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/d11a480601943401442f285f82517c30.woff2);
+            src: url({{asset('fonts/d11a480601943401442f285f82517c30.woff2')}});
             font-style: normal;
             font-weight: 600;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/211fc13d5453b82622fef244632e3214.woff2);
+            src: url({{asset('fonts/211fc13d5453b82622fef244632e3214.woff2')}});
             font-style: italic;
             font-weight: 600;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/d11a480601943401442f285f82517c30.woff2);
+            src: url({{asset('fonts/d11a480601943401442f285f82517c30.woff2')}});
             font-style: normal;
             font-weight: 800;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/211fc13d5453b82622fef244632e3214.woff2);
+            src: url({{asset('fonts/211fc13d5453b82622fef244632e3214.woff2')}});
             font-style: italic;
             font-weight: 800;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/d11a480601943401442f285f82517c30.woff2);
+            src: url({{asset('fonts/d11a480601943401442f285f82517c30.woff2')}});
             font-style: normal;
             font-weight: 900;
         }
 
         @font-face {
             font-family: YAD1bzs0p0Y-0;
-            src: url(fonts/211fc13d5453b82622fef244632e3214.woff2);
+            src: url({{asset('fonts/211fc13d5453b82622fef244632e3214.woff2')}});
             font-style: italic;
             font-weight: 900;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/e03690e938f65592a031b093252f5b72.woff2);
+            src: url({{asset('fonts/e03690e938f65592a031b093252f5b72.woff2')}});
             font-style: normal;
             font-weight: 400;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/3ea5d2114fbd73a0ceb3a80c24ba8a75.woff2);
+            src: url({{asset('fonts/3ea5d2114fbd73a0ceb3a80c24ba8a75.woff2')}});
             font-style: normal;
             font-weight: 700;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/949045c3bb881ea39a00cee0ae05e58f.woff2);
+            src: url({{asset('fonts/949045c3bb881ea39a00cee0ae05e58f.woff2')}});
             font-style: italic;
             font-weight: 400;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/ee0442fec77bc365cffd72eac0e962e4.woff2);
+            src: url({{asset('fonts/ee0442fec77bc365cffd72eac0e962e4.woff2')}});
             font-style: italic;
             font-weight: 700;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/e03690e938f65592a031b093252f5b72.woff2);
+            src: url({{asset('fonts/e03690e938f65592a031b093252f5b72.woff2')}});
             font-style: normal;
             font-weight: 100;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/949045c3bb881ea39a00cee0ae05e58f.woff2);
+            src: url({{asset('fonts/949045c3bb881ea39a00cee0ae05e58f.woff2')}});
             font-style: italic;
             font-weight: 100;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/e03690e938f65592a031b093252f5b72.woff2);
+            src: url({{asset('fonts/e03690e938f65592a031b093252f5b72.woff2')}});
             font-style: normal;
             font-weight: 200;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/949045c3bb881ea39a00cee0ae05e58f.woff2);
+            src: url({{asset('fonts/949045c3bb881ea39a00cee0ae05e58f.woff2')}});
             font-style: italic;
             font-weight: 200;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/e03690e938f65592a031b093252f5b72.woff2);
+            src: url({{asset('fonts/e03690e938f65592a031b093252f5b72.woff2')}});
             font-style: normal;
             font-weight: 300;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/949045c3bb881ea39a00cee0ae05e58f.woff2);
+            src: url({{asset('fonts/949045c3bb881ea39a00cee0ae05e58f.woff2')}});
             font-style: italic;
             font-weight: 300;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/e03690e938f65592a031b093252f5b72.woff2);
+            src: url({{asset('fonts/e03690e938f65592a031b093252f5b72.woff2')}});
             font-style: normal;
             font-weight: 500;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/949045c3bb881ea39a00cee0ae05e58f.woff2);
+            src: url({{asset('fonts/949045c3bb881ea39a00cee0ae05e58f.woff2')}});
             font-style: italic;
             font-weight: 500;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/3ea5d2114fbd73a0ceb3a80c24ba8a75.woff2);
+            src: url({{asset('fonts/3ea5d2114fbd73a0ceb3a80c24ba8a75.woff2')}});
             font-style: normal;
             font-weight: 600;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/ee0442fec77bc365cffd72eac0e962e4.woff2);
+            src: url({{asset('fonts/ee0442fec77bc365cffd72eac0e962e4.woff2')}});
             font-style: italic;
             font-weight: 600;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/3ea5d2114fbd73a0ceb3a80c24ba8a75.woff2);
+            src: url({{asset('fonts/3ea5d2114fbd73a0ceb3a80c24ba8a75.woff2')}});
             font-style: normal;
             font-weight: 800;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/ee0442fec77bc365cffd72eac0e962e4.woff2);
+            src: url({{asset('fonts/ee0442fec77bc365cffd72eac0e962e4.woff2')}});
             font-style: italic;
             font-weight: 800;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/3ea5d2114fbd73a0ceb3a80c24ba8a75.woff2);
+            src: url({{asset('fonts/3ea5d2114fbd73a0ceb3a80c24ba8a75.woff2')}});
             font-style: normal;
             font-weight: 900;
         }
 
         @font-face {
             font-family: YAEnXArs1iQ-0;
-            src: url(fonts/ee0442fec77bc365cffd72eac0e962e4.woff2);
+            src: url({{asset('fonts/ee0442fec77bc365cffd72eac0e962e4.woff2')}});
             font-style: italic;
             font-weight: 900;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/226618464330c99b64fcaf1d7142c1e7.woff2);
+            src: url({{asset('fonts/226618464330c99b64fcaf1d7142c1e7.woff2')}});
             font-style: normal;
             font-weight: 400;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/e532966f486645f74efaf7432e1d01c2.woff2);
+            src: url({{asset('fonts/e532966f486645f74efaf7432e1d01c2.woff2')}});
             font-style: normal;
             font-weight: 700;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/3caeb8725430f400cbc24c4707d72558.woff2);
+            src: url({{asset('fonts/3caeb8725430f400cbc24c4707d72558.woff2')}});
             font-style: italic;
             font-weight: 400;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/64dfd027222a62438bc2a4d821786c71.woff2);
+            src: url({{asset('fonts/64dfd027222a62438bc2a4d821786c71.woff2')}});
             font-style: italic;
             font-weight: 700;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/01bb491de5070339bf99832ce44c544d.woff2);
+            src: url({{asset('fonts/01bb491de5070339bf99832ce44c544d.woff2')}});
             font-style: normal;
             font-weight: 100;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/a75cdabbb8dcdf033cc6b207c91608bf.woff2);
+            src: url({{asset('fonts/a75cdabbb8dcdf033cc6b207c91608bf.woff2')}});
             font-style: italic;
             font-weight: 100;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/01bb491de5070339bf99832ce44c544d.woff2);
+            src: url({{asset('fonts/01bb491de5070339bf99832ce44c544d.woff2')}});
             font-style: normal;
             font-weight: 200;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/a75cdabbb8dcdf033cc6b207c91608bf.woff2);
+            src: url({{asset('fonts/a75cdabbb8dcdf033cc6b207c91608bf.woff2')}});
             font-style: italic;
             font-weight: 200;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/01bb491de5070339bf99832ce44c544d.woff2);
+            src: url({{asset('fonts/01bb491de5070339bf99832ce44c544d.woff2')}});
             font-style: normal;
             font-weight: 300;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/a75cdabbb8dcdf033cc6b207c91608bf.woff2);
+            src: url({{asset('fonts/a75cdabbb8dcdf033cc6b207c91608bf.woff2')}});
             font-style: italic;
             font-weight: 300;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/226618464330c99b64fcaf1d7142c1e7.woff2);
+            src: url({{asset('fonts/226618464330c99b64fcaf1d7142c1e7.woff2')}});
             font-style: normal;
             font-weight: 500;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/3caeb8725430f400cbc24c4707d72558.woff2);
+            src: url({{asset('fonts/3caeb8725430f400cbc24c4707d72558.woff2')}});
             font-style: italic;
             font-weight: 500;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/e532966f486645f74efaf7432e1d01c2.woff2);
+            src: url({{asset('fonts/e532966f486645f74efaf7432e1d01c2.woff2')}});
             font-style: normal;
             font-weight: 600;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/64dfd027222a62438bc2a4d821786c71.woff2);
+            src: url({{asset('fonts/64dfd027222a62438bc2a4d821786c71.woff2')}});
             font-style: italic;
             font-weight: 600;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/a26fb2e545ea4d91b9808446bd10482b.woff2);
+            src: url({{asset('fonts/a26fb2e545ea4d91b9808446bd10482b.woff2')}});
             font-style: normal;
             font-weight: 800;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/93216375a15a0334d096957c3f1f2f0f.woff2);
+            src: url({{asset('fonts/93216375a15a0334d096957c3f1f2f0f.woff2')}});
             font-style: italic;
             font-weight: 800;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/a26fb2e545ea4d91b9808446bd10482b.woff2);
+            src: url({{asset('fonts/a26fb2e545ea4d91b9808446bd10482b.woff2')}});
             font-style: normal;
             font-weight: 900;
         }
 
         @font-face {
             font-family: YAFdJt8dAY0-0;
-            src: url(fonts/93216375a15a0334d096957c3f1f2f0f.woff2);
+            src: url({{asset('fonts/93216375a15a0334d096957c3f1f2f0f.woff2')}});
             font-style: italic;
             font-weight: 900;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/f8f199f09526f79e87644ed227e0f651.woff2);
+            src: url({{asset('fonts/f8f199f09526f79e87644ed227e0f651.woff2')}});
             font-style: normal;
             font-weight: 400;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/98c4d2c0223fc8474641c77f923528e9.woff2);
+            src: url({{asset('fonts/98c4d2c0223fc8474641c77f923528e9.woff2')}});
             font-style: normal;
             font-weight: 700;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/d257a7100844bc3f98c9021168b6249e.woff2);
+            src: url({{asset('fonts/d257a7100844bc3f98c9021168b6249e.woff2')}});
             font-style: italic;
             font-weight: 400;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/1060345c54d396e76d73f1da7ee200bd.woff2);
+            src: url({{asset('fonts/1060345c54d396e76d73f1da7ee200bd.woff2')}});
             font-style: italic;
             font-weight: 700;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/f8f199f09526f79e87644ed227e0f651.woff2);
+            src: url({{asset('fonts/f8f199f09526f79e87644ed227e0f651.woff2')}});
             font-style: normal;
             font-weight: 100;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/d257a7100844bc3f98c9021168b6249e.woff2);
+            src: url({{asset('fonts/d257a7100844bc3f98c9021168b6249e.woff2')}});
             font-style: italic;
             font-weight: 100;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/f8f199f09526f79e87644ed227e0f651.woff2);
+            src: url({{asset('fonts/f8f199f09526f79e87644ed227e0f651.woff2')}});
             font-style: normal;
             font-weight: 200;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/d257a7100844bc3f98c9021168b6249e.woff2);
+            src: url({{asset('fonts/d257a7100844bc3f98c9021168b6249e.woff2')}});
             font-style: italic;
             font-weight: 200;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/f8f199f09526f79e87644ed227e0f651.woff2);
+            src: url({{asset('fonts/f8f199f09526f79e87644ed227e0f651.woff2')}});
             font-style: normal;
             font-weight: 300;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/d257a7100844bc3f98c9021168b6249e.woff2);
+            src: url({{asset('fonts/d257a7100844bc3f98c9021168b6249e.woff2')}});
             font-style: italic;
             font-weight: 300;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/f8f199f09526f79e87644ed227e0f651.woff2);
+            src: url({{asset('fonts/f8f199f09526f79e87644ed227e0f651.woff2')}});
             font-style: normal;
             font-weight: 500;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/d257a7100844bc3f98c9021168b6249e.woff2);
+            src: url({{asset('fonts/d257a7100844bc3f98c9021168b6249e.woff2')}});
             font-style: italic;
             font-weight: 500;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/98c4d2c0223fc8474641c77f923528e9.woff2);
+            src: url({{asset('fonts/98c4d2c0223fc8474641c77f923528e9.woff2')}});
             font-style: normal;
             font-weight: 600;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/1060345c54d396e76d73f1da7ee200bd.woff2);
+            src: url({{asset('fonts/1060345c54d396e76d73f1da7ee200bd.woff2')}});
             font-style: italic;
             font-weight: 600;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/98c4d2c0223fc8474641c77f923528e9.woff2);
+            src: url({{asset('fonts/98c4d2c0223fc8474641c77f923528e9.woff2')}});
             font-style: normal;
             font-weight: 800;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/1060345c54d396e76d73f1da7ee200bd.woff2);
+            src: url({{asset('fonts/1060345c54d396e76d73f1da7ee200bd.woff2')}});
             font-style: italic;
             font-weight: 800;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/98c4d2c0223fc8474641c77f923528e9.woff2);
+            src: url({{asset('fonts/98c4d2c0223fc8474641c77f923528e9.woff2')}});
             font-style: normal;
             font-weight: 900;
         }
 
         @font-face {
             font-family: YACgEZ1cb1Q-0;
-            src: url(fonts/1060345c54d396e76d73f1da7ee200bd.woff2);
+            src: url({{asset('fonts/1060345c54d396e76d73f1da7ee200bd.woff2')}});
             font-style: italic;
             font-weight: 900;
         }
@@ -4195,9 +4195,9 @@
                                                         style="clip-path:path('M32.40000153,42.20000076 C91.90000153,-11.20000076 201.80000305,-22.70000076 241.40000916,59.80000305 C257,94.20000458 248.6000061,133.19999695 253.19999695,169.5 C259.6000061,219.80000305 298.3999939,257.79998779 315.8999939,303.8999939 C362.70001221,417.59997559 233.5,476.09997559 139.50001526,466.79998779 C90.20001221,466.69998169 32.40000916,453.5 9.20000553,405 C-14.5,352.5 14.89999962,294.5 16,240 C17.39999962,174.19999695 -27.60000038,94.59999847 32.40000153,42.20000076 Z');">
                                                         <div id="htsN5hSFzeCJzaUe"
                                                             style="transform: scale(1, 1); transform-origin: 167.5px 227px; animation: auto ease 0s 1 normal none running none;">
-                                                            <img src="images/50eea152828debd20284f505cd13ebed.jpg"
+                                                            <img src="{{asset('img/50eea152828debd20284f505cd13ebed.jpg')}}"
                                                                 loading="eager"
-                                                                srcset="images/be002214089c0ed39f0faef44d9c8e90.jpg 1200w, images/50eea152828debd20284f505cd13ebed.jpg 1800w"
+                                                                srcset="{{asset('img/50eea152828debd20284f505cd13ebed.jpg')}} 1200w, {{asset('img/50eea152828debd20284f505cd13ebed.jpg')}} 1800w"
                                                                 sizes="(max-width: 375px) 63.47299832vw, (min-width: 375.05px) and (max-width: 480px) 64.76836563vw, (min-width: 480.05px) and (max-width: 768px) 63.61178767vw, (min-width: 768.05px) and (max-width: 1024px) 65.05751012vw, (min-width: 1024.05px) 52.83153976vw"
                                                                 style="transform:translate(-207.24467863px, 0.01175675px) rotate(0deg);transform-origin:350.8118214px 233.8745476px;width:701.62364281px;height:467.74909521px;display:block;opacity:1.0;object-fit:fill;">
                                                         </div>
@@ -4453,7 +4453,7 @@
                                                             style="clip-path:path('M32,0 C14.32688808,0 0,14.32688808 0,32 C0,49.67311096 14.32688808,64 32,64 C49.67311096,64 64,49.67311096 64,32 C64,14.32688808 49.67311096,0 32,0 Z');">
                                                             <div id="aNSdFy91mygTD0pe"
                                                                 style="transform: scale(1, 1); transform-origin: 32px 32px; animation: auto ease 0s 1 normal none running none;">
-                                                                <img src="images/697890421851c8c8f3623e6d93e3e4c2.png"
+                                                                <img src="{{asset('img/697890421851c8c8f3623e6d93e3e4c2.png')}}"
                                                                     loading="lazy"
                                                                     style="transform:translate(-11.9180456px, 0px) rotate(0deg);transform-origin:39.74887892px 32px;width:79.49775785px;height:64px;display:block;opacity:1.0;object-fit:fill;">
                                                             </div>
@@ -4490,9 +4490,9 @@
                                                     style="clip-path:path('M24.79999924,27.79999924 L562.40002441,27.79999924 L562.40002441,329.79998779 L24.79999924,329.79998779 Z');">
                                                     <div id="p0uz0uNdcCzxRkN4"
                                                         style="transform: scale(1, 1); transform-origin: 293.5px 178.5px; animation: auto ease 0s 1 normal none running none;">
-                                                        <img src="images/36b4564fcb5e77c38dedd8d8b3b3a3b3.png"
+                                                        <img src="{{asset('img/36b4564fcb5e77c38dedd8d8b3b3a3b3.png')}}"
                                                             loading="lazy"
-                                                            srcset="images/0bfc74bdbc4ad273eec7cf5b5997036d.png 344w, images/36b4564fcb5e77c38dedd8d8b3b3a3b3.png 687w"
+                                                            srcset="{{asset('img/36b4564fcb5e77c38dedd8d8b3b3a3b3.png')}} 344w, {{asset('img/36b4564fcb5e77c38dedd8d8b3b3a3b3.png')}} 687w"
                                                             sizes="(max-width: 375px) 31.95777438vw, (min-width: 375.05px) and (max-width: 480px) 32.60997386vw, (min-width: 480.05px) and (max-width: 768px) 32.0276529vw, (min-width: 768.05px) and (max-width: 1024px) 32.7555541vw, (min-width: 1024.05px) 34.17758204vw"
                                                             style="transform:translate(24.8px, 27.8px) rotate(0deg);transform-origin:272.95253653px 205.9659315px;width:545.90507306px;height:411.93186299px;display:block;opacity:1.0;object-fit:fill;">
                                                     </div>
@@ -4570,9 +4570,9 @@
                                                     style="clip-path:path('M75.80000305,21.79999924 L552.59997559,21.79999924 L552.59997559,320.20001221 L75.80000305,320.20001221 Z');">
                                                     <div id="CrJJgEubEKpsnFpM"
                                                         style="transform: scale(1, 1); transform-origin: 314px 171px; animation: auto ease 0s 1 normal none running none;">
-                                                        <img src="images/2c605ea06bb426c8d2bfecc8d4ff2831.png"
+                                                        <img src="{{asset('img/2c605ea06bb426c8d2bfecc8d4ff2831.png')}}"
                                                             loading="lazy"
-                                                            srcset="images/5213e59d0b4375c8411dcec1e2403721.png 308w, images/2c605ea06bb426c8d2bfecc8d4ff2831.png 615w"
+                                                            srcset="{{asset('img/2c605ea06bb426c8d2bfecc8d4ff2831.png')}} 308w, {{asset('img/2c605ea06bb426c8d2bfecc8d4ff2831.png')}} 615w"
                                                             sizes="(max-width: 375px) 27.51121681vw, (min-width: 375.05px) and (max-width: 480px) 28.07267022vw, (min-width: 480.05px) and (max-width: 768px) 27.57137253vw, (min-width: 768.05px) and (max-width: 1024px) 28.19799464vw, (min-width: 1024.05px) 29.42216371vw"
                                                             style="transform:translate(50.30424054px, 5.85077722px) rotate(0deg);transform-origin:277.49448632px 157.17461139px;width:554.98897264px;height:314.34922278px;display:block;opacity:1.0;object-fit:fill;">
                                                     </div>
@@ -4602,9 +4602,9 @@
                                                     style="clip-path:path('M175.30000305,12.30000019 L153.90000343,12.30000019 L153.90000343,16.80000019 C153.90000343,21.9000001 149.70000362,26.10000038 144.60000324,26.10000038 L62.00000477,26.10000038 C56.90000486,26.10000038 52.70000458,21.90000057 52.70000458,16.80000019 L52.70000458,12.30000019 L31.1000042,12.30000019 C22.00000381,12.30000019 14.6000042,19.70000029 14.6000042,28.80000019 L14.6000042,379.80000019 C14.6000042,388.90000057 22.00000429,396.30000019 31.1000042,396.30000019 L175.30000114,396.30000019 C184.40000153,396.30000019 191.80000114,388.9000001 191.80000114,379.80000019 L191.80000114,28.80000019 C191.90000115,19.69999981 184.50000095,12.30000019 175.30000114,12.30000019 Z');">
                                                     <div id="I4jFgFXSVpBpTS2X"
                                                         style="transform: scale(1, 1); transform-origin: 103px 204.5px; animation: auto ease 0s 1 normal none running none;">
-                                                        <img src="images/fc23526b2216b93aee122d9aa6bf49cb.png"
+                                                        <img src="{{asset('img/fc23526b2216b93aee122d9aa6bf49cb.png')}}"
                                                             loading="lazy"
-                                                            srcset="images/c4f4c012bd416bfb3e80c680e806ebdd.png 171w, images/fc23526b2216b93aee122d9aa6bf49cb.png 342w"
+                                                            srcset="{{asset('img/fc23526b2216b93aee122d9aa6bf49cb.png')}} 171w, {{asset('img/fc23526b2216b93aee122d9aa6bf49cb.png')}} 342w"
                                                             sizes="(max-width: 375px) 15.4439733vw, (min-width: 375.05px) and (max-width: 480px) 15.75915643vw, (min-width: 480.05px) and (max-width: 768px) 15.47774292vw, (min-width: 768.05px) and (max-width: 1024px) 15.82950981vw, (min-width: 1024.05px) 16.51672167vw"
                                                             style="transform:translate(-58.28704801px, 12.3px) rotate(0deg);transform-origin:182.80623608px 192px;width:365.61247216px;height:384px;display:block;opacity:1.0;object-fit:fill;">
                                                     </div>
@@ -4718,9 +4718,9 @@
                                                                 style="clip-path:path('M227.52000427,360.47988892 L0,360.47988892 L0,0 L227.52000427,0 L227.52000427,360.47988892 Z');">
                                                                 <div id="RF6JeVGEyTwNzVJE"
                                                                     style="transform: scale(1, 1); transform-origin: 114px 180.5px; animation: auto ease 0s 1 normal none running none;">
-                                                                    <img src="images/7f48a21d863b1c5f6822c09246b6799e.png"
+                                                                    <img src="{{asset('img/7f48a21d863b1c5f6822c09246b6799e.png')}}"
                                                                         loading="lazy"
-                                                                        srcset="images/743b1c9455d808a97194a1f5229edf88.png 285w, images/7f48a21d863b1c5f6822c09246b6799e.png 474w"
+                                                                        srcset="{{asset('img/7f48a21d863b1c5f6822c09246b6799e.png')}} 285w, {{asset('img/7f48a21d863b1c5f6822c09246b6799e.png')}} 474w"
                                                                         sizes="(max-width: 375px) 23.44073219vw, (min-width: 375.05px) and (max-width: 480px) 23.91911448vw, (min-width: 480.05px) and (max-width: 768px) 23.49198743vw, (min-width: 768.05px) and (max-width: 1024px) 24.02589624vw, (min-width: 1024.05px) 25.62762265vw"
                                                                         style="transform:translate(-0.01646278px, 0px) rotate(0deg);transform-origin:113.77646493px 180.23994445px;width:227.55292987px;height:360.4798889px;display:block;opacity:1.0;object-fit:fill;">
                                                                 </div>
@@ -4748,7 +4748,7 @@
                                                     style="transform:scale(1, 1);width:100%;height:100%;overflow:hidden;position:relative;">
                                                     <div id="SyR4BC7BoQve6JTk"
                                                         style="width: calc(100% * max(1, var(--scale-fill, 1))); height: calc(100% / min(1, var(--scale-fill, 1))); position: absolute; top: 50%; left: 50%; opacity: 1; animation: auto ease 0s 1 normal none running none;">
-                                                        <img src="images/9f9049c8d6a90c2cc9941bc0ab06c927.png"
+                                                        <img src="{{asset('img/9f9049c8d6a90c2cc9941bc0ab06c927.png')}}"
                                                             loading="lazy"
                                                             style="width:100%;height:100%;display:block;object-fit:cover;object-position:50% 50%;transform:translate(-50%, -50%) rotate(0deg);">
                                                     </div>
@@ -4834,7 +4834,7 @@
                                             style="transform:scale(1, 1);width:100%;height:100%;overflow:hidden;position:relative;">
                                             <div id="cAT9uOxjLZBJQupS"
                                                 style="width: calc(100% * max(1, var(--scale-fill, 1))); height: calc(100% / min(1, var(--scale-fill, 1))); position: absolute; top: 50%; left: 50%; opacity: 1; animation: auto ease 0s 1 normal none running none;">
-                                                <img src="images/0c40697ddc55a9a6026c7d6521f7fb3d.png" loading="lazy"
+                                                <img src="{{asset('img/0c40697ddc55a9a6026c7d6521f7fb3d.png')}}" loading="lazy"
                                                     style="width:100%;height:100%;display:block;object-fit:cover;object-position:50% 50%;transform:translate(-50%, -50%) rotate(0deg);">
                                             </div>
                                         </div>
