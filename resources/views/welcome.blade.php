@@ -20,6 +20,7 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
+     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         :root {
             --ffsd: 0px;

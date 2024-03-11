@@ -4,7 +4,7 @@
 
 return [
     'welcome' => 'Welcome to our application!',
-        // '' => '',
+     'all' => 'All',
     // '' => '',
     // '' => '',
     // '' => '',
