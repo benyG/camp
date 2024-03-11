@@ -39,7 +39,6 @@
                 wire:poll.{{ $pollingInterval }}="updateChartData"
             @endif
         >
-        <div class="animate-pulse" wire:loading wire:target='updateChartData'>loading ...</div>
             <div
                 @if (FilamentView::hasSpaMode())
                     ax-load="visible"

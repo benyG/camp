@@ -21,7 +21,14 @@ class ManageQuestions extends ManageRecords
                     $data['text'] = str_replace('src="../storage','src="'.env('APP_URL').'/storage',$data['text']);
                     session(['cours'=>$data['cours']]);
                     return $data;
-                })
+                })->after(function ($record) {
+                    $txt="New question created ! <br>
+                    Text: $record->text <br>
+                    Module: ".$record->moduleRel->name." <br>
+                    Certification: ".$record->certif->name." <br>
+                    ";
+                    \App\Models\Journ::add(auth()->user(),'Questions',1,$txt);
+            })
                 ->successRedirectUrl(fn (Model $record): string => $this->getResource()::getUrl('view', [
                     'record' => $record->id,
                 ])) ->createAnother(false)

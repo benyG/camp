@@ -60,7 +60,7 @@ class JournResource extends Resource
                 ->relationship(name: 'userRel', titleAttribute: 'name')->multiple()
                 ->searchable()
                 ->preload(),
-                Tables\Filters\SelectFilter::make('type')->label('Action')->multiple()
+                Tables\Filters\SelectFilter::make('ac')->label('Action')->multiple()
                 ->options([
                     0 => 'S. Login',1 => 'Create',2 => 'Read',3 => 'Update',4 => 'Delete',5 => 'F. Login',
                     6 => 'Attach',7 => 'Detach',8 => 'Request',9 => 'Pass. Reset',//10 => 'Delete',11 => 'F. Login',

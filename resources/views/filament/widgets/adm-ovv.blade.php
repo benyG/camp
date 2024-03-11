@@ -45,7 +45,7 @@
             <div class="grid grow">
                 <div class="flex items-center">
                     <span class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                       AI Calls
+                      {{ __('main.aic') }}
                     </span>
                 </div>
                 <div class="text-3xl font-semibold tracking-tight text-custom-500 dark:text-custom-400">

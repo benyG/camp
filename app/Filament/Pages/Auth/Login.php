@@ -12,6 +12,7 @@ use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Notifications\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class Login extends BaseLogin
 {
@@ -51,6 +52,7 @@ class Login extends BaseLogin
     }
     public function authenticate(): ?LoginResponse
     {
+      //  dd(Http::get('http://ip-api.com/json/?fields=61439')->json());
         try {
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
@@ -68,17 +70,25 @@ class Login extends BaseLogin
 
             return null;
         }
-
+        $ui=Http::get('http://ip-api.com/json/?fields=61439')->json();
         $data = $this->form->getState();
 
         if (! Filament::auth()->attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
-            $txt="Failed login with email ".$data["email"];
+            $txt="Failed login with email ".$data["email"]."<br>
+            User-Agent: ".$_SERVER['HTTP_USER_AGENT']."<br>
+            IP: ".$ui['query']." <br>
+            Location: ".$ui['city']." / ".$ui['country']."<br>
+                ";
             \App\Models\Journ::add(null,'Login',5,$txt);
             $this->throwFailureValidationException();
         }
 
         $user = Filament::auth()->user();
-        $txt="Successful login of user '$user->name' ($user->email)";
+        $txt="Successful login of user '$user->name' ($user->email) <br>
+        User-Agent: ".$_SERVER['HTTP_USER_AGENT']."<br>
+        IP: ".$ui['query']." <br>
+        Location: ".$ui['city']."/ ".$ui['country']."<br>
+        ";
         \App\Models\Journ::add($user,'Login',0,$txt);
 
         if (

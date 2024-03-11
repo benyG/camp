@@ -48,7 +48,7 @@ class QuestionsRelationManager extends RelationManager
                 ->after(function ($action,$record) {
                     $txt="Detaching
                     Answer : ".$this->getOwnerRecord()->text." <br>
-                    to Question : ".$record->text2;
+                    from Question : ".$record->text2;
                     \App\Models\Journ::add(auth()->user(),'Answers',7,$txt);
                 }),
             ])
@@ -58,7 +58,7 @@ class QuestionsRelationManager extends RelationManager
                         foreach ($record as $value) {
                             $txt="Detaching
                             Answer : ".$this->getOwnerRecord()->text." <br>
-                            to Question : ".$value->text2;
+                            from Question : ".$value->text2;
                             \App\Models\Journ::add(auth()->user(),'Answers',7,$txt);
                                 }
                      }),

@@ -28,7 +28,7 @@ use App\Filament\Pages\Auth\RequestPasswordReset;
 use App\Filament\Pages\Auth\EditProfile;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
-
+use App\Http\Middleware\LangSwitch;
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -68,6 +68,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                LangSwitch::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

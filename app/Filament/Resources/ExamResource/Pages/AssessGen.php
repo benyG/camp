@@ -220,7 +220,7 @@ class AssessGen extends Page implements HasForms, HasActions
                     $response = Http::withToken($apk)->post($ix->endp, [
                         "model" => $ix->model,
                         'messages' => [
-                            ["role" => "system", "content" => str_replace("XoXo",auth()->user()->name,$ix->cont1)],
+                            ["role" => "system", "content" => $ix->cont1],
                             ["role" => "user","content" => $stats],
                         ],
                     ])
@@ -229,7 +229,7 @@ class AssessGen extends Page implements HasForms, HasActions
                  if(is_array($response["choices"]))   {
                     $this->iati=true;
                    // $this->iatext=str_replace(array(':','-'),array(':<br>','<br>-'), $response["choices"][0]["message"]["content"]);
-                    $this->iatext=$response["choices"][0]["message"]["content"];
+                    $this->iatext="Hi ".auth()->user()->name.", this is my point of view.<br>".$response["choices"][0]["message"]["content"];
                     \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
                    // dd(auth()->user()->ix);
                 }
@@ -278,7 +278,7 @@ class AssessGen extends Page implements HasForms, HasActions
                  $response = Http::withToken($apk)->post($ix->endp, [
                      "model" => $ix->model,
                      'messages' => [
-                         ["role" => "system", "content" => str_replace("XoXo",auth()->user()->name,$ix->cont2)],
+                         ["role" => "system", "content" => $ix->cont2],
                          ["role" => "user","content" => $stats],
                      ],
                  ])
@@ -287,7 +287,7 @@ class AssessGen extends Page implements HasForms, HasActions
                 if(is_array($response["choices"]))   {
                     $this->iati2=true;
                   //  $this->iatext2=str_replace(array(':','-'),array(':<br>','<br>-'), $response["choices"][0]["message"]["content"])."<br> Keep in mind that this is just my point of view.;-";
-                    $this->iatext2=$response["choices"][0]["message"]["content"]."<br> Keep in mind that this is just my point of view.;-";
+                    $this->iatext2="Hi ".auth()->user()->name.", this is my point of view.<br>".$response["choices"][0]["message"]["content"];
                     \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
                 }
                 else Notification::make()->danger()->title("Query error.")->send();

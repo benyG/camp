@@ -12,6 +12,5 @@
             <button type="submit"><img src="{{ asset('img/li.svg') }}" /></button>
         </form>
     </div>
-
 </div>
 <x-footer2 />

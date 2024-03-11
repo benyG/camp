@@ -127,7 +127,7 @@ class UserCourseChart2 extends ChartWidget
                         align: 'start',
                         labels: {
                             font: {
-                                size: 6
+                                size: 8
                             }
                         }
                     }

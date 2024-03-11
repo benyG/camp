@@ -49,8 +49,6 @@ class QuestionResource extends Resource
                 ->required()
                 ->default(4)->inputMode('numeric')
                 ->rules(['numeric']),
-                Forms\Components\Toggle::make('smtp')->label('To review ?')
-                ->required()->inline(false)->default(true),
                 TinyEditor::make('text')
                     ->required()
                     ->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads')
@@ -102,12 +100,44 @@ class QuestionResource extends Resource
                 })->mutateRecordDataUsing(function (array $data, QUestion $record): array {
                     $data['cours']=$record->certif->id;
                     return $data;
+                })->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
+                    $reco=$record->replicate();
+                    $record->update($data);
+                    $txt="";
+                    if($record->wasChanged()){
+                        if($record->wasChanged('text')){
+                            $txt.="Text was changed from '$reco->text' <br>to '$record->text' <br>";
+                        }
+                        if($record->wasChanged('maxr')){
+                            $txt.="Max Answer was changed from '$reco->maxr' to '$record->maxr' <br>";
+                        }
+                        if($record->wasChanged('module')){
+                            $txt.="Answer was changed from ".$reco->moduleRel->name." (".$reco->certif->name.")
+                             <br>to ".$record->moduleRel->name." (".$record->certif->name.") <br>";
+                        }
+                        if($record->wasChanged('descr')){
+                            $txt.="Explanation was changed from '$reco->descr' <br>to '$record->descr' <br>";
+                        }
+                       if(strlen($txt)>0) \App\Models\Journ::add(auth()->user(),'Questions',3,"Question ID $record->id was changed <br> ".$txt);
+                    }
+                    return $record;
                 }),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()->after(function ($record) {
+                    $txt="Removed question ID $record->id.
+                    Text: $record->text <br>
+                    ";
+                    \App\Models\Journ::add(auth()->user(),'Questions',4,$txt);
+                }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->after(function (\Illuminate\Database\Eloquent\Collection $record) {
+                        foreach ($record as $value) {
+                          $txt="Question answer ID $value->id
+                         Text: $value->text";
+                         \App\Models\Journ::add(auth()->user(),'Questions',4,$txt);
+                        }
+                     }),
                 ]),
             ])
             ->deferLoading()->striped()->persistFiltersInSession()
@@ -180,7 +210,7 @@ class QuestionResource extends Resource
                             \App\Models\Review::destroy($record->reviews()->pluck('id'));
                             Notification::make()->success()->title('Users Notified.')->send();
                         }),
-                    \Filament\Infolists\Components\Actions\Action::make('otoi')->label('Question the AI')//->requiresConfirmation()
+                    \Filament\Infolists\Components\Actions\Action::make('otoi')->label('Ask the AI')//->requiresConfirmation()
                     ->icon('heroicon-m-question-mark-circle')->color('primary')
                     ->action(function () {})
                    ->modalWidth(\Filament\Support\Enums\MaxWidth::Medium)

@@ -11,3 +11,7 @@
         </span>
     </div>
 @endif
+    <div class="">
+        <x-lang />
+    </div>
+

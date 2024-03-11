@@ -96,13 +96,7 @@ class UserCourseChart5 extends ChartWidget
                     'label' => 'Bad Answers',
                     'data' => $uc[2],
                     'backgroundColor' => "#FF0000",
-                    'hoverBorderColor' => "#FF0000",
                     'pointBackgroundColor' => "#FF0000",
-                    'pointBorderColor' => "#FF0000",
-                    'pointHoverBackgroundColor' => "#FF0000",
-                    'pointHoverBorderColor' => "#FF0000",
-                    'pointBorderColor' => "#FF0000",
-                    'hoverBackgroundColor' => "#FF0000",
                     'borderColor' => "#FF0000",
                 ],
 

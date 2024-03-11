@@ -4,7 +4,7 @@
             <div class="grid gap-y-2">
                 <div class="flex items-center">
                     <span class="text-sm font-medium text-gray-500 dark:text-gray-400 ">
-                        Questions Answered
+                         {{ __('main.qa') }}
                     </span>
                 </div>
                 <div style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
@@ -15,7 +15,7 @@
             <div class="grid gap-y-2">
                 <div class="flex items-center">
                     <span class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                       Tests Launched
+                        {{ __('main.qa') }}
                     </span>
                 </div>
                 <div style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
@@ -26,7 +26,7 @@
             <div class="grid gap-y-2">
                 <div class="flex items-center">
                     <span class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                       Exams Launched
+                        {{ __('main.tl') }}
                     </span>
                 </div>
                 <div style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
@@ -37,7 +37,7 @@
             <div class="grid gap-y-2">
                 <div class="flex items-center">
                     <span class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                       Exams succeeded
+                        {{ __('main.el') }}
                     </span>
                 </div>
                 <div style="--c-400:var(--{{$co1}}-400);--c-500:var(--{{$co1}}-500);--c-600:var(--{{$co1}}-600);"
@@ -48,7 +48,7 @@
             <div class="grid gap-y-2">
                 <div class="flex items-center">
                     <span class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                     % Good Answers
+                     % {{ __('main.ga') }}
                     </span>
                 </div>
                 <div style="--c-400:var(--{{$co2}}-400);--c-500:var(--{{$co2}}-500);--c-600:var(--{{$co2}}-600);"
