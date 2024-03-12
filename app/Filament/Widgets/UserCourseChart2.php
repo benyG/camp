@@ -16,7 +16,7 @@ class UserCourseChart2 extends ChartWidget
     protected static ?string $heading = '% Questions answered per Module';
     protected static string $view = 'filament.widgets.uc2';
     protected static ?string $pollingInterval = null;
-    protected static ?string $maxHeight = '300px';
+    protected static ?string $maxHeight = '250px';
     protected static ?int $sort = 0;
     public $cs=0;
     #[Locked]

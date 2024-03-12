@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->text('text');
             $table->string('fen')->nullable();
+            $table->string('ua')->nullable();
+            $table->string('ip')->nullable();
+            $table->string('loc')->nullable();
             $table->unsignedBigInteger('user');
             $table->tinyInteger('ac')->default(0)->unsigned();
             $table->timestamps();

@@ -74,22 +74,15 @@ class Login extends BaseLogin
         $data = $this->form->getState();
 
         if (! Filament::auth()->attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
-            $txt="Failed login with email ".$data["email"]."<br>
-            User-Agent: ".$_SERVER['HTTP_USER_AGENT']."<br>
-            IP: ".$ui['query']." <br>
-            Location: ".$ui['city']." / ".$ui['country']."<br>
+            $txt="Failed login with email ".$data["email"]."
                 ";
-            \App\Models\Journ::add(null,'Login',5,$txt);
+            \App\Models\Journ::add(null,'Login',5,$txt,$ui['query']);
             $this->throwFailureValidationException();
         }
 
         $user = Filament::auth()->user();
-        $txt="Successful login of user '$user->name' ($user->email) <br>
-        User-Agent: ".$_SERVER['HTTP_USER_AGENT']."<br>
-        IP: ".$ui['query']." <br>
-        Location: ".$ui['city']."/ ".$ui['country']."<br>
-        ";
-        \App\Models\Journ::add($user,'Login',0,$txt);
+        $txt="Successful login of user '$user->name' ($user->email)";
+        \App\Models\Journ::add($user,'Login',0,$txt,$ui['query']);
 
         if (
             ($user instanceof FilamentUser) &&

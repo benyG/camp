@@ -4275,6 +4275,10 @@
                     </div>
                 </div>
                 <div id="WjVxedOWukUM5tSU">
+                                     <style>
+                                        #dOrZbCbs0dORAQbF #Ci4AjZ81GbZf7Ymw{fill:#22c55e;}
+                                        #dOrZbCbs0dORAQbF:hover #Ci4AjZ81GbZf7Ymw {fill:#53e19a;}
+                                    </style>
                     <div id="dOrZbCbs0dORAQbF" style="display:grid;position:relative;">
                         <div id="ZN51qGfY4CEbTUlR" style="z-index:5;">
                             <div id="M1te8mReij7TL7Cf" style="padding-top:23.20207014%;">
@@ -4291,7 +4295,7 @@
                                                     <g id="sCHaUX59sugG40Yf" style="transform:scale(1, 1);">
                                                         <path id="Ci4AjZ81GbZf7Ymw"
                                                             d="M451.70473521,114.89774989 L43.59999084,114.89774989 C19.49999046,114.89774989 -0.00000763,89.17833609 -0.00000763,57.51738765 C-0.00000763,25.72451809 19.49999237,0 43.59999084,0 L451.70473521,0 C475.80474131,0 495.30474131,25.72452061 495.30474131,57.51738765 C495.20473521,89.17833609 475.70473521,114.89774989 451.70473521,114.89774989 Z"
-                                                            style="fill:#22c55e;opacity:1.0;"></path>
+                                                            style="opacity:1.0;"></path>
                                                     </g>
                                                 </svg></a></div>
                                     </div>
@@ -4307,7 +4311,6 @@
                                             style="opacity:1.0;display:flex;box-sizing:border-box;flex-direction:column;justify-content:flex-start;width:100%;height:100%;">
                                             <p id="xXbbwV93SmnB4UgQ"
                                                 style="font-family:YAEnS2G4JLg-0;line-height:1.39407481em;text-align:center;text-transform:uppercase;letter-spacing:0.03em;">
-                                                <style>#jnC8K9RBNbzrYr8e{color:#0c3b2e;} #jnC8K9RBNbzrYr8e:hover {color:black;}</style>
                                                 <a id="jnC8K9RBNbzrYr8e" target="_blank" rel="noopener"
                                                     href="https://itexambootcamp.com/boss"
                                                     style="font-weight:700;pointer-events:all;"
@@ -4632,6 +4635,10 @@
                         </div>
                     </div>
                 </div>
+                 <style>
+                    #Ev03xAAsmLLPtScM #pqoRWzSaqu6nXRbQ{fill:#22c55e;}
+                    #Ev03xAAsmLLPtScM:hover #pqoRWzSaqu6nXRbQ {fill:#53e19a;}
+                 </style>
                 <div id="Ev03xAAsmLLPtScM">
                     <div id="cPrYPz3V7Cigr4o3" style="display:grid;position:relative;grid-area:11 / 10 / 13 / 11;">
                         <div id="UC0SGHWgzMUKhPRp" style="z-index:1;">
@@ -4649,7 +4656,7 @@
                                                     <g id="YSGfu0dZHKrF56ES" style="transform:scale(1, 1);">
                                                         <path id="pqoRWzSaqu6nXRbQ"
                                                             d="M940.69378504,114.89774989 L43.59999084,114.89774989 C19.49999046,114.89774989 -0.00000763,89.17833609 -0.00000763,57.51738765 C-0.00000763,25.72451809 19.49999237,0 43.59999084,0 L940.69378504,0 C964.79379114,0 984.29379114,25.72452061 984.29379114,57.51738765 C984.19378504,89.17833609 964.69378504,114.89774989 940.69378504,114.89774989 Z"
-                                                            style="fill:#22c55e;opacity:1.0;"></path>
+                                                            style="opacity:1.0;"></path>
                                                     </g>
                                                 </svg></a></div>
                                     </div>
@@ -4663,7 +4670,6 @@
                                         style="width: 100%; height: 100%; animation: 500ms ease 100ms 1 normal both running fade-RIGHT-04cfae24-4ac4-4fd4-ac86-59b277555f0d;">
                                         <div id="qKKsJV2xMFr8jdoM"
                                             style="opacity:1.0;display:flex;box-sizing:border-box;flex-direction:column;justify-content:flex-start;width:100%;height:100%;">
-                                            <style>#M80GOll0nP3S6Q3b{color:#0c3b2e;} #M80GOll0nP3S6Q3b:hover {color:black;}</style>
                                             <p id="m0crykgfTJZxZoST"
                                                 style="font-family:YAEnS2G4JLg-0;line-height:1.39115071em;text-align:center;text-transform:uppercase;letter-spacing:0.03em;">
                                                 <a id="M80GOll0nP3S6Q3b" target="_blank" rel="noopener"
@@ -4862,7 +4868,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="ask0oZZ3y7CJ5RuV">
+          {{--       <div id="ask0oZZ3y7CJ5RuV">
                     <div id="vl4KXDPAC1eVrGgv" style="display:grid;position:relative;grid-area:12 / 3 / 13 / 13;">
                         <div id="ETjsl5FH3quPIJK2" style="z-index:1;">
                             <div id="LlKefVnxlQPzDSZQ"
@@ -4946,6 +4952,7 @@
                         </div>
                     </div>
                 </div>
+            --}}
             </div>
         </section>
     </div>
@@ -4965,10 +4972,14 @@
     }
     </style>
     <div class="footer-overflow-container">
-    <p> &copy; 2024 <span >IT EXAM BOOT CAMP.</span> All rights reserved.
+    <p> &copy; 2024 <span >IT EXAM BOOT CAMP.</span> All rights reserved. |
                 <a href="https://www.termsfeed.com/live/2214b8f2-eb0d-4feb-9afa-f4bdce142c37" target='_blank'>
                    {{ __('main.pol') }}
+                </a> | Write us here
+                                <a href="mailto:contact@itexambootcamp.com" target='_blank'>
+                  contact@itexambootcamp.com
                 </a>
+
     </p>
     </div>
 </body>

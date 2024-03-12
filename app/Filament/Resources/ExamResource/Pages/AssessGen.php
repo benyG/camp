@@ -92,7 +92,11 @@ class AssessGen extends Page implements HasForms, HasActions
     #[Locked]
     public $iatext2;
     #[Locked]
+    public $iatext3;
+    #[Locked]
     public $iati2=false;
+    #[Locked]
+    public $iati3=false;
 
     #[Validate('required',onUpdate: false,message:"No answer choosen")]
     public $ans;
@@ -227,9 +231,11 @@ class AssessGen extends Page implements HasForms, HasActions
                     ->json();
                    // dd($response["choices"][0]["message"]["content"]);
                  if(is_array($response["choices"]))   {
+                    $this->iatext3="Hi ".auth()->user()->name.", this is my point of view:";
                     $this->iati=true;
-                   // $this->iatext=str_replace(array(':','-'),array(':<br>','<br>-'), $response["choices"][0]["message"]["content"]);
-                    $this->iatext="Hi ".auth()->user()->name.", this is my point of view.<br>".$response["choices"][0]["message"]["content"];
+                    if(!$this->iati3) $this->iati3=true;
+                    // $this->iatext=str_replace(array(':','-'),array(':<br>','<br>-'), $response["choices"][0]["message"]["content"]);
+                    $this->iatext=$response["choices"][0]["message"]["content"];
                     \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
                    // dd(auth()->user()->ix);
                 }
@@ -285,9 +291,11 @@ class AssessGen extends Page implements HasForms, HasActions
                  ->json();
                 // dd($response["choices"][0]["message"]["content"]);
                 if(is_array($response["choices"]))   {
+                    $this->iatext3="Hi ".auth()->user()->name.", this is my point of view:";
                     $this->iati2=true;
+                    if(!$this->iati3) $this->iati3=true;
                   //  $this->iatext2=str_replace(array(':','-'),array(':<br>','<br>-'), $response["choices"][0]["message"]["content"])."<br> Keep in mind that this is just my point of view.;-";
-                    $this->iatext2="Hi ".auth()->user()->name.", this is my point of view.<br>".$response["choices"][0]["message"]["content"];
+                    $this->iatext2=$response["choices"][0]["message"]["content"];
                     \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
                 }
                 else Notification::make()->danger()->title("Query error.")->send();
@@ -310,8 +318,8 @@ class AssessGen extends Page implements HasForms, HasActions
         ]);
     }
     public function populate(){
-        $this->qcur2++;
-        $this->iatext=$this->iatext2="";$this->iati1=$this->iati=false;
+        $this->qcur2++;$this->iati3=false;
+        $this->iatext3=$this->iatext=$this->iatext2="";$this->iati1=$this->iati=false;
         $this->ico=$this->qcur<$this->qtot?'heroicon-m-play':'';
                 if($this->qcur<=$this->qtot-1){
                     $this->aa=$this->quest[$this->qcur]->answers()->pluck('text','answers.id');

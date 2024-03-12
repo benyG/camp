@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
-
+use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
 class JournResource extends Resource
 {
     protected static ?string $model = Journ::class;
@@ -64,7 +64,10 @@ class JournResource extends Resource
                 ->options([
                     0 => 'S. Login',1 => 'Create',2 => 'Read',3 => 'Update',4 => 'Delete',5 => 'F. Login',
                     6 => 'Attach',7 => 'Detach',8 => 'Request',9 => 'Pass. Reset',//10 => 'Delete',11 => 'F. Login',
-                    ])
+                ]),
+                Tables\Filters\QueryBuilder::make()->label('Date')->constraints([
+                    DateConstraint::make('created_at')->label('Date')
+                ]),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -99,8 +102,15 @@ class JournResource extends Resource
                     _=>'gray'
                 }),
                 Infolists\Components\TextEntry::make('fen')->label('Page'),
+                Infolists\Components\TextEntry::make('ip')->label('IP Address'),
+                Infolists\Components\TextEntry::make('ua')->label('User-Agent'),
+                Infolists\Components\TextEntry::make('loc')->label('Location'),
                 Infolists\Components\TextEntry::make('created_at')->label('Date')->dateTime(),
                 Infolists\Components\TextEntry::make('text')->label('Content')->html()->columnSpanFull(),
+            ])->columns([
+                'sm' => 2,
+                'md' => 3,
+                'lg' => 4,
             ]);
     }
 }

@@ -21,6 +21,7 @@ use App\Models\Course;
 use App\Models\UsersCourse;
 use App\Models\Review;
 use App\Models\Journ;
+use App\Models\OAuthProvider;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Carbon;
 
@@ -134,6 +135,10 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
     public function logs(): HasMany
     {
         return $this->hasMany(Journ::class, 'user');
+    }
+    public function oauthProviders(): HasMany
+    {
+        return $this->hasMany(OAuthProvider::class, 'provider_user_id');
     }
 
 }
