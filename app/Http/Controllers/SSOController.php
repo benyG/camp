@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\OAuthProvider;
 use Illuminate\Support\Facades\Http;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Validation\ValidationException;
 
 class SSOController extends Controller
 {

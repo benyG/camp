@@ -20,7 +20,7 @@ class Login extends BaseLogin
     {
         return $form;
     }
-    protected function authenticate2(Request $request)
+    protected function authenticate2(): ?LoginResponse
     {
         try {
             $this->rateLimit(5);
@@ -49,10 +49,11 @@ class Login extends BaseLogin
         }
 
         return false;
+
+        return app(LoginResponse::class);
     }
     public function authenticate(): ?LoginResponse
     {
-      //  dd(Http::get('http://ip-api.com/json/?fields=61439')->json());
         try {
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
@@ -70,7 +71,7 @@ class Login extends BaseLogin
 
             return null;
         }
-        $ui=Http::get('http://ip-api.com/json/?fields=61439')->json();
+        $ui=Http::get('http://ip-api.com/json/')->json();
         $data = $this->form->getState();
 
         if (! Filament::auth()->attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
