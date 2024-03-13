@@ -33,7 +33,7 @@ class SSOController extends Controller
 
         return redirect()->to(filament()->getLoginUrl());
     }
-    protected function findOrCreateUser($provider, $user)
+    protected function findOrCreateUser($provider, $user):User
     {
         $oauthProvider = OAuthProvider::where('provider', $provider)
             ->where('user', $user->getEmail())
@@ -46,7 +46,7 @@ class SSOController extends Controller
                 'refresh_token' => $user->refreshToken,
             ]);
 
-            return $oauthProvider->user;
+            return $oauthProvider->userRel;
         }
 
         if (User::where('email', $user->getEmail())->exists()) {
