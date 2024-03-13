@@ -24,7 +24,7 @@ class SSOController extends Controller
         // Find or create the user in your application
         $user = $this->findOrCreateUser($provider, $user);
 
-        return filament()->getLoginUrl();
+        return redirect()->to(filament()->getLoginUrl());
     }
     protected function findOrCreateUser($provider, $user)
     {
