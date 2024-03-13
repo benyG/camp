@@ -12,4 +12,10 @@ class LanguageController extends Controller
         setcookie("lang", $lg, time() +60*60*24*785200);
         return redirect()->back()->with(['lang'=>$lg]);
     }
+    public function langS2($lg){
+        session(['lang'=>$lg]);
+        setcookie("lang", $lg, time() +60*60*24*785200);
+        return redirect()->back()->with(['lang'=>$lg]);
+    }
+
 }

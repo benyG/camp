@@ -22,4 +22,5 @@ Route::post('login', 'App\Filament\Pages\Auth\LoginController@authenticate2');
 Route::post('auth/{driver}', 'App\Http\Controllers\SSOController@redirectToProvider')->name('oauth.redirect');
 Route::get('auth/{driver}/callback', 'App\Http\Controllers\SSOController@handleProviderCallback')->name('oauth.callback');
 Route::post('lang', 'App\Http\Controllers\LanguageController@langS')->name('lang');
+Route::get('lang/{lg}', 'App\Http\Controllers\LanguageController@langS2')->name('lang2');
 
