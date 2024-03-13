@@ -8,6 +8,12 @@ use App\Models\OAuthProvider;
 use Illuminate\Support\Facades\Http;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Validation\ValidationException;
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use DanHarrin\LivewireRateLimiting\WithRateLimiting;
+use Filament\Facades\Filament;
+use Filament\Http\Responses\Auth\Contracts\LoginResponse;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Notifications\Notification;
 
 class SSOController extends Controller
 {
@@ -22,7 +28,7 @@ class SSOController extends Controller
         $user = Socialite::driver($provider)->user();
 
         // Find or create the user in your application
-        $user = $this->findOrCreateUser($provider, $user);
+        $this->login($this->findOrCreateUser($provider, $user));
 
         return redirect()->to(filament()->getLoginUrl());
     }
@@ -88,4 +94,46 @@ class SSOController extends Controller
 
         return $user;
     }
+    protected function login($sUser){
+        try {
+            $this->rateLimit(5);
+        } catch (TooManyRequestsException $exception) {
+            Notification::make()
+                ->title(__('filament-panels::pages/auth/login.notifications.throttled.title', [
+                    'seconds' => $exception->secondsUntilAvailable,
+                    'minutes' => ceil($exception->secondsUntilAvailable / 60),
+                ]))
+                ->body(array_key_exists('body', __('filament-panels::pages/auth/login.notifications.throttled') ?: []) ? __('filament-panels::pages/auth/login.notifications.throttled.body', [
+                    'seconds' => $exception->secondsUntilAvailable,
+                    'minutes' => ceil($exception->secondsUntilAvailable / 60),
+                ]) : null)
+                ->danger()
+                ->send();
+            return null;
+        }
+
+        if (! Filament::auth()->login($sUser, false)) {
+            $txt="Failed login with email ".$sUser->email."
+                ";
+            \App\Models\Journ::add(null,'Login',5,$txt,session('auth_ip'));
+            session(['auth_opt'=>1]);
+            return redirect()->to(filament()->getLoginUrl());
+        }
+
+        $user = Filament::auth()->user();
+        $txt="Successful login of user '$user->name' ($user->email)";
+        \App\Models\Journ::add($user,'Login',0,$txt,$this->ox);
+
+        if (
+            ($user instanceof FilamentUser) &&
+            (! $user->canAccessPanel(Filament::getCurrentPanel()))
+        ) {
+            Filament::auth()->logout();
+
+            session(['auth_opt'=>1]);
+            return redirect()->to(filament()->getLoginUrl());
+        }
+        session()->regenerate();
+        return redirect()->to(filament()->getLoginUrl());
+}
 }

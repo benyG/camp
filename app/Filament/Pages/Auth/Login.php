@@ -30,8 +30,18 @@ class Login extends BaseLogin
         }
 
         $this->form->fill();
-      if(!empty(session('auth_opt')) && session('auth_opt')==1)  $this->throwFailureValidationException();
+      if(!empty(session('auth_opt')) && session('auth_opt')==1)  $this->throwFailureValidationException2();
       session(['auth_opt'=>null]);
+    }
+    protected function throwFailureValidationException2(): never
+    {
+        throw ValidationException::withMessages([
+            'data.email' => 'That user is already registered. Please enter your credentials.',
+        ]);
+    }
+    public function dehydrate()
+    {
+        session(['auth_ip'=>$this->ox]);
     }
     public function authenticate(): ?LoginResponse
     {
