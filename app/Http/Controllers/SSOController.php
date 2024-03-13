@@ -17,6 +17,7 @@ use Filament\Notifications\Notification;
 
 class SSOController extends Controller
 {
+    use WithRateLimiting;
     public function redirectToProvider($provider)
     {
         return  Socialite::driver($provider)->redirect();
