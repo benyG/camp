@@ -29,7 +29,7 @@ class SSOController extends Controller
         $user = Socialite::driver($provider)->user();
 
         // Find or create the user in your application
-        $this->login($this->findOrCreateUser($provider, $user));
+        $this->login($this->findOrCreateUser($provider, $user),$provider);
 
         return redirect()->to(filament()->getLoginUrl());
     }
@@ -75,6 +75,8 @@ class SSOController extends Controller
             'user' => $sUser->getId(),
             'refresh_token' => $sUser->refreshToken,
         ]);
+        $txt="New user registered with email ".$sUser->getEmail()."via provider '$provider'";
+        \App\Models\Journ::add(null,'Register',1,$txt);
 
         return $user;
     }
@@ -96,7 +98,7 @@ class SSOController extends Controller
 
         return $user;
     }
-    protected function login($sUser){
+    protected function login($sUser, $provider){
         try {
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
@@ -115,15 +117,15 @@ class SSOController extends Controller
         }
 
         if (! Filament::auth()->login($sUser, false)) {
-            $txt="Failed login with email ".$sUser->email."
-                ";
+            $txt="Failed login with email ".$sUser->email.".
+             <br> Provider : $provider  ";
             \App\Models\Journ::add(null,'Login',5,$txt,session('auth_ip'));
             session(['auth_opt'=>1]);
             return redirect()->to(filament()->getLoginUrl());
         }
 
         $user = Filament::auth()->user();
-        $txt="Successful login of user '$user->name' ($user->email)";
+        $txt="Successful login of user '$user->name' ($user->email). <br> Provider : $provider";
         \App\Models\Journ::add($user,'Login',0,$txt,$this->ox);
 
         if (

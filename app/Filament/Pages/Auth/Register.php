@@ -17,6 +17,8 @@ use Illuminate\Validation\Rules\Password;
 
 class Register extends BaseRegister
 {
+    public $ox;
+    protected static string $view = 'filament.auth.register';
     public function form(Form $form): Form
     {
         return $form;
@@ -48,6 +50,10 @@ class Register extends BaseRegister
                     ->statePath('data'),
             ),
         ];
+    }
+    public function dehydrate()
+    {
+        session(['auth_ip'=>$this->ox]);
     }
     public function register(): ?RegistrationResponse
     {
