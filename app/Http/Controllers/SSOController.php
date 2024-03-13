@@ -17,6 +17,7 @@ class SSOController extends Controller
     }
     public function handleProviderCallback($provider)
     {
+        session()->regenerate();
         // Retrieve user information from the OAuth provider
         $user = Socialite::driver($provider)->user();
 
@@ -28,7 +29,7 @@ class SSOController extends Controller
     protected function findOrCreateUser($provider, $user)
     {
         $oauthProvider = OAuthProvider::where('provider', $provider)
-            ->where('provider_user_id', $user->getId())
+            ->where('user', $user->getId())
             ->first();
 
         if ($oauthProvider) {
@@ -43,7 +44,8 @@ class SSOController extends Controller
 
         if (User::where('email', $user->getEmail())->exists()) {
             // Handle the case where the email is already taken
-            throw new EmailTakenException();
+            session(['auth_opt'=>1]);
+            return redirect()->to(filament()->getLoginUrl());
         }
 
         // Create a new user and associated OAuthProvider entry
@@ -51,16 +53,37 @@ class SSOController extends Controller
     }
     protected function createUser($provider, $sUser)
     {
-        $user = User::create([
-            'name' => $sUser->getName(),
-            'email' => $sUser->getEmail(),
-        ]);
+        $user =new User;
+        $user->name= $sUser->getName();
+        $user->email= $sUser->getEmail();
+        $user->password= \Illuminate\Support\Facades\Hash::make(now()."xc");
+        $user->email_verified_at=now();
+        $user->save();
 
         $user->oauthProviders()->create([
             'provider' => $provider,
-            'provider_user_id' => $sUser->getId(),
+            'provider_user_id' => $user->id,
             'access_token' => $sUser->token,
+            'user' => $sUser->getId(),
             'refresh_token' => $sUser->refreshToken,
+        ]);
+
+        return $user;
+    }
+    protected function createUser2()
+    {
+        $user =new User;
+        $user->name= "ddd";
+        $user->email= "ddd";
+        $user->password= \Illuminate\Support\Facades\Hash::make(now()."xc");
+        $user->email_verified_at=now();
+        $user->save();
+
+        $user->oauthProviders()->create([
+            'provider' => "d",
+            'provider_user_id' => $user->id,
+            'access_token' => "dd",
+            'refresh_token' => "ddd",
         ]);
 
         return $user;

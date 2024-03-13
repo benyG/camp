@@ -24,3 +24,5 @@ Route::get('auth/{driver}/callback', 'App\Http\Controllers\SSOController@handleP
 Route::post('lang', 'App\Http\Controllers\LanguageController@langS')->name('lang');
 Route::get('lang/{lg}', 'App\Http\Controllers\LanguageController@langS2')->name('lang2');
 
+//Route::post('boss/{opt}', 'App\Filament\Pages\Auth\Login@authenticate2')->name('login2');
+

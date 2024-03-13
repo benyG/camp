@@ -23,37 +23,15 @@ class Login extends BaseLogin
     {
         return $form;
     }
-    protected function authenticate2(): ?LoginResponse
+    public function mount(): void
     {
-        try {
-            $this->rateLimit(5);
-        } catch (TooManyRequestsException $exception) {
-            Notification::make()
-                ->title(__('filament-panels::pages/auth/login.notifications.throttled.title', [
-                    'seconds' => $exception->secondsUntilAvailable,
-                    'minutes' => ceil($exception->secondsUntilAvailable / 60),
-                ]))
-                ->body(array_key_exists('body', __('filament-panels::pages/auth/login.notifications.throttled') ?: []) ? __('filament-panels::pages/auth/login.notifications.throttled.body', [
-                    'seconds' => $exception->secondsUntilAvailable,
-                    'minutes' => ceil($exception->secondsUntilAvailable / 60),
-                ]) : null)
-                ->danger()
-                ->send();
-
-            return null;
-        }
-        $token = $this->guard()->attempt($this->credentials($request));
-
-        if ($token) {
-            $this->guard()->setToken($token);
-            return true;
-        }else{
-            $this->throwFailureValidationException();
+        if (Filament::auth()->check()) {
+            redirect()->intended(Filament::getUrl());
         }
 
-        return false;
-
-        return app(LoginResponse::class);
+        $this->form->fill();
+      if(!empty(session('auth_opt')) && session('auth_opt')==1)  $this->throwFailureValidationException();
+      session(['auth_opt'=>null]);
     }
     public function authenticate(): ?LoginResponse
     {

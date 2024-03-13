@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('o_auth_providers', function (Blueprint $table) {
             $table->id();
             $table->string('provider');
+            $table->string('user');
             $table->string('access_token')->nullable();
             $table->string('refresh_token')->nullable();
             $table->timestamps();
