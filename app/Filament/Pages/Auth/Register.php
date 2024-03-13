@@ -79,7 +79,7 @@ class Register extends BaseRegister
 
         $user = $this->getUserModel()::create($data);
         $txt="New user registered with email ".$data["email"];
-        \App\Models\Journ::add(null,'Register',1,$txt);
+        \App\Models\Journ::add(null,'Register',1,$txt,$this->ox);
 
         event(new Registered($user));
 
