@@ -36,6 +36,7 @@ class Login extends BaseLogin
     }
     protected function throwFailureValidationException2(): never
     {
+        session(['auth_opt'=>null]);
         throw ValidationException::withMessages([
             'data.email' => 'That user is already registered. Please enter your credentials.',
         ]);
