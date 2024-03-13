@@ -4979,7 +4979,7 @@
                                 <a href="mailto:contact@itexambootcamp.com" target='_blank'>
                   contact@itexambootcamp.com
                 </a>
-                | <a href="{{route('lang2',['lg'=>app()->getLocale() == 'en' ? 'fr' : 'en'])}}" title="{{route('lang2',['lg'=>app()->getLocale() == 'en' ? 'Traduire en Français' : 'Translate in English'])}}">
+                | <a href="{{route('lang2',['lg'=>app()->getLocale() == 'en' ? 'fr' : 'en'])}}" title="{{app()->getLocale() == 'en' ? 'Traduire en Français' : 'Translate in English'}}">
                   {{ app()->getLocale() == 'en' ? 'Français' : 'English' }}
                 </a>
     </p>
