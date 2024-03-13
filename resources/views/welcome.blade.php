@@ -4777,7 +4777,7 @@
                                     <p id="iJybt1bAgDtXzSxF"
                                         style="color:#ffffff;font-family:YAEnXArs1iQ-0;line-height:1.09393578em;text-transform:none;letter-spacing:0em;">
                                         <span id="o6nXKh6Z34lAQNgJ"
-                                            style="color:#22c45d;font-weight:700;">Self-training</span><br></p>
+                                            style="color:#22c45d;font-weight:700;font-size:90%">Self-training</span><br></p>
                                 </div>
                             </div>
                         </div>

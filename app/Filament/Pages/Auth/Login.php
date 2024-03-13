@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Http;
 
 class Login extends BaseLogin
 {
+    protected static string $view = 'filament.auth.login';
+
+    public $ox;
     public function form(Form $form): Form
     {
         return $form;
@@ -71,19 +74,18 @@ class Login extends BaseLogin
 
             return null;
         }
-        $ui=Http::get('http://ip-api.com/json/')->json();
         $data = $this->form->getState();
 
         if (! Filament::auth()->attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
             $txt="Failed login with email ".$data["email"]."
                 ";
-            \App\Models\Journ::add(null,'Login',5,$txt,$ui['query']);
+            \App\Models\Journ::add(null,'Login',5,$txt,$this->ox);
             $this->throwFailureValidationException();
         }
 
         $user = Filament::auth()->user();
         $txt="Successful login of user '$user->name' ($user->email)";
-        \App\Models\Journ::add($user,'Login',0,$txt,$ui['query']);
+        \App\Models\Journ::add($user,'Login',0,$txt,$this->ox);
 
         if (
             ($user instanceof FilamentUser) &&

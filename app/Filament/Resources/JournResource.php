@@ -42,12 +42,12 @@ class JournResource extends Resource
                 Tables\Columns\TextColumn::make('ac')->label('Action')->sortable()->badge()
                 ->formatStateUsing(fn($state)=>match ($state) {
                     0 => 'S. Login',1 => 'Create',2 => 'Read',3 => 'Update',4 => 'Delete',5 => 'F. Login',
-                    6 => 'Attach',7 => 'Detach',8 => 'Request',9 => 'Pass. Reset',//10 => 'Delete',11 => 'F. Login',
+                    6 => 'Attach',7 => 'Detach',8 => 'Request',9 => 'Pass. Reset',10 => 'Logout',//11 => 'F. Login',
                     _=>'N/A'
                 })
                 ->color(fn($state)=>match ($state) {
                     0 => 'info',1 => 'primary',2 => 'gray',3 => 'warning',4 => 'danger',5 => 'danger',
-                    6 => 'primary',7 => 'danger',8 => 'warning',9 => 'info',//10 => 'Delete',11 => 'F. Login',
+                    6 => 'primary',7 => 'danger',8 => 'warning',9 => 'info',10 => 'danger',//11 => 'F. Login',
                     _=>'gray'
                 }),
                 Tables\Columns\TextColumn::make('text')->label('Details')->limit(15),
@@ -63,7 +63,7 @@ class JournResource extends Resource
                 Tables\Filters\SelectFilter::make('ac')->label('Action')->multiple()
                 ->options([
                     0 => 'S. Login',1 => 'Create',2 => 'Read',3 => 'Update',4 => 'Delete',5 => 'F. Login',
-                    6 => 'Attach',7 => 'Detach',8 => 'Request',9 => 'Pass. Reset',//10 => 'Delete',11 => 'F. Login',
+                    6 => 'Attach',7 => 'Detach',8 => 'Request',9 => 'Pass. Reset',10 => 'Logout',//11 => 'F. Login',
                 ]),
                 Tables\Filters\QueryBuilder::make()->label('Date')->constraints([
                     DateConstraint::make('created_at')->label('Date')
@@ -94,18 +94,18 @@ class JournResource extends Resource
                 Infolists\Components\TextEntry::make('userRel.name')->label('User'),
                 Infolists\Components\TextEntry::make('ac')->label('Action')->formatStateUsing(fn($state)=>match ($state) {
                     0 => 'S. Login',1 => 'Create',2 => 'Read',3 => 'Update',4 => 'Delete',5 => 'F. Login',
-                    6 => 'Attach',7 => 'Detach',8 => 'Request',9 => 'Pass. Reset',//10 => 'Delete',11 => 'F. Login',
+                    6 => 'Attach',7 => 'Detach',8 => 'Request',9 => 'Pass. Reset',10 => 'Logout',//11 => 'F. Login',
                     _=>'N/A'
                 })->badge()->color(fn($state)=>match ($state) {
                     0 => 'info',1 => 'primary',2 => 'gray',3 => 'warning',4 => 'danger',5 => 'danger',
-                    6 => 'primary',7 => 'danger',8 => 'warning',9 => 'info',//10 => 'Delete',11 => 'F. Login',
+                    6 => 'primary',7 => 'danger',8 => 'warning',9 => 'info',10 => 'danger',//11 => 'F. Login',
                     _=>'gray'
                 }),
                 Infolists\Components\TextEntry::make('fen')->label('Page'),
                 Infolists\Components\TextEntry::make('ip')->label('IP Address'),
-                Infolists\Components\TextEntry::make('ua')->label('User-Agent'),
                 Infolists\Components\TextEntry::make('loc')->label('Location'),
                 Infolists\Components\TextEntry::make('created_at')->label('Date')->dateTime(),
+                Infolists\Components\TextEntry::make('ua')->label('User-Agent')->columnSpanFull(),
                 Infolists\Components\TextEntry::make('text')->label('Content')->html()->columnSpanFull(),
             ])->columns([
                 'sm' => 2,
