@@ -65,6 +65,7 @@ class SSOController extends Controller
         $user->email= $sUser->getEmail();
         $user->password= \Illuminate\Support\Facades\Hash::make(now()."xc");
         $user->email_verified_at=now();
+        $user->ax=1;
         $user->save();
 
         $user->oauthProviders()->create([
