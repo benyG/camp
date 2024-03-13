@@ -4249,12 +4249,12 @@
                                                 style="color:#ffffff;font-family:YAEnXArs1iQ-0;line-height:1.08198878em;">
                                                 <style>#gi2MVqHPzZvo2O6m{color:#22c45d;} #gi2MVqHPzZvo2O6m:hover {color:#53e19a;}</style>
                                                 <a id="s7on6ivubvA6pTeD" target="_blank" rel="noopener"
-                                                    href="http://cisspbootcamp.online/boss"
+                                                    href="{{filament()->getLoginUrl()}}"
                                                     style="color:#ffffff;pointer-events:all;"
                                                     data-interstitial-link="">Access a comprehensive database of
                                                     questions and simulate real world-Like exams to</a><a
                                                     id="gi2MVqHPzZvo2O6m" target="_blank" rel="noopener"
-                                                    href="http://cisspbootcamp.online/boss"
+                                                    href="{{filament()->getLoginUrl()}}"
                                                     style="pointer-events:all;"
                                                     data-interstitial-link=""> unlock your full potential</a><br></p>
                                             <p id="sMZpcqbx2RXAiB9a"
@@ -4264,7 +4264,7 @@
                                                 style="font-family:YAEnXArs1iQ-0;line-height:1.08198878em;text-transform:none;letter-spacing:0em;">
                                                <style>#tWDYrPuRruJPOZtI{color:#22c45d;} #tWDYrPuRruJPOZtI:hover {color:#53e19a;}</style>
                                                 <a id="tWDYrPuRruJPOZtI" target="_blank" rel="noopener"
-                                                    href="http://cisspbootcamp.online/boss"
+                                                    href="{{filament()->getLoginUrl()}}"
                                                     style="font-weight:700;pointer-events:all;"
                                                     data-interstitial-link="">Register now !</a><br></p>
                                         </div>
@@ -4288,7 +4288,7 @@
                                         <div class="animated"
                                             style="width: 100%; height: 100%; animation: 500ms ease 100ms 1 normal both running fade-LEFT-1a174cc6-6069-4b4a-8b12-acebbff45f76;">
                                             <a id="JIejgLxAmHSmzAvG" target="_blank" rel="noopener"
-                                                href="https://itexambootcamp.com/boss/" style="pointer-events:all;"
+                                                href="{{filament()->getLoginUrl()}}" style="pointer-events:all;"
                                                 data-interstitial-link=""><svg id="HqfemIBVy815E4m4"
                                                     viewBox="0 0 495.2047 114.8978"
                                                     style="width:100%;height:100%;opacity:1.0;overflow:hidden;position:absolute;top:0%;left:0%;background:url('data:image/png;base64,');">
@@ -4312,7 +4312,7 @@
                                             <p id="xXbbwV93SmnB4UgQ"
                                                 style="font-family:YAEnS2G4JLg-0;line-height:1.39407481em;text-align:center;text-transform:uppercase;letter-spacing:0.03em;">
                                                 <a id="jnC8K9RBNbzrYr8e" target="_blank" rel="noopener"
-                                                    href="https://itexambootcamp.com/boss"
+                                                    href="{{filament()->getLoginUrl()}}"
                                                     style="font-weight:700;pointer-events:all;"
                                                     data-interstitial-link="">START</a><br></p>
                                         </div>
@@ -4514,8 +4514,8 @@
                                         <span id="s4uvc6UQzuKzatSA" style="color:#22c45d;font-weight:700;">What will
                                             you find there?</span><br></p>
                                     <p id="zgUhHxn4Aula5OaF"
-                                        style="color:#ffffff;font-family:YAEnS2G4JLg-0;line-height:1.46551163em;letter-spacing:0.014em;white-space:pre;">
-                                        <br></p>
+                                        style="color:#ffffff;font-family:YAEnS2G4JLg-0;line-height:0.3em;letter-spacing:0.014em;white-space:pre;">
+                                       </p>
                                     <ul id="rDuMc7MlBUezsapI">
                                         <li id="jo8rBdxPk56RzKDX"
                                             style="color:#ffffff;font-family:YAEnS2G4JLg-0;margin-left:1.7em;line-height:1.46551163em;list-style-type:disc;letter-spacing:0.014em;">
@@ -4649,7 +4649,7 @@
                                         <div class="animated"
                                             style="width: 100%; height: 100%; animation: 500ms ease 100ms 1 normal both running fade-RIGHT-ff4ba161-d961-417e-a3a2-d3d4abba120d;">
                                             <a id="uWpi4te3vMYH3I7J" target="_blank" rel="noopener"
-                                                href="https://itexambootcamp.com/boss/" style="pointer-events:all;"
+                                                href="{{filament()->getLoginUrl()}}" style="pointer-events:all;"
                                                 data-interstitial-link=""><svg id="SFZBaCea4Zm6vYTF"
                                                     viewBox="0 0 984.1938 114.8978"
                                                     style="width:100%;height:100%;opacity:1.0;overflow:hidden;position:absolute;top:0%;left:0%;background:url('data:image/png;base64,');">
@@ -4673,7 +4673,7 @@
                                             <p id="m0crykgfTJZxZoST"
                                                 style="font-family:YAEnS2G4JLg-0;line-height:1.39115071em;text-align:center;text-transform:uppercase;letter-spacing:0.03em;">
                                                 <a id="M80GOll0nP3S6Q3b" target="_blank" rel="noopener"
-                                                    href="https://itexambootcamp.com/boss"
+                                                    href="{{filament()->getLoginUrl()}}"
                                                     style="font-weight:700;pointer-events:all;"
                                                     data-interstitial-link="">Test your skilLS GAPS</a><br></p>
                                         </div>
@@ -4979,6 +4979,7 @@
                                 <a href="mailto:contact@itexambootcamp.com" target='_blank'>
                   contact@itexambootcamp.com
                 </a>
+                |
 
     </p>
     </div>

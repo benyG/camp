@@ -22,7 +22,7 @@ class JournResource extends Resource
     protected static ?string $navigationGroup = 'Admin';
     protected static ?string $modelLabel = 'log';
     protected static ?string $slug = 'logs';
-    protected static ?string $navigationLabel = 'Activity Log';
+    protected static ?string $navigationLabel = 'Activity Logs';
 
     protected static ?string $navigationIcon = 'heroicon-o-identification';
 
@@ -65,9 +65,34 @@ class JournResource extends Resource
                     0 => 'S. Login',1 => 'Create',2 => 'Read',3 => 'Update',4 => 'Delete',5 => 'F. Login',
                     6 => 'Attach',7 => 'Detach',8 => 'Request',9 => 'Pass. Reset',10 => 'Logout',//11 => 'F. Login',
                 ]),
-                Tables\Filters\QueryBuilder::make()->label('Date')->constraints([
-                    DateConstraint::make('created_at')->label('Date')
-                ]),
+                Tables\Filters\Filter::make('created_at')
+                    ->form([
+                        Forms\Components\DatePicker::make('created_from')->label('Date start'),
+                        Forms\Components\DatePicker::make('created_until')->label('Date end')
+                            ->default(now()),
+                    ])->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        if ($data['created_from'] ?? null) {
+                            $indicators[] = \Filament\Tables\Filters\Indicator::make('Date from ' . \Illuminate\Support\Carbon::parse($data['created_from'])->toFormattedDateString())
+                                ->removeField('created_from');
+                        }
+                        if ($data['created_until'] ?? null) {
+                            $indicators[] = \Filament\Tables\Filters\Indicator::make('Date until ' . \Illuminate\Support\Carbon::parse($data['created_until'])->toFormattedDateString())
+                                ->removeField('created_until');
+                        }
+                        return $indicators;
+                    }),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -77,8 +102,7 @@ class JournResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
  */            ])
-            ->deferLoading()->striped()->persistFiltersInSession()
-            ->persistSearchInSession()->persistColumnSearchesInSession();
+            ->deferLoading()->striped();
     }
 
     public static function getPages(): array
