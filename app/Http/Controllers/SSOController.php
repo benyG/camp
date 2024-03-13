@@ -36,7 +36,7 @@ class SSOController extends Controller
     protected function findOrCreateUser($provider, $user)
     {
         $oauthProvider = OAuthProvider::where('provider', $provider)
-            ->where('user', $user->getId())
+            ->where('user', $user->getEmail())
             ->first();
 
         if ($oauthProvider) {
@@ -71,7 +71,7 @@ class SSOController extends Controller
             'provider' => $provider,
             'provider_user_id' => $user->id,
             'access_token' => $sUser->token,
-            'user' => $sUser->getId(),
+            'user' => $sUser->getEmail(),
             'refresh_token' => $sUser->refreshToken,
         ]);
 
