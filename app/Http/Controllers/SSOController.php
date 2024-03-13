@@ -70,7 +70,7 @@ class SSOController extends Controller
             'provider' => $provider,
             'provider_user_id' => $user->id,
             'access_token' => $sUser->token,
-            'user' => $sUser->getId(),
+            'user' => $user->id,
             'refresh_token' => $sUser->refreshToken,
         ]);
 
