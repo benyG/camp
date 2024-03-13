@@ -15,7 +15,8 @@ class OAuthProvider extends Model
         'provider',
         'access_token',
         'refresh_token',
-        'provider_user_id'
+        'provider_user_id',
+        'user'
     ];
     public function userRel(): BelongsTo
     {
