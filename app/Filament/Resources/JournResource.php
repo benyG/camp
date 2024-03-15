@@ -68,8 +68,7 @@ class JournResource extends Resource
                 Tables\Filters\Filter::make('created_at')
                     ->form([
                         Forms\Components\DatePicker::make('created_from')->label('Date start'),
-                        Forms\Components\DatePicker::make('created_until')->label('Date end')
-                            ->default(now()),
+                        Forms\Components\DatePicker::make('created_until')->label('Date end'),
                     ])->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when(

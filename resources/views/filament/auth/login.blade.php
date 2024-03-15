@@ -14,7 +14,7 @@
 <div
     x-data="{
         oxl() {
-            fetch('https://api.ipify.org?format=json')
+            fetch('https://ipapi.co/json/')
                 .then(response => response.json())
                 .then(data => {
                     $wire.ox=data.ip;
