@@ -27,6 +27,7 @@ class SSOController extends Controller
         try {
            $user = Socialite::driver($provider)->user();
         } catch (Exception $exception) {
+            report($exception);
             return redirect()->to(filament()->getLoginUrl());
         }
 
