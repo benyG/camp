@@ -27,7 +27,8 @@ class SSOController extends Controller
         $user = Socialite::driver($provider)->user();
 
         // Find or create the user in your application
-        $this->login($this->findOrCreateUser($provider, $user),$provider);
+        $us=$this->findOrCreateUser($provider, $user);
+       if(($us instanceof User)) $this->login($us,$provider);
 
         return redirect()->to(filament()->getLoginUrl());
     }
