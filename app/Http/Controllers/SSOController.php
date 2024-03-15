@@ -12,6 +12,7 @@ use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Filament\Facades\Filament;
 use Filament\Models\Contracts\FilamentUser;
+use Exception;
 
 class SSOController extends Controller
 {
@@ -23,8 +24,11 @@ class SSOController extends Controller
     public function handleProviderCallback($provider)
     {
         session()->regenerate();
-        // Retrieve user information from the OAuth provider
-        $user = Socialite::driver($provider)->user();
+        try {
+           $user = Socialite::driver($provider)->user();
+        } catch (Exception $exception) {
+            return redirect()->to(filament()->getLoginUrl());
+        }
 
         // Find or create the user in your application
         $us=$this->findOrCreateUser($provider, $user);
