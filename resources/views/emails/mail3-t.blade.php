@@ -1,26 +1,26 @@
-Confirm your email address
+{{ __('email.m13') }}
 
-Please confirm your email address in order to activate your account.
+{{ __('email.m14') }}.
 
-Dear Bootcamper,
+{{ __('email.m15') }},
 
-You just applied for an account on ITEXAMBootCamp ({{env('APP_URL')}})
+{{ __('email.m16') }} ({{env('APP_URL')}})
 
-Please confirm your email address to access your Dashboard.
+{{ __('email.m17') }}.
 
 ‍
 
-Confirm email address →
+{{ __('email.m13') }} →
 
 {{$url}}
 
-Click on the button above, or copy and paste the following link to your navigator
-{{$url}} to confirm your email address
-Thanks and Welcome! The IT Exam BootCamp Team
+{{ __('email.m18') }}
+{{$url}} {{ __('email.m19') }}
+{{ __('email.m20') }}! {{ __('email.m9') }}
 ‍
 
-If you never apply for an account on our platform, you can safely ignore this email.
+{{ __('email.m21') }}.
 
 ‍
-The IT Exam BootCamp Team
-Test your knowledge, and let's claim your certificate !
+{{ __('email.m9') }}
+{{ __('email.m7') }}

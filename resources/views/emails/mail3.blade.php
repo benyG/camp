@@ -19,7 +19,7 @@
     td,th,div,p,a,h1,h2,h3,h4,h5,h6 {font-family: "Segoe UI", sans-serif; mso-line-height-rule: exactly;}
   </style>
   <![endif]-->
-  <title>Confirm your email address</title>
+  <title>{{ __('email.m13') }}</title>
   <style>
     img {
       max-width: 100%;
@@ -58,7 +58,7 @@
 </head>
 <body style="margin: 0; width: 100%; background-color: #f8fafc; padding: 0; -webkit-font-smoothing: antialiased; word-break: break-word">
   <div style="display: none">
-    Please confirm your email address in order to activate your account.
+    {{ __('email.m14') }}.
     &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847; &#8199;&#65279;&#847;
   </div>
   <div role="article" aria-roledescription="email" aria-label="Confirm your email address" lang="en">
@@ -72,12 +72,12 @@
               <tr>
                 <td class="sm-px-6" style="border-radius: 4px; background-color: #fff; padding: 40px; font-size: 16px; color: #334155; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)">
                   <h1 class="sm-leading-8" style="margin: 0 0 24px; font-size: 24px; font-weight: 600; color: #000">
-                    Dear Bootcamper,
+                    {{ __('email.m15') }},
                   </h1>
                   <p style="margin: 0; line-height: 24px">
-                    You just applied for an account on <a href="{{env('APP_URL')}}" style="color: #15803d">ITEXAMBootCamp</a>
+                    {{ __('email.m16') }} <a href="{{env('APP_URL')}}" style="color: #15803d">ITEXAMBootCamp</a>
                     <br><br>
-                    Please confirm your email address to access your Dashboard.
+                    {{ __('email.m17') }}.
                   </p>
                   <div role="separator" style="line-height: 10px">&zwj;</div>
                   <div>
@@ -86,7 +86,7 @@
       <i style="mso-font-width: -100%; letter-spacing: 32px; mso-text-raise: 30px" hidden>&nbsp;</i>
     <![endif]-->
                       <span style="mso-text-raise: 16px">
-                  Confirm email address &rarr;
+                 {{ __('email.m13') }} &rarr;
                 </span>
                       <!--[if mso]>
       <i style="mso-font-width: -100%; letter-spacing: 32px;" hidden>&nbsp;</i>
@@ -94,12 +94,12 @@
                     </a>
                   </div>
                   <br>
-                  Click on the button above, or copy and paste the following link to your navigator
-                  <span style="color: #15803d;">{{$url}}</a> to confirm your email address<br><br>
-                  Thanks and Welcome! <br><span style="font-size: 16px; font-style: italic; color: #94a3b8">The ITExamBootCamp Team</span>
+                  {{ __('email.m18') }}
+                  <span style="color: #15803d;">{{$url}}</a> {{ __('email.m19') }}<br><br>
+                  {{ __('email.m20') }}! <br><span style="font-size: 16px; font-style: italic; color: #94a3b8">{{ __('email.m9') }}</span>
                   <div role="separator" style="background-color: #e2e8f0; height: 1px; line-height: 1px; margin: 20px 0">&zwj;</div>
                   <p style="margin: 0; font-size: 12px">
-                    If you never applied for an account on our platform, you can safely ignore this email.
+                    {{ __('email.m21') }}.
                   </p>
                 </td>
               </tr>
@@ -112,10 +112,10 @@
                     <img src="{{$message->embed(public_path('img/logo-mail.png'))}}" style="width:220px"/>
                   </p>
                   <p style="margin: 0; font-style: italic;">
-                    Test your knowledge, and let's claim your certificate !
+                    {{ __('email.m7') }}
                   </p>
                   <p style="cursor: default">
-                    <a href="{{env('APP_URL')}}" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none">Home</a>
+                    <a href="{{env('APP_URL')}}" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none">{{ __('main.home') }}</a>
                     &bull;
                     <a href="#" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none;">Docs</a>
                     &bull;

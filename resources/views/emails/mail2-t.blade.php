@@ -1,21 +1,21 @@
-Hello {{$name}},
+{{ __('email.hello') }} {{$name}},
 
-An exam was affected to you on the {{$para[0]}}
+{{ __('email.m10') }} {{$para[0]}}
 
-Title : {{$para[1]}}
+{{ __('main.ti') }} : {{$para[1]}}
 Certification : {{$para[3]}}
-Due Date : {{$para[2]}}
+{{ __('mail.dd') }} : {{$para[2]}}
 
-Please log in to your dashboad to complete the test.
+{{ __('email.m11') }}.
 ‍
 
-Take Exam → {{\App\Filament\Resources\ExamResource::getUrl()}}
+{{ __('email.m12') }} → {{\App\Filament\Resources\ExamResource::getUrl()}}
 
-Thanks, The ITExamBootCamp Team
+{{ __('email.m4') }}
 ‍
 
-This email was sent to {{$email}}
-If this is a mistake, you can safely ignore this email.
+{{ __('email.m5') }} {{$email}}
+{{ __('email.m6') }}.
 
 IT Exam Boot Camp
-Test your knowledge, and let's claim your certificate !
+{{ __('email.m7') }}

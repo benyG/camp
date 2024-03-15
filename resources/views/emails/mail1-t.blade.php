@@ -1,17 +1,17 @@
-Hello {{$name}},
+{{ __('email.hello') }} {{$name}},
 
-You have a new private message from your coach.
+{{ __('email.m1') }}.
 
-Please log in to your dashboad to read it.
+{{ __('email.m2') }}.
 ‍
 
-Login to Dashboard → {{env('APP_URL')}}/boss
+{{ __('email.m3') }} → {{filament()->getLoginUrl()}}
 
-Thanks, The ITExamBootCamp Team
+{{ __('email.m4') }}
 ‍
 
-This email was sent to {{$email}}
-If this is a mistake, you can safely ignore this email.
+{{ __('email.m5') }}{{$email}}
+{{ __('email.m6') }}.
 
 ITExamBootCamp
-Test your knowledge, and let's claim your certificate !
+{{ __('email.m7') }}
