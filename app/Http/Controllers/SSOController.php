@@ -13,13 +13,14 @@ use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Filament\Facades\Filament;
 use Filament\Models\Contracts\FilamentUser;
 use Exception;
+use Illuminate\Support\Str;
 
 class SSOController extends Controller
 {
     use WithRateLimiting;
     public function redirectToProvider($provider)
     {
-        return Socialite::driver($provider)->redirect();
+        return Str::contains($provider, 'linkedin')?Socialite::driver("linkedinopenid")->redirect(): Socialite::driver($provider)->redirect();
     }
     public function handleProviderCallback($provider)
     {
