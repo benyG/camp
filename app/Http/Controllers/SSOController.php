@@ -26,7 +26,7 @@ class SSOController extends Controller
     {
         session()->regenerate();
         try {
-           $user = Socialite::driver($provider)->user();
+           $user =Str::contains($provider, 'linkedin')?Socialite::driver("linkedin-openid")->user(): Socialite::driver($provider)->user();
         } catch (Exception $exception) {
             report($exception);
             return redirect()->to(filament()->getLoginUrl());
