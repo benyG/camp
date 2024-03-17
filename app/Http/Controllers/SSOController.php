@@ -19,7 +19,7 @@ class SSOController extends Controller
     use WithRateLimiting;
     public function redirectToProvider($provider)
     {
-        return $provider=="linkedin"?Socialite::driver($provider)->setScopes(['profile','openid'])->redirect(): Socialite::driver($provider)->redirect();
+        return $provider=="linkedin"?Socialite::driver($provider)->setScopes(['openid','profile','email'])->redirect(): Socialite::driver($provider)->redirect();
     }
     public function handleProviderCallback($provider)
     {
