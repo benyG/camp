@@ -62,7 +62,7 @@ class LinkedInProvider extends AbstractProvider implements ProviderInterface
             array_push($fields, 'vanityName');
         }
 
-        $response = $this->getHttpClient()->get('https://api.linkedin.com/v2/userinfo', [
+        $response = $this->getHttpClient()->get('https://api.linkedin.com/v2/me', [
             RequestOptions::HEADERS => [
                 'Authorization' => 'Bearer '.$token,
                 'X-RestLi-Protocol-Version' => '2.0.0',

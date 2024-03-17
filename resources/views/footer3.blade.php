@@ -36,7 +36,7 @@
         </form>
     </div>
     <div>
-        <form method="post" action="{{ route('oauth.redirect', ['driver' => 'linkedin']) }}"> @csrf
+        <form method="post" action="{{ route('oauth.redirect', ['driver' => 'linkedinopenid']) }}"> @csrf
             <button
                 class="w-full text-sm rounded-lg inline-flex items-center justify-center
                 fi-btn relative font-semibold outline-none transition duration-75 focus-visible:ring-2 fi-color-gray fi-btn-color-gray fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 shadow-sm bg-white text-gray-950 hover:bg-gray-50 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 ring-1 ring-gray-950/10 dark:ring-white/20 fi-ac-action fi-ac-btn-action"
