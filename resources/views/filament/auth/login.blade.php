@@ -29,6 +29,6 @@
             :full-width="$this->hasFullWidthFormActions()"
         />
     </x-filament-panels::form>
-
+<div class='-mt-4 text-xs text-right'>Don't have an account ? {{ $this->registerAction }}</div>
     {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::AUTH_LOGIN_FORM_AFTER, scopes: $this->getRenderHookScopes()) }}
 </x-filament-panels::page.simple>
