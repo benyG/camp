@@ -47,7 +47,7 @@ class Login extends BaseLogin
     }
     public function authenticate(): ?LoginResponse
     {
-        dd($this->ox);
+     //   dd($this->ox);
         try {
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
