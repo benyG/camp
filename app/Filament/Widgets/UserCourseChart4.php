@@ -63,7 +63,7 @@ class UserCourseChart4 extends ChartWidget
         $exx=Exam::where('certi',$this->cs)->whereIn('type',$arx)->limit($ix->taff)->get()->pluck('id')->toArray();
             $exa=ExamUser::selectRaw('DATE(added) as ax,COUNT(*) as exa')
             ->where('user',$this->record->id)->whereIn('exam',$exx)->
-            groupBy(DB::raw('DATE(added)'))->latest('ax')->get();
+            groupBy(DB::raw('DATE(added)'))->oldest('ax')->get();
            // dd($exa->count());
             foreach ($exa as $ex) {
             $md1=0;$md2=0;

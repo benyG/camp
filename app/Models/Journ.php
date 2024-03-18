@@ -20,14 +20,15 @@ class Journ extends Model
     {
         return $this->belongsTo(User::class,'user','id');
     }
-    public static function add($us=null,$fen,$ac,$txt,$ip=""){
+    public static function add($us=null,$fen,$ac,$txt,$ip=array()){
        // dd(Location::get('66.102.0.0'));
         $fl = new Journ;
         $fl->user = isset($us)?$us->id:null;$fl->fen = $fen;$fl->ac = $ac;$fl->text = $txt;
         $fl->ua=$_SERVER['HTTP_USER_AGENT'];
-        if (!empty($ip) && $position = Location::get($ip)) {
-            $fl->loc= $position->countryName;
-            $fl->ip= $ip;
+        if (!empty($ip)) {
+          //  && $position = Location::get($ip)
+            $fl->loc=  $ip['city'].' / '.$ip['country_name'];
+            $fl->ip= $ip['ip'];
         } else {
         }
         $fl->save();

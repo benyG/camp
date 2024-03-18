@@ -4,9 +4,10 @@
     <base href="/">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITExamBootcamp</title>
+    <x-author/>
+    <title>ITExamBootcamp - {{__('main.w1')}}</title>
     <meta name="description"
-        content="Access a comprehensive database of questions and simulate real exams to shine in your IT certifications path. Register now !">
+        content="{{__('main.w2')}}">
     <link rel="icon" href="{{asset('favicon.ico')}}" type="image/ico" sizes="16x16">
     <link rel="icon" href="{{asset('favicon.ico')}}" type="image/ico" sizes="32x32">
     <link rel="apple-touch-icon" href="{{asset('favicon.ico')}}" sizes="180x180">
@@ -14,7 +15,7 @@
     <meta property="og:url" content="{{env('APP_URL')}}">
     <meta property="og:title" content="ITExamBootcamp">
     <meta property="og:description"
-        content="Access a comprehensive database of questions and simulate real exams to shine in your IT certifications path. Register now !">
+        content="{{__('main.w2')}}">
     <meta property="og:image" content="{{asset('img/22a22d5e62428c9beb1cda1f4e73eb53.png')}}">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
@@ -4222,14 +4223,12 @@
                                             <p id="CAyu0HtX4x7jaEdB"
                                                 style="color:#ffffff;font-family:YAEnXArs1iQ-0;line-height:1.0822628em;">
                                                 <span id="rCrwmpjkwB1XqFkm"
-                                                    style="color:#ffffff;font-weight:700;">Modern </span><span
-                                                    id="Ety9J8n4gMOBwCER" style="color:#22c55e;font-weight:700;">AI
-                                                    powered</span><span id="vjs0HsDCMnfBef4d"
-                                                    style="color:#ffffff;font-weight:700;"> platform </span><br></p>
+                                                    style="color:#ffffff;font-weight:700;">{{__('main.w3')}} </span><span
+                                                    id="Ety9J8n4gMOBwCER" style="color:#22c55e;font-weight:700;">{{__('main.w4')}}</span><span id="vjs0HsDCMnfBef4d"
+                                                    style="color:#ffffff;font-weight:700;"> {{__('main.w5')}} </span><br></p>
                                             <p id="LFRvW4oDmwzpS7mw"
                                                 style="color:#ffffff;font-family:YAEnXArs1iQ-0;line-height:1.07848688em;">
-                                                <span id="hdePTJxO8C468B9P" style="color:#ffffff;font-weight:700;">for
-                                                    IT certification exam simulations</span></p>
+                                                <span id="hdePTJxO8C468B9P" style="color:#ffffff;font-weight:700;">{{__('main.w6')}}</span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -4251,12 +4250,11 @@
                                                 <a id="s7on6ivubvA6pTeD" target="_blank" rel="noopener"
                                                     href="{{filament()->getLoginUrl()}}"
                                                     style="color:#ffffff;pointer-events:all;"
-                                                    data-interstitial-link="">Access a comprehensive database of
-                                                    questions and simulate real world-Like exams to</a><a
+                                                    data-interstitial-link="">{{__('main.w7')}}</a><a
                                                     id="gi2MVqHPzZvo2O6m" target="_blank" rel="noopener"
                                                     href="{{filament()->getLoginUrl()}}"
                                                     style="pointer-events:all;"
-                                                    data-interstitial-link=""> unlock your full potential</a><br></p>
+                                                    data-interstitial-link=""> {{__('main.w8')}}</a><br></p>
                                             <p id="sMZpcqbx2RXAiB9a"
                                                 style="color:#ffffff;font-family:YAEnXArs1iQ-0;line-height:1.08198878em;white-space:pre;">
                                                 <br></p>
@@ -4266,7 +4264,7 @@
                                                 <a id="tWDYrPuRruJPOZtI" target="_blank" rel="noopener"
                                                     href="{{filament()->getLoginUrl()}}"
                                                     style="font-weight:700;pointer-events:all;"
-                                                    data-interstitial-link="">Register now !</a><br></p>
+                                                    data-interstitial-link="">{{__('main.w9')}}</a><br></p>
                                         </div>
                                     </div>
                                 </div>
@@ -4314,7 +4312,7 @@
                                                 <a id="jnC8K9RBNbzrYr8e" target="_blank" rel="noopener"
                                                     href="{{filament()->getLoginUrl()}}"
                                                     style="font-weight:700;pointer-events:all;"
-                                                    data-interstitial-link="">START</a><br></p>
+                                                    data-interstitial-link="">{{__('main.w10')}}</a><br></p>
                                         </div>
                                     </div>
                                 </div>
@@ -4378,10 +4376,9 @@
                                     style="opacity:1.0;display:flex;box-sizing:border-box;flex-direction:column;justify-content:flex-start;width:100%;height:100%;">
                                     <p id="mPJdkOcCWoIY5YuR"
                                         style="color:#ffffff;font-family:YAEnXArs1iQ-0;line-height:1.07788907em;"><span
-                                            id="QTuxEKzSBHBTHwaA" style="color:#ffffff;font-weight:700;">A realistic
-                                        </span><span id="iExBaXPATwnuXw1R" style="color:#22c45d;font-weight:700;">exam
-                                            simulation</span><span id="XAu8Kn67LZMBj2Ct"
-                                            style="color:#ffffff;font-weight:700;"> engine to support you.</span></p>
+                                            id="QTuxEKzSBHBTHwaA" style="color:#ffffff;font-weight:700;">{{__('main.w11')}}
+                                        </span><span id="iExBaXPATwnuXw1R" style="color:#22c45d;font-weight:700;">{{__('main.w12')}}</span><span id="XAu8Kn67LZMBj2Ct"
+                                            style="color:#ffffff;font-weight:700;"> {{__('main.w13')}}</span></p>
                                 </div>
                             </div>
                         </div>
@@ -4511,30 +4508,25 @@
                                     style="opacity:1.0;display:flex;box-sizing:border-box;flex-direction:column;justify-content:flex-start;width:100%;height:100%;">
                                     <p id="lJb9Eht0VTUHgtOi"
                                         style="color:#ffffff;font-family:YAEnS2G4JLg-0;line-height:1.46551163em;letter-spacing:0.014em;">
-                                        <span id="s4uvc6UQzuKzatSA" style="color:#22c45d;font-weight:700;">What will
-                                            you find there?</span><br></p>
+                                        <span id="s4uvc6UQzuKzatSA" style="color:#22c45d;font-weight:700;">{{__('main.w14')}}</span><br></p>
                                     <p id="zgUhHxn4Aula5OaF"
                                         style="color:#ffffff;font-family:YAEnS2G4JLg-0;line-height:0.3em;letter-spacing:0.014em;white-space:pre;">
                                        </p>
                                     <ul id="rDuMc7MlBUezsapI">
                                         <li id="jo8rBdxPk56RzKDX"
                                             style="color:#ffffff;font-family:YAEnS2G4JLg-0;margin-left:1.7em;line-height:1.46551163em;list-style-type:disc;letter-spacing:0.014em;">
-                                            <span id="IMktRg1f9U5otSuG" style="color:#ffffff;">Real-world exam
-                                                questions</span></li>
+                                            <span id="IMktRg1f9U5otSuG" style="color:#ffffff;">{{__('main.w15')}}</span></li>
                                         <li id="rx2cQjUuf1JXDyVv"
                                             style="color:#ffffff;font-family:YAEnS2G4JLg-0;margin-left:1.7em;line-height:1.46551163em;list-style-type:disc;letter-spacing:0.014em;">
-                                            <span id="TcKko05CPHXb3WnC" style="color:#ffffff;">Configurable
-                                                environment designed to reproduce the conditions of a </span><span
-                                                id="cz7gzkoVOJ7AHQdf" style="color:#22c55e;">REAL exam</span><br></li>
+                                            <span id="TcKko05CPHXb3WnC" style="color:#ffffff;">{{__('main.w16')}} </span><span
+                                                id="cz7gzkoVOJ7AHQdf" style="color:#22c55e;">{{__('main.w17')}}</span><br></li>
                                         <li id="Rp2fN3hph5rvnli6"
                                             style="color:#ffffff;font-family:YAEnS2G4JLg-0;margin-left:1.7em;line-height:1.46551163em;list-style-type:disc;letter-spacing:0.014em;">
-                                            <span id="OOEn6wFeAeOYIiTk" style="color:#ffffff;">Performance monitoring
-                                                with relevant improvement advice</span></li>
+                                            <span id="OOEn6wFeAeOYIiTk" style="color:#ffffff;">{{__('main.w18')}}</span></li>
                                         <li id="i7rrl51a1MkXlKww"
                                             style="color:#ffffff;font-family:YAEnS2G4JLg-0;margin-left:1.7em;line-height:1.46551163em;list-style-type:disc;letter-spacing:0.014em;">
-                                            <span id="L9tQ4JYFespbfwZK" style="color:#22c55e;">AI-powered</span><span
-                                                id="dvvXAj1L7bqQROt2" style="color:#ffffff;"> technology to help you
-                                                achieve your goals</span></li>
+                                            <span id="L9tQ4JYFespbfwZK" style="color:#22c55e;">{{__('main.w19')}}</span><span
+                                                id="dvvXAj1L7bqQROt2" style="color:#ffffff;"> {{__('main.w20')}}</span></li>
                                     </ul>
                                 </div>
                             </div>
@@ -4675,7 +4667,7 @@
                                                 <a id="M80GOll0nP3S6Q3b" target="_blank" rel="noopener"
                                                     href="{{filament()->getLoginUrl()}}"
                                                     style="font-weight:700;pointer-events:all;"
-                                                    data-interstitial-link="">Test your skilLS GAPS</a><br></p>
+                                                    data-interstitial-link="">{{__('main.w21')}}</a><br></p>
                                         </div>
                                     </div>
                                 </div>
@@ -4773,11 +4765,11 @@
                                     <p id="ZGd5BgI33ioxKyHw"
                                         style="color:#ffffff;font-family:YAEnXArs1iQ-0;line-height:1.09393578em;"><span
                                             id="sym9nbe3LAxe3m6C"
-                                            style="color:#ffffff;font-weight:700;">Optimized</span></p>
+                                            style="color:#ffffff;font-weight:700;">{{__('main.w22')}}</span></p>
                                     <p id="iJybt1bAgDtXzSxF"
                                         style="color:#ffffff;font-family:YAEnXArs1iQ-0;line-height:1.09393578em;text-transform:none;letter-spacing:0em;">
                                         <span id="o6nXKh6Z34lAQNgJ"
-                                            style="color:#22c45d;font-weight:700;font-size:90%">Self-training</span><br></p>
+                                            style="color:#22c45d;font-weight:700;font-size:90%">{{__('main.w23')}}</span><br></p>
                                 </div>
                             </div>
                         </div>
@@ -4793,32 +4785,26 @@
                                     <ul id="LA6SRwBLzIsmuH4p">
                                         <li id="OambHzQWlmRz6ceF"
                                             style="color:#ffffff;font-family:YAEnXArs1iQ-0;margin-left:1.7em;line-height:1.66908595em;list-style-type:disc;">
-                                            <span id="HxM6WlQsbw8TsWwA" style="color:#ffffff;">Practical, Personalized
-                                                and monitored</span><br></li>
+                                            <span id="HxM6WlQsbw8TsWwA" style="color:#ffffff;">{{__('main.w24')}}</span><br></li>
                                         <li id="XjpWbnWDMs2oD1z9"
                                             style="color:#22c45d;font-family:YAEnXArs1iQ-0;margin-left:1.7em;line-height:1.66908595em;list-style-type:disc;">
-                                            <span id="uOv5fwJbmAZVc9ul" style="color:#22c45d;">AI optimized
-                                                assistant</span><span id="YTCn20PaQK6lav6Z" style="color:#22c45d;">
+                                            <span id="uOv5fwJbmAZVc9ul" style="color:#22c45d;">{{__('main.w25')}}</span><span id="YTCn20PaQK6lav6Z" style="color:#22c45d;">
                                             </span><br></li>
                                         <li id="MsEL2LM01Nt0qpHx"
                                             style="color:#ffffff;font-family:YAEnXArs1iQ-0;margin-left:1.7em;line-height:1.66908595em;list-style-type:disc;">
-                                            <span id="JqwlWgOLnuK76HbD" style="color:#ffffff;">Test your
-                                                knowledgecontinuously</span><br></li>
+                                            <span id="JqwlWgOLnuK76HbD" style="color:#ffffff;">{{__('main.w26')}}</span><br></li>
                                         <li id="is0iU2kNCNfnIoIH"
                                             style="color:#ffffff;font-family:YAEnXArs1iQ-0;margin-left:1.7em;line-height:1.66908595em;list-style-type:disc;">
-                                            <span id="P3kn2JGwMf9LBc2Q" style="color:#ffffff;">Simulate </span><span
-                                                id="vtzFgtPhrgaOF5Rf" style="color:#ffffff;">exams and test your
-                                                readiness </span><br></li>
+                                            <span id="P3kn2JGwMf9LBc2Q" style="color:#ffffff;">{{__('main.w27')}} </span><br></li>
                                         <li id="wA5Q8OOMIeJGVZ4H"
                                             style="color:#ffffff;font-family:YAEnXArs1iQ-0;margin-left:1.7em;line-height:1.66908595em;list-style-type:disc;">
-                                            <span id="b0QMFwzY7PjN7AEj" style="color:#ffffff;">Be prepared for
+                                            <span id="b0QMFwzY7PjN7AEj" style="color:#ffffff;">{{__('main.w29')}}
                                             </span><span id="jZg4vxk5WGc7RWyN" style="color:#22c55e;">CISSP, CISA,
                                                 CCSP, CompTIA Security+, PMP, CISM</span><span id="w0KWYczF7SMTX4hR"
-                                                style="color:#ffffff;"> and more.</span></li>
+                                                style="color:#ffffff;"> {{__('main.w30')}}</span></li>
                                         <li id="ZExBvpC3fjhjWTva"
                                             style="color:#ffffff;font-family:YAEnXArs1iQ-0;margin-left:1.7em;line-height:1.66908595em;list-style-type:disc;">
-                                            <span id="AzazU8ek0EIxkOsb" style="color:#ffffff;">Pre and post-exam
-                                                advice and mentoring</span><br></li>
+                                            <span id="AzazU8ek0EIxkOsb" style="color:#ffffff;">{{__('main.w31')}}</span><br></li>
                                     </ul>
                                 </div>
                             </div>
@@ -4975,7 +4961,7 @@
     <p> &copy; 2024 <span >IT EXAM BOOT CAMP.</span> All rights reserved. |
                 <a href="https://www.termsfeed.com/live/2214b8f2-eb0d-4feb-9afa-f4bdce142c37" target='_blank'>
                    {{ __('main.pol') }}
-                </a> | Write us here
+                </a> | {{__('main.w28')}}
                                 <a href="mailto:contact@itexambootcamp.com" target='_blank'>
                   contact@itexambootcamp.com
                 </a>

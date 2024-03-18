@@ -71,6 +71,7 @@ class SSOController extends Controller
         $user->password= \Illuminate\Support\Facades\Hash::make(now()."xc");
         $user->email_verified_at=now();
         $user->ax=1;
+        $user->tz=isset(session('auth_ip')['timezone'])?session('auth_ip')['timezone']:'UTC';
         $user->save();
 
         $user->oauthProviders()->create([
@@ -85,24 +86,25 @@ class SSOController extends Controller
 
         return $user;
     }
-    protected function createUser2()
-    {
-        $user =new User;
-        $user->name= "ddd";
-        $user->email= "ddd";
-        $user->password= \Illuminate\Support\Facades\Hash::make(now()."xc");
-        $user->email_verified_at=now();
-        $user->save();
+    /*     protected function createUser2()
+        {
+            $user =new User;
+            $user->name= "ddd";
+            $user->email= "ddd";
+            $user->password= \Illuminate\Support\Facades\Hash::make(now()."xc");
+            $user->email_verified_at=now();
+            $user->save();
 
-        $user->oauthProviders()->create([
-            'provider' => "d",
-            'provider_user_id' => $user->id,
-            'access_token' => "dd",
-            'refresh_token' => "ddd",
-        ]);
+            $user->oauthProviders()->create([
+                'provider' => "d",
+                'provider_user_id' => $user->id,
+                'access_token' => "dd",
+                'refresh_token' => "ddd",
+            ]);
 
-        return $user;
-    }
+            return $user;
+        }
+    */
     protected function login($sUser, $provider){
         try {
             $this->rateLimit(5);

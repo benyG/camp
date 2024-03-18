@@ -73,7 +73,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-          //  ->renderHook('panels::page.end',fn (): string => Blade::render('footer'))
+          ->renderHook('panels::head.end',fn (): string => Blade::render('components.author'))
           ->renderHook('panels::auth.login.form.after',fn (): string => Blade::render('footer3'))
           ->renderHook('panels::auth.register.form.after',fn (): string => Blade::render('footer4'))
             ->renderHook('panels::user-menu.before',fn (): string => Blade::render('head1'))
