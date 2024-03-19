@@ -17,7 +17,7 @@ class ManageModules extends ManageRecords
               //  dd($record);
                 $txt="New module created ! <br>
                 Name: $record->name <br>
-                Certification: ".$record->certRel->name." <br>
+                Certification: ".$record->courseRel->name." <br>
                 ";
                 \App\Models\Journ::add(auth()->user(),'Modules',1,$txt);
         }),
