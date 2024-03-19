@@ -72,17 +72,17 @@ a:hover
 <div id="bv_Text1" style="margin:0;padding:0;position:absolute;left:294px;top:292px;width:560px;height:44px;text-align:left;z-index:3;">
            <br>         @switch($exception->getStatusCode())
                         @case(404)
-<font style="font-size:19px" color="#FFFFFF" face="Arial">Oops! The page you are looking for might be in another castle.<br><br>
-<a href="{{env('APP_URL')}}" target="_self">Return to Home</a> or contact support if you believe this is an error.</font>
+<font style="font-size:19px" color="#FFFFFF" face="Arial">Oops! {{__('main.e1')}}.<br><br>
+<a href="{{env('APP_URL')}}" target="_self">{{__('main.e1')}}</a> {{__('main.e3')}}.</font>
                             @break
 
                         @case(419)
-                        <font style="font-size:19px" color="#FFFFFF" face="Arial">The page expired after a long time with no user interaction. Please refresh the page.<br>
+                        <font style="font-size:19px" color="#FFFFFF" face="Arial">{{__('main.e4')}}.<br>
                         </font>
                             @break
                         @case(500)
-                        <font style="font-size:19px" color="#FFFFFF" face="Arial">An error occured during the process. Please contact the administrator.<br><br>
-                          Try something else or contact support.</font>
+                        <font style="font-size:19px" color="#FFFFFF" face="Arial">{{__('main.e5')}}.<br><br>
+                          {{__('main.e6')}}.</font>
                             @break
                         @default
                            {{$exception->getMessage()}}

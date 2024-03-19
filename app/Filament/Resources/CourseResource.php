@@ -19,16 +19,28 @@ class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
     protected static ?int $navigationSort = 60;
-    protected static ?string $navigationGroup = 'Teachers';
     protected static ?string $modelLabel = 'certification';
     protected static ?string $slug = 'certifications';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static bool $hasTitleCaseModelLabel = false;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('main.m3');
+    }
+    public static function getModelLabel(): string
+    {
+        return trans_choice('main.m7',1);
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return trans_choice('main.m7',2);
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('name')->label(__('form.na'))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('descr')->columnSpanFull()->label('Description'),
@@ -40,16 +52,16 @@ class CourseResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('name')->label(__('form.na'))
                     ->searchable()->sortable()->description(fn (Course $record): ?string => $record->descr),
                     Tables\Columns\TextColumn::make('modules_count')->counts('modules')->label('Modules')
                     ->numeric()->sortable(),
                     Tables\Columns\TextColumn::make('questions_count')->counts('questions')->label('Questions')
                     ->numeric()->sortable(),
-                    Tables\Columns\TextColumn::make('users_count')->counts('users')->label('Users')
+                    Tables\Columns\TextColumn::make('users_count')->counts('users')->label(trans_choice('main.m5',5))
                     ->numeric()->sortable(),
-                    Tables\Columns\IconColumn::make('pub')->boolean()->label('Published')->sortable(),
-                    Tables\Columns\TextColumn::make('added_at')
+                    Tables\Columns\IconColumn::make('pub')->boolean()->label(__('form.pub'))->sortable(),
+                    Tables\Columns\TextColumn::make('added_at')->label(__('form.aat'))
                     ->dateTime()->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
             ])

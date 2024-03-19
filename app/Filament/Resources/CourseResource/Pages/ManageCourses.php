@@ -13,7 +13,7 @@ class ManageCourses extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('e')->label('Approvals')->color('info')
+            Actions\Action::make('e')->label(__('main.m6'))->color('info')
             ->url(fn (): string => $this->getResource()::getUrl('approve')),
             Actions\CreateAction::make()
             ->after(function ($data) {

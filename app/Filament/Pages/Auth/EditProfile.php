@@ -22,10 +22,10 @@ class EditProfile extends BaseEditProfile
                 $this->getPasswordFormComponent()
                 ->regex('/^\S*(?=.*\d)(?=\S*[\W])[a-zA-Z\d]\S*$/i')
                 ->validationMessages([
-                    'regex' => "There should be at least one special character, and one digit. No spaces",
+                    'regex' => __('form.e1'),
                 ]),
                 $this->getPasswordConfirmationFormComponent(),
-                Forms\Components\Select::make('tz')->label('Timezone')->required()
+                Forms\Components\Select::make('tz')->label(__('form.tz'))->required()
                 ->options(function(){
                     $oo=mtz();
                     $ap=array();

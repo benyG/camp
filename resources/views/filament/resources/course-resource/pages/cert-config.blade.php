@@ -4,7 +4,7 @@
         {{ $this->form }}
 <br/><br/>
 <x-filament::button type="submit" color="success">
-    Save
+    {{__('form.sa')}}
 </x-filament::button>
     </form>
 

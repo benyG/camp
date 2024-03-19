@@ -36,10 +36,15 @@ class Handler extends ExceptionHandler
     function render($request, Throwable $exception)
     {
         if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
+            \App\Models\Journ::add(auth()->user(),'Login',10,"Session expiration. Loging out");
            return redirect()->to(filament()->getLoginUrl());
         }
-        if(method_exists($exception,'getStatusCode') && $exception->getStatusCode()==419) return redirect()->to(filament()->getLoginUrl());
+        if(method_exists($exception,'getStatusCode') && $exception->getStatusCode()==419)
+        {
+            \App\Models\Journ::add(auth()->user(),'Login',10,"Session expiration. Loging out");
+            return redirect()->to(filament()->getLoginUrl());}
         if ($this->isHttpException($exception) || ($request->hasHeader('X-Livewire') && app()->environment() != 'local')) {
+            \App\Models\Journ::add(auth()->user(),'Login',10,"Session expiration. Loging out");
             return response()->view('errors.err',['exception'=>$exception]);
         }
         return parent::render($request, $exception);

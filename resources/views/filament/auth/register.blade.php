@@ -11,19 +11,7 @@
 
     <x-filament-panels::form wire:submit="register">
         {{ $this->form }}
-<div
-    x-data="{
-        oxl() {
-            fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
-                .then(data => {
-                    $wire.ox=data.ip;
-                })
-                .catch(error => console.error('Error', error));
-        }
-    }"
-    x-init="oxl;">
-</div>
+ <x-ip />
         <x-filament-panels::form.actions
             :actions="$this->getCachedFormActions()"
             :full-width="$this->hasFullWidthFormActions()"

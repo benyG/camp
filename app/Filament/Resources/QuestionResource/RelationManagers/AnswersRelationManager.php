@@ -98,6 +98,8 @@ class AnswersRelationManager extends RelationManager
                 Tables\Actions\EditAction::make()->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
                     $reco=$record->replicate();
                     $record->update($data);
+                    $record->questions()->updateExistingPivot($this->getOwnerRecord()->id, ['isok' => $data['isok']]);
+                  //  $record->
                     $txt="";
                     if($record->wasChanged()){
                         if($record->wasChanged('text')){

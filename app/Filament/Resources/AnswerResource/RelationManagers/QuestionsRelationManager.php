@@ -25,7 +25,7 @@ class QuestionsRelationManager extends RelationManager
             ->recordTitle(fn (\App\Models\Question $record): string => $record->text2)
             ->columns([
                 Tables\Columns\TextColumn::make('text2')->limit(100)->label('Question'),
-                Tables\Columns\IconColumn::make('isok')->boolean()->label('Answer ?')
+                Tables\Columns\IconColumn::make('isok')->boolean()->label(__('main.an1'))
             ])
             ->filters([
                 //
@@ -34,7 +34,7 @@ class QuestionsRelationManager extends RelationManager
                 Tables\Actions\AttachAction::make()->recordSelectSearchColumns(['text'])
                 ->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
-                    Forms\Components\Toggle::make('isok')->label('Is an answer ?')->required(),
+                    Forms\Components\Toggle::make('isok')->label(__('main.an1'))->required(),
                 ])->color('primary')
                 ->after(function ($data) {
                     $txt="Attaching

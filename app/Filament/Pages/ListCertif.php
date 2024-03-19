@@ -24,7 +24,6 @@ class ListCertif extends Page implements HasTable
     use InteractsWithTable;
     protected static ?string $title = 'Portfolio';
     protected static ?string $slug = 'portfolio';
-    protected ?string $subheading = 'Check the list of the certifications you are following. Use the button Add to request for more.';
     protected static string $view = 'filament.pages.list-certif';
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?int $navigationSort = 5;
@@ -32,11 +31,14 @@ class ListCertif extends Page implements HasTable
     public function mount(): void
     {
     }
-
+    public function getSubheading(): ?string
+    {
+        return __('main.lc1');
+    }
     protected function getHeaderActions(): array
 {
     return [
-        Actions\Action::make('Add')->form([
+        Actions\Action::make('rrtt')->label(__('form.add'))->form([
             Forms\Components\Select::make('cou')->required()
             ->options(\App\Models\Course::where('pub',true)->doesntHave('users1')
             ->pluck('name', 'id'))->label('Certifications')->multiple()->preload(),
@@ -54,7 +56,7 @@ class ListCertif extends Page implements HasTable
                     'Thanks in advance. <br> <i>'.auth()->user()->name.'</i>';
                 $ma->save();
                 $ma->users2()->attach($us->id);
-                Notification::make()->success()->title('Request for joining \''.$rec->name.'\' was sent to the administrators. Please wait for the reply.')->send();
+                Notification::make()->success()->title(__('form.e3',['name'=>$rec->name]))->send();
                 if($ix->smtp){
                     try {
                      //   Notif::send($us, new NewMail($ma->sub,[auth()->user()->name,auth()->user()->email,$rec->name],'5'));
@@ -62,7 +64,7 @@ class ListCertif extends Page implements HasTable
                       $ma->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
                     } catch (Exception $exception) {
                         Notification::make()
-                            ->title('Error occured.')
+                            ->title(__('form.e4'))
                             ->danger()
                             ->send();
                     }
@@ -75,8 +77,8 @@ class ListCertif extends Page implements HasTable
                 $txt="Request to join '$rec->name' ";
                 \App\Models\Journ::add(auth()->user(),'Portfolio',8,$txt);
             }
-        })->color('success')->modalHeading('Add to portfolio')
-        ->modalSubmitActionLabel('Request to join')
+        })->color('success')->modalHeading(__('main.lc2'))
+        ->modalSubmitActionLabel(__('form.rj'))
 
     ];
 }
@@ -84,24 +86,24 @@ class ListCertif extends Page implements HasTable
     {
         return $table
         ->query(Course::has('users1')->with('users1')->withCount('modules')->withCount('questions')->where('pub',true))
-        ->emptyStateHeading('No certification yet')->emptyStateIcon('heroicon-o-bookmark')
-        ->emptyStateDescription('Please click on the Add button to see the list of available certifications.')
+        ->emptyStateHeading(__('main.lc3'))->emptyStateIcon('heroicon-o-bookmark')
+        ->emptyStateDescription(__('main.lc4'))
         ->columns([
-            Tables\Columns\TextColumn::make('name')->sortable()->searchable()->label('Name')
+            Tables\Columns\TextColumn::make('name')->sortable()->searchable()->label(__('form.na'))
             ->description(fn (Course $record): ?string => $record->descr),
             Tables\Columns\TextColumn::make('modules_count')->sortable()->label('Modules'),
             Tables\Columns\TextColumn::make('questions_count')->sortable()->label('Questions'),
-            Tables\Columns\TextColumn::make('uexists')->badge()->label('Joined')->sortable()
-            ->state(fn (Course $record) => $record->users1()->first()->pivot->approve? "Yes":"Pending")
+            Tables\Columns\TextColumn::make('uexists')->badge()->label(__('form.ins'))->sortable()
+            ->state(fn (Course $record) => $record->users1()->first()->pivot->approve? __('form.yes'):__('form.pen'))
             ->color(fn (Course $record) => $record->users1()->first()->pivot->approve? "success":"warning"),
             ])
             ->filters([
-                Tables\Filters\Filter::make('oi')->label('Joined')
+                Tables\Filters\Filter::make('oi')->label(__('form.ins'))
                 ->form([
-                    Forms\Components\Select::make('zzz')->label('Joined')
+                    Forms\Components\Select::make('zzz')->label(__('form.ins'))
                     ->options([
-                        '0' => 'Pending',
-                        '1' => 'Joined',
+                        '0' => __('form.pen'),
+                        '1' => __('form.join'),
                     ])
                 ])
                 ->query(function (Builder $query, array $data): Builder {
@@ -117,23 +119,23 @@ class ListCertif extends Page implements HasTable
                     if ($data['zzz']==null) {
                         return null;
                     }
-                    return match ($data['zzz']) {'0' => "Cert. approval pending", '1' => "Joined Cert."};
+                    return match ($data['zzz']) {'0' => __('main.lc5'), '1' => __('main.lc6')};
                 })
             ]) ->filtersTriggerAction(
                 fn (Tables\Actions\Action $action) => $action
                     ->button()
-                    ->label('Filter'),
+                    ->label(__('form.fil')),
             )
             ->actions([
-            Tables\Actions\DeleteAction::make()->label('Remove')->after(function ($record) {
+            Tables\Actions\DeleteAction::make()->label(__('form.rm'))->after(function ($record) {
                     $txt="Removed '$record->name' certification from his/her portfolio.";
                     \App\Models\Journ::add(auth()->user(),'Portfolio',8,$txt);
             })
             ->action(function ($record) {
                $record->users1()->detach(auth()->id());
                 })
-                ->modalHeading('Remove certifications')
-                ->modalDescription(fn(Course $record):string=>'Are you sure you want to remove the \''.$record->name.'\' certification from your portfolio ?')
+                ->modalHeading(__('form.rm2',["name"=>'certifications']))
+                ->modalDescription(fn(Course $record):string=>__('main.lc7',["name"=>$record->name]))
             ])
             ->bulkActions([
             ])

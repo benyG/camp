@@ -9,8 +9,7 @@ class LogoutController
 {
     public function __invoke(): LogoutResponse
     {
-        $txt="Logout";
-        \App\Models\Journ::add(auth()->user(),'Login',10,$txt);
+        \App\Models\Journ::add(auth()->user(),'Login',10,"Logout");
         Filament::auth()->logout();
 
         session()->invalidate();

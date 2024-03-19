@@ -67,22 +67,22 @@
               <tr>
                 <td class="sm-px-6" style="border-radius: 4px; background-color: #fff; padding: 40px; font-size: 16px; color: #334155; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)">
                   <h1 class="sm-leading-8" style="margin: 0 0 24px; font-size: 24px; font-weight: 600; color: #000">
-                    Congratulation! <span style="color: #15803d">{{$name}}</span>,
+                    {{ __('email.m31') }} <span style="color: #15803d">{{$name}}</span>,
                   </h1>
                   <p style="margin: 0; line-height: 24px">
-                    Your request for joining <b><span style="color: #15803d">{{$para[0]}}</span></b> certification has been approved.
+                    {{ __('email.m28') }} <b><span style="color: #15803d">{{$para[0]}}</span></b> {{ __('email.m29') }}.
                     <br>
                     <br>
-                    Please log in to your dashboad to start testing your knowledge.
+                    {{ __('email.m30') }}.
                   </p>
                   <div role="separator" style="line-height: 10px">&zwj;</div>
                   <div>
-                    <a href="{{env('APP_URL')}}/boss" style="display: inline-block; border-radius: 4px; background-color: #15803d; padding: 16px 24px; font-size: 16px; font-weight: 600; line-height: 1; color: #f8fafc; text-decoration: none">
+                    <a href="{{\App\Filament\Resources\ExamResource::getUrl()}}" style="display: inline-block; border-radius: 4px; background-color: #15803d; padding: 16px 24px; font-size: 16px; font-weight: 600; line-height: 1; color: #f8fafc; text-decoration: none">
                       <!--[if mso]>
       <i style="mso-font-width: -100%; letter-spacing: 32px; mso-text-raise: 30px" hidden>&nbsp;</i>
     <![endif]-->
                       <span style="mso-text-raise: 16px">
-                  Login to Dashboard &rarr;
+                  {{ __('email.m4') }} &rarr;
                 </span>
                       <!--[if mso]>
       <i style="mso-font-width: -100%; letter-spacing: 32px;" hidden>&nbsp;</i>
@@ -90,11 +90,11 @@
                     </a>
                   </div>
                   <br>
-                  Thanks, <br><span style="font-size: 16px; font-style: italic; color: #94a3b8">The ITExamBootCamp Team</span>
+                  {{ __('email.m8') }}, <br><span style="font-size: 16px; font-style: italic; color: #94a3b8">{{ __('email.m9') }}</span>
                   <div role="separator" style="background-color: #e2e8f0; height: 1px; line-height: 1px; margin: 20px 0">&zwj;</div>
                   <p style="margin: 0; font-size: 12px">
-                    This email was sent to <a href="#" class="hover-underline dark-text-green-400" target="_blank" style="color: #15803d">{{$email}}</a>
-                    <br>If this is a mistake, you can safely ignore this email.
+                    {{ __('email.m5') }} <a href="#" class="hover-underline dark-text-green-400" target="_blank" style="color: #15803d">{{$email}}</a>
+                    <br>{{ __('email.m6') }}.
                   </p>
                 </td>
               </tr>
@@ -107,10 +107,10 @@
                   <img src="{{$message->embed(public_path('img/logo-mail.png'))}}" style="width:220px"/>
                   </p>
                   <p style="margin: 0; font-style: italic;">
-                    Test your knowledge, and let's claim your certificate !
+                    {{ __('email.m7') }}
                   </p>
                   <p style="cursor: default">
-                    <a href="{{env('APP_URL')}}" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none">Home</a>
+                    <a href="{{env('APP_URL')}}" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none">{{ __('main.home') }}</a>
                     &bull;
                     <a href="#" class="hover-important-text-decoration-underline" style="color: #4338ca; text-decoration: none;">Docs</a>
                     &bull;

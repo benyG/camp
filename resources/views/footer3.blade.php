@@ -1,6 +1,6 @@
 <div class="flex items-center">
     <div style="height:2px;" class="w-full bg-gray-200 dark:bg-gray-700"></div>
-    <div class="px-5 text-center text-gray-950 dark:text-gray-400">&nbsp;&nbsp;OR&nbsp;&nbsp;</div>
+    <div class="px-5 text-center text-gray-950 dark:text-gray-400">&nbsp;&nbsp;{{__('main.lo2')}}&nbsp;&nbsp;</div>
     <div style="height:2px;" class="w-full bg-gray-200 dark:bg-gray-700"></div>
 </div>
 <div class="flex flex-col justify-center gap-y-3">
@@ -31,7 +31,7 @@
                         </clipPath>
                     </defs>
                 </svg>
-               Continue with Google
+               {{__('main.lo3')}}
             </button>
         </form>
     </div>
@@ -42,7 +42,7 @@
                 fi-btn relative font-semibold outline-none transition duration-75 focus-visible:ring-2 fi-color-gray fi-btn-color-gray fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 shadow-sm bg-white text-gray-950 hover:bg-gray-50 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 ring-1 ring-gray-950/10 dark:ring-white/20 fi-ac-action fi-ac-btn-action"
                 type="submit">
                 <img src="{{asset('img/li.png')}}" class="h-5" style='padding:1px;'/>
-              Continue with LinkedIn
+              {{__('main.lo4')}}
             </button>
         </form>
     </div>

@@ -19,13 +19,21 @@ class CertConfig extends Page
     protected static string $resource = CourseResource::class;
     public ?array $data = [];
     protected static string $view = 'filament.resources.course-resource.pages.cert-config';
-    protected static ?string $title = 'Certifications Configurations';
-    protected ?string $subheading = 'Here you can set the TYPICAL configuration for a given certification.';
+    protected static ?string $title = 'Configurations';
     public ?string $timer = null;
     public ?string $quest = null;
     public ?array $mods = null;
     public bool $ie=false;
-public ?string $content = null;
+    public ?string $content = null;
+    public function getHeading(): string
+    {
+        return __('main.cc1');
+    }
+    public function getSubheading(): ?string
+    {
+        return __('main.cc2');
+    }
+
     public function mount(int | string $record): void
     {
         abort_unless(auth()->user()->ex==0, 403);
@@ -44,19 +52,19 @@ public ?string $content = null;
             ->schema([
                 Forms\Components\Placeholder::make('created')->label('Certification')
                 ->content(new HtmlString('<span class="text-lg font-bold">'.$this->record->name.'<span>')),
-                Forms\Components\Section::make('General settings')->columns(2)
+                Forms\Components\Section::make(__('form.gs'))->columns(2)
                 ->schema([
-                    Forms\Components\TextInput::make('timer')->numeric()->step(5)->requiredIf('type', '1')->label('Timer (min)')
+                    Forms\Components\TextInput::make('timer')->numeric()->step(5)->requiredIf('type', '1')->label(__('form.tim').' (min)')
                     ->rules(['numeric']),
                     Forms\Components\TextInput::make('quest')->numeric()->step(5)->required()->label('Nb. Questions')
                     ->rules(['numeric']),
                 ]),
-                Forms\Components\Section::make('Module selection')
+                Forms\Components\Section::make(__('main.cc3'))
                 ->schema([
-                    Forms\Components\Repeater::make('mods')->grid(2)->label('Modules Configuration')
-                    ->addActionLabel('Add a Module')->reorderable(false)
+                    Forms\Components\Repeater::make('mods')->grid(2)->label('')
+                    ->addActionLabel(__('form.modad'))->reorderable(false)
                     ->schema([
-                        Forms\Components\Select::make('module')->label('Name')
+                        Forms\Components\Select::make('module')->label('Module')
                         ->options(Module::where('course',$this->record->id)->pluck('name','id'))->required()
                         ->preload()
                         ->disableOptionsWhenSelectedInSiblingRepeaterItems(),

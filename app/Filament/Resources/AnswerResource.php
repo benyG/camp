@@ -20,15 +20,25 @@ class AnswerResource extends Resource
 {
     protected static ?string $model = Answer::class;
     protected static ?int $navigationSort = 40;
-    protected static ?string $navigationGroup = 'Teachers';
-
     protected static ?string $navigationIcon = 'heroicon-o-check-badge';
-
+    protected static bool $hasTitleCaseModelLabel = false;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('main.m3');
+    }
+    public static function getModelLabel(): string
+    {
+        return trans_choice('main.m2',1);
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return trans_choice('main.m2',2);
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('text')
+                Forms\Components\TextInput::make('text')->label(__('form.txt'))
                     ->required()
                     ->maxLength(200)
                     ->unique()
@@ -38,12 +48,13 @@ class AnswerResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->striped()->paginated([25,50, 70,100,250, 'all'])
+       // ->modifyQueryUsing(fn (Builder $query) => $query->where('id',555877))
             ->columns([
-                Tables\Columns\TextColumn::make('text')
+                Tables\Columns\TextColumn::make('text')->label(__('form.txt'))
                 ->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('questions_count')->counts('questions')->label('Using Questions')
+                Tables\Columns\TextColumn::make('questions_count')->counts('questions')->label(__('main.an2'))
                 ->numeric(),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')->label(__('form.cat'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -52,8 +63,8 @@ class AnswerResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make()
+                Tables\Actions\ViewAction::make()->iconButton(),
+                Tables\Actions\EditAction::make()->iconButton()
                 ->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
                     $reco=$record->replicate();
                     $record->update($data);
@@ -66,7 +77,7 @@ class AnswerResource extends Resource
                     }
                     return $record;
                 }),
-                Tables\Actions\DeleteAction::make()->after(function ($record) {
+                Tables\Actions\DeleteAction::make()->iconButton()->after(function ($record) {
                     $txt="Removed answer ID $record->id.
                     Text: $record->text <br>
                     ";

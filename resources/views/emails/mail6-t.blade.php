@@ -1,17 +1,17 @@
-Hello {{$name}},
+{{ __('email.m31') }} {{$name}},
 
-Your request for joining {{$para[0]}} certification has been approved.
+{{ __('email.m28') }} {{$para[0]}} {{ __('email.m29') }}.
 
-Please log in to your dashboad to start testing your knowledge.
+{{ __('email.m30') }}.
 ‍
 
-Login to Dashboard → {{env('APP_URL')}}/boss
+{{ __('email.m3') }} → {{\App\Filament\Resources\ExamResource::getUrl()}}
 
-Thanks, The ITExamBootCamp Team
+{{ __('email.m4') }}
 ‍
 
-This email was sent to {{$email}}
-If this is a mistake, you can safely ignore this email.
+{{ __('email.m5') }} {{$email}}
+{{ __('email.m6') }}.
 
 ITExamBootCamp
-Test your knowledge, and let's claim your certificate !
+{{ __('email.m7') }}

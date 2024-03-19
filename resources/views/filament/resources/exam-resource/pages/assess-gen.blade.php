@@ -18,11 +18,11 @@
                             </div>
                             <div class="grid justify-items-start">
                                 <span class="text-sm font-medium fi-fo-wizard-header-step-label">
-                                    For this question
+                                   {{__('main.as1')}}
                                 </span>
                                 <span
                                     class="text-sm text-gray-500 fi-fo-wizard-header-step-description text-start dark:text-gray-400">
-                                    {!! $bm1 ? 'choose only <i>one</i> answer' : 'you may choose many answers' !!}
+                                    {!! $bm1 ? __('main.as2') : __('main.as3') !!}
                                 </span>
                             </div>
                         @else
@@ -33,7 +33,7 @@
                             </div>
                             <div class="grid justify-items-start">
                                 <span class="text-sm font-medium fi-fo-wizard-header-step-label">
-                                    Completed
+                                    {{__('main.as4')}}
                                 </span>
                             </div>
                         @endif
@@ -61,7 +61,7 @@
 
                             <div class="grid justify-items-start">
                                 <span class="text-sm font-medium fi-fo-wizard-header-step-label">
-                                    Questions left
+                                    {{__('main.as5')}}
                                 </span>
                                 <span
                                     class="text-sm font-bold text-gray-500 fi-fo-wizard-header-step-description text-start dark:text-gray-400">
@@ -142,11 +142,11 @@
                             <div class="grid justify-items-start">
                                 <span
                                     class="text-sm font-medium fi-fo-wizard-header-step-label text-primary-500 dark:text-primary-400">
-                                    Timer (minutes left)
+                                    {{__('main.as')}}
                                 </span>
                                 @if ($record->type == '0')
                                     <span
-                                        class="text-sm font-bold text-gray-500 fi-fo-wizard-header-step-description text-start dark:text-gray-400">Unlimited</span>
+                                        class="text-sm font-bold text-gray-500 fi-fo-wizard-header-step-description text-start dark:text-gray-400">{{__('main.as7')}}</span>
                                 @else
                                     <span x-data="timer({{ $tim }})" x-init="init();
                                     setTimeout(() => { $wire.closeComp() }, {{ $tim }} * 60000);"
@@ -200,8 +200,7 @@
                                 font-size: 10px !important;
                             }
                         </style>
-                        <div id='dd4' style="font-size:10px"> <br><br>If you do not agree, you can request a
-                            review of this question {{ $this->revAction }}</div>
+                        <div id='dd4' style="font-size:10px"> <br><br>{{__('main.as8')}} {{ $this->revAction }}</div>
                     @endif
                 </div>
                 {!! $btext !!}
@@ -212,7 +211,7 @@
                     @endif
                     <div class='flex {{ $qcur2 < $qtot ? 'justify-end' : 'justify-center' }}'>
                         <x-filament::button icon="{{ $ico }}" type="submit" size="sm">
-                            {{ $qcur2 < $qtot ? ($qcur == $qtot ? 'Results' : 'Next') : 'Complete' }}
+                            {{ $qcur2 < $qtot ? ($qcur == $qtot ? __('form.rs') : __('form.ne')) : __('form.cp') }}
                         </x-filament::button>
                     </div>
                 </div>
@@ -236,7 +235,7 @@
                             <img style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
                                 src='{{ asset('img/ac.png') }}'
                                 class="row-span-2 mx-auto rounded-full ring-custom-600 dark:ring-custom-400 ring-2 w-11 h-11" />
-                            <div><span style="font-size:10px">AI Coach</span></div>
+                            <div><span style="font-size:10px">{{__('main.i2')}}</span></div>
                         </div>
                         <div class='self-center '>
                             {{ $this->invAction }}

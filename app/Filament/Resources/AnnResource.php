@@ -19,28 +19,35 @@ class AnnResource extends Resource
     protected static ?string $model = Ann::class;
     protected static ?int $navigationSort = 65;
     protected static ?string $navigationIcon = 'heroicon-o-signal';
-    protected static ?string $navigationGroup = 'Admin';
-    protected static ?string $modelLabel = 'announcement';
+    protected static ?string $navigationGroup = 'Admininstration';
     protected static ?string $slug = 'announcements';
-
+    protected static bool $hasTitleCaseModelLabel = false;
+    public static function getModelLabel(): string
+    {
+        return trans_choice('main.m4',1);
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return trans_choice('main.m4',2);
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('descr')->label('Description')
                     ->required()->maxLength(255),
-                Forms\Components\TextInput::make('url')->label('Clickable url')
+                Forms\Components\TextInput::make('url')->label(__('form.url'))
                     ->maxLength(500)->url(),
                 Forms\Components\Section::make('')->columns(3)
                 ->schema([
-                    Forms\Components\Select::make('type')->label('User type')
+                    Forms\Components\Select::make('type')->label(__('form.uty'))
                         ->required()->multiple()
                         ->options(['1' => 'Admin','2' => 'Starter','3' => 'User','4' => 'Pro','5' => 'VIP']),
-                    Forms\Components\DatePicker::make('due')->label('Due Date')->minDate(now()),
-                    Forms\Components\Toggle::make('hid')->label('Display ?')
+                    Forms\Components\DatePicker::make('due')->label(__('main.dd'))->minDate(now()),
+                    Forms\Components\Toggle::make('hid')->label(__('form.dis').__('main.space').'?')
                         ->required()->inline(false)->default(true),
                 ]),
-                TinyEditor::make('text')
+                TinyEditor::make('text')->label(__('form.txt'))
                     ->required()
                     ->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads')
                     ->columnSpanFull(),
@@ -54,21 +61,21 @@ class AnnResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('descr')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('hid')->label('Display')->boolean()->sortable(),
-                Tables\Columns\TextColumn::make('url')
+                Tables\Columns\IconColumn::make('hid')->label(__('form.dis'))->boolean()->sortable(),
+                Tables\Columns\TextColumn::make('url')->label('URL')
                 ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('due')->label('Due Date')
+                Tables\Columns\TextColumn::make('due')->label(__('main.dd'))
                     ->dateTime()->since()->sortable(),
-                Tables\Columns\TextColumn::make('type')->label('Users')->sortable()
+                Tables\Columns\TextColumn::make('type')->label(trans_choice('main.m5',2))->sortable()
                 ->formatStateUsing(function($state):string{
                     $arrs=array('1','2','3','4','5');
                     $arru=array('Admin','Starter','User','Pro','VIP');
                     return str_replace($arrs,$arru,$state);
                 }),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')->label(__('form.cat'))
                     ->dateTime()->since()->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                Tables\Columns\TextColumn::make('updated_at')->label(__('form.uat'))
                     ->dateTime()->since()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -79,10 +86,10 @@ class AnnResource extends Resource
             ->filtersTriggerAction(
                 fn (Tables\Actions\Action $action) => $action
                     ->button()
-                    ->label('Filter'),
+                    ->label(__('form.fil')),
             )
             ->actions([
-                Tables\Actions\EditAction::make()
+                Tables\Actions\EditAction::make()->iconButton()
                 ->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
                     $reco=$record->replicate();
                     $record->update($data);
@@ -111,7 +118,7 @@ class AnnResource extends Resource
                     }
                     return $record;
                 }),
-                Tables\Actions\DeleteAction::make()->after(function ($record) {
+                Tables\Actions\DeleteAction::make()->iconButton()->after(function ($record) {
                     $txt="Removed announcement ID $record->id.
                     Description: $record->descr <br>
                     Url: $record->url <br>

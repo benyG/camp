@@ -17,16 +17,25 @@ use App\Notifications\NewMail;
 use Filament\Notifications\Notification;
 use App\Models\SMail;
 use App\Jobs\SendEmail;
+use Illuminate\Contracts\Support\Htmlable;
 
 class CertApproval extends Page implements HasTable
 {
     use InteractsWithTable;
     protected static string $resource = CourseResource::class;
-    protected static ?string $title = 'Certifications Approvals';
-    protected ?string $heading = 'Pending certifications approvals';
-    protected ?string $subheading = 'Here is a list of certifications that are waiting for your approval.';
     protected static string $view = 'filament.resources.course-resource.pages.cert-approval';
-
+    public function getTitle(): string | Htmlable
+    {
+        return __('main.m6');
+    }
+    public function getHeading(): string
+    {
+        return __('main.ca2');
+    }
+    public function getSubheading(): ?string
+    {
+        return __('main.ca3');
+    }
     public function mount(): void
     {
         abort_unless(auth()->user()->ex==0, 403);
@@ -36,22 +45,22 @@ class CertApproval extends Page implements HasTable
     {
         return $table
         ->query(UsersCourse::with('userRel')->with('courseRel')->where('approve',false))
-        ->emptyStateHeading('No certification request yet')->emptyStateIcon('heroicon-o-bookmark')
+        ->emptyStateHeading(__('main.ca1'))->emptyStateIcon('heroicon-o-bookmark')
         ->columns([
-            Tables\Columns\TextColumn::make('userRel.name')->sortable()->searchable()->label('User')
+            Tables\Columns\TextColumn::make('userRel.name')->sortable()->searchable()->label(__('form.us'))
             ->description(fn (UsersCourse $record): ?string => $record->userRel->email),
             Tables\Columns\TextColumn::make('courseRel.name')->sortable()->searchable()->label('Certification'),
-            Tables\Columns\TextColumn::make('created_at')->datetime()->sortable()->label('Request Date'),
+            Tables\Columns\TextColumn::make('created_at')->datetime()->sortable()->label(__('form.red')),
             ])
             ->filters([
 
             ]) ->filtersTriggerAction(
                 fn (Tables\Actions\Action $action) => $action
                     ->button()
-                    ->label('Filter'),
+                    ->label(__('form.fil')),
             )
             ->actions([
-                Tables\Actions\Action::make('resend')->label('Approve')
+                Tables\Actions\Action::make('resend')->label(__('form.apv'))
                 ->after(function ($record) {
                     $txt="Certification Request Approved
                     User: ".$record->userRel->name."<br>
@@ -72,12 +81,11 @@ class CertApproval extends Page implements HasTable
                         $ma->users2()->attach($usc->id);
                     if(\App\Models\Info::first()->smtp){
                         try {
-                          //  Notif::send(User::findorFail($usc->id), new NewMail($ma->sub,[$usc->name],'6'));
                           SendEmail::dispatch(User::findorFail($usc->id),$ma->sub,[$usc->name],'6');
                             $ma->users2()->updateExistingPivot($usc->id, ['sent' => true,'last_sent' => now()]);
                         } catch (Exception $exception) {
                             Notification::make()
-                                ->title('Error occured.')
+                                ->title(__('form.e4'))
                                 ->danger()
                                 ->send();
                         }

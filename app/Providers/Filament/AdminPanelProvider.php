@@ -79,7 +79,7 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook('panels::user-menu.before',fn (): string => Blade::render('head1'))
             ->userMenuItems([
                 MenuItem::make()
-                    ->label('Settings')
+                    ->label(fn():string=>__('main.m1'))
                     ->url(fn (): string => InfoResource::getUrl())
                     ->icon('heroicon-o-cog-6-tooth')
                     ->visible(fn (): bool => auth()->user()->can('viewAny', \App\Models\Info::class)),

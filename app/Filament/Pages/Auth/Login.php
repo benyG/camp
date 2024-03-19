@@ -38,7 +38,7 @@ class Login extends BaseLogin
     {
         session(['auth_opt'=>null]);
         throw ValidationException::withMessages([
-            'data.email' => 'That user is already registered. Please enter your credentials.',
+            'data.email' => __('form.e2'),
         ]);
     }
     public function dehydrate()
