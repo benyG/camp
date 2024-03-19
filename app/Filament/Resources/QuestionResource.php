@@ -49,7 +49,7 @@ class QuestionResource extends Resource
                 ->required()
                 ->default(4)->inputMode('numeric')
                 ->rules(['numeric']),
-                TinyEditor::make('text')->showMenuBar()
+                TinyEditor::make('text')
                     ->required()
                     ->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads')
                     ->columnSpanFull(),
