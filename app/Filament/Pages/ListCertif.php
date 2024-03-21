@@ -18,6 +18,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Actions;
 use App\Jobs\SendEmail;
+use Illuminate\Support\Str;
 
 class ListCertif extends Page implements HasTable
 {

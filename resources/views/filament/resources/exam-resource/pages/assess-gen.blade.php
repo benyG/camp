@@ -142,7 +142,7 @@
                             <div class="grid justify-items-start">
                                 <span
                                     class="text-sm font-medium fi-fo-wizard-header-step-label text-primary-500 dark:text-primary-400">
-                                    {{__('main.as')}}
+                                    {{__('main.as6')}}
                                 </span>
                                 @if ($record->type == '0')
                                     <span

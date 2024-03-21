@@ -27,7 +27,7 @@ class AssessCreate extends CreateRecord
                 ->action(function (): void {
                     $this->form->fill();
                     Notification::make()
-                        ->title('The form has been reset')
+                        ->title(__('form.e5'))
                         ->success()
                         ->send();
                 }),
@@ -81,17 +81,17 @@ class AssessCreate extends CreateRecord
             foreach ($record->users as $us) {
                 $ma->users2()->attach($us->id);
             }
-            Notification::make()->success()->title('The users were notified.')->send();
+            Notification::make()->success()->title(__('form.e6'))->send();
             if($ix->smtp ){
                 foreach ($record->users as $us) {
                     try {
                      //   Notif::send($us, new NewMail($ma->sub,[now(),$record->name,$record->due,$record->certRel->name],'2'));
                         $ma->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
                         SendEmail::dispatch($us,$ma->sub,[now(),$record->name,$record->due,$record->certRel->name],'2');
-                        Notification::make()->success()->title('Successfully sent via SMTP to : '.$us->email)->send();
+                        Notification::make()->success()->title(__('form.e8').$us->email)->send();
                     } catch (Exception $exception) {
                         Notification::make()
-                            ->title('Error occured for '.$us->email)
+                            ->title(__('form.e7').$us->email)
                             ->danger()
                             ->send();
                     }

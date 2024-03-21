@@ -98,9 +98,9 @@ class AssessGen extends Page implements HasForms, HasActions
     #[Locked]
     public $iati3=false;
 
-    #[Validate('required',onUpdate: false,message:"No answer choosen")]
+    #[Validate('required',onUpdate: false)]
     public $ans;
-    #[Validate('required',onUpdate: false,message:"No answer choosen")]
+    #[Validate('required',onUpdate: false)]
     public $ans2=[];
 
     protected static string $view = 'filament.resources.exam-resource.pages.assess-gen';
@@ -153,13 +153,13 @@ class AssessGen extends Page implements HasForms, HasActions
             }else{
                 $sc=round(100*$this->score/$this->qtot,2);
                 $this->btext="
-                <div class=''>
-                    <div class='text-sm text-center'>You found $this->score correct answers over $this->qtot</div> <br>
+                <div>
+                    <div class='text-sm text-center'>".trans_choice('main.as9',$this->score,['sc'=>$this->score])." $this->qtot</div> <br>
                     <div class='text-3xl text-center pb-9'>$sc % </div>
                     <div class='text-center ' style='--c-50:var(--". ($sc>=$this->ix->wperc? "success":"danger")."-50);--c-400:var(--". ( $sc>=$this->ix->wperc? "success":"danger")."-400);--c-600:var(--". ( $sc>=$this->ix->wperc? "success":"danger")."-600);' >
                     <br><span
                     class='rounded-md text-lg font-medium ring-1 ring-inset px-2 min-w-[theme(spacing.6)] py-1 bg-custom-50 text-custom-600 ring-custom-600/10 dark:bg-custom-400/10 dark:text-custom-400 dark:ring-custom-400/30'
-                    >". ($sc>=$this->ix->wperc? "Passed":"Failed")."</span>
+                    >". ($sc>=$this->ix->wperc? Str::ucfirst(__('form.pas')):Str::ucfirst(__('form.fail')))."</span>
                    </div>
                 </div> <br> <br>
                 ";
@@ -169,23 +169,23 @@ class AssessGen extends Page implements HasForms, HasActions
     }
     public function revAction(): Action1
     {
-        return Action1::make('rev')->label('here')->link()
+        return Action1::make('rev')->label(__('main.here'))->link()
             ->requiresConfirmation()->color('primary')
             ->modalIcon('heroicon-o-question-mark-circle')
-            ->modalHeading('Question Review')
-            ->modalDescription('Do you want to send a review request of this question?')
+            ->modalHeading(__('main.as10'))
+            ->modalDescription(__('main.as11'))
             ->action(function () {
                  $rev = new \App\Models\Review;
                 $rev->user=auth()->id();
                 $rev->quest=$this->qid;
                 $rev->ans=json_encode($this->aid);
                 $rev->save();
-                Notification::make()->success()->title("The request was sent. You'll be notified if there is an update. You can now continue the assessment.")->send();
+                Notification::make()->success()->title(__('main.as12'))->send();
                 });
     }
     public function invAction(): Action1
     {
-        return Action1::make('inv')->label('Need explanation?')->size(ActionSize::Small)
+        return Action1::make('inv')->label(__('main.i3'))->size(ActionSize::Small)
        ->link()->disabled(function():bool{
                 if(empty($this->iatext2)){
                     if(empty($this->qtext)) return true;
@@ -204,20 +204,24 @@ class AssessGen extends Page implements HasForms, HasActions
             })
             ->icon('heroicon-o-question-mark-circle')
             ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
-            ->modalSubmitActionLabel('Yes')
-            ->modalContent(fn (): View =>view('filament.pages.actions.iamod',['txt' => 'do you want me to give an explanation for this question?']))
+            ->modalSubmitActionLabel(__('form.yes'))
+            ->modalContent(fn (): View =>view('filament.pages.actions.iamod',['txt' => __('main.i4')]))
             ->action(function () {
                //cache()->forget('settings');
                 $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
                 $ik=1;
                 $aitx="";
                 foreach ($this->aa as $value) {
+                    if(!is_string($value)){
+                        $value=$value->text;
+                    }
                    $aitx.=$ik.". ".$value."\n ";
+                   $ik++;
                 }
                 $stats=$this->record->certRel->name." certification exam:
                     - Question :
                     $this->qtext
-                    - Answers choice :".$aitx.".";
+                    - Answers choices :".$aitx.".";
                 try {
                     $apk=Crypt::decryptString($ix->apk);
                   //  dd($apk);
@@ -225,13 +229,13 @@ class AssessGen extends Page implements HasForms, HasActions
                         "model" => $ix->model,
                         'messages' => [
                             ["role" => "system", "content" => $ix->cont1],
-                            ["role" => "user","content" => $stats],
+                            ["role" => "user","content" => $stats.__('main.i5')],
                         ],
                     ])
                     ->json();
                    // dd($response["choices"][0]["message"]["content"]);
                  if(is_array($response["choices"]))   {
-                    $this->iatext3="Hi ".auth()->user()->name.", this is my point of view:";
+                    $this->iatext3=__('main.i6',['name'=>auth()->user()->name]);
                     $this->iati=true;
                     if(!$this->iati3) $this->iati3=true;
                     // $this->iatext=str_replace(array(':','-'),array(':<br>','<br>-'), $response["choices"][0]["message"]["content"]);
@@ -239,19 +243,17 @@ class AssessGen extends Page implements HasForms, HasActions
                     \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
                    // dd(auth()->user()->ix);
                 }
-                 else Notification::make()->danger()->title("Query error.")->send();
+                 else Notification::make()->danger()->title(__('form.e10'))->send();
                 } catch (DecryptException $e) {
-                    Notification::make()->danger()->title("There was a problem during encryption.")->send();
+                    Notification::make()->danger()->title(__('form.e11'))->send();
                 } catch (ConnectionException $e) {
-                    Notification::make()->danger()->title("The query took too much time.")->send();
+                    Notification::make()->danger()->title(__('form.e12'))->send();
                 }
-
-        //   Notification::make()->success()->title("The request was sent. You'll be notified if there is an update. You can now continue the assessment.")->send();
             });
     }
     public function inaAction(): Action1
     {
-        return Action1::make('ina')->label('Explain answer?')->size(ActionSize::Small)->modalSubmitActionLabel('Yes')
+        return Action1::make('ina')->label(__('main.i8'))->size(ActionSize::Small)->modalSubmitActionLabel('Yes')
         ->icon('heroicon-o-light-bulb')->disabled(function():bool{
             if(empty($this->cans)) return true;
             else{
@@ -265,14 +267,18 @@ class AssessGen extends Page implements HasForms, HasActions
                 }
             })
         ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
-        ->modalContent(fn (): View =>view('filament.pages.actions.iamod',['txt' => 'do you want me to explain the answer of this question?']))
+        ->modalContent(fn (): View =>view('filament.pages.actions.iamod',['txt' => __('main.i7')]))
         ->action(function () {
             //cache()->forget('settings');
              $ix=cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);});
              $ik=1;
              $aitx="";
              foreach ($this->aa as $value) {
+                if(!is_string($value)){
+                    $value=$value->text;
+                }
                 $aitx.=$ik.". ".$value."\n ";
+                $ik++;
              }
              $stats=$this->record->certRel->name." certification exam:
                  - Question :
@@ -285,24 +291,24 @@ class AssessGen extends Page implements HasForms, HasActions
                      "model" => $ix->model,
                      'messages' => [
                          ["role" => "system", "content" => $ix->cont2],
-                         ["role" => "user","content" => $stats],
+                         ["role" => "user","content" => $stats.__('main.i5')],
                      ],
                  ])
                  ->json();
                 // dd($response["choices"][0]["message"]["content"]);
                 if(is_array($response["choices"]))   {
-                    $this->iatext3="Hi ".auth()->user()->name.", this is my point of view:";
+                    $this->iatext3=__('main.i6',['name'=>auth()->user()->name]);
                     $this->iati2=true;
                     if(!$this->iati3) $this->iati3=true;
                   //  $this->iatext2=str_replace(array(':','-'),array(':<br>','<br>-'), $response["choices"][0]["message"]["content"])."<br> Keep in mind that this is just my point of view.;-";
                     $this->iatext2=$response["choices"][0]["message"]["content"];
                     \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
                 }
-                else Notification::make()->danger()->title("Query error.")->send();
+                else Notification::make()->danger()->title(__('form.e10'))->send();
             } catch (DecryptException $e) {
-                 Notification::make()->danger()->title("There was a problem during encryption.")->send();
+                 Notification::make()->danger()->title(__('form.e11'))->send();
                 } catch (ConnectionException $e) {
-                    Notification::make()->danger()->title("The query took too much time.")->send();
+                    Notification::make()->danger()->title(__('form.e12'))->send();
                 }
              });
     }
@@ -342,12 +348,12 @@ class AssessGen extends Page implements HasForms, HasActions
                     $sc=round(100*$this->score/$this->qtot,2);
                     $this->btext="
                     <div class=''>
-                        <div class='text-sm text-center'>You found $this->score correct answers over $this->qtot</div> <br>
+                        <div class='text-sm text-center'>".__('main.as9',$this->score,['sc'=>$this->score])." $this->qtot</div> <br>
                         <div class='text-3xl text-center pb-9'>$sc % </div>
                         <div class='text-center ' style='--c-50:var(--". ($sc>=$this->ix->wperc? "success":"danger")."-50);--c-400:var(--". ( $sc>=$this->ix->wperc? "success":"danger")."-400);--c-600:var(--". ( $sc>=$this->ix->wperc? "success":"danger")."-600);' >
                         <br><span
                         class='rounded-md text-lg font-medium ring-1 ring-inset px-2 min-w-[theme(spacing.6)] py-1 bg-custom-50 text-custom-600 ring-custom-600/10 dark:bg-custom-400/10 dark:text-custom-400 dark:ring-custom-400/30'
-                        >".($sc>=$this->ix->wperc? "Passed":"Failed")."</span>
+                        >".($sc>=$this->ix->wperc?Str::ucfirst(__('form.pas')):Str::ucfirst(__('form.fail')))."</span>
                     </div>
                     </div> <br> <br>
                     ";
@@ -374,9 +380,9 @@ class AssessGen extends Page implements HasForms, HasActions
                 // DO NOT REMOVE ALT='', CODE NEEDED FOR REVIEW BUTTON
                 $this->cans=$ab>0?"
                 <span class='text-sm text-primary-600'> <br>
-        Correct answer</span>":
+        ".__('main.as13')."</span>":
                 "<span alt='' style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-sm text-custom-600'>
-                <br>  Wrong answer <br> </span><span class='text-xs'>Correct answer : <br>
+                <br>  ".__('main.as14')." <br> </span><span class='text-xs'>".__('main.as13').": <br>
                 $au</span>";
             }else{
                 $ab2=$this->quest[$this->qcur]->answers()->where('isok',false)->whereIn('answers.id',$this->ans2)->count();
@@ -390,9 +396,9 @@ class AssessGen extends Page implements HasForms, HasActions
              // DO NOT REMOVE ALT='', CODE NEEDED FOR REVIEW BUTTON
                 $this->cans=$ab2==0?"
                 <span class='text-sm text-primary-600'> <br>
-        Correct set of answers</span>":
+                ".__('main.as15')."</span>":
                 "<span alt='' style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-sm text-custom-600'>
-                <br>  Wrong set of answers <br> </span><span class='text-xs'>Correct set : <br>
+                <br>  ".__('main.as17')."<br> </span><span class='text-xs'>".__('main.as16')." : <br>
                 ".$au2->join("<br>")."</span>";
             }
             $this->bm2=true;
@@ -433,10 +439,16 @@ class AssessGen extends Page implements HasForms, HasActions
        $this->register(true);
     }
     public function getTitle() : string | Htmlable{
-        return $this->record->type==0?'Test your knowlegde':($this->record->from !=auth()->id()?"Class Examiniation":'Exam Simulation');
+        return $this->record->type==0?__('form.tyk'):($this->record->from !=auth()->id()?__('form.cex'):__('form.exas'));
     }
     public function getSubheading() : string | Htmlable{
-        return "Certification : ".$this->record->certRel->name." | Passing score : ".$this->ix->wperc.($this->record->type=='0'?"":"| Timer: ".$this->record->timer." min");
+        return "Certification".__('main.space').": ".$this->record->certRel->name." | ".__('form.pas1').__('main.space').": ".$this->ix->wperc.($this->record->type=='0'?"":"| ".__('form.tim').__('main.space').": ".$this->record->timer." min");
     }
-
+    public function messages()
+    {
+        return [
+            'ans.required' => __('form.e9'),
+            'ans2.email' => __('form.e9'),
+        ];
+    }
 }

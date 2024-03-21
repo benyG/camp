@@ -24,6 +24,11 @@ class Login extends BaseLogin
     {
         return $form;
     }
+    public function getHeading(): string
+    {
+        return __('main.log');
+    }
+
     public function mount(): void
     {
         if (Filament::auth()->check()) {

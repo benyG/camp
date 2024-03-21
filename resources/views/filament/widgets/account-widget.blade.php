@@ -17,10 +17,10 @@
                 <p class="text-xs italic text-gray-500 dark:text-gray-400">
                    {{ __('main.si') }} {{ \Illuminate\Support\Carbon::parse($user->created_at)->locale('fr')->isoFormat('llll') }}
                 </p>
-                <a style='--c-50:var(--success-50);--c-400:var(--success-400);--c-600:var(--success-600);'
+                {{-- <a style='--c-50:var(--success-50);--c-400:var(--success-400);--c-600:var(--success-600);'
                 href="https://www.termsfeed.com/live/2214b8f2-eb0d-4feb-9afa-f4bdce142c37" target='_blank' class="text-xs italic text-custom-600 dark:text-custom-400">
                    {{ __('main.pol') }}
-                </a>
+                </a> --}}
             </div>
 <div class="flex-1">
                 <h2 class="grid flex-1 text-xs font-semibold leading-6 text-center text-gray-950 dark:text-white">{{ __('main.rk') }}</h2>

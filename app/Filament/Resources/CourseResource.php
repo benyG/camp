@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
 
 class CourseResource extends Resource
 {
@@ -60,7 +61,7 @@ class CourseResource extends Resource
                     ->numeric()->sortable(),
                     Tables\Columns\TextColumn::make('users_count')->counts('users')->label(trans_choice('main.m5',5))
                     ->numeric()->sortable(),
-                    Tables\Columns\IconColumn::make('pub')->boolean()->label(__('form.pub'))->sortable(),
+                    Tables\Columns\IconColumn::make('pub')->boolean()->label(Str::ucfirst(__('form.pub')))->sortable(),
                     Tables\Columns\TextColumn::make('added_at')->label(__('form.aat'))
                     ->dateTime()->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
@@ -69,22 +70,23 @@ class CourseResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\Action::make('resend')->color(fn(Course $record):string=>$record->pub?'danger':'info')->label(fn(Course $record):string=>$record->pub?'Unpublish':'Publish')
+                Tables\Actions\Action::make('resend')->iconButton()->icon(fn(Course $record):string=>$record->pub?'heroicon-o-eye-slash':'heroicon-o-eye')
+                ->color(fn(Course $record):string=>$record->pub?'danger':'info')
+                ->label(fn(Course $record):string=>$record->pub?Str::ucfirst(__('form.pub2')):Str::ucfirst(__('form.pub1')))
                 ->after(function ($record) {
                     $txt="Certification '$record->name' ".($record->pub?'':'un')."published..";
                     \App\Models\Journ::add(auth()->user(),'Certifications',3,$txt);
                 })
                 ->action(function (Course $record) {
                     $record->pub=$record->pub? false:true; $record->save();
-                  Notification::make('es')->success()->title($record->name.' certiication sucessfully '.($record->pub?'':'un').'published')->send();
-                    })->button()->visible(fn (): bool =>auth()->user()->ex==0)
+                  Notification::make('es')->success()->title(__('main.ce1',['name'=>$record->name,'opt'=>($record->pub?__('form.pub'):__('form.pub2'))]))->send();
+                    })->visible(fn (): bool =>auth()->user()->ex==0)
                     ->requiresConfirmation()->modalIcon(fn(Course $record):string=>$record->pub?'heroicon-o-eye-slash':'heroicon-o-eye')
-                    ->modalHeading(fn(Course $record):string=>$record->pub?'Unpublish':'Publish')
-                    ->modalDescription(fn(Course $record):string=>$record->pub?'Are you sure you\'d like to unpublish \''.$record->name.'\' certification? This will hide it to the users.':
-                        'Are you sure you\'d like to publish \''.$record->name.'\' certification? This will make it visible to the public.'),
+                    ->modalHeading(fn(Course $record):string=>$record->pub?Str::ucfirst(__('form.pub2')):Str::ucfirst(__('form.pub1')))
+                    ->modalDescription(fn(Course $record):string=>$record->pub?__('main.ce2'):__('main.ce3')),
                 Tables\Actions\Action::make('resnd')->color('warning')->label('Config')
                 ->url(fn (Course $record): string => CourseResource::getUrl('config', ['record' => $record]))
-                ->button()->visible(fn (): bool =>auth()->user()->ex==0),
+                ->iconButton()->icon('heroicon-o-cog-6-tooth')->visible(fn (): bool =>auth()->user()->ex==0),
                 Tables\Actions\EditAction::make()->iconButton()
                 ->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
                     $reco=$record->replicate();
@@ -108,7 +110,7 @@ class CourseResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('def')->modalHeading('Publish')->label('Publish selected')
+                    Tables\Actions\BulkAction::make('def')->modalHeading(Str::ucfirst(__('form.pub1')))->label(Str::ucfirst(__('form.pub1')))
                     ->requiresConfirmation()->color('success')->modalIcon('heroicon-o-eye')
                     ->after(function (\Illuminate\Database\Eloquent\Collection $record) {
                         foreach ($record as $value) {
@@ -118,10 +120,10 @@ class CourseResource extends Resource
                      })
                     ->action(function (Collection $record) {
                         $record->each(function (Course $rec, int $key) { $rec->pub=true;$rec->save();});
-                        Notification::make('e')->title('Certifications published successfully')
+                        Notification::make('e')->title(__('main.ce4'))
                         ->iconColor('success')->send();
                     })->deselectRecordsAfterCompletion(),
-                    Tables\Actions\BulkAction::make('Delete')->modalHeading('Unpublish')->label('Unpublish selected')
+                    Tables\Actions\BulkAction::make('Delete')->modalHeading(Str::ucfirst(__('form.pub2')))->label(Str::ucfirst(__('form.pub2')))
                     ->requiresConfirmation()->color('danger')->modalIcon('heroicon-o-eye-slash')->modalIconColor('warning')
                     ->after(function (\Illuminate\Database\Eloquent\Collection $record) {
                         foreach ($record as $value) {
@@ -131,7 +133,7 @@ class CourseResource extends Resource
                      })
                     ->action(function (Collection $record) {
                         $record->each(function (Course $rec, int $key) { $rec->pub=false;$rec->save();});
-                        Notification::make('e7')->title('Certifications hidden successfully')->icon('heroicon-o-eye-slash')
+                        Notification::make('e7')->title(__('main.ce5'))->icon('heroicon-o-eye-slash')
                         ->iconColor('success')->send();
                     })->deselectRecordsAfterCompletion(),
 

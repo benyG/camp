@@ -20,6 +20,7 @@ class ManageQuestions extends ManageRecords
                 Actions\CreateAction::make()->mutateFormDataUsing(function (array $data): array {
                     $data['text'] = str_replace('src="../storage','src="'.env('APP_URL').'/storage',$data['text']);
                     session(['cours'=>$data['cours']]);
+                 //   session(['cours'=>$data['cours']]);
                     return $data;
                 })->after(function ($record) {
                     $txt="New question created ! <br>
