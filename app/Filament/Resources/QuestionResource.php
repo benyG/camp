@@ -223,6 +223,9 @@ class QuestionResource extends Resource
                         $ik=1;
                         $aitx="";
                         foreach ($record->answers as $value) {
+                            if(!is_string($value)){
+                                $value=$value->text;
+                            }
                            $aitx.=$ik.". ".$value."\n ";
                         }
                         $stats=$record->certif->name." certification exam:

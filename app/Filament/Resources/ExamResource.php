@@ -55,15 +55,15 @@ class ExamResource extends Resource
                 Forms\Components\TextInput::make('name')
                 ->hidden(),
                 //
-                Forms\Components\Section::make('General Settings')->columns(3)
+                Forms\Components\Section::make(__('form.gs'))->columns(3)
                 ->description(function(Get $get){
                     $ix=cache()->rememberForever('settings', function () { return \App\Models\Info::findOrFail(1);});
-                   return $get('type')=='1'? 'Max timer is '.
+                   return $get('type')=='1'? __('form.mti').' '.
                    match (auth()->user()->ex) {1 => $ix->maxts,0 => '(inf.)',
-                    2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv}.' min.'.
-                    ' Max questions is '.match (auth()->user()->ex) {1 => $ix->maxes,0 => '(inf.)',
+                    2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv}.' min. '.
+                    __('form.mqu').' '.match (auth()->user()->ex) {1 => $ix->maxes,0 => '(inf.)',
                         2 => $ix->maxes, 3 => $ix->maxeu, 4 => $ix->maxep, 5 => $ix->maxev}
-                   :' Max Questions is '.match (auth()->user()->ex) {1 => $ix->maxs,0 => '(inf.)',
+                   :' '.__('form.mqu').' '.match (auth()->user()->ex) {1 => $ix->maxs,0 => '(inf.)',
                     2 => $ix->maxs, 3 => $ix->maxu, 4 => $ix->maxp, 5 => $ix->maxv};
                 })
                 ->schema([
@@ -95,20 +95,20 @@ class ExamResource extends Resource
                             $set('examods',$cert->mods);
                             $set('timer',$cert->timer>=$te?$te:$cert->timer);
                             $set('quest',$cert->quest>=$qe?$qe:$cert->quest);
-                        }else Notification::make()->warning()->title('Sorry, this certification doesn\'t have a typical configuration.')->send();
+                        }else Notification::make()->warning()->title(__('forme.e13'))->send();
                     }
                 })
                 ->required()->live(),
                 Forms\Components\Select::make('type')->label('Type')->selectablePlaceholder(false)->default('0')
                 ->options([
-                    '0' => 'Test your knowlegde',
-                    '1' => 'Exam Simulation',
+                    '0' => __('form.tyk'),
+                    '1' => __('form.exas'),
                 ])->live(),
                 Forms\Components\Select::make('typee')->label('Configuration')->selectablePlaceholder(false)->default('0')
                 ->options(function(Get $get, Set $set){
                      if($get('type')=='1')
-                     return ['0' => 'Custom','1' => 'Typical'];
-                    else {$set('typee','0');return ['0' => 'Custom'];}
+                     return ['0' => __('form.cus'),'1' => __('form.typ')];
+                    else {$set('typee','0');return ['0' => __('form.cus')];}
                     })
                 ->live()->afterStateUpdated(function (?string $state, ?string $old,Get $get,Set $set) {
                     $ix=cache()->rememberForever('settings', function () {
@@ -134,10 +134,10 @@ class ExamResource extends Resource
                             $set('examods',$cert->mods);
                             $set('timer',$cert->timer>=$te?$te:$cert->timer);
                             $set('quest',$cert->quest>=$qe?$qe:$cert->quest);
-                        }else Notification::make()->warning()->title('Sorry, this certification doesn\'t have a typical configuration.')->send();
+                        }else Notification::make()->warning()->title(__('form.e13'))->send();
                     }
                 }),
-                Forms\Components\TextInput::make('timer')->numeric()->requiredIf('type', '1')->label('Timer (min)')
+                Forms\Components\TextInput::make('timer')->numeric()->requiredIf('type', '1')->label(__('main.as18'))
                 ->readonly(fn(Get $get):bool=>$get('typee')=='1')
                 ->hidden(fn(Get $get):bool=>$get('type')!='1')
                 ->rules(['min:'.$ix->mint,'max:'.match (auth()->user()->ex) {1 => $ix->maxts,0 => 40000000,
@@ -152,7 +152,7 @@ class ExamResource extends Resource
                             :match (auth()->user()->ex) {1 => $ix->maxes,0 => 4000000,
                             2 => $ix->maxs, 3 => $ix->maxu, 4 => $ix->maxp, 5 => $ix->maxv};
                     if ($mq <intval($value)) {
-                        $fail("Max questions is ".$mq);
+                        $fail(__('form.mqu')." ".$mq);
                     }
                 },
                  fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
@@ -163,11 +163,11 @@ class ExamResource extends Resource
                         }
                     if ($rd!=intval($value)) {
 
-                        $fail('Max questions in modules should be '.$value.' . Actual :'.$rd);
+                        $fail(__('form.e14',['val'=>$value]).' '.$rd);
                     }
                 }
                 ])->suffixAction(
-                    Action::make('Randomize')
+                    Action::make(__('form.rd'))
                         ->icon('heroicon-m-arrows-pointing-out')->color('warning')
                         ->action(function (Set $set, $state,Get $get) {
                             // Notification::make()->success()->title($get('type'))->send();
@@ -193,7 +193,7 @@ class ExamResource extends Resource
                             }else Notification::make()->danger()->title('Please specify the number of questions')->send();
                         })
                 ),
-                    Forms\Components\DatePicker::make('due')->label('Due Date')
+                    Forms\Components\DatePicker::make('due')->label(__('main.dd'))
                     ->required()->minDate(now())
             ]),
                 Forms\Components\Section::make('Users')->columns(3)->hidden(auth()->user()->ex!=0)

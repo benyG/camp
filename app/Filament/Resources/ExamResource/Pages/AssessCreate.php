@@ -23,7 +23,7 @@ class AssessCreate extends CreateRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('reset')
+            Actions\Action::make('reset')->label(__('form.res'))
                 ->action(function (): void {
                     $this->form->fill();
                     Notification::make()

@@ -107,7 +107,7 @@ return [
      'as15' => 'Correct set of answers',
      'as16' => 'Correct set',
      'as17' => 'Wrong set of answers',
-     'as18' => '',
+     'as18' => 'Timer (min)',
      'as19' => '',
      'as20' => '',
      'm1' => 'Settings',

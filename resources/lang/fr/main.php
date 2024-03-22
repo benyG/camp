@@ -107,7 +107,7 @@ return [
      'as15' => 'Bon jeu de réponses',
      'as16' => 'Bonnes réponses',
      'as17' => 'Jeu de réponses incorrect',
-     'as18' => '',
+     'as18' => 'Minutage (en min.)',
      'as19' => '',
      'as20' => '',
      'm1' => 'Paramètres',
