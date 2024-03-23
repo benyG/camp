@@ -29,6 +29,7 @@ use App\Filament\Pages\Auth\EditProfile;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use App\Http\Middleware\LangSwitch;
+use App\Http\Middleware\SessLog;
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -68,6 +69,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                SessLog::class,
                 LangSwitch::class,
             ])
             ->authMiddleware([

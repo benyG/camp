@@ -364,7 +364,7 @@ class ExamResource extends Resource
                         'Are you sure you\'d like to continue the assessement \''.$record->name.'\'?')
               ->action(function (Exam $record) {
                     $txt=(empty($record->users1()->first()->pivot->start_at)?'Starting the Assessment':'Continuing the Assessment')."
-                    Name: $record->title <br>
+                    Name: $record->name <br>
                     Certification: ".$record->certRel->name." <br>
                     ";
                     \App\Models\Journ::add(auth()->user(),'Assessment',2,$txt);

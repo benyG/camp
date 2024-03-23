@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Blade;
 use Filament\Support\Assets\Css;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Assets\Js;
+use Filament\Support\Colors\Color;
+use Filament\Support\Facades\FilamentColor;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        FilamentColor::register([
+            'violet' => Color::Violet,
+        ]);
         FilamentView::registerRenderHook(
             'panels::scripts.after',
             fn (): string => Blade::render('
