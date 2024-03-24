@@ -198,7 +198,7 @@
                                 font-size: 10px !important;
                             }
                         </style>
-                        <div id='dd4' style="font-size:10px"> <br><br>{{__('main.as8')}} {{ $this->revAction }}</div>
+                        <div id='dd4' style="font-size:10px"> <br><br> {{ $this->revAction }}</div>
                 </div>
                 {!! $btext !!}
                 @if (!empty($iatext))
