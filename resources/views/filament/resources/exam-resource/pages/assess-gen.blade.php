@@ -115,8 +115,8 @@
                                         },
                                         minutes() {
                                             return {
-                                                value: this.remaining / 60,
-                                                remaining: this.remaining % 60
+                                                value: this.hours().remaining / 60,
+                                                remaining: this.hours().remaining % 60
                                             };
                                         },
                                         seconds() {
