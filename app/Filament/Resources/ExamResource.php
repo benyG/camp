@@ -142,7 +142,7 @@ class ExamResource extends Resource
                             $set('examods',$cert->mods);
                             $set('timer',$cert->timer>=$te?$te:$cert->timer);
                             $set('quest',$cert->quest>=$qe?$qe:$cert->quest);
-                        }else Notification::make()->warning()->title(__('form.e13'))->send();
+                        }else {Notification::make()->warning()->title(__('form.e13'))->send();}
                     }
                 }),
                 Forms\Components\TextInput::make('timer')->numeric()->requiredIf('type', '1')->label(__('main.as18'))

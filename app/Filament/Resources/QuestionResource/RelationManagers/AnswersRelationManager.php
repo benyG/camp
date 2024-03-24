@@ -28,30 +28,30 @@ class AnswersRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('text')
+                Forms\Components\TextInput::make('text')->label(__('form.txt'))
                     ->required()
                     ->maxLength(500)
                     ->unique(table: \App\Models\Answer::class,ignoreRecord: true)
                     ->validationMessages([
-                        'unique' => "Answer already in our database. You may attach it using the Attach button above.",
+                        'unique' => __('form.e20'),
                     ])
                     ->hintAction(
-                        \Filament\Forms\Components\Actions\Action::make('kkj')->label('Attach')
+                        \Filament\Forms\Components\Actions\Action::make('kkj')->label(__('form.att'))
                             ->icon('heroicon-m-link')
                             ->action(function (Get $get, $state) {
-                              if(empty($get('text'))) Notification::make('sgg')->danger()->title('Field empty')->send();
+                              if(empty($get('text'))) Notification::make('sgg')->danger()->title(__('form.e21'))->send();
                               else{
-                                if(!Answer::where('text',$get('text'))->exists()) Notification::make('e7')->danger()->title('Answer not in the database. You may create it using the Create button')->send();
+                                if(!Answer::where('text',$get('text'))->exists()) Notification::make('e7')->danger()->title(__('form.e22'))->send();
                                 else {
                                     $ans=Answer::where('text',$get('text'))->first();
                                     $quest=$this->getOwnerRecord();
-                                    if($quest->answers()->get()->contains($ans)) Notification::make('er')->danger()->title('Answer already attached to this question')->send();
+                                    if($quest->answers()->get()->contains($ans)) Notification::make('er')->danger()->title(__('form.e23'))->send();
                                     else if ($quest->answers()->count()>=$quest->maxr) {
-                                        Notification::make('74')->danger()->title('Maximum answers for this question reached')->send();
+                                        Notification::make('74')->danger()->title(__('form.e24'))->send();
                                     }
                                     else {
                                         $this->getOwnerRecord()->answers()->attach($ans->id,['isok'=>$get('isok')]);
-                                        Notification::make('ed')->success()->title('Answer successfully attached')->send();
+                                        Notification::make('ed')->success()->title(__('form.e25'))->send();
                                         $txt="Attaching
                                         Answer : $ans->text <br>
                                         to Question : ".$quest->text2;
@@ -61,7 +61,7 @@ class AnswersRelationManager extends RelationManager
                               }
                             })
                     ),
-                Forms\Components\Toggle::make('isok')->label('Is a true answer ?')->inline(false)
+                Forms\Components\Toggle::make('isok')->label(__('main.an1'))->inline(false)
                              ->required()->live(),
             ]);
     }
@@ -71,8 +71,8 @@ class AnswersRelationManager extends RelationManager
         return $table->striped()
             ->recordTitleAttribute('text')
             ->columns([
-                Tables\Columns\TextColumn::make('text'),
-                Tables\Columns\IconColumn::make('isok')->boolean()->label('Answer ?')
+                Tables\Columns\TextColumn::make('text')->label(__('form.txt')),
+                Tables\Columns\IconColumn::make('isok')->boolean()->label(__('main.an1'))
                 ])
             ->filters([
                 //
@@ -81,7 +81,7 @@ class AnswersRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make()->before(function (Tables\Actions\CreateAction $action) {
                     $quest=$this->getOwnerRecord();
                     if ($quest->answers()->count()>=$quest->maxr) {
-                        Notification::make('qsd')->danger()->title('Maximum answers for this question reached')->send();
+                        Notification::make('qsd')->danger()->title(__('form.e24'))->send();
                          $action->halt();
                     }
                 })
@@ -91,7 +91,7 @@ class AnswersRelationManager extends RelationManager
                     ";
                     \App\Models\Journ::add(auth()->user(),'Answers',1,$txt);
                 })
-                ->label('Add Answer')
+                ->label(__('form.adan'))
                 ->disabled($this->getOwnerRecord()->answers()->count()>=$this->getOwnerRecord()->maxr),
             ])
             ->actions([

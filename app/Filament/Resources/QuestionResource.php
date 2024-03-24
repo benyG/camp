@@ -24,9 +24,20 @@ class QuestionResource extends Resource
 {
     protected static ?string $model = Question::class;
     protected static ?int $navigationSort = 30;
-
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
-    protected static ?string $navigationGroup = 'Teachers';
+    protected static bool $hasTitleCaseModelLabel = false;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('main.m3');
+    }
+    public static function getModelLabel(): string
+    {
+        return trans_choice('main.m12',1);
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return trans_choice('main.m12',2);
+    }
 
     public static function form(Form $form): Form
     {
@@ -45,15 +56,15 @@ class QuestionResource extends Resource
                         else return $query;
                     }
                 }),
-                Forms\Components\TextInput::make('maxr')->label('Max. Answers')
+                Forms\Components\TextInput::make('maxr')->label(__('form.mans'))
                 ->required()
                 ->default(4)->inputMode('numeric')
                 ->rules(['numeric']),
-                TinyEditor::make('text')
+                TinyEditor::make('text')->label(__('form.txt'))
                     ->required()
                     ->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads')
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('descr')->columnSpanFull()->label('Explanation'),
+                Forms\Components\Textarea::make('descr')->columnSpanFull()->label(__('form.expl')),
 
            //     Forms\Components\Toggle::make('isexam')
            //         ->required(),
@@ -65,19 +76,19 @@ class QuestionResource extends Resource
         return $table->paginated([25,50,100,250])
         ->modifyQueryUsing(fn (Builder $query) => $query->with('reviews')->latest())
             ->columns([
-                Tables\Columns\TextColumn::make('text')->limit(100)->html()
+                Tables\Columns\TextColumn::make('text')->limit(100)->html()->label(__('form.txt'))
                 ->searchable()->sortable(),
              //   Tables\Columns\TextColumn::make('answers2_count')->label('True answers')->numeric()->sortable()
               //  ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('moduleRel.name')->label('Module')->sortable(),
                 Tables\Columns\TextColumn::make('certif.name')->label('Certification')->sortable(),
-                Tables\Columns\TextColumn::make('answers_count')->counts('answers')->label('Answers')
+                Tables\Columns\TextColumn::make('answers_count')->counts('answers')->label(trans_choice('main.m2',5))
                 ->numeric()->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')->label(__('form.cat'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                Tables\Columns\TextColumn::make('updated_at')->label(__('form.uat'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -93,8 +104,8 @@ class QuestionResource extends Resource
                     ->preload()
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make()->mutateFormDataUsing(function (array $data): array {
+                Tables\Actions\ViewAction::make()->iconButton(),
+                Tables\Actions\EditAction::make()->iconButton()->mutateFormDataUsing(function (array $data): array {
                     $data['text'] = str_replace('src="../storage','src="'.env('APP_URL').'/storage',$data['text']);
                     return $data;
                 })->mutateRecordDataUsing(function (array $data, QUestion $record): array {
@@ -122,7 +133,7 @@ class QuestionResource extends Resource
                     }
                     return $record;
                 }),
-                Tables\Actions\DeleteAction::make()->after(function ($record) {
+                Tables\Actions\DeleteAction::make()->iconButton()->after(function ($record) {
                     $txt="Removed question ID $record->id.
                     Text: $record->text <br>
                     ";
@@ -162,19 +173,19 @@ class QuestionResource extends Resource
         return $infolist
             ->schema([
                 Infolists\Components\TextEntry::make('moduleRel.name')->label('Modules'),
-                Infolists\Components\TextEntry::make('maxr')->label('Max. Answers'),
+                Infolists\Components\TextEntry::make('maxr')->label(__('form.mans')),
                 Infolists\Components\TextEntry::make('text')->html(),
-                Infolists\Components\TextEntry::make('descr')->html()->label('Explanation'),
-                Infolists\Components\TextEntry::make('reviews.id')->html()->label('Reviews')->columnSpanFull()->placeholder('None')
+                Infolists\Components\TextEntry::make('descr')->html()->label(__('form.expl')),
+                Infolists\Components\TextEntry::make('reviews.id')->html()->label('Reviews')->columnSpanFull()->placeholder(__('form.non'))
                 ->formatStateUsing(function ($state)
                 {
-                    $htm="<div class='text-sm text-gray-400 fi-in-placeholder dark:text-gray-500'>None</div>";
+                    $htm="<div class='text-sm text-gray-400 fi-in-placeholder dark:text-gray-500'>".__('form.non')."</div>";
                     $st=\App\Models\Review::with('userRel')->whereIn('id',explode(',',$state))->get();
                    // dd($st);
                     if(!empty($state)) {
                         $htm="<ul class='list-disc list-inside'>";
                         foreach ($st as $val) {
-                            $htm.="<li> User <b>".$val->userRel->name."</b> thinks that the answer to this question is <b>'".
+                            $htm.="<li> ".__('main.qu1',['name'=>"<b>".$val->userRel->name."</b>"])." <b>'".
                             implode(', ',\App\Models\Answer::whereIn('id',json_decode($val->ans))->get()->pluck('text')->toArray()).
                             "'</b></li>";
                         }
@@ -182,7 +193,7 @@ class QuestionResource extends Resource
                     }
                     return $htm;
                 })->hintActions([
-                    \Filament\Infolists\Components\Actions\Action::make('ooi')->label('Mark as Reviewed')->requiresConfirmation()
+                    \Filament\Infolists\Components\Actions\Action::make('ooi')->label(__('form.mrev'))->requiresConfirmation()
                         ->icon('heroicon-m-check-circle')->color('warning')
                         ->visible(fn($record):bool=> $record->reviews()->count()>0)
                         ->action(function ($record) {
@@ -210,7 +221,7 @@ class QuestionResource extends Resource
                             \App\Models\Review::destroy($record->reviews()->pluck('id'));
                             Notification::make()->success()->title('Users Notified.')->send();
                         }),
-                    \Filament\Infolists\Components\Actions\Action::make('otoi')->label('Ask the AI')//->requiresConfirmation()
+                    \Filament\Infolists\Components\Actions\Action::make('otoi')->label(__('form.aai'))//->requiresConfirmation()
                     ->icon('heroicon-m-question-mark-circle')->color('primary')
                     ->action(function () {})
                    ->modalWidth(\Filament\Support\Enums\MaxWidth::Medium)
@@ -248,11 +259,11 @@ class QuestionResource extends Resource
                                $txot=$response["choices"][0]["message"]["content"];
                                \App\Models\User::where('id',auth()->id())->update(['ix'=>auth()->user()->ix+1]);
                            }
-                           else Notification::make()->danger()->title("Query error.")->send();
+                           else Notification::make()->danger()->title(__('form.e10'))->send();
                        } catch (DecryptException $e) {
-                            Notification::make()->danger()->title("There was a problem during encryption.")->send();
+                            Notification::make()->danger()->title(__('form.e11'))->send();
                            } catch (ConnectionException $e) {
-                               Notification::make()->danger()->title("The query took too much time.")->send();
+                               Notification::make()->danger()->title(__('form.e12'))->send();
                            }
                       return  view('filament.pages.actions.iamod2',['txt' => $txot]);
                     })

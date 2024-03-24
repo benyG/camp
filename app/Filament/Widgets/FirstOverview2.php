@@ -30,7 +30,7 @@ class FirstOverview2 extends BaseWidget
             //    ->description('32k increase')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success');
-            $bg[]= Stat::make('Nb. Courses', Course::count())
+            $bg[]= Stat::make('Nb. Certifications', Course::count())
             //    ->description('32k increase')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success');

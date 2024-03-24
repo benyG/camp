@@ -19,7 +19,7 @@ class SessLog
             session(['lastActivityTime' => now()]);
         }
         if (now()->diffInMinutes(session('lastActivityTime')) >= 60 ) {
-            if (auth()->check() && auth()->id() > 1) {
+            if (auth()->check()) {
                 \App\Models\Journ::add(auth()->user(),'Login',10,"Session expiration. Loging out");
                auth()->logout();
                session()->forget('lastActivityTime');

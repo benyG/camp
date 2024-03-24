@@ -17,7 +17,7 @@ class VagueResource extends Resource
 {
     protected static ?string $model = Vague::class;
     protected static ?int $navigationSort = 80;
-    protected static ?string $navigationGroup = 'Admin';
+    protected static ?string $navigationGroup = 'Administration';
     protected static ?string $navigationIcon = 'heroicon-o-folder-open';
     protected static ?string $modelLabel = 'Class';
     public static function form(Form $form): Form
@@ -25,7 +25,7 @@ class VagueResource extends Resource
         $ix=cache()->rememberForever('settings', function () { return \App\Models\Info::findOrFail(1);});
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('name')->label(__('form.na'))
                     ->required()
                     ->maxLength(255),
                     Forms\Components\Select::make('users')->label('Users')->multiple()

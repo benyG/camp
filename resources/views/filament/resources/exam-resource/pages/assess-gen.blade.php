@@ -100,7 +100,6 @@
                                             const diff = this.expiry - new Date().getTime();
                                             if (diff > 0) this.remaining = parseInt(diff / 1000);
                                             else this.remaining = 0;
-
                                         },
                                         days() {
                                             return {
@@ -131,7 +130,7 @@
                                         time() {
                                             return {
                                                 //      days:this.format(this.days().value),
-                                                //     hours:this.format(this.hours().value),
+                                                hours:this.format(this.hours().value),
                                                 minutes: this.format(this.minutes().value),
                                                 seconds: this.format(this.seconds().value),
                                             }
@@ -153,7 +152,7 @@
                                         :class="parseInt(time().minutes) < 5 ? 'text-danger-500 dark:text-danger-400' :
                                             'text-gray-500 dark:text-gray-400'"
                                         class="text-sm font-bold fi-fo-wizard-header-step-description text-start">
-                                        <span x-text="time().minutes"></span>:<span
+                                        <span x-text="time().hours >0?time().hours+':':''"></span><span x-text="time().minutes"></span>:<span
                                             x-text="time().seconds"></span></span>
                                 @endif
                             </div>
