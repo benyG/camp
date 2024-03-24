@@ -149,7 +149,7 @@
                                 @else
                                     <span x-data="timer({{ $tim }})" x-init="init();
                                     setTimeout(() => { $wire.closeComp() }, {{ $tim }} * 60000);"
-                                        :class="parseInt(time().minutes) < 5 ? 'text-danger-500 dark:text-danger-400' :
+                                        :class="parseInt(time().hours)<=0 && parseInt(time().minutes) < 10 ? 'text-danger-500 dark:text-danger-400' :
                                             'text-gray-500 dark:text-gray-400'"
                                         class="text-sm font-bold fi-fo-wizard-header-step-description text-start">
                                         <span x-text="time().hours >0?time().hours+':':''"></span><span x-text="time().minutes"></span>:<span
