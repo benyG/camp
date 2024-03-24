@@ -86,6 +86,7 @@ class UsersTable2 extends BaseWidget
                     // dd('dk');
                     $uarr2[$exa->pivot->exam]=round(100*$ca/$earr->where('id',$exa->pivot->exam)->first()->quest,2);
                     }else if(!empty($exa->pivot->start_at)) {$uarr2[$exa->pivot->exam]=0;}
+                    else if(empty($exa->pivot->start_at) && now()>$exa->due) {$uarr2[$exa->pivot->exam]=-1;}
                 }
             }
            // dd(Exam::with('certRel')->where('from',$this->record->id)->orWhereRelation('users', 'user', $this->record->id)->latest('added_at')->count());
@@ -102,8 +103,8 @@ class UsersTable2 extends BaseWidget
             ->sortable(),
                 Tables\Columns\TextColumn::make('a4')->label('Result')->sortable()->badge()
                 ->state(fn (Exam $record) => $uarr2[$record->id]??0)
-                ->color(fn ($record): string =>isset($uarr2[$record->id])? ($uarr2[$record->id]>=$ix->wperc?'success': 'danger'):'gray')
-                ->formatStateUsing(fn ($state,$record): string => isset($uarr2[$record->id])? $state.'%':'Not started'),
+                ->color(fn ($record): string =>isset($uarr2[$record->id])? ($uarr2[$record->id]>=$ix->wperc?'success': ($uarr2[$record->id]==-1?'violet':'danger')):'gray')
+                ->formatStateUsing(fn ($state,$record): string => isset($uarr2[$record->id])? ($uarr2[$record->id]==-1?'Expired':$state.'%'):'Not started'),
             Tables\Columns\TextColumn::make('quest')->label('Questions')->sortable(),
             Tables\Columns\TextColumn::make('timer')->label('Timer')->sortable()
             ->formatStateUsing(fn ($state, $record):string=> $record->type!='1'? 'Unlimited': $state),

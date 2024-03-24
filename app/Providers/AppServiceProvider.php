@@ -27,6 +27,12 @@ class AppServiceProvider extends ServiceProvider
     {
         FilamentColor::register([
             'violet' => Color::Violet,
+            'cyan' => Color::Cyan,
+            'yellow' => Color::Yellow,
+            'lime' => Color::Lime,
+            'pink' => Color::Pink,
+            'stone' => Color::Stone,
+            'purple' => Color::Purple,
         ]);
         FilamentView::registerRenderHook(
             'panels::scripts.after',

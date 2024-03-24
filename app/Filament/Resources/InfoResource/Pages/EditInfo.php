@@ -15,11 +15,11 @@ class EditInfo extends EditRecord
     protected function getFormActions(): array
     {
         return [...parent::getFormActions(),
-            Actions\Action::make('reset')
+            Actions\Action::make(__('form.res'))
                 ->action(function () {
                 $this->form->fill();
                     Notification::make()
-                        ->title('The form has been reset')
+                        ->title(__('form.e5'))
                         ->success()
                         ->send();
                 })

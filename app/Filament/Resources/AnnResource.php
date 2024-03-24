@@ -19,7 +19,7 @@ class AnnResource extends Resource
     protected static ?string $model = Ann::class;
     protected static ?int $navigationSort = 65;
     protected static ?string $navigationIcon = 'heroicon-o-signal';
-    protected static ?string $navigationGroup = 'Admininstration';
+    protected static ?string $navigationGroup = 'Administration';
     protected static ?string $slug = 'announcements';
     protected static bool $hasTitleCaseModelLabel = false;
     public static function getModelLabel(): string

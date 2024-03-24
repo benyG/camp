@@ -46,7 +46,7 @@ class JournResource extends Resource
                 })
                 ->color(fn($state)=>match ($state) {
                     0 => 'info',1 => 'primary',2 => 'gray',3 => 'warning',4 => 'danger',5 => 'danger',
-                    6 => 'primary',7 => 'danger',8 => 'warning',9 => 'info',10 => 'gray',//11 => 'F. Login',
+                    6 => 'lime',7 => 'purple',8 => 'violet',9 => 'yellow',10 => 'stone',//11 => 'F. Login',
                     _=>'gray'
                 }),
                 Tables\Columns\TextColumn::make('text')->label('Details')->limit(15),
