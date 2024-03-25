@@ -39,7 +39,7 @@ class AssessCreate extends CreateRecord
         $data['type'] =$data['type']!='1'? '0':$data['type'];
         $data['timer'] =$data['timer']??'0';
         $data['name'] = ($data['type']!='1'?'Test':'Exam').'_'.Str::remove('-',now()->toDateString()).'_'.Str::random(5);
-        dd($data);
+       // dd($data);
         return $data;
     }
     protected function afterCreate(): void

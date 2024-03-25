@@ -169,11 +169,11 @@ class AssessGen extends Page implements HasForms, HasActions
     }
     public function revAction(): Action1
     {
-        return Action1::make('rev')->label('Mark this question')->link()
+        return Action1::make('rev')->label(__('main.here'))->link()
             ->requiresConfirmation()->color('primary')
             ->modalIcon('heroicon-o-question-mark-circle')
-            ->modalHeading('Mark this question')
-            ->modalDescription('')
+            ->modalHeading(__('main.as10'))
+            ->modalDescription(__('main.as11'))
             ->action(function () {
                  $rev = new \App\Models\Review;
                 $rev->user=auth()->id();
