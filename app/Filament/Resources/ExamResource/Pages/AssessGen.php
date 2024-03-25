@@ -159,7 +159,7 @@ class AssessGen extends Page implements HasForms, HasActions
                     <div class='text-center ' style='--c-50:var(--". ($sc>=$this->ix->wperc? "success":"danger")."-50);--c-400:var(--". ( $sc>=$this->ix->wperc? "success":"danger")."-400);--c-600:var(--". ( $sc>=$this->ix->wperc? "success":"danger")."-600);' >
                     <br><span
                     class='rounded-md text-lg font-medium ring-1 ring-inset px-2 min-w-[theme(spacing.6)] py-1 bg-custom-50 text-custom-600 ring-custom-600/10 dark:bg-custom-400/10 dark:text-custom-400 dark:ring-custom-400/30'
-                    >". ($sc>=$this->ix->wperc? Str::ucfirst(__('form.pas')):Str::ucfirst(__('form.fail')))."</span>
+                    >". ($sc>=$this->ix->wperc? Str::ucfirst(__('form.pas')):Str::ucfirst(trans_choice('form.fail',1)))."</span>
                    </div>
                 </div> <br> <br>
                 ";
@@ -348,18 +348,18 @@ class AssessGen extends Page implements HasForms, HasActions
                     $sc=round(100*$this->score/$this->qtot,2);
                     $this->btext="
                     <div class=''>
-                        <div class='text-sm text-center'>".__('main.as9',$this->score,['sc'=>$this->score])." $this->qtot</div> <br>
+                        <div class='text-sm text-center'>".trans_choice('main.as9',$this->score,['sc'=>$this->score])." $this->qtot</div> <br>
                         <div class='text-3xl text-center pb-9'>$sc % </div>
                         <div class='text-center ' style='--c-50:var(--". ($sc>=$this->ix->wperc? "success":"danger")."-50);--c-400:var(--". ( $sc>=$this->ix->wperc? "success":"danger")."-400);--c-600:var(--". ( $sc>=$this->ix->wperc? "success":"danger")."-600);' >
                         <br><span
                         class='rounded-md text-lg font-medium ring-1 ring-inset px-2 min-w-[theme(spacing.6)] py-1 bg-custom-50 text-custom-600 ring-custom-600/10 dark:bg-custom-400/10 dark:text-custom-400 dark:ring-custom-400/30'
-                        >".($sc>=$this->ix->wperc?Str::ucfirst(__('form.pas')):Str::ucfirst(__('form.fail')))."</span>
+                        >".($sc>=$this->ix->wperc?Str::ucfirst(__('form.pas')):Str::ucfirst(trans_choice('form.fail',1)))."</span>
                     </div>
                     </div> <br> <br>
                     ";
                     $tkxt="Completed Assessment ".$this->record->title." (".$this->record->certRel->name.") ";
                     \App\Models\Journ::add(auth()->user(),'Assessments',2,$tkxt);
-
+                       // dd($this->qcur2.'-'.$this->qtot);
                     if($this->qcur2>$this->qtot)return redirect()->to(ExamResource::getUrl());
                     $this->qcur2++;
             //
@@ -413,8 +413,9 @@ class AssessGen extends Page implements HasForms, HasActions
       }
     public function register($opt=false){
        $this->resetErrorBag();
+       if($this->qcur2>$this->qtot)return redirect()->to(ExamResource::getUrl());
        if($opt==false && $this->qcur<=$this->qtot-1) {$this->validateData();}
-        if($opt || ($this->record->type=='1' && $this->record->timer-now()->diffInMinutes($this->record->users1()->first()->pivot->start_at))<0)
+        if($opt || ($this->record->type=='1' && $this->record->timer-now()->diffInMinutes($this->record->users1()->first()->pivot->start_at)<=0))
         {
             $this->qcur=$this->qtot; //dd($opt);
             $this->qcur2=$this->qtot-1; //dd($opt);
@@ -442,7 +443,7 @@ class AssessGen extends Page implements HasForms, HasActions
         return $this->record->type==0?__('form.tyk'):($this->record->from !=auth()->id()?__('form.cex'):__('form.exas'));
     }
     public function getSubheading() : string | Htmlable{
-        return "Certification".__('main.space').": ".$this->record->certRel->name." | ".__('form.pas1').__('main.space').": ".$this->ix->wperc.($this->record->type=='0'?"":"| ".__('form.tim').__('main.space').": ".$this->record->timer." min");
+        return "Certification".__('main.space').": ".$this->record->certRel->name." | ".__('form.pas1').__('main.space').": ".$this->ix->wperc.($this->record->type=='0'?"":" | ".__('form.tim').__('main.space').": ".$this->record->timer." min");
     }
     public function messages()
     {

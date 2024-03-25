@@ -214,9 +214,11 @@ class ExamResource extends Resource
                     ->options(fn(Get $get)=>$get('classe')==null?User::where('id','<>',auth()->id())->get()->pluck('name', 'id'):
                     User::where('id','<>',auth()->id())->whereRelation('vagues','clas',$get('classe'))->get()->pluck('name', 'id'))->preload(),
                 ]),
-                Forms\Components\Section::make('')->disabled(fn(Get $get):bool=>$get('typee')=='1')
+                Forms\Components\Section::make('')->disabled(fn(Get $get):bool=>$get('typee')=='1')->dehydrated()
                 ->schema([
-                    Forms\Components\Repeater::make('examods')->grid(2)->label(function(Get $get){
+                    Forms\Components\Repeater::make('examods')
+
+                    ->grid(2)->label(function(Get $get){
                         $arrk=array_keys($get('examods'));
                         $rd=0;
                         foreach ($arrk as $key) {
@@ -347,7 +349,7 @@ class ExamResource extends Resource
                   ->schema([
                     Infolists\Components\TextEntry::make('certRel.name')->label('Certification'),
                     Infolists\Components\TextEntry::make('name')->label(__('main.as22')),
-                    Infolists\Components\TextEntry::make('timer')->label(__('form.ti'))
+                    Infolists\Components\TextEntry::make('timer')->label(__('form.ti').' (min.)')
                     ->state(fn (Exam $record) => $record->type=='1'?$record->timer:__('main.as7')),
                     Infolists\Components\TextEntry::make('quest')->label('Questions'),
                     Infolists\Components\TextEntry::make('due')->label(__('main.dd')),
@@ -408,7 +410,7 @@ class ExamResource extends Resource
                             ->state(fn (Exam $record) => $record->type=='1'?(auth()->id()==$record->from?__('form.exas'): __('form.cex')):__('form.tyk'))
                             ->badge()
                             ->color(fn ($record): string =>$record->type=='1'?(auth()->id()==$record->from?'primary': 'danger'):'info'),
-                            Infolists\Components\TextEntry::make('timer')->label(__('form.ti'))
+                            Infolists\Components\TextEntry::make('timer')->label(__('form.ti').' (min.)')
                             ->state(fn (Exam $record) => $record->type=='1'?$record->timer:__('main.as7')),
                             Infolists\Components\TextEntry::make('quest')->label('Questions'),
                             Infolists\Components\TextEntry::make('due')->label(__('main.dd')),
@@ -542,7 +544,7 @@ class ExamResource extends Resource
                             return \App\Models\Info::findOrFail(1);
                         });
                       //  $cu=0;$ca=0;
-                        $mode="<table class='w-full text-sm border-collapse table-auto'><thead><tr><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>".trans_choice('main.m5',5)."</th><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>".__('form.ti')."</th><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>Score</th></tr></thead><tbody class=''>";
+                        $mode="<table class='w-full text-sm border-collapse table-auto'><thead><tr><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>".trans_choice('main.m5',5)."</th><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>".__('form.ti')." (min.)</th><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>Score</th></tr></thead><tbody class=''>";
                         foreach ($record->users as $us) {
                             $mode.="<tr><td class='p-4 pl-8 text-gray-500 border-b border-gray-100 dark:border-gray-700 dark:text-gray-400'>".$us->name ."</td><td class='p-4 pl-8 text-gray-500 border-b border-gray-100 dark:border-gray-700 dark:text-gray-400'>".(!empty($us->pivot->start_at) && !empty($us->pivot->comp_at)?
                             \Illuminate\Support\Carbon::parse($us->pivot->comp_at)->diffInMinutes($us->pivot->start_at):
