@@ -25,14 +25,23 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?int $navigationSort = 70;
-    protected static ?string $navigationGroup = 'Admin';
+    protected static ?string $navigationGroup = 'Administration';
+    protected static bool $hasTitleCaseModelLabel = false;
+    public static function getModelLabel(): string
+    {
+        return trans_choice('main.m5',1);
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return trans_choice('main.m5',2);
+    }
 
     public static function form(Form $form): Form
     {
         $ix=cache()->rememberForever('settings', function () { return \App\Models\Info::findOrFail(1);});
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('name')->label(__('form.na'))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
@@ -43,10 +52,10 @@ class UserResource extends Resource
                     Forms\Components\Select::make('ex')->label('Type')
                     ->options(['1' => 'Admin','2' => 'Starter','3' => 'User','4' => 'Pro','5' => 'VIP'])
                     ->rules([Rule::in(['1','2','3','4','5'])]),
-                Password::make('password')
+                Password::make('password')->label(__('form.pwd'))
                 ->regex('/^\S*(?=.*\d)(?=\S*[\W])[a-zA-Z\d]\S*$/i')
                         ->validationMessages([
-                            'regex' => "There should be at least one uppercase and lowercase letter, one special character, and one digit. No spaces",
+                            'regex' => __('form.e1'),
                         ])
                     ->password()->copyable()->regeneratePassword()
                     ->generatePasswordUsing(function ($state) {
@@ -58,12 +67,12 @@ class UserResource extends Resource
                     ->maxLength(255)
                     ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
                     ->dehydrated(fn (?string $state): bool => filled($state)),
-                Password::make('password_confirmation')
+                Password::make('password_confirmation')->label(__('form.pwd1'))
                 ->hidden(fn (string $operation): bool => $operation === 'edit')
                 ->password()
                 ->required()
                 ->maxLength(255),
-                Forms\Components\Select::make('vagues')->label('Class')->multiple()
+                Forms\Components\Select::make('vagues')->label(__('form.cl'))->multiple()
                 ->relationship(name: 'vagues', titleAttribute: 'name',
                 modifyQueryUsing: fn (Builder $query) =>$query->withCount('users')->having('users_count','<=',$ix->maxcl))
                 ->preload(),
@@ -84,29 +93,29 @@ class UserResource extends Resource
         return $table->striped()
         ->query(User::with('vagues')->where('ex','<>',0)->where('id','<>',auth()->user()->id))
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('name')->label(__('form.na'))
                 ->searchable()->description(fn($record):string=>$record->email),
-                Tables\Columns\IconColumn::make('email_verified_at')->label('Verified ?')
+                Tables\Columns\IconColumn::make('email_verified_at')->label(__('form.vef').__('main.space').'?')
                 ->toggleable(isToggledHiddenByDefault: true)
-                ->color('success')->placeholder('No')->icon('heroicon-o-check-circle')
+                ->color('success')->placeholder(__('form.no'))->icon('heroicon-o-check-circle')
                     ->tooltip(fn (User $record): string => "{$record->email_verified_at}")
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('vagues.name')->label('Class')->sortable(),
+                    Tables\Columns\TextColumn::make('vagues.name')->label(__('form.cl'))->sortable(),
                 Tables\Columns\TextColumn::make('ex')->label('Type')->badge()
                 ->formatStateUsing(fn (int $state): string => match ($state) {0 => "S. Admin",
                     1 => "Admin", 2 => "Starter", 3 => "User", 4 => "Pro", 5 => "VIP"})
                     ->color(fn (int $state): string => match ($state) {0 => "S. Admin",
                         1 => "gray", 2 => "info", 3 => "success", 4 => "danger", 5 => "warning"})
                 ->sortable(),
-                Tables\Columns\TextColumn::make('ix')->label('AI Calls')
+                Tables\Columns\TextColumn::make('ix')->label(__('main.aic'))
                     ->toggleable(isToggledHiddenByDefault: true),
-                    Tables\Columns\TextColumn::make('created_at')
+                    Tables\Columns\TextColumn::make('created_at')->label(__('form.cat'))
                     ->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                Tables\Columns\TextColumn::make('updated_at')->label(__('form.uat'))
                     ->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('vagues')->label('Class')
+                Tables\Filters\SelectFilter::make('vagues')->label(__('form.cl'))
                 ->relationship(name: 'vagues', titleAttribute: 'name')->multiple()
                 ->searchable()
                 ->preload()
@@ -128,12 +137,12 @@ class UserResource extends Resource
                     foreach ($data['cou'] as $va) {
                         $record->courses()->updateExistingPivot($va, ['approve' => true]);
                     }
-                    Notification::make('es')->success()->title('Certifications saved')->send();
+                    Notification::make('es')->success()->title('Certifications '.__('form.sav'))->send();
                     $txt="User $record->name ($record->email) portfolio saved.";
                     \App\Models\Journ::add(auth()->user(),'Users',3,$txt);
                       })->button()->visible(fn (): bool =>auth()->user()->ex==0)
-                    ->modalHeading('Manage a user portfolio')
-                    ->modalSubmitActionLabel('Grant access')
+                    ->modalHeading(__('main.us1'))
+                    ->modalSubmitActionLabel(__('form.gra'))
                     ->modalDescription(fn(User $record):string=>$record->name),
                 Tables\Actions\Action::make('resend')->color(fn(User $record):string=>$record->ax?'danger':'info')->label(fn(User $record):string=>$record->ax?'Block':'Grant')
                 ->after(function ($record) {
@@ -142,12 +151,12 @@ class UserResource extends Resource
                 })
                 ->action(function (User $record) {
                     $record->ax=$record->ax? false:true; $record->save();
-                  Notification::make('es')->success()->title('User '.$record->name.' is now '.($record->ax?'able to access the platform':'blocked'))->send();
+                  Notification::make('es')->success()->title(__('main.us2',['name'=>$record->name]).' '.($record->ax?__('main.us3'):__('form.blo')))->send();
                     })->button()->visible(fn (): bool =>auth()->user()->ex==0)->iconButton()->icon(fn(User $record):string=>$record->ax?'heroicon-o-no-symbol':'heroicon-o-user-circle')
                     ->requiresConfirmation()->modalIcon(fn(User $record):string=>$record->ax?'heroicon-o-no-symbol':'heroicon-o-user-circle')
-                    ->modalHeading(fn(User $record):string=>$record->ax?'Block access':'Grant access')
-                    ->modalDescription(fn(User $record):string=>$record->ax?'Are you sure you\'d like to block user \''.$record->name.'\'?':
-                        'Are you sure you\'d like to grant user \''.$record->name.'\' access to the platform ?'),
+                    ->modalHeading(fn(User $record):string=>$record->ax?__('form.bloa'):__('form.gra'))
+                    ->modalDescription(fn(User $record):string=>$record->ax?__('main.us4').' \''.$record->name.'\'?':
+                        __('main.us5',['name'=>$record->name]).__('main.space').'?'),
                         Tables\Actions\EditAction::make()->iconButton()
                         ->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
                             $reco=$record->replicate();

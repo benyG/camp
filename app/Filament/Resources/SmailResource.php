@@ -39,7 +39,7 @@ class SmailResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user')->label('To')
+                Forms\Components\Select::make('user')->label(__('form.to'))
                 ->multiple()
                 ->required(fn():bool=>auth()->user()->ex<2)
                 ->relationship(name: 'users', titleAttribute: 'name')
@@ -51,7 +51,7 @@ class SmailResource extends Resource
                     foreach($users as $uy){
                         $er[$uy->id]=$uy->name;
                     }
-                    $bg['No class']=$er;
+                    $bg['N/A']=$er;
                     foreach ($vagues as $vague) {
                         $ez=$vague->users;
                         $ee=array();
@@ -63,12 +63,12 @@ class SmailResource extends Resource
                     return $bg;
                 })
             ->preload()->hidden(fn():bool=>auth()->user()->ex>=2),
-                Forms\Components\TextInput::make('sub')->label('Subject')
+                Forms\Components\TextInput::make('sub')->label(__('form.sub'))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('from')
                     ->hidden(),
-                TinyEditor::make('content')
+                TinyEditor::make('content')->label(__('form.cnt'))
                     ->required()
                     ->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads')
                     ->columnSpanFull(),
@@ -79,17 +79,17 @@ class SmailResource extends Resource
     {
         return $table->striped()->paginated([10, 25, 50, 100, 200, 'all'])
             ->columns([
-                Tables\Columns\TextColumn::make('sub')->label('Subject')
+                Tables\Columns\TextColumn::make('sub')->label(__('form.sub'))
                 ->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('from')->label('Correspondants')
                 ->formatStateUsing(fn (Model $record): string => $record->from== auth()->id()? Str::remove(['"','[',']'],$record->users2->pluck('name')) : $record->user1->name)
                 ->sortable()->hidden(fn():bool=>auth()->user()->ex>=2),
-             Tables\Columns\IconColumn::make('sent')->label('Sent via SMTP')->hidden(fn():bool=>auth()->user()->ex>=2)
+             Tables\Columns\IconColumn::make('sent')->label(__('form.svs'))->hidden(fn():bool=>auth()->user()->ex>=2)
              ->getStateUsing(fn (Smail $record) => $record->users1()->first()->pivot->sent??null)
              ->icon(fn($state):string=>$state?'heroicon-o-envelope':'')
-                 ->tooltip(fn (Smail $record): string =>$record->users1()->first()->pivot->sent==1? "Last sent on {$record->users1()->first()->pivot->last_sent}":"")
+                 ->tooltip(fn (Smail $record): string =>$record->users1()->first()->pivot->sent==1? __('form.lso')." {$record->users1()->first()->pivot->last_sent}":"")
                  ->sortable()->toggleable(isToggledHiddenByDefault: true),
-                 Tables\Columns\IconColumn::make('read')->label('Read')
+                 Tables\Columns\IconColumn::make('read')->label(__('form.read1'))
                  ->getStateUsing(fn (Smail $record) => $record->users1()->first()->pivot->read??null)
                  ->color(fn($state):string=>$state?'success':'danger')
                  ->icon(fn($state, Smail $record):string=>$record->from== auth()->user()->id? "":($state?'heroicon-o-envelope-open':'heroicon-o-envelope'))
@@ -98,7 +98,7 @@ class SmailResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')->label('Date')
                 ->dateTime()
                 ->sortable(),
-            Tables\Columns\TextColumn::make('updated_at')
+            Tables\Columns\TextColumn::make('updated_at')->label(__('form.uat'))
                 ->dateTime()
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true),
@@ -107,11 +107,13 @@ class SmailResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make('jjhg')->label('Read')->beforeFormFilled(function (Model $record)
+                Tables\Actions\ViewAction::make('jjhg')->label(__('form.read'))->beforeFormFilled(function (Model $record)
                 {
                   if($record->from!=auth()->id() && !$record->users1()->first()->pivot->read)  $record->users1()->updateExistingPivot(auth()->id(), ['read' => true,'read_date'=>now()]);
                 })->modalHeading(fn (Model $record): string=>$record->sub),
-                Tables\Actions\Action::make('transfer')->modalHeading('Transfer')->label('Transfer')->form([
+                Tables\Actions\Action::make('transfer')->modalHeading(__('form.tr'))
+                ->icon('heroicon-o-envelope')
+                ->label(__('form.tr'))->form([
                     Forms\Components\Select::make('user4')->label('To')
                     ->multiple()->hidden(fn():bool=>auth()->user()->ex>=2)
                     ->required(fn():bool=>auth()->user()->ex<2)
@@ -123,7 +125,7 @@ class SmailResource extends Resource
                         foreach($users as $uy){
                             $er[$uy->id]=$uy->name;
                         }
-                        $bg['No session']=$er;
+                        $bg['N/A']=$er;
                         foreach ($vagues as $vague) {
                             $ez=$vague->users;
                             $ee=array();
@@ -135,12 +137,12 @@ class SmailResource extends Resource
                         return $bg;
                     })
                 ->preload(),
-                    Forms\Components\TextInput::make('sub')->label('Subject')
+                    Forms\Components\TextInput::make('sub')->label(__('form.sub'))
                         ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('from')
                         ->hidden(),
-                    TinyEditor::make('content')
+                    TinyEditor::make('content')->label(__('form.cnt'))
                         ->required()
                         ->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads')
                         ->columnSpanFull(),
@@ -151,7 +153,7 @@ class SmailResource extends Resource
                     $data['from']=auth()->user()->id;
                     $rec=$model::create($data);
                     $rec->users()->attach($data['user4']);
-                    Notification::make()->success()->title('Message sent.')->send();
+                    Notification::make()->success()->title(__('form.e26'))->send();
                         $txt="Message ID $record->id tranfered
                         Sub: $record->sub <br>
                         To: ".implode(',',$rec->users2()->pluck('name')->toArray());
@@ -161,16 +163,16 @@ class SmailResource extends Resource
                              //   Notif::send($us, new NewMail($record->sub,$para,$opt));
                              SendEmail::dispatch($us,$rec->sub,$para,$opt);
                                 $record->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
-                                Notification::make()->success()->title('Sent via SMTP to '.$us->email)->send();
+                                Notification::make()->success()->title(__('form.e8').$us->email)->send();
                             } catch (Exception $exception) {
                                 Notification::make()
-                                ->title('We were not able to reach '.$us->email)
+                                ->title(__('form.e7').$us->email)
                                 ->danger()
                                 ->send();
                             }
                         }
                 })->hidden(fn():bool=>auth()->user()->ex>=2),
-                Tables\Actions\Action::make('resend')->color('warning')->label('Resend')
+                Tables\Actions\Action::make('resend')->color('warning')->label(__('form.res2'))->icon('heroicon-o-paper-airplane')
                 ->after(function ($record) {
                     $txt="Message ID $record->id, resent via SMTP
                     Sub: $record->sub <br>
@@ -188,17 +190,17 @@ class SmailResource extends Resource
                          //   Notif::send($us, new NewMail($record->sub,$para,$opt));
                          SendEmail::dispatch($us,$record->sub,$para,$opt);
                             $record->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
-                            Notification::make()->success()->title('Sent via SMTP to '.$us->email)->send();
+                            Notification::make()->success()->title(__('form.e8').$us->email)->send();
                         } catch (Exception $exception) {
                             Notification::make()
-                            ->title('We were not able to reach '.$us->email)
+                            ->title(__('form.e7').$us->email)
                             ->danger()
                             ->send();
                         }
                     }
                })
                 ->visible(fn(Smail $record)=>($record->from== auth()->user()->id) && Info::first()->smtp),
-                Tables\Actions\Action::make('Delete')->modalHeading('Delete message')->label('Delete')
+                Tables\Actions\Action::make('Delete')->modalHeading(__('form.del1'))->label(__('form.del'))->icon('heroicon-o-trash')
                 ->requiresConfirmation()->color('danger')->modalIcon('heroicon-o-trash')->modalIconColor('warning')
                 ->after(function ($record) {
                     $txt="Deleted message ID $record->id.
@@ -212,13 +214,13 @@ class SmailResource extends Resource
                     }else {
                         $record->users()->detach(auth()->user()->id);
                     }
-                    Notification::make('e')->title('Deleted successfully')->icon('heroicon-o-trash')
+                    Notification::make('e')->title(__('form.e27'))->icon('heroicon-o-trash')
                     ->iconColor('success')->send();
                 })
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('Delete')->modalHeading('Delete messages')->label('Delete selected')
+                    Tables\Actions\BulkAction::make('Delete')->modalHeading(__('form.del1').'s')->label(__('form.del2'))
                     ->requiresConfirmation()->color('danger')->modalIcon('heroicon-o-trash')->modalIconColor('warning')
                     ->after(function (Collection $record) {
                         foreach ($record as $value) {
@@ -236,7 +238,7 @@ class SmailResource extends Resource
                             $rec->users()->detach(auth()->user()->id);
                         }
                         });
-                        Notification::make('e')->title('Deleted successfully')->icon('heroicon-o-trash')
+                        Notification::make('e')->title(__('form.e27'))->icon('heroicon-o-trash')
                         ->iconColor('success')->send();
                     })->deselectRecordsAfterCompletion()
                     ,
@@ -254,14 +256,14 @@ class SmailResource extends Resource
     {
         return $infolist
             ->schema([
-                Infolists\Components\TextEntry::make('user.name')->label('From: ')
+                Infolists\Components\TextEntry::make('user.name')->label(__('form.frm').__('main.space').': ')
                 ->extraAttributes(['class' => 'font-bold'])
                 ->hidden(fn (Model $record): bool => $record->from== auth()->user()->id),
-                Infolists\Components\Section::make('Content')
+                Infolists\Components\Section::make(__('form.cnt'))
                 ->schema([
                 Infolists\Components\TextEntry::make('content')->label('')->html()->columnSpanFull(),
                 ]),
-                Infolists\Components\TextEntry::make('users.name')->label('Sent to')
+                Infolists\Components\TextEntry::make('users.name')->label(__('form.to'))
                 ->hidden(fn (Model $record): bool => $record->users->contains(auth()->user())),
             ]);
     }

@@ -21,7 +21,9 @@ class ManageSmails extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()->mutateFormDataUsing(function (array $data): array {
+            Actions\CreateAction::make()->modalHeading(__('main.sm1'))->modalSubmitActionLabel(__('form.send'))
+            ->label(__('form.nms'))
+            ->mutateFormDataUsing(function (array $data): array {
                 $data['from'] = auth()->id();
                 return $data;
             })->after(function(Model $record){
@@ -39,10 +41,10 @@ class ManageSmails extends ManageRecords
                          //   Notif::send($us, new NewMail($record->sub,$para,$opt));
                          \App\Jobs\SendEmail::dispatch($us,$ma->sub,$para,$opt);
                             $record->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
-                            Notification::make()->success()->title('Sent via SMTP to '.$us->email)->send();
+                            Notification::make()->success()->title(__('form.e8').' '.$us->email)->send();
                         } catch (Exception $exception) {
                             Notification::make()
-                                ->title('We were not able to reach '.$us->email)
+                                ->title(__('form.e7').$us->email)
                                 ->danger()
                                 ->send();
                         }
@@ -58,16 +60,16 @@ class ManageSmails extends ManageRecords
     }
     public function getHeading(): string
     {
-        return 'Inbox';
+        return __('main.m13');
     }
     public function getTabs(): array
     {
         return [
-            'inbox' => Tab::make()
+            'inbox' => Tab::make()->label(__('form.ib'))
                 ->modifyQueryUsing(fn (Builder $query) => $query
                 ->has('users1')->with('users1')->latest()
                         ),
-            'outbox' => Tab::make()
+            'outbox' => Tab::make()->label(__('form.ob'))
                 ->modifyQueryUsing(fn (Builder $query) => $query
                 ->where(function (Builder $query) {
                     $query->where('from',auth()->user()->id)

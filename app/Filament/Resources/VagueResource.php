@@ -20,6 +20,15 @@ class VagueResource extends Resource
     protected static ?string $navigationGroup = 'Administration';
     protected static ?string $navigationIcon = 'heroicon-o-folder-open';
     protected static ?string $modelLabel = 'Class';
+    public static function getModelLabel(): string
+    {
+        return trans_choice('main.m14',1);
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return trans_choice('main.m14',2);
+    }
+
     public static function form(Form $form): Form
     {
         $ix=cache()->rememberForever('settings', function () { return \App\Models\Info::findOrFail(1);});
@@ -28,7 +37,7 @@ class VagueResource extends Resource
                 Forms\Components\TextInput::make('name')->label(__('form.na'))
                     ->required()
                     ->maxLength(255),
-                    Forms\Components\Select::make('users')->label('Users')->multiple()
+                    Forms\Components\Select::make('users')->label(trans_choice('main.m5',5))->multiple()
                     ->relationship(name: 'users', titleAttribute: 'name')
                     ->preload()->maxItems(fn():int=>$ix->maxcl)
             ]);
@@ -39,9 +48,9 @@ class VagueResource extends Resource
         return $table->striped()
         ->modifyQueryUsing(fn (Builder $query) => $query->withCount('users'))
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('name')->label(__('form.na'))
                     ->searchable(),
-                    Tables\Columns\TextColumn::make('users_count')->label('Students')
+                    Tables\Columns\TextColumn::make('users_count')->label(__('form.stu'))
                     ->numeric()->sortable(),
                 ])
             ->filters([
