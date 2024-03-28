@@ -94,7 +94,7 @@ class ListCertif extends Page implements HasTable
             ->description(fn (Course $record): ?string => $record->descr),
             Tables\Columns\TextColumn::make('modules_count')->sortable()->label('Modules'),
             Tables\Columns\TextColumn::make('questions_count')->sortable()->label('Questions'),
-            Tables\Columns\TextColumn::make('uexists')->badge()->label(__('form.ins'))->sortable()
+            Tables\Columns\TextColumn::make('oo')->badge()->label(__('form.ins'))
             ->state(fn (Course $record) => $record->users1()->first()->pivot->approve? __('form.yes'):__('form.pen'))
             ->color(fn (Course $record) => $record->users1()->first()->pivot->approve? "success":"warning"),
             ])

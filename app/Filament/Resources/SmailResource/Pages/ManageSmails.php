@@ -39,7 +39,7 @@ class ManageSmails extends ManageRecords
                     foreach ($record->users2 as $us) {
                         try {
                          //   Notif::send($us, new NewMail($record->sub,$para,$opt));
-                         \App\Jobs\SendEmail::dispatch($us,$ma->sub,$para,$opt);
+                         \App\Jobs\SendEmail::dispatch($us,$record->sub,$para,$opt);
                             $record->users2()->updateExistingPivot($us->id, ['sent' => true,'last_sent' => now()]);
                             Notification::make()->success()->title(__('form.e8').' '.$us->email)->send();
                         } catch (Exception $exception) {
