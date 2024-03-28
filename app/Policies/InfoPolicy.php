@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Info;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class InfoPolicy
 {
@@ -13,7 +12,7 @@ class InfoPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -21,7 +20,7 @@ class InfoPolicy
      */
     public function view(User $user, Info $info): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -37,7 +36,7 @@ class InfoPolicy
      */
     public function update(User $user, Info $info): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**

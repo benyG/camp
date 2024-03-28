@@ -15,8 +15,9 @@ class LangSwitch
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $lg=empty(session('lang'))?$_COOKIE["lang"]??'en':session('lang');
+        $lg = empty(session('lang')) ? $_COOKIE['lang'] ?? 'en' : session('lang');
         app()->setLocale($lg);
+
         return $next($request);
     }
 }

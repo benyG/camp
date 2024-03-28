@@ -2,14 +2,13 @@
 
 namespace App\Mail;
 
+use App\Models\Smail;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
-use App\Models\Smail;
 use Illuminate\Mail\Mailables\Headers;
+use Illuminate\Queue\SerializesModels;
 
 class Imail extends Mailable
 {
@@ -27,12 +26,13 @@ class Imail extends Mailable
         return new Headers(
             text: [
                 'MIME-Version' => '1.0',
-              //  'From' => env('MAIL_FROM_ADDRESS', 'contact@cisspbootcamp.online'),
-             //   'Reply-To' => env('MAIL_FROM_ADDRESS', 'contact@cisspbootcamp.online'),
+                //  'From' => env('MAIL_FROM_ADDRESS', 'contact@cisspbootcamp.online'),
+                //   'Reply-To' => env('MAIL_FROM_ADDRESS', 'contact@cisspbootcamp.online'),
                 'X-Mailer' => 'PHP '.phpversion(),
             ],
         );
     }
+
     /**
      * Get the message envelope.
      */
@@ -67,5 +67,4 @@ class Imail extends Mailable
     {
         return [];
     }
-
 }

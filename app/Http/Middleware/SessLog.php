@@ -18,15 +18,17 @@ class SessLog
         if (! session()->has('lastActivityTime')) {
             session(['lastActivityTime' => now()]);
         }
-        if (now()->diffInMinutes(session('lastActivityTime')) >= 60 ) {
+        if (now()->diffInMinutes(session('lastActivityTime')) >= 60) {
             if (auth()->check()) {
-                \App\Models\Journ::add(auth()->user(),'Login',10,"Session expiration. Loging out");
-               auth()->logout();
-               session()->forget('lastActivityTime');
-               return redirect()->to(filament()->getLoginUrl());
-           }
-       }
-       session(['lastActivityTime' => now()]);
+                \App\Models\Journ::add(auth()->user(), 'Login', 10, 'Session expiration. Loging out');
+                auth()->logout();
+                session()->forget('lastActivityTime');
+
+                return redirect()->to(filament()->getLoginUrl());
+            }
+        }
+        session(['lastActivityTime' => now()]);
+
         return $next($request);
     }
 }

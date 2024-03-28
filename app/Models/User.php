@@ -2,39 +2,30 @@
 
 namespace App\Models;
 
- use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Vague;
-use App\Models\UsersMail;
-use App\Models\SMail;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Models\ExamUser;
-use App\Models\Exam;
-use App\Models\Course;
-use App\Models\UsersCourse;
-use App\Models\Review;
-use App\Models\Journ;
-use App\Models\OAuthProvider;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Laravel\Sanctum\HasApiTokens;
 
-
-class User extends Authenticatable implements FilamentUser,MustVerifyEmail
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
-/**
+
+    /**
      * Indicates if the model should be timestamped.
      *
      * @var bool
      */
     public $timestamps = true;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -44,7 +35,7 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
         'name',
         'email',
         'password',
-        'tz'
+        'tz',
     ];
 
     /**
@@ -66,17 +57,19 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
     protected function createdAt(): Attribute
     {
         return Attribute::make(
-         get: fn (string $value) => (new Carbon($value))->setTimezone(auth()->user()->tz),
-      );
+            get: fn (string $value) => (new Carbon($value))->setTimezone(auth()->user()->tz),
+        );
     }
+
     protected function updatedAt(): Attribute
     {
         return Attribute::make(
-         get: fn (string $value) => (new Carbon($value))->setTimezone(auth()->user()->tz),
-      );
+            get: fn (string $value) => (new Carbon($value))->setTimezone(auth()->user()->tz),
+        );
     }
 
     public function canAccessPanel(Panel $panel): bool
@@ -84,20 +77,22 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
         //return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
         return $this->ax;
     }
+
     public function vagues(): BelongsToMany
     {
-   //    return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');
-        return $this->belongsToMany(Vague::class,'user_classes', 'user', 'clas');
+        //    return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');
+        return $this->belongsToMany(Vague::class, 'user_classes', 'user', 'clas');
     }
+
     public function exams(): HasMany
     {
-       // return $this->hasMany(App\Models\Module::class, 'foreign_key', 'local_key');
+        // return $this->hasMany(App\Models\Module::class, 'foreign_key', 'local_key');
         return $this->hasMany(Exam::class, 'from');
     }
 
     public function fmails(): HasMany
     {
-       // return $this->hasMany(App\Models\Module::class, 'foreign_key', 'local_key');
+        // return $this->hasMany(App\Models\Module::class, 'foreign_key', 'local_key');
         return $this->hasMany(Smail::class, 'from');
     }
 
@@ -105,40 +100,44 @@ class User extends Authenticatable implements FilamentUser,MustVerifyEmail
     {
         //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
         return $this->belongsToMany(Smail::class, 'users_mail', 'user', 'mail')
-        ->as('um')
-        ->withPivot('last-sent')
-        ->withPivot('sent')
-        ->withPivot('id')
-        ->using(UsersMail::class);
+            ->as('um')
+            ->withPivot('last-sent')
+            ->withPivot('sent')
+            ->withPivot('id')
+            ->using(UsersMail::class);
     }
+
     public function exams2(): BelongsToMany
     {
         //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
         return $this->belongsToMany(Exam::class, 'exam_users', 'user', 'exam')
-        ->withPivot('added')
-        ->withPivot('comp_at')
-        ->withPivot('start_at')
-        ->withPivot('gen')
-         ->withPivot('id')
-         ->using(ExamUser::class);
-  }
+            ->withPivot('added')
+            ->withPivot('comp_at')
+            ->withPivot('start_at')
+            ->withPivot('gen')
+            ->withPivot('id')
+            ->using(ExamUser::class);
+    }
+
     public function courses(): BelongsToMany
     {
         //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
         return $this->belongsToMany(Course::class, 'users_course', 'user', 'course')
-        ->withPivot('approve');
+            ->withPivot('approve');
     }
+
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, 'user');
     }
+
     public function logs(): HasMany
     {
         return $this->hasMany(Journ::class, 'user');
     }
+
     public function oauthProviders(): HasMany
     {
         return $this->hasMany(OAuthProvider::class, 'provider_user_id');
     }
-
 }

@@ -14,11 +14,11 @@ class ManageAnswers extends ManageRecords
     {
         return [
             Actions\CreateAction::make()->after(function ($data) {
-                $txt="New answer created ! <br>
-                Text: ".$data['text']." <br>
-                ";
-                \App\Models\Journ::add(auth()->user(),'Answers',1,$txt);
-        }),
+                $txt = 'New answer created ! <br>
+                Text: '.$data['text'].' <br>
+                ';
+                \App\Models\Journ::add(auth()->user(), 'Answers', 1, $txt);
+            }),
         ];
     }
 }

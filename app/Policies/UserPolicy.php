@@ -3,17 +3,15 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
-
     public function viewAny(User $user): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->ex == 0 || $user->ex == 1;
     }
 
     /**
@@ -21,7 +19,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->ex == 0 || $user->ex == 1;
     }
 
     /**
@@ -29,7 +27,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**

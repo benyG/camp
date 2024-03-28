@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('anns', function (Blueprint $table) {
             $table->id();
             $table->string('descr')->nullable();
-            $table->string('url',500)->nullable();
+            $table->string('url', 500)->nullable();
             $table->boolean('hid')->default(true);
             $table->text('text');
             $table->text('type');

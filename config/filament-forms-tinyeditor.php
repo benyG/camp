@@ -18,7 +18,7 @@ return [
             'upload_directory' => null,
             'custom_configs' => [
                 'contextmenu' => false,
-              ],
+            ],
         ],
 
         'simple' => [

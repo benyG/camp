@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Console\Commands;
+
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -8,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class DatabaseQueueMonitorCommand extends Command
 {
     protected $signature = 'queue:db-monitor';
+
     protected $description = 'Check if our database queue is still running';
 
     public function handle()

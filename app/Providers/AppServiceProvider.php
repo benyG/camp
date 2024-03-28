@@ -1,15 +1,16 @@
 <?php
 
 namespace App\Providers;
+
 use Filament\Http\Responses\Auth\Contracts\EmailVerificationResponse;
-use Illuminate\Support\ServiceProvider;
-use Filament\Support\Facades\FilamentView;
-use Illuminate\Support\Facades\Blade;
 use Filament\Support\Assets\Css;
-use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Assets\Js;
 use Filament\Support\Colors\Color;
+use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentColor;
+use Filament\Support\Facades\FilamentView;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

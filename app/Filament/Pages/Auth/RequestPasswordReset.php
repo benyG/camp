@@ -7,7 +7,7 @@ use Filament\Pages\Auth\PasswordReset\RequestPasswordReset as BaseRequestPasswor
 
 class RequestPasswordReset extends BaseRequestPasswordReset
 {
-      public function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form;
     }

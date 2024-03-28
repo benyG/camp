@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\UsersCourse;
-use Illuminate\Auth\Access\Response;
 
 class UsersCoursePolicy
 {
@@ -13,7 +12,7 @@ class UsersCoursePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -21,7 +20,7 @@ class UsersCoursePolicy
      */
     public function view(User $user, UsersCourse $usersCourse): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -29,7 +28,7 @@ class UsersCoursePolicy
      */
     public function create(User $user): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -37,7 +36,7 @@ class UsersCoursePolicy
      */
     public function update(User $user, UsersCourse $usersCourse): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -45,7 +44,7 @@ class UsersCoursePolicy
      */
     public function delete(User $user, UsersCourse $usersCourse): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**

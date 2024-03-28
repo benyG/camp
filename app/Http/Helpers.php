@@ -1,6 +1,8 @@
 <?php
+
 if (! function_exists('mtz')) {
-    function mtz() {
+    function mtz()
+    {
         $timezones = [];
 
         foreach (timezone_identifiers_list() as $timezone) {
@@ -13,11 +15,10 @@ if (! function_exists('mtz')) {
             ];
         }
 
-        usort($timezones, function($a, $b) {
+        usort($timezones, function ($a, $b) {
             return $a['sort'] - $b['sort'] ?: strcmp($a['name'], $b['name']);
         });
 
         return $timezones;
     }
 }
-?>

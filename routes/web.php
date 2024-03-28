@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +24,3 @@ Route::post('lang', 'App\Http\Controllers\LanguageController@langS')->name('lang
 Route::get('lang/{lg}', 'App\Http\Controllers\LanguageController@langS2')->name('lang2');
 
 //Route::post('boss/{opt}', 'App\Filament\Pages\Auth\Login@authenticate2')->name('login2');
-

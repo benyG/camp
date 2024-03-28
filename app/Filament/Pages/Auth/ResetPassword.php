@@ -2,12 +2,12 @@
 
 namespace App\Filament\Pages\Auth;
 
-use Filament\Forms\Form;
-use Filament\Pages\Auth\PasswordReset\ResetPassword as BaseResetPassword;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
+use Filament\Forms\Form;
 use Filament\Http\Responses\Auth\Contracts\PasswordResetResponse;
 use Filament\Notifications\Notification;
+use Filament\Pages\Auth\PasswordReset\ResetPassword as BaseResetPassword;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword;
@@ -24,10 +24,10 @@ class ResetPassword extends BaseResetPassword
             ->schema([
                 $this->getEmailFormComponent(),
                 $this->getPasswordFormComponent()
-                ->regex('/^\S*(?=.*\d)(?=\S*[\W])[a-zA-Z\d]\S*$/i')
-                ->validationMessages([
-                    'regex' => __('form.e1'),
-                ]),
+                    ->regex('/^\S*(?=.*\d)(?=\S*[\W])[a-zA-Z\d]\S*$/i')
+                    ->validationMessages([
+                        'regex' => __('form.e1'),
+                    ]),
                 $this->getPasswordConfirmationFormComponent(),
             ]);
     }
@@ -59,13 +59,13 @@ class ResetPassword extends BaseResetPassword
 
         $status = Password::broker(Filament::getAuthPasswordBroker())->reset(
             $data,
-            function (CanResetPassword | Model | Authenticatable $user) use ($data) {
+            function (CanResetPassword|Model|Authenticatable $user) use ($data) {
                 $user->forceFill([
                     'password' => Hash::make($data['password']),
                     'remember_token' => Str::random(60),
                 ])->save();
-                $txt="Password successfully reset !";
-                \App\Models\Journ::add($user,'Login',9,$txt);
+                $txt = 'Password successfully reset !';
+                \App\Models\Journ::add($user, 'Login', 9, $txt);
                 event(new PasswordReset($user));
             },
         );
@@ -78,8 +78,8 @@ class ResetPassword extends BaseResetPassword
 
             return app(PasswordResetResponse::class);
         }
-        $txt="Password reset failed with email ".$data["email"];
-        \App\Models\Journ::add(null,'Login',5,$txt);
+        $txt = 'Password reset failed with email '.$data['email'];
+        \App\Models\Journ::add(null, 'Login', 5, $txt);
 
         Notification::make()
             ->title(__($status))

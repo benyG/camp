@@ -14,11 +14,11 @@ class ManageVagues extends ManageRecords
     {
         return [
             Actions\CreateAction::make()->after(function ($data) {
-                $txt="New Class created ! <br>
-                Name: ".$data['name']." <br>
-                ";
-                \App\Models\Journ::add(auth()->user(),'Classes',1,$txt);
-        }),
+                $txt = 'New Class created ! <br>
+                Name: '.$data['name'].' <br>
+                ';
+                \App\Models\Journ::add(auth()->user(), 'Classes', 1, $txt);
+            }),
         ];
     }
 }

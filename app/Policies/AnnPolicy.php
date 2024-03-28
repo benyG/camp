@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Ann;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class AnnPolicy
 {
@@ -13,7 +12,7 @@ class AnnPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -21,7 +20,7 @@ class AnnPolicy
      */
     public function view(User $user, Ann $ann): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -29,7 +28,7 @@ class AnnPolicy
      */
     public function create(User $user): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -37,7 +36,7 @@ class AnnPolicy
      */
     public function update(User $user, Ann $ann): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -45,7 +44,7 @@ class AnnPolicy
      */
     public function delete(User $user, Ann $ann): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**

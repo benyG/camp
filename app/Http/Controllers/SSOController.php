@@ -2,42 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\OAuthProvider;
-use Illuminate\Support\Facades\Http;
-use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Validation\ValidationException;
+use App\Models\User;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use DanHarrin\LivewireRateLimiting\WithRateLimiting;
+use Exception;
 use Filament\Facades\Filament;
 use Filament\Models\Contracts\FilamentUser;
-use Exception;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class SSOController extends Controller
 {
     use WithRateLimiting;
+
     public function redirectToProvider($provider)
     {
-        return Str::contains($provider, 'linkedin')?Socialite::driver("linkedin-openid")->redirect(): Socialite::driver($provider)->redirect();
+        return Str::contains($provider, 'linkedin') ? Socialite::driver('linkedin-openid')->redirect() : Socialite::driver($provider)->redirect();
     }
+
     public function handleProviderCallback($provider)
     {
         session()->regenerate();
         try {
-           $user =Str::contains($provider, 'linkedin')?Socialite::driver("linkedin-openid")->user(): Socialite::driver($provider)->user();
+            $user = Str::contains($provider, 'linkedin') ? Socialite::driver('linkedin-openid')->user() : Socialite::driver($provider)->user();
         } catch (Exception $exception) {
             report($exception);
+
             return redirect()->to(filament()->getLoginUrl());
         }
 
         // Find or create the user in your application
-        $us=$this->findOrCreateUser($provider, $user);
-       if(($us instanceof User)) $this->login($us,$provider);
+        $us = $this->findOrCreateUser($provider, $user);
+        if (($us instanceof User)) {
+            $this->login($us, $provider);
+        }
 
         return redirect()->to(filament()->getLoginUrl());
     }
+
     protected function findOrCreateUser($provider, $user)
     {
         $oauthProvider = OAuthProvider::where('provider', $provider)
@@ -56,22 +59,24 @@ class SSOController extends Controller
 
         if (User::where('email', $user->getEmail())->exists()) {
             // Handle the case where the email is already taken
-            session(['auth_opt'=>1]);
+            session(['auth_opt' => 1]);
+
             return redirect()->to(filament()->getLoginUrl());
         }
 
         // Create a new user and associated OAuthProvider entry
         return $this->createUser($provider, $user);
     }
+
     protected function createUser($provider, $sUser)
     {
-        $user =new User;
-        $user->name= $sUser->getName();
-        $user->email= $sUser->getEmail();
-        $user->password= \Illuminate\Support\Facades\Hash::make(now()."xc");
-        $user->email_verified_at=now();
-        $user->ax=1;
-        $user->tz=isset(session('auth_ip')['timezone'])?session('auth_ip')['timezone']:'UTC';
+        $user = new User;
+        $user->name = $sUser->getName();
+        $user->email = $sUser->getEmail();
+        $user->password = \Illuminate\Support\Facades\Hash::make(now().'xc');
+        $user->email_verified_at = now();
+        $user->ax = 1;
+        $user->tz = isset(session('auth_ip')['timezone']) ? session('auth_ip')['timezone'] : 'UTC';
         $user->save();
 
         $user->oauthProviders()->create([
@@ -81,11 +86,12 @@ class SSOController extends Controller
             'user' => $sUser->getId(),
             'refresh_token' => $sUser->refreshToken,
         ]);
-        $txt="New user registered with email ".$sUser->getEmail()."via provider '$provider'";
-        \App\Models\Journ::add(null,'Register',1,$txt);
+        $txt = 'New user registered with email '.$sUser->getEmail()."via provider '$provider'";
+        \App\Models\Journ::add(null, 'Register', 1, $txt);
 
         return $user;
     }
+
     /*     protected function createUser2()
         {
             $user =new User;
@@ -105,7 +111,8 @@ class SSOController extends Controller
             return $user;
         }
     */
-    protected function login($sUser, $provider){
+    protected function login($sUser, $provider)
+    {
         try {
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
@@ -113,16 +120,17 @@ class SSOController extends Controller
         }
 
         if (! Filament::auth()->login($sUser, false)) {
-            $txt="Failed login with email ".$sUser->email.".
+            $txt = 'Failed login with email '.$sUser->email.".
              <br> Provider : $provider  ";
-            \App\Models\Journ::add(null,'Login',5,$txt,session('auth_ip'));
-            session(['auth_opt'=>1]);
+            \App\Models\Journ::add(null, 'Login', 5, $txt, session('auth_ip'));
+            session(['auth_opt' => 1]);
+
             return redirect()->to(filament()->getLoginUrl());
         }
 
         $user = Filament::auth()->user();
-        $txt="Successful login of user '$user->name' ($user->email). <br> Provider : $provider";
-        \App\Models\Journ::add($user,'Login',0,$txt,$this->ox);
+        $txt = "Successful login of user '$user->name' ($user->email). <br> Provider : $provider";
+        \App\Models\Journ::add($user, 'Login', 0, $txt, $this->ox);
 
         if (
             ($user instanceof FilamentUser) &&
@@ -130,10 +138,12 @@ class SSOController extends Controller
         ) {
             Filament::auth()->logout();
 
-            session(['auth_opt'=>1]);
+            session(['auth_opt' => 1]);
+
             return redirect()->to(filament()->getLoginUrl());
         }
         session()->regenerate();
+
         return redirect()->to(filament()->getLoginUrl());
-}
+    }
 }

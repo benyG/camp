@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\QuestAns;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class QuestAnsPolicy
 {
@@ -13,7 +12,7 @@ class QuestAnsPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->ex == 0 || $user->ex == 1;
     }
 
     /**
@@ -21,7 +20,7 @@ class QuestAnsPolicy
      */
     public function view(User $user, QuestAns $questAns): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->ex == 0 || $user->ex == 1;
     }
 
     /**
@@ -29,7 +28,7 @@ class QuestAnsPolicy
      */
     public function create(User $user): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->ex == 0 || $user->ex == 1;
     }
 
     /**
@@ -37,7 +36,7 @@ class QuestAnsPolicy
      */
     public function update(User $user, QuestAns $questAns): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->ex == 0 || $user->ex == 1;
     }
 
     /**
@@ -45,7 +44,7 @@ class QuestAnsPolicy
      */
     public function delete(User $user, QuestAns $questAns): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->ex == 0 || $user->ex == 1;
     }
 
     /**
@@ -53,7 +52,7 @@ class QuestAnsPolicy
      */
     public function restore(User $user, QuestAns $questAns): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->ex == 0 || $user->ex == 1;
     }
 
     /**
@@ -61,6 +60,6 @@ class QuestAnsPolicy
      */
     public function forceDelete(User $user, QuestAns $questAns): bool
     {
-        return $user->ex ==0 || $user->ex ==1;
+        return $user->ex == 0 || $user->ex == 1;
     }
 }

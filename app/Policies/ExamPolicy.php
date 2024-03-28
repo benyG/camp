@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Exam;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ExamPolicy
 {
@@ -13,7 +12,7 @@ class ExamPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->ex!=1;
+        return $user->ex != 1;
     }
 
     /**
@@ -37,7 +36,7 @@ class ExamPolicy
      */
     public function update(User $user, Exam $exam): bool
     {
-      //  return $user->id==$exam->from;
+        //  return $user->id==$exam->from;
         return false;
     }
 
@@ -46,7 +45,7 @@ class ExamPolicy
      */
     public function delete(User $user, Exam $exam): bool
     {
-       return $user->id==$exam->from && empty($exam->users1()->first()->pivot->start_at);
+        return $user->id == $exam->from && empty($exam->users1()->first()->pivot->start_at);
     }
 
     /**

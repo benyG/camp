@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Review;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ReviewPolicy
 {
@@ -13,7 +12,7 @@ class ReviewPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -21,7 +20,7 @@ class ReviewPolicy
      */
     public function view(User $user, Review $review): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -29,7 +28,7 @@ class ReviewPolicy
      */
     public function create(User $user): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -37,7 +36,7 @@ class ReviewPolicy
      */
     public function update(User $user, Review $review): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -45,7 +44,7 @@ class ReviewPolicy
      */
     public function delete(User $user, Review $review): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**

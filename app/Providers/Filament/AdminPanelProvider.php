@@ -2,34 +2,31 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\EditProfile;
+use App\Filament\Pages\Auth\Login;
+use App\Filament\Pages\Auth\Register;
+use App\Filament\Pages\Auth\RequestPasswordReset;
+use App\Filament\Pages\Auth\ResetPassword;
+use App\Filament\Resources\InfoResource;
+use App\Http\Middleware\LangSwitch;
+use App\Http\Middleware\SessLog;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
-use Filament\Enums\ThemeMode;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Illuminate\Support\Facades\Blade;
-use App\Filament\Resources\InfoResource;
-use Filament\Navigation\MenuItem;
-use App\Filament\Pages\Auth\Register;
-use App\Filament\Pages\Auth\Login;
-use App\Filament\Pages\Auth\ResetPassword;
-use App\Filament\Pages\Auth\RequestPasswordReset;
-use App\Filament\Pages\Auth\EditProfile;
-use Filament\Support\Facades\FilamentView;
-use Filament\View\PanelsRenderHook;
-use App\Http\Middleware\LangSwitch;
-use App\Http\Middleware\SessLog;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -44,7 +41,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('boss')
             ->login(Login::class)
             ->registration(Register::class)
-            ->passwordReset(RequestPasswordReset::class,ResetPassword::class)
+            ->passwordReset(RequestPasswordReset::class, ResetPassword::class)
             ->emailVerification()
             ->profile(EditProfile::class)
             ->darkMode(true)
@@ -75,13 +72,13 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-          ->renderHook('panels::head.end',fn (): string => Blade::render('components.author'))
-          ->renderHook('panels::auth.login.form.after',fn (): string => Blade::render('footer3'))
-          ->renderHook('panels::auth.register.form.after',fn (): string => Blade::render('footer4'))
-            ->renderHook('panels::user-menu.before',fn (): string => Blade::render('head1'))
+            ->renderHook('panels::head.end', fn (): string => Blade::render('components.author'))
+            ->renderHook('panels::auth.login.form.after', fn (): string => Blade::render('footer3'))
+            ->renderHook('panels::auth.register.form.after', fn (): string => Blade::render('footer4'))
+            ->renderHook('panels::user-menu.before', fn (): string => Blade::render('head1'))
             ->userMenuItems([
                 MenuItem::make()
-                    ->label(fn():string=>__('main.m1'))
+                    ->label(fn (): string => __('main.m1'))
                     ->url(fn (): string => InfoResource::getUrl())
                     ->icon('heroicon-o-cog-6-tooth')
                     ->visible(fn (): bool => auth()->user()->can('viewAny', \App\Models\Info::class)),

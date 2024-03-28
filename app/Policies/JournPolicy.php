@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Journ;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class JournPolicy
 {
@@ -13,7 +12,7 @@ class JournPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**
@@ -21,7 +20,7 @@ class JournPolicy
      */
     public function view(User $user, Journ $journ): bool
     {
-        return $user->ex ==0;
+        return $user->ex == 0;
     }
 
     /**

@@ -2,17 +2,13 @@
 
 namespace App\Filament\Pages\Auth;
 
-use Filament\Forms\Form;
-use Filament\Pages\Auth\Login as BaseLogin;
-use Filament\Forms;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
-use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Filament\Facades\Filament;
+use Filament\Forms\Form;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Notifications\Notification;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use Filament\Pages\Auth\Login as BaseLogin;
 use Illuminate\Validation\ValidationException;
 
 class Login extends BaseLogin
@@ -20,10 +16,12 @@ class Login extends BaseLogin
     protected static string $view = 'filament.auth.login';
 
     public $ox;
+
     public function form(Form $form): Form
     {
         return $form;
     }
+
     public function getHeading(): string
     {
         return __('main.log');
@@ -36,23 +34,28 @@ class Login extends BaseLogin
         }
 
         $this->form->fill();
-      if(!empty(session('auth_opt')) && session('auth_opt')==1)  $this->throwFailureValidationException2();
-      session(['auth_opt'=>null]);
+        if (! empty(session('auth_opt')) && session('auth_opt') == 1) {
+            $this->throwFailureValidationException2();
+        }
+        session(['auth_opt' => null]);
     }
+
     protected function throwFailureValidationException2(): never
     {
-        session(['auth_opt'=>null]);
+        session(['auth_opt' => null]);
         throw ValidationException::withMessages([
             'data.email' => __('form.e2'),
         ]);
     }
+
     public function dehydrate()
     {
-        session(['auth_ip'=>$this->ox]);
+        session(['auth_ip' => $this->ox]);
     }
+
     public function authenticate(): ?LoginResponse
     {
-     //   dd($this->ox);
+        //   dd($this->ox);
         try {
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
@@ -73,15 +76,15 @@ class Login extends BaseLogin
         $data = $this->form->getState();
 
         if (! Filament::auth()->attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
-            $txt="Failed login with email ".$data["email"]."
-                ";
-            \App\Models\Journ::add(null,'Login',5,$txt,$this->ox);
+            $txt = 'Failed login with email '.$data['email'].'
+                ';
+            \App\Models\Journ::add(null, 'Login', 5, $txt, $this->ox);
             $this->throwFailureValidationException();
         }
 
         $user = Filament::auth()->user();
-        $txt="Successful login of user '$user->name' ($user->email)";
-        \App\Models\Journ::add($user,'Login',0,$txt,$this->ox);
+        $txt = "Successful login of user '$user->name' ($user->email)";
+        \App\Models\Journ::add($user, 'Login', 0, $txt, $this->ox);
 
         if (
             ($user instanceof FilamentUser) &&

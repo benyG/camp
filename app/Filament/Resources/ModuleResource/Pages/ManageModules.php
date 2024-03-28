@@ -14,13 +14,13 @@ class ManageModules extends ManageRecords
     {
         return [
             Actions\CreateAction::make()->after(function ($record) {
-              //  dd($record);
-                $txt="New module created ! <br>
+                //  dd($record);
+                $txt = "New module created ! <br>
                 Name: $record->name <br>
-                Certification: ".$record->courseRel->name." <br>
-                ";
-                \App\Models\Journ::add(auth()->user(),'Modules',1,$txt);
-        }),
+                Certification: ".$record->courseRel->name.' <br>
+                ';
+                \App\Models\Journ::add(auth()->user(), 'Modules', 1, $txt);
+            }),
         ];
     }
 }

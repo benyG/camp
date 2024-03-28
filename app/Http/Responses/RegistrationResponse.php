@@ -7,7 +7,7 @@ use Livewire\Features\SupportRedirects\Redirector;
 
 class RegistrationResponse extends \Filament\Http\Responses\Auth\RegistrationResponse
 {
-    public function toResponse($request): RedirectResponse | Redirector
+    public function toResponse($request): RedirectResponse|Redirector
     {
         return redirect(\Filament\Facades\Filament::getEmailVerificationPromptUrl());
     }
