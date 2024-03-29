@@ -23,6 +23,8 @@ class SessLog
                 \App\Models\Journ::add(auth()->user(), 'Login', 10, 'Session expiration. Loging out');
                 auth()->logout();
                 session()->forget('lastActivityTime');
+                session()->invalidate();
+                session()->regenerateToken();
 
                 return redirect()->to(filament()->getLoginUrl());
             }
