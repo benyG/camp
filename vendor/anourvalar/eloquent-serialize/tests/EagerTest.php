@@ -4,8 +4,11 @@ namespace AnourValar\EloquentSerialize\Tests;
 
 use AnourValar\EloquentSerialize\Tests\Models\User;
 use AnourValar\EloquentSerialize\Tests\Models\UserPhone;
+use AnourValar\EloquentSerialize\Tests\Models\Post;
+use AnourValar\EloquentSerialize\Tests\Models\UserPhoneNote;
+use AnourValar\EloquentSerialize\Tests\Models\Tag;
 
-class EagerTest extends AbstractTest
+class EagerTest extends AbstractSuite
 {
     /**
      * @return void
@@ -47,9 +50,13 @@ class EagerTest extends AbstractTest
     {
         // with
         $this->compare(User::with('userPhones.userPhoneNote'));
+        $this->compare(User::with('userPhones.userPhoneNote:id,user_phone_id,note'));
+        $this->compare(User::with(['userPhones' => ['userPhoneNote']]));
+        $this->compare(User::with(['userPhones' => fn ($query) => $query->with('userPhoneNote')]));
 
         // with (reverse)
         $this->compare(UserPhone::with('user.userPhones'));
+        $this->compare(UserPhone::with(['user' => ['userPhones']]));
     }
 
     /**
@@ -82,7 +89,7 @@ class EagerTest extends AbstractTest
         $this->compare(
             User::with(['userPhones' => function ($query) {
                 $query->where(function ($query) {
-                    $query->where('phone', '=', '111')->orWhere('phone', '!=', '222');
+                    $query->where('phone', '=', '111')->orWhere('phone', '!=', '222')->limit(5);
                 });
             }])
         );
@@ -312,6 +319,37 @@ class EagerTest extends AbstractTest
                     $query->whereNotNull('note');
                 },
             ])
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testMorphTo()
+    {
+        // Nested
+        $this->compare(
+            Tag::with(['taggable' => function (\Illuminate\Database\Eloquent\Relations\MorphTo $morphTo) {
+                $morphTo->morphWith([
+                    Post::class => ['user'],
+                ]);
+            }])
+        );
+
+        // Nested count
+        $this->compare(
+            Tag::with(['taggable' => function (\Illuminate\Database\Eloquent\Relations\MorphTo $morphTo) {
+                $morphTo->morphWithCount([
+                    Post::class => ['user'],
+                ]);
+            }])
+        );
+
+        // Nested (reverse)
+        $this->compare(
+            Post::with(['tag' => function (\Illuminate\Database\Eloquent\Relations\MorphOne $morphOne) {
+                $morphOne->with('taggable');
+            }])
         );
     }
 }

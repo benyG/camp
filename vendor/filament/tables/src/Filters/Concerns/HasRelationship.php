@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Znck\Eloquent\Relations\BelongsToThrough;
 
 trait HasRelationship
 {
@@ -96,24 +97,27 @@ trait HasRelationship
         return $relationshipQuery;
     }
 
-    public function getRelationshipKey(): ?string
+    public function getRelationshipKey(?Builder $query = null): ?string
     {
         $relationship = $this->getRelationship();
 
         if ($relationship instanceof BelongsToMany) {
-            return $relationship->getQualifiedRelatedKeyName();
+            return $query?->getModel()->qualifyColumn($relationship->getRelatedKeyName()) ??
+                $relationship->getQualifiedRelatedKeyName();
         }
 
         if ($relationship instanceof HasManyThrough) {
-            return $relationship->getQualifiedForeignKeyName();
+            return $query?->getModel()->qualifyColumn($relationship->getForeignKeyName()) ??
+                $relationship->getQualifiedForeignKeyName();
         }
 
-        if ($relationship instanceof \Znck\Eloquent\Relations\BelongsToThrough) {
-            $keyColumn = $relationship->getRelated()->getQualifiedKeyName();
+        if ($relationship instanceof BelongsToThrough) {
+            return $relationship->getRelated()->getQualifiedKeyName();
         }
 
         if ($relationship instanceof BelongsTo) {
-            return $relationship->getQualifiedOwnerKeyName();
+            return $query?->getModel()->qualifyColumn($relationship->getOwnerKeyName()) ??
+                $relationship->getQualifiedOwnerKeyName();
         }
 
         return null;

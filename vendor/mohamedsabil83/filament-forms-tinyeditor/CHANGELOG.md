@@ -2,6 +2,36 @@
 
 All notable changes to `filament-forms-tinyeditor` will be documented in this file.
 
+## v2.3.1 - 2024-03-13
+
+### What's Changed
+
+* [fix]: Focus conflict when using editor inside Jetstream modal
+
+**Full Changelog**: https://github.com/mohamedsabil83/filament-forms-tinyeditor/compare/v2.3.0...v2.3.1
+
+## v2.3.0 - 2024-03-12
+
+### What's Changed
+
+* Support Laravel 11.x
+* Bump aglipanci/laravel-pint-action from 2.3.0 to 2.3.1 by @dependabot in https://github.com/mohamedsabil83/filament-forms-tinyeditor/pull/116
+* Bump ramsey/composer-install from 2 to 3 by @dependabot in https://github.com/mohamedsabil83/filament-forms-tinyeditor/pull/120
+
+**Full Changelog**: https://github.com/mohamedsabil83/filament-forms-tinyeditor/compare/v2.2.0...v2.3.0
+
+## v2.2.0 - 2023-12-13
+
+### What's Changed
+
+* feat: enable file uploads on links and media by @brendoLoR in https://github.com/mohamedsabil83/filament-forms-tinyeditor/pull/115
+
+### New Contributors
+
+* @brendoLoR made their first contribution in https://github.com/mohamedsabil83/filament-forms-tinyeditor/pull/115
+
+**Full Changelog**: https://github.com/mohamedsabil83/filament-forms-tinyeditor/compare/v2.1.1...v2.2.0
+
 ## v2.1.1 - 2023-12-12
 
 ### What's Changed
