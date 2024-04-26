@@ -21,6 +21,7 @@ class SessLog
         if (now()->diffInMinutes(session('lastActivityTime')) >= 60) {
             if (auth()->check()) {
                 \App\Models\Journ::add(auth()->user(), 'Login', 10, 'Session expiration. Loging out');
+                if(auth()->user()->ex>6) \App\Models\User::destroy(auth()->id());
                 auth()->logout();
                 session()->forget('lastActivityTime');
                 session()->invalidate();

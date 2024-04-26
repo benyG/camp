@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Course extends Model
 {
@@ -23,6 +24,11 @@ class Course extends Model
             //   get: fn (string $value) => ucfirst($value),
             get: fn (mixed $value, array $attributes) => Str::slug($attributes['name'], '-')
         );
+    }
+    public function provRel(): BelongsTo
+    {
+        //    return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');
+        return $this->belongsTo(Prov::class, 'prov', 'id');
     }
 
     public function modules(): HasMany

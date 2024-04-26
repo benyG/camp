@@ -69,7 +69,7 @@ class InfoResource extends Resource
                                         Forms\Components\TextInput::make('minq')->label(__('form.omq'))
                                             ->required()->default(5)->numeric(),
                                     ]),
-                                Forms\Components\Section::make(__('form.tim').'S')->columns(5)
+                                Forms\Components\Section::make(__('form.tim').'s')->columns(5)
                                     ->description(__('main.in2'))
                                     ->schema([
                                         Forms\Components\TextInput::make('mint')->label(__('form.emt'))
@@ -84,7 +84,7 @@ class InfoResource extends Resource
                                             ->required()->numeric()->default(240),
                                     ]),
                                 Forms\Components\Section::make(__('form.tqu'))->columns(5)
-                                    ->description(__('main.in3').' '.Str::upper(__('form.tst')).'S')
+                                    ->description(__('main.in3').' '.Str::upper(__('form.tst')).'s')
                                     ->schema([
                                         Forms\Components\TextInput::make('maxs')->label(__('form.lim').' Q.'.'-Starter')
                                             ->required()->numeric()->default(10),
@@ -96,7 +96,7 @@ class InfoResource extends Resource
                                             ->required()->numeric()->default(100),
                                     ]),
                                 Forms\Components\Section::make(__('form.equ'))->columns(5)
-                                    ->description(__('main.in3').' '.Str::upper(__('form.exa')).'S')
+                                    ->description(__('main.in3').' '.Str::upper(__('form.exa')).'s')
                                     ->schema([
                                         Forms\Components\TextInput::make('maxes')->label(__('form.lim').' Q.-Starter')
                                             ->required()->numeric()->default(10),
@@ -119,8 +119,9 @@ class InfoResource extends Resource
                                             ->dehydrated(fn (?string $state): bool => filled($state)),
                                         Forms\Components\TextInput::make('endp')->label(__('form.enu'))
                                             ->required()->rules(['url']),
-                                        Forms\Components\TextInput::make('model')->label(__('form.aimo'))
-                                            ->required()->rules(['max:255']),
+                                        Forms\Components\Select::make('model')->label(__('form.aimo'))
+                                        ->options(["gpt-3.5-turbo"=>'ChatGPT 3',"gpt-4-turbo-preview"=>'ChatGPT 4'])
+                                            ->required(),
                                     ]),
                                 Forms\Components\Section::make(__('form.cont'))
                                     ->description(__('main.in4'))

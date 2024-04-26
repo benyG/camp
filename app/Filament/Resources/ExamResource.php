@@ -72,15 +72,15 @@ class ExamResource extends Resource
                         return $get('type') == '1' ? __('form.mti').' '.
                         match (auth()->user()->ex) {
                             1 => $ix->maxts,0 => '(inf.)',
-                            2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv
+                            2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv,default=> $ix->maxts
                         }.' min. '.
                          __('form.mqu').' '.match (auth()->user()->ex) {
                              1 => $ix->maxes,0 => '(inf.)',
-                             2 => $ix->maxes, 3 => $ix->maxeu, 4 => $ix->maxep, 5 => $ix->maxev
+                             2 => $ix->maxes, 3 => $ix->maxeu, 4 => $ix->maxep, 5 => $ix->maxev,default=>$ix->maxes
                          }
                         : ' '.__('form.mqu').' '.match (auth()->user()->ex) {
                             1 => $ix->maxs,0 => '(inf.)',
-                            2 => $ix->maxs, 3 => $ix->maxu, 4 => $ix->maxp, 5 => $ix->maxv
+                            2 => $ix->maxs, 3 => $ix->maxu, 4 => $ix->maxp, 5 => $ix->maxv,default=>$ix->maxs
                         };
                     })
                     ->schema([
@@ -104,10 +104,10 @@ class ExamResource extends Resource
                                             3 => $get('type') == '1' ? $ix->maxeu : $ix->maxu,
                                             4 => $get('type') == '1' ? $ix->maxep : $ix->maxp,
                                             5 => $get('type') == '1' ? $ix->maxev : $ix->maxv,
-                                            default => 1,
+                                            default =>  $get('type') == '1' ? $ix->maxes : $ix->maxs,
                                         };
                                         $te = match (auth()->user()->ex) {
-                                            0 => 40000000,1 => $ix->maxts,2 => $ix->maxts,3 => $ix->maxtu,4 => $ix->maxtp ,5 => $ix->maxtv,default => 1
+                                            0 => 40000000,1 => $ix->maxts,2 => $ix->maxts,3 => $ix->maxtu,4 => $ix->maxtp ,5 => $ix->maxtv,default => $ix->maxts
                                         };
                                         $set('examods', $cert->mods);
                                         $set('timer', $cert->timer >= $te ? $te : $cert->timer);
@@ -149,10 +149,10 @@ class ExamResource extends Resource
                                             3 => $get('type') == '1' ? $ix->maxeu : $ix->maxu,
                                             4 => $get('type') == '1' ? $ix->maxep : $ix->maxp,
                                             5 => $get('type') == '1' ? $ix->maxev : $ix->maxv,
-                                            default => 1,
+                                            default => $get('type') == '1' ? $ix->maxes : $ix->maxs,
                                         };
                                         $te = match (auth()->user()->ex) {
-                                            0 => 40000000,1 => $ix->maxts,2 => $ix->maxts,3 => $ix->maxtu,4 => $ix->maxtp ,5 => $ix->maxtv,default => 1
+                                            0 => 40000000,1 => $ix->maxts,2 => $ix->maxts,3 => $ix->maxtu,4 => $ix->maxtp ,5 => $ix->maxtv,default => $ix->maxts
                                         };
                                         $set('examods', $cert->mods);
                                         $set('timer', $cert->timer >= $te ? $te : $cert->timer);
@@ -167,7 +167,7 @@ class ExamResource extends Resource
                             ->hidden(fn (Get $get): bool => $get('type') != '1')
                             ->rules(['min:'.$ix->mint, 'max:'.match (auth()->user()->ex) {
                                 1 => $ix->maxts,0 => 40000000,
-                                2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv
+                                2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv,default=>$ix->maxts
                             }]),
                         Forms\Components\TextInput::make('quest')->numeric()->required()->label('Nb. Questions')->readonly(fn (Get $get): bool => $get('typee') == '1')
                             ->rules(['min:'.$ix->minq, fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
@@ -176,11 +176,11 @@ class ExamResource extends Resource
                                 });
                                 $mq = $get('type') == '1' ? match (auth()->user()->ex) {
                                     1 => $ix->maxes,0 => 400000000,
-                                    2 => $ix->maxes, 3 => $ix->maxeu, 4 => $ix->maxep, 5 => $ix->maxev
+                                    2 => $ix->maxes, 3 => $ix->maxeu, 4 => $ix->maxep, 5 => $ix->maxev,default=>$ix->maxes
                                 }
                                 : match (auth()->user()->ex) {
                                     1 => $ix->maxes,0 => 4000000,
-                                    2 => $ix->maxs, 3 => $ix->maxu, 4 => $ix->maxp, 5 => $ix->maxv
+                                    2 => $ix->maxs, 3 => $ix->maxu, 4 => $ix->maxp, 5 => $ix->maxv,default=>$ix->maxes
                                 };
                                 if ($mq < intval($value)) {
                                     $fail(__('form.mqu').' '.$mq);

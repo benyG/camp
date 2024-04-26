@@ -198,6 +198,7 @@ class AssessGen extends Page implements HasActions, HasForms
             ->modalIcon('heroicon-o-question-mark-circle')
             ->modalHeading(__('main.as10'))
             ->modalDescription(__('main.as11'))
+            ->visible(auth()->user()->ex<6)
             ->action(function () {
                 $rev = new \App\Models\Review;
                 $rev->user = auth()->id();
@@ -236,9 +237,9 @@ class AssessGen extends Page implements HasActions, HasForms
             ->icon('heroicon-o-question-mark-circle')
             ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
             ->modalSubmitActionLabel(__('form.yes'))
-            ->modalContent(fn (): View => view('filament.pages.actions.iamod', ['txt' => __('main.i4')]))
+            ->modalContent(fn (): View => view('filament.pages.actions.iamod', ['txt' => __('main.i4'),"ex"=>auth()->user()->ex]))
             ->action(function () {
-                //cache()->forget('settings');
+                if(auth()->user()->ex<6){
                 $ix = cache()->rememberForever('settings', function () {
                     return \App\Models\Info::findOrFail(1);
                 });
@@ -256,8 +257,9 @@ class AssessGen extends Page implements HasActions, HasForms
                     $this->qtext
                     - Answers choices :".$aitx.'.';
                 try {
+                    //sk-proj-9wUzwTSySTReFOcOu9b0T3BlbkFJtQVe3XZltaUtCJ6SStK4
                     $apk = Crypt::decryptString($ix->apk);
-                    //  dd($apk);
+                      //dd( $apk);
                     $response = Http::withToken($apk)->post($ix->endp, [
                         'model' => $ix->model,
                         'messages' => [
@@ -273,8 +275,7 @@ class AssessGen extends Page implements HasActions, HasForms
                         if (! $this->iati3) {
                             $this->iati3 = true;
                         }
-                        // $this->iatext=str_replace(array(':','-'),array(':<br>','<br>-'), $response["choices"][0]["message"]["content"]);
-                        $this->iatext = $response['choices'][0]['message']['content'];
+                        $this->iatext =$response['choices'][0]['message']['content'];
                         \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
                         // dd(auth()->user()->ix);
                     } else {
@@ -284,8 +285,9 @@ class AssessGen extends Page implements HasActions, HasForms
                     Notification::make()->danger()->title(__('form.e11'))->send();
                 } catch (ConnectionException $e) {
                     Notification::make()->danger()->title(__('form.e12'))->send();
-                }
+                } }
             });
+
     }
 
     public function inaAction(): Action1
@@ -306,9 +308,9 @@ class AssessGen extends Page implements HasActions, HasForms
                 }
             })
             ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
-            ->modalContent(fn (): View => view('filament.pages.actions.iamod', ['txt' => __('main.i7')]))
+            ->modalContent(fn (): View => view('filament.pages.actions.iamod', ['txt' => __('main.i7'),"ex"=>auth()->user()->ex]))
             ->action(function () {
-                //cache()->forget('settings');
+                if(auth()->user()->ex<6){
                 $ix = cache()->rememberForever('settings', function () {
                     return \App\Models\Info::findOrFail(1);
                 });
@@ -343,7 +345,7 @@ class AssessGen extends Page implements HasActions, HasForms
                         if (! $this->iati3) {
                             $this->iati3 = true;
                         }
-                        //  $this->iatext2=str_replace(array(':','-'),array(':<br>','<br>-'), $response["choices"][0]["message"]["content"])."<br> Keep in mind that this is just my point of view.;-";
+                     //   $this->iatext2 = preg_replace('/\\(.?)\\*/', '<strong>$1</strong>',$response['choices'][0]['message']['content'] );
                         $this->iatext2 = $response['choices'][0]['message']['content'];
                         \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
                     } else {
@@ -354,6 +356,7 @@ class AssessGen extends Page implements HasActions, HasForms
                 } catch (ConnectionException $e) {
                     Notification::make()->danger()->title(__('form.e12'))->send();
                 }
+            }
             });
     }
 

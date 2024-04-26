@@ -12,7 +12,7 @@
                     {{ __('main.wel') }}
                 </h2>
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                    {{ filament()->getUserName($user) }}
+                    {{ $user->ex>=9? __('main.Guest') : filament()->getUserName($user) }}
                 </p>
                 <p class="text-xs italic text-gray-500 dark:text-gray-400">
                    {{ __('main.si') }} {{ \Illuminate\Support\Carbon::parse($user->created_at)->locale('fr')->isoFormat('llll') }}
@@ -31,10 +31,11 @@
                 2 => "style='--c-50:var(--info-50);--c-400:var(--info-400);--c-600:var(--info-600);'",
                 3 => "style='--c-50:var(--success-50);--c-400:var(--success-400);--c-600:var(--success-600);'",
                 4 => "style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);'",
-                5 => "style='--c-50:var(--warning-50);--c-400:var(--warning-400);--c-600:var(--warning-600);'"} !!}
+                5 => "style='--c-50:var(--warning-50);--c-400:var(--warning-400);--c-600:var(--warning-600);'",
+                default=>"style='--c-50:var(--gray-50);--c-400:var(--gray-400);--c-600:var(--gray-600);'"} !!}
                 class="rounded-full text-sm font-medium ring-1 ring-inset px-2 min-w-[theme(spacing.6)] py-1  bg-custom-50 text-custom-600 ring-custom-600/10 dark:bg-custom-400/10 dark:text-custom-400 dark:ring-custom-400/30"
                 >
-                    {{ match ($user->ex) {0 => 'S. Admin',1 => 'Admin',2 => 'Starter',3 => 'User',4 => 'Pro',5 => 'VIP'} }}
+                    {{ match ($user->ex) {0 => 'S. Admin',1 => 'Admin',2 => 'Starter',3 => 'User',4 => 'Pro',5 => 'VIP',default=>__('main.Guest')} }}
                 </span>
                </div>
             </div>

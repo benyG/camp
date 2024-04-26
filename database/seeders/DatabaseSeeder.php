@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $filamentMakeUserCommand = new FilamentMakeUserCommand();
+        /* $filamentMakeUserCommand = new FilamentMakeUserCommand();
         $reflector = new \ReflectionObject($filamentMakeUserCommand);
 
         $getUserModel = $reflector->getMethod('getUserModel');
@@ -22,6 +22,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'THE BENY GREEN',
             'email' => 'newgoku00@gmail.com',
             'password' => Hash::make('admin0'),
-        ]);
+        ]); */
     }
 }

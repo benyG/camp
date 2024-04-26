@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\QuestionResource\Pages;
 use App\Filament\Resources\QuestionResource\RelationManagers\AnswersRelationManager;
 use App\Models\Course;
+use App\Models\Prov;
 use App\Models\Question;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -48,9 +49,22 @@ class QuestionResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('prov')->label(__('main.m16'))->required()
+                ->options(Prov::all()->pluck('name', 'id'))->default(session('2providers'))
+                ->preload()->live(),
                 Forms\Components\Select::make('cours')->label('Certifications')
-                    ->options(Course::all()->pluck('name', 'id'))->default(session('cours'))
-                    ->preload()->live(),
+                    ->options(function(Get $get, string $operation){
+                        if ($operation == 'create') {
+                            return Course::where('prov', $get('prov'))->get()->pluck('name', 'id');
+                        } else {
+                            if (is_numeric($get('prov'))) {
+                                return Course::where('prov', $get('prov'))->get()->pluck('name', 'id');
+                            } else {
+                                return Course::all()->pluck('name', 'id');
+                            }
+                        }
+                    })
+                    ->default(session('cours'))->preload()->live(),
                 Forms\Components\Select::make('module')->label('Modules')->required()
                     ->relationship(name: 'moduleRel', titleAttribute: 'name',
                         modifyQueryUsing: function (Builder $query, Get $get, string $operation) {
@@ -92,6 +106,10 @@ class QuestionResource extends Resource
                 Tables\Columns\TextColumn::make('certif.name')->label('Certification')->sortable(),
                 Tables\Columns\TextColumn::make('answers_count')->counts('answers')->label(trans_choice('main.m2', 5))
                     ->numeric()->sortable(),
+                Tables\Columns\TextColumn::make('rev')->label(__('form.rev'))
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')->label(__('form.cat'))
                     ->dateTime()
                     ->sortable()
@@ -212,6 +230,7 @@ class QuestionResource extends Resource
                         ->icon('heroicon-m-check-circle')->color('warning')
                         ->visible(fn ($record): bool => $record->reviews()->count() > 0)
                         ->action(function ($record) {
+                            $record->rev++;$record->save();
                             foreach ($record->reviews as $rev) {
                                 $ma = new \App\Models\SMail;
                                 $ma->from = auth()->id();

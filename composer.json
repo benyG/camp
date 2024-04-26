@@ -14,7 +14,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.2",
         "mohamedsabil83/filament-forms-tinyeditor": "^2.1",
-        "rawilk/filament-password-input": "^1.1",
+        "rawilk/filament-password-input": "*",
         "stevebauman/location": "^7.1"
     },
     "require-dev": {

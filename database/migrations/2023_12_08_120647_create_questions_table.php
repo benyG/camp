@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('text');
             $table->text('descr');
             $table->tinyInteger('maxr')->default(4)->unsigned();
+            $table->tinyInteger('rev')->default(0)->unsigned();
             $table->boolean('isexam')->default(false);
             $table->timestamps();
             $table->unsignedBigInteger('module')->nullable();

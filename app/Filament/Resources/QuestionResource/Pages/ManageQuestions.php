@@ -19,6 +19,8 @@ class ManageQuestions extends ManageRecords
             Actions\CreateAction::make()->mutateFormDataUsing(function (array $data): array {
                 $data['text'] = str_replace('src="../storage', 'src="'.env('APP_URL').'/storage', $data['text']);
                 session(['cours' => $data['cours']]);
+                session(['2providers' => $data['prov']]);
+
 
                 //   session(['cours'=>$data['cours']]);
                 return $data;

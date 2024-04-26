@@ -9,6 +9,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use App\Models\Prov;
+use Filament\Forms\Get;
+use Illuminate\Database\Eloquent\Builder;
 
 class ModuleResource extends Resource
 {
@@ -30,8 +33,21 @@ class ModuleResource extends Resource
                 Forms\Components\TextInput::make('name')->label(__('form.na'))
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('course')->label('Certification')->required()
-                    ->relationship(name: 'courseRel', titleAttribute: 'name'),
+                Forms\Components\Select::make('prov')->label(__('main.m16'))->required()
+                ->options(Prov::all()->pluck('name', 'id'))->default(session('1providers'))
+                ->preload()->live(),
+            Forms\Components\Select::make('course')->label('Certification')->required()
+                    ->relationship(name: 'courseRel', titleAttribute: 'name',modifyQueryUsing: function (Builder $query, Get $get, string $operation) {
+                        if ($operation == 'create') {
+                            return $query->where('prov', $get('prov'));
+                        } else {
+                            if (is_numeric($get('prov'))) {
+                                return $query->where('prov', $get('prov'));
+                            } else {
+                                return $query;
+                            }
+                        }
+                    }),
             ]);
     }
 

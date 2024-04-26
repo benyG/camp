@@ -69,18 +69,17 @@ class UserCourseChart4 extends ChartWidget
         $uc = [[], [], []];
         $this->record = $this->record ?? auth()->user();
         $arx = $this->cs2 == 'X' ? [0, 1] : [intval($this->cs2)];
-        $exx = Exam::where('certi', $this->cs)->whereIn('type', $arx)->limit($ix->taff)->get()->pluck('id')->toArray();
+        $exx = Exam::where('certi', $this->cs)->whereIn('type', $arx)->latest('added_at')->get()->pluck('id')->toArray();
         $exa = ExamUser::selectRaw('DATE(added) as ax,COUNT(*) as exa')
-            ->where('user', $this->record->id)->whereIn('exam', $exx)->
-        groupBy(DB::raw('DATE(added)'))->oldest('ax')->get();
+            ->where('user', $this->record->id)->whereIn('exam', $exx)->limit($ix->taff)->
+        groupBy(DB::raw('DATE(added)'))->latest('ax')->get();
         // dd($exa->count());
         foreach ($exa as $ex) {
-            $md1 = 0;
-            $md2 = 0;
             $uc[0][] = $ex->ax;
             $uc[1][] = $ex->exa;
         }
-
+        $uc[1]=array_reverse($uc[1]);
+        $uc[0]=array_reverse($uc[0]);
         return [
             'datasets' => [
                 [

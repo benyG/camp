@@ -21,7 +21,7 @@ return [
     'm15' => 'Cher Bootcampeur',
     'm16' => 'Vous venez de souscrire pour un compte sur',
     'm17' => 'Veuillez confirmer votre adresse email pour accéder à la plateforme',
-    'm18' => 'Cliquez sur le bouton ci-dessous, or entrez le lien dans votre navigateur',
+    'm18' => 'Cliquez sur le bouton ci-dessous, ou entrez le lien dans votre navigateur',
     'm19' => 'pour confirmer votre adresse mail',
     'm20' => 'Merci et Bienvenue',
     'm21' => 'Si vous n\'avez jamais souscris à un compte sur notre plateforme, veuillez simplement igorer cet email.',

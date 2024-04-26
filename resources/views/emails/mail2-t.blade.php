@@ -17,5 +17,5 @@ Certification : {{$para[3]}}
 {{ __('email.m5') }} {{$email}}
 {{ __('email.m6') }}.
 
-IT Exam Boot Camp
+ITExamBootCamp
 {{ __('email.m7') }}

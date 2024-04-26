@@ -66,7 +66,7 @@ class UserCourseChart5 extends ChartWidget
         $arx = $this->cs2 == '0' ? [0, 1] : [intval($this->cs2) - 1];
         $uc = [[], [], []];
         $this->record = $this->record ?? auth()->user();
-        $exa = $this->record->exams2()->where('certi', $this->cs)->whereIn('type', $arx)->limit($ix->taff)->oldest('added_at')->get();
+        $exa = $this->record->exams2()->where('certi', $this->cs)->whereIn('type', $arx)->limit($ix->taff)->latest('added_at')->get();
         foreach ($exa as $ex) {
             $md1 = 0;
             $md2 = 0;
@@ -98,6 +98,9 @@ class UserCourseChart5 extends ChartWidget
             $uc[1][] = $md1;
             $uc[2][] = $md2;
         }
+        $uc[1]=array_reverse($uc[1]);
+        $uc[2]=array_reverse($uc[2]);
+        $uc[0]=array_reverse($uc[0]);
 
         return [
             'datasets' => [
