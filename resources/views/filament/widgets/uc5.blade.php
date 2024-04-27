@@ -15,7 +15,7 @@
                     class="w-max sm:-my-2"
                 >
                 <x-slot name="prefix">
-                    Cert.
+                    Type
                 </x-slot>
                     <x-filament::input.select
                         wire:model.live='cs2'

@@ -8,6 +8,7 @@ use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ManageRecords;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class ManageQuestions extends ManageRecords
 {
@@ -15,13 +16,13 @@ class ManageQuestions extends ManageRecords
 
     protected function getHeaderActions(): array
     {
+        $b4 = \App\Models\Question::selectRaw('count(text)')->groupBy("text")->having('count(text)','>',1)->count();
+
         return [
             Actions\CreateAction::make()->mutateFormDataUsing(function (array $data): array {
                 $data['text'] = str_replace('src="../storage', 'src="'.env('APP_URL').'/storage', $data['text']);
                 session(['cours' => $data['cours']]);
                 session(['2providers' => $data['prov']]);
-
-
                 //   session(['cours'=>$data['cours']]);
                 return $data;
             })->after(function ($record) {
@@ -35,6 +36,9 @@ class ManageQuestions extends ManageRecords
                 ->successRedirectUrl(fn (Model $record): string => $this->getResource()::getUrl('view', [
                     'record' => $record->id,
                 ]))->createAnother(false),
+            Actions\Action::make('ee')->label(__('form.du'))->badge($b4)->badgeColor(fn () => $b4 > 0 ? 'danger' : 'success')
+                ->action(function ($record) {
+                })->color('info')->disabled(fn()=>$b4<=0),
         ];
     }
 

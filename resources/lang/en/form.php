@@ -175,7 +175,7 @@ return [
     'gra' => 'Grant access',
     'blo' => 'blocked',
     'bloa' => 'Block access',
-    // '' => '',
+     'du' => 'Duplicates',
     // '' => '',
     // '' => '',
     // '' => '',

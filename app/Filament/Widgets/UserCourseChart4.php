@@ -108,6 +108,7 @@ class UserCourseChart4 extends ChartWidget
                         },
                         ticks: {
                             display: true,
+                            stepSize: 1
                         },
                     },
                     x: {

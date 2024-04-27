@@ -141,6 +141,11 @@ class UserCourseChart5 extends ChartWidget
                             display: true,
                         },
                     },
+                    y: {
+                        ticks: {
+                            stepSize: 1
+                        },
+                    },
                     x: {
                         grid: {
                             display: true,

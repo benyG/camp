@@ -53,7 +53,7 @@ class QuestionResource extends Resource
                 ->options(Prov::all()->pluck('name', 'id'))->default(session('2providers'))
                 ->preload()->live(),
                 Forms\Components\Select::make('cours')->label('Certifications')
-                    ->options(function(Get $get, string $operation){
+                    ->options(function(Get $get , string $operation){
                         if ($operation == 'create') {
                             return Course::where('prov', $get('prov'))->get()->pluck('name', 'id');
                         } else {

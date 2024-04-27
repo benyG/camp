@@ -119,9 +119,8 @@ class InfoResource extends Resource
                                             ->dehydrated(fn (?string $state): bool => filled($state)),
                                         Forms\Components\TextInput::make('endp')->label(__('form.enu'))
                                             ->required()->rules(['url']),
-                                        Forms\Components\Select::make('model')->label(__('form.aimo'))
-                                        ->options(["gpt-3.5-turbo"=>'ChatGPT 3',"gpt-4-turbo-preview"=>'ChatGPT 4'])
-                                            ->required(),
+                                        Forms\Components\TextInput::make('model')->label(__('form.aimo'))
+                                            ->required()->rules(['max:255']),
                                     ]),
                                 Forms\Components\Section::make(__('form.cont'))
                                     ->description(__('main.in4'))

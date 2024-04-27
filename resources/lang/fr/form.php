@@ -177,7 +177,7 @@ return [
     'gra' => 'Donner accès',
     'blo' => 'bloqué',
     'bloa' => 'Bloquer l\'accès',
-    // '' => '',
+     'du' => 'Doublons',
     // '' => '',
     // '' => '',
     // '' => '',
