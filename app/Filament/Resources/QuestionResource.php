@@ -98,14 +98,14 @@ class QuestionResource extends Resource
         return $table->paginated([25, 50, 100, 250])
             ->modifyQueryUsing(fn (Builder $query) => $query->with('reviews')->latest())
             ->columns([
-                Tables\Columns\TextColumn::make('text')->limit(100)->html()->label(__('form.txt'))
+                Tables\Columns\TextColumn::make('text')->limit(70)->html()->label(__('form.txt'))
                     ->searchable()->sortable(),
                 //   Tables\Columns\TextColumn::make('answers2_count')->label('True answers')->numeric()->sortable()
                 //  ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('moduleRel.name')->label('Module')->sortable(),
+                Tables\Columns\TextColumn::make('moduleRel.name')->label('Module')->sortable()->limit(20),
                 Tables\Columns\TextColumn::make('certif.name')->label('Certification')->sortable(),
                 Tables\Columns\TextColumn::make('answers_count')->counts('answers')->label(trans_choice('main.m2', 5))
-                    ->numeric()->sortable(),
+                    ->numeric()->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('rev')->label(__('form.rev'))
                     ->numeric()
                     ->sortable()
@@ -136,8 +136,8 @@ class QuestionResource extends Resource
 
                     return $data;
                 })->mutateRecordDataUsing(function (array $data, QUestion $record): array {
+                    $data['prov'] = Course::find($record->certif->id)->with('provRel')->first()->provRel->id;
                     $data['cours'] = $record->certif->id;
-
                     return $data;
                 })->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
                     $reco = $record->replicate();

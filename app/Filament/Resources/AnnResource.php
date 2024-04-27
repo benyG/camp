@@ -74,8 +74,8 @@ class AnnResource extends Resource
                     ->dateTime()->since()->sortable(),
                 Tables\Columns\TextColumn::make('type')->label(trans_choice('main.m5', 2))->sortable()
                     ->formatStateUsing(function ($state): string {
-                        $arrs = ['1', '2', '3', '4', '5'];
-                        $arru = ['Admin', 'Starter', 'User', 'Pro', 'VIP'];
+                        $arrs = ['1', '2', '3', '4', '5','9'];
+                        $arru = ['Admin', 'Starter', 'User', 'Pro', 'VIP','Guest'];
 
                         return str_replace($arrs, $arru, $state);
                     }),
