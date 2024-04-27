@@ -55,7 +55,7 @@ class UserResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Forms\Components\Select::make('ex')->label('Type')
-                    ->options(['1' => 'Admin', '2' => 'Starter', '3' => 'User', '4' => 'Pro', '5' => 'VIP'])
+                    ->options(['1' => 'Admin', '2' => 'Starter', '3' => 'User', '4' => 'Pro', '5' => 'VIP','9'=>__('main.Guest')])
                     ->rules([Rule::in(['1', '2', '3', '4', '5'])]),
                 Password::make('password')->label(__('form.pwd'))
                     ->regex('/^\S*(?=.*\d)(?=\S*[\W])[a-zA-Z\d]\S*$/i')
@@ -110,11 +110,13 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('ex')->label('Type')->badge()
                     ->formatStateUsing(fn (int $state): string => match ($state) {
                         0 => 'S. Admin',
-                        1 => 'Admin', 2 => 'Starter', 3 => 'User', 4 => 'Pro', 5 => 'VIP'
+                        1 => 'Admin', 2 => 'Starter', 3 => 'User', 4 => 'Pro', 5 => 'VIP',
+                        default=>__('main.Guest')
                     })
                     ->color(fn (int $state): string => match ($state) {
                         0 => 'S. Admin',
-                        1 => 'gray', 2 => 'info', 3 => 'success', 4 => 'danger', 5 => 'warning'
+                        1 => 'gray', 2 => 'info', 3 => 'success', 4 => 'danger', 5 => 'warning',
+                        default=>'purple'
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ix')->label(__('main.aic'))
