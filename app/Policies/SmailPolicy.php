@@ -12,7 +12,7 @@ class SmailPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->ex < 6;
     }
 
     /**
