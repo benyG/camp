@@ -53,18 +53,18 @@ class QuestionResource extends Resource
                 ->options(Prov::all()->pluck('name', 'id'))->default(session('2providers'))
                 ->preload()->live(),
                 Forms\Components\Select::make('cours')->label('Certifications')
-                    ->options(function(Get $get , string $operation){
-                        if ($operation == 'create') {
-                            return Course::where('prov', $get('prov'))->get()->pluck('name', 'id');
+                ->relationship(name: 'certif', titleAttribute: 'name',
+                modifyQueryUsing: function (Builder $query, Get $get, string $operation) {
+                    if ($operation == 'create') {
+                        return $query->where('prov', $get('prov'));
+                    } else {
+                        if (is_numeric($get('prov'))) {
+                            return $query->where('prov', $get('prov'));
                         } else {
-                            if (is_numeric($get('prov'))) {
-                                return Course::where('prov', $get('prov'))->get()->pluck('name', 'id');
-                            } else {
-                                return Course::all()->pluck('name', 'id');
-                            }
+                            return $query;
                         }
-                    })
-                    ->default(session('cours'))->preload()->live(),
+                    }
+                })->default(session('cours'))->preload()->live(),
                 Forms\Components\Select::make('module')->label('Modules')->required()
                     ->relationship(name: 'moduleRel', titleAttribute: 'name',
                         modifyQueryUsing: function (Builder $query, Get $get, string $operation) {
@@ -133,11 +133,9 @@ class QuestionResource extends Resource
                 Tables\Actions\ViewAction::make()->iconButton(),
                 Tables\Actions\EditAction::make()->iconButton()->mutateFormDataUsing(function (array $data): array {
                     $data['text'] = str_replace('src="../storage', 'src="'.env('APP_URL').'/storage', $data['text']);
-
                     return $data;
                 })->mutateRecordDataUsing(function (array $data, QUestion $record): array {
-                    $data['prov'] = Course::find($record->certif->id)->with('provRel')->first()->provRel->id;
-                    $data['cours'] = $record->certif->id;
+                    $data['prov'] = Course::find($record->certif->id)->provRel->id;
                     return $data;
                 })->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
                     $reco = $record->replicate();
