@@ -12,7 +12,7 @@ use Illuminate\Support\Arr;
 
 class UserCourseChart2 extends ChartWidget
 {
-    protected static ?string $heading = '% Questions answered per Module';
+   // protected static ?string $heading = '% Questions answered per Module';
 
     protected static string $view = 'filament.widgets.uc2';
 
@@ -37,7 +37,10 @@ class UserCourseChart2 extends ChartWidget
         $this->cos = count($arr) > 0 ? Course::whereIn('id', $arr)->get() : Course::has('users1')->where('pub', true)->get();
         // $this->cos=Course::get();
     }
-
+    public function getHeading(): ?string
+    {
+        return '% '.__('main.w32');
+    }
     public static function canView(): bool
     {
         return auth()->user()->ex > 1;
@@ -58,8 +61,8 @@ class UserCourseChart2 extends ChartWidget
 
     protected function getData(): array
     {
-        $mod = Module::where('course', $this->cs)->get()->pluck('name', 'id')->toArray();
-        $this->record = $this->record ?? auth()->user();
+        $mod = Module::select('id','name')->where('course', $this->cs)->get()->pluck('name', 'id')->toArray();
+      //  $this->record = $this->record ?? auth()->user();
         $exa = $this->record->exams2()->where('certi', $this->cs)->get();
         $que = [];
         foreach ($exa as $ex) {
@@ -74,7 +77,11 @@ class UserCourseChart2 extends ChartWidget
             $uc[1][] = array_key_exists($key, $que) ? $que[$key] : 0;
             $uc[2][] = $this->dynColors();
         }
+        $mpo=collect($uc[1])->sum();
 
+        foreach ($uc[1] as $key => $value) {
+            $uc[0][$key]=$uc[0][$key].' ('.round(100 * $value / ($mpo > 0 ? $mpo : 1), 2).'%)';
+        }
         //  dd($uc);
         return [
             'datasets' => [

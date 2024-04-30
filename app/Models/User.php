@@ -116,6 +116,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             ->withPivot('start_at')
             ->withPivot('gen')
             ->withPivot('id')
+            ->latest('added_at')
             ->using(ExamUser::class);
     }
 

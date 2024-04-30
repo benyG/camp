@@ -288,7 +288,7 @@ class ExamResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->paginated([5, 10, 20, 30, 50, 100, 'all'])
-            ->query(auth()->user()->ex == 0 ? Exam::where('from', auth()->id())->with('users')->with('certRel')->with('modules')->latest('added_at') : Exam::has('users1')->with('certRel')->with('users1')->with('modules')
+            ->query(auth()->user()->ex == 0 ? Exam::with('users')->with('certRel')->with('modules')->latest('added_at') : Exam::has('users1')->with('certRel')->with('users1')->with('modules')
                 ->latest('added_at'))
             ->columns([
                 Tables\Columns\TextColumn::make('certRel.name')->sortable()->searchable()->label(__('main.ti'))
@@ -304,8 +304,8 @@ class ExamResource extends Resource
                     ->tooltip(fn ($state): ?string => is_array($state) ? implode(', ', $state) : $state)
                     ->hidden(auth()->user()->ex != 0),
                 Tables\Columns\TextColumn::make('added')->label(__('form.fat'))
-                    ->getStateUsing(fn (Exam $record) => $record->users1()->first()->pivot->added ?? null)
-                    ->tooltip(fn (Exam $record): ?string => $record->users1()->first()->pivot->added ?? null)
+                    ->getStateUsing(fn (Exam $record) => $record->users1->first()->pivot->added ?? null)
+                    ->tooltip(fn (Exam $record): ?string => $record->users1->first()->pivot->added ?? null)
                     ->dateTime()->hidden(auth()->user()->ex == 0)->since()
                     ->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('due')->label(__('main.dd'))
@@ -316,11 +316,11 @@ class ExamResource extends Resource
                     ->dateTime()->hidden(auth()->user()->ex != 0)->since()
                     ->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('start_at')->label(__('form.sat'))->since()
-                    ->tooltip(fn (Exam $record) => $record->users1()->first()->pivot->start_at ?? null)
+                    ->tooltip(fn (Exam $record) => $record->users1->first()->pivot->start_at ?? null)
                     ->dateTime()->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('comp_at')->label(__('form.tat'))->since()
-                    ->tooltip(fn (Exam $record) => $record->users1()->first()->pivot->comp_at ?? null)
+                    ->tooltip(fn (Exam $record) => $record->users1->first()->pivot->comp_at ?? null)
                     ->dateTime()->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
             ])
@@ -328,7 +328,7 @@ class ExamResource extends Resource
                 Tables\Filters\SelectFilter::make('certi')->label('Certifications')
                     ->relationship(name: 'certRel', titleAttribute: 'name',
                         modifyQueryUsing: fn (Builder $query) => auth()->user()->ex == 0 ? $query : $query->has('users1')->where('pub', true))
-                    ->label('Certifications')->multiple()->preload(),
+                    ->multiple()->preload(),
                 Tables\Filters\Filter::make('created_at')
                     ->form([
                             Forms\Components\Select::make('type')->label('Type')->selectablePlaceholder(false)->default('0')
@@ -358,6 +358,10 @@ class ExamResource extends Resource
                                 fn (Builder $query, $date): Builder => $query->where('type', '1')->where('from', auth()->user()->ex == 0 ? '=' : '<>', auth()->id()),
                             );
                     }),
+                    Tables\Filters\SelectFilter::make('from')->label(trans_choice('main.m5', 5))
+                    ->relationship(name: 'userRel', titleAttribute: 'name')
+                   ->multiple()->preload(),
+
             ])
             ->filtersTriggerAction(
                 fn (Tables\Actions\Action $action) => $action
@@ -373,11 +377,11 @@ class ExamResource extends Resource
                     ->modalSubmitAction(false)
                     ->modalHeading(fn (Exam $record): string => __('main.as21'))
                     ->visible(function (Exam $record) {
-                        if (empty($record->users1()->first()->pivot->start_at)) {
-                            return $record->users1()->count() > 0 && empty($record->users1()->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due;
+                        if (empty($record->users1->first()->pivot->start_at)) {
+                            return $record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due;
                         } else {
-                            return $record->type == 1 ? ($record->users1()->count() > 0 && empty($record->users1()->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due) && $record->timer - now()->diffInMinutes($record->users1()->first()->pivot->start_at) > 0 :
-                                 ($record->users1()->count() > 0 && empty($record->users1()->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due);
+                            return $record->type == 1 ? ($record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due) && $record->timer - now()->diffInMinutes($record->users1->first()->pivot->start_at) > 0 :
+                                 ($record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due);
                         }
                     })
                     ->infolist([
@@ -401,15 +405,15 @@ class ExamResource extends Resource
                     ])
                     ->color('gray'),
                 Tables\Actions\Action::make('sttr')->icon('heroicon-o-play')
-                    ->label(fn (Exam $record): string => empty($record->users1()->first()->pivot->start_at) ? __('main.as23') : __('main.as24'))
-                    ->color(fn (Exam $record): string => empty($record->users1()->first()->pivot->start_at) ? 'info' : 'warning')
+                    ->label(fn (Exam $record): string => empty($record->users1->first()->pivot->start_at) ? __('main.as23') : __('main.as24'))
+                    ->color(fn (Exam $record): string => empty($record->users1->first()->pivot->start_at) ? 'info' : 'warning')
                     ->requiresConfirmation()
                     ->modalIcon(fn (Exam $record): string => $record->pub ? 'heroicon-o-eye-slash' : 'heroicon-m-play')
-                    ->modalHeading(fn ($record) => empty($record->users1()->first()->pivot->start_at) ? __('main.as23') : __('main.as24'))
-                    ->modalDescription(fn (Exam $record): string => empty($record->users1()->first()->pivot->start_at) ? __('main.as25').' \''.$record->name.'\''.__('main.space').'? '.__('main.as27').'.' :
+                    ->modalHeading(fn ($record) => empty($record->users1->first()->pivot->start_at) ? __('main.as23') : __('main.as24'))
+                    ->modalDescription(fn (Exam $record): string => empty($record->users1->first()->pivot->start_at) ? __('main.as25').' \''.$record->name.'\''.__('main.space').'? '.__('main.as27').'.' :
                         __('main.as26').' \''.$record->name.'\''.__('main.space').'?')
                     ->action(function (Exam $record) {
-                        $txt = (empty($record->users1()->first()->pivot->start_at) ? 'Starting the Assessment' : 'Continuing the Assessment')."
+                        $txt = (empty($record->users1->first()->pivot->start_at) ? 'Starting the Assessment' : 'Continuing the Assessment')."
                     Name: $record->name <br>
                     Certification: ".$record->certRel->name.' <br>
                     ';
@@ -418,13 +422,13 @@ class ExamResource extends Resource
                         return redirect()->to(ExamResource::getUrl('assess', ['ex' => $record->name]));
                     })
                     ->visible(function (Exam $record) {
-                        // $rr=(!empty($record->users1()->first()->pivot->start_at) && $record->timer-now()->diffInMinutes($record->users1()->first()->pivot->start_at)>0);
+                        // $rr=(!empty($record->users1->first()->pivot->start_at) && $record->timer-now()->diffInMinutes($record->users1->first()->pivot->start_at)>0);
                         // if($record->id==5) dd($rr);
-                        if (empty($record->users1()->first()->pivot->start_at)) {
-                            return $record->users1()->count() > 0 && empty($record->users1()->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due;
+                        if (empty($record->users1->first()->pivot->start_at)) {
+                            return $record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due;
                         } else {
-                            return $record->type == 1 ? ($record->users1()->count() > 0 && empty($record->users1()->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due) && $record->timer - now()->diffInMinutes($record->users1()->first()->pivot->start_at) > 0 :
-                                 ($record->users1()->count() > 0 && empty($record->users1()->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due);
+                            return $record->type == 1 ? ($record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due) && $record->timer - now()->diffInMinutes($record->users1->first()->pivot->start_at) > 0 :
+                                 ($record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due);
                         }
                     })
                     ->iconButton(),
@@ -436,11 +440,11 @@ class ExamResource extends Resource
                     ->modalSubmitAction(false)
                     ->modalHeading(fn (Exam $record): string => __('form.res1'))
                     ->visible(function (Exam $record) {
-                        if (empty($record->users1()->first()->pivot->start_at)) {
-                            return $record->users1()->count() > 0 && (! empty($record->users1()->first()->pivot->comp_at) || (! empty($record->due) && now() > $record->due));
+                        if (empty($record->users1->first()->pivot->start_at)) {
+                            return $record->users1->count() > 0 && (! empty($record->users1->first()->pivot->comp_at) || (! empty($record->due) && now() > $record->due));
                         } else {
-                            return $record->type == 1 ? ($record->users1()->count() > 0 && (! empty($record->users1()->first()->pivot->comp_at) || (! empty($record->due) && now() > $record->due) || $record->timer - now()->diffInMinutes($record->users1()->first()->pivot->start_at) <= 0)) :
-                                 ($record->users1()->count() > 0 && (! empty($record->users1()->first()->pivot->comp_at) || (! empty($record->due) && now() > $record->due)));
+                            return $record->type == 1 ? ($record->users1->count() > 0 && (! empty($record->users1->first()->pivot->comp_at) || (! empty($record->due) && now() > $record->due) || $record->timer - now()->diffInMinutes($record->users1->first()->pivot->start_at) <= 0)) :
+                                 ($record->users1->count() > 0 && (! empty($record->users1->first()->pivot->comp_at) || (! empty($record->due) && now() > $record->due)));
                         }
                     })
                     ->infolist([
@@ -458,7 +462,7 @@ class ExamResource extends Resource
                            Infolists\Components\TextEntry::make('due')->label(__('main.dd')),
                            Infolists\Components\TextEntry::make('added_at')->label(__('form.cat'))->placeholder('N/A'),
                            Infolists\Components\TextEntry::make('comp_at')->label(__('form.tat'))->placeholder('N/A')
-                               ->state(fn (Exam $record) => $record->users1()->first()->pivot->comp_at ?? null),
+                               ->state(fn (Exam $record) => $record->users1->first()->pivot->comp_at ?? null),
                            Infolists\Components\TextEntry::make('descr')->label('Note')->columnSpanFull(),
                        ])
                        ->columns(3),
@@ -475,8 +479,8 @@ class ExamResource extends Resource
                            // dd($mod);
                            $ca = 0;
 
-                           if (! empty($record->users1()->first()->pivot->gen) && is_array($record->users1()->first()->pivot->gen)) {
-                               $res = $record->users1()->first()->pivot->gen;
+                           if (! empty($record->users1->first()->pivot->gen) && is_array($record->users1->first()->pivot->gen)) {
+                               $res = $record->users1->first()->pivot->gen;
                                $arrk = array_keys($res);
                                $qrr = [];
                                $rt = Question::whereIn('id', $arrk)->with('answers')->with('moduleRel')->get();
@@ -520,9 +524,9 @@ class ExamResource extends Resource
                                Infolists\Components\TextEntry::make('a1')->label(__('main.ga'))
                                    ->state(fn ($record): string => $ca.' / '.$record->quest),
                                Infolists\Components\TextEntry::make('a2')->label(__('form.tai'))
-                                   ->state(fn (Exam $record) => ! empty($record->users1()->first()->pivot->start_at)
-                                   && ! empty($record->users1()->first()->pivot->comp_at) ?
-                                   \Illuminate\Support\Carbon::parse($record->users1()->first()->pivot->comp_at)->diffInMinutes($record->users1()->first()->pivot->start_at).' min'
+                                   ->state(fn (Exam $record) => ! empty($record->users1->first()->pivot->start_at)
+                                   && ! empty($record->users1->first()->pivot->comp_at) ?
+                                   \Illuminate\Support\Carbon::parse($record->users1->first()->pivot->comp_at)->diffInMinutes($record->users1->first()->pivot->start_at).' min'
                                    : 'N/A'),
                                Infolists\Components\Actions::make([
                                    Infolists\Components\Actions\Action::make('opoi')->label(__('main.as28'))
@@ -592,7 +596,7 @@ class ExamResource extends Resource
                                 Infolists\Components\TextEntry::make('due')->label(__('main.dd')),
                                 Infolists\Components\TextEntry::make('added_at')->label(__('form.cat'))->placeholder('N/A'),
                                 Infolists\Components\TextEntry::make('comp_at')->label(__('form.tat'))->placeholder('N/A')
-                                    ->state(fn (Exam $record) => $record->users1()->first()->pivot->comp_at ?? null),
+                                    ->state(fn (Exam $record) => $record->users1->first()->pivot->comp_at ?? null),
                                 Infolists\Components\TextEntry::make('modules.name')->label('Modules')->columnSpan(2)
                                     ->listWithLineBreaks()->bulleted()->limitList(3),
                                 Infolists\Components\TextEntry::make('descr')->label('Note')->columnSpanFull(),

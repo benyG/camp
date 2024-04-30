@@ -226,20 +226,20 @@ class QuestionResource extends Resource
                     })->hintActions([
                     \Filament\Infolists\Components\Actions\Action::make('ooi')->label(__('form.mrev'))->requiresConfirmation()
                         ->icon('heroicon-m-check-circle')->color('warning')
-                        ->visible(fn ($record): bool => $record->reviews()->count() > 0)
+                        ->visible(fn ($record): bool => $record->reviews->count() > 0)
                         ->action(function ($record) {
                             $record->rev++;$record->save();
                             foreach ($record->reviews as $rev) {
                                 $ma = new \App\Models\SMail;
                                 $ma->from = auth()->id();
                                 $ma->sub = 'Question Reviewed !';
-                                $ans = '';
-                                if ($record->answers2()->count() == 1) {
-                                    $ans = $record->answers2()->first()->text;
-                                } elseif ($record->answers2()->count() < 1) {
+                                $ans = '';$record->loadMissing('answers2');
+                                if ($record->answers2->count() == 1) {
+                                    $ans = $record->answers2->first()->text;
+                                } elseif ($record->answers2->count() < 1) {
                                     $ans = 'None';
                                 } else {
-                                    $ans = '<ul><li>'.implode('<li>', $record->answers2()->pluck('text')).'</ul>';
+                                    $ans = '<ul><li>'.implode('<li>', $record->answers2->pluck('text')).'</ul>';
                                 }
                                 $ma->content = 'Dear Bootcamper , <br><br>'.
                                 'On '.Carbon::parse($rev->created_at)->toDayDateTimeString().', you requested a review of this question: <br><br> <b>'.$record->text.'</b>'
@@ -250,7 +250,7 @@ class QuestionResource extends Resource
                                 $ma->users2()->attach($rev->user);
                             }
                             Notification::make()->success()->title('Question reviewed.')->send();
-                            \App\Models\Review::destroy($record->reviews()->pluck('id'));
+                            \App\Models\Review::destroy($record->reviews->pluck('id'));
                             Notification::make()->success()->title('Users Notified.')->send();
                         }),
                     \Filament\Infolists\Components\Actions\Action::make('otoi')->label(__('form.aai'))//->requiresConfirmation()

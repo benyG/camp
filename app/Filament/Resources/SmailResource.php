@@ -88,15 +88,15 @@ class SmailResource extends Resource
                     ->formatStateUsing(fn (Model $record): string => $record->from == auth()->id() ? Str::remove(['"', '[', ']'], $record->users2->pluck('name')) : $record->user1->name)
                     ->sortable()->hidden(fn (): bool => auth()->user()->ex >= 2),
                 Tables\Columns\IconColumn::make('sent')->label(__('form.svs'))->hidden(fn (): bool => auth()->user()->ex >= 2)
-                    ->getStateUsing(fn (Smail $record) => $record->users1()->first()->pivot->sent ?? null)
+                    ->getStateUsing(fn (Smail $record) => $record->users1->first()->pivot->sent ?? null)
                     ->icon(fn ($state): string => $state ? 'heroicon-o-envelope' : '')
-                    ->tooltip(fn (Smail $record): string => $record->users1()->first()->pivot->sent == 1 ? __('form.lso')." {$record->users1()->first()->pivot->last_sent}" : '')
+                    ->tooltip(fn (Smail $record): string => $record->users1->first()->pivot->sent == 1 ? __('form.lso')." {$record->users1->first()->pivot->last_sent}" : '')
                     ->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('read')->label(__('form.read1'))
-                    ->getStateUsing(fn (Smail $record) => $record->users1()->first()->pivot->read ?? null)
+                    ->getStateUsing(fn (Smail $record) => $record->users1->first()->pivot->read ?? null)
                     ->color(fn ($state): string => $state ? 'success' : 'danger')
                     ->icon(fn ($state, Smail $record): string => $record->from == auth()->user()->id ? '' : ($state ? 'heroicon-o-envelope-open' : 'heroicon-o-envelope'))
-                    ->tooltip(fn (Smail $record): string => $record->from == auth()->user()->id ? '' : ($record->users1()->first()->pivot->read ? "Read on {$record->users1()->first()->pivot->read_date}" : ''))
+                    ->tooltip(fn (Smail $record): string => $record->from == auth()->user()->id ? '' : ($record->users1->first()->pivot->read ? "Read on {$record->users1->first()->pivot->read_date}" : ''))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')->label('Date')
                     ->dateTime()
@@ -111,7 +111,7 @@ class SmailResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make('jjhg')->label(__('form.read'))->beforeFormFilled(function (Model $record) {
-                    if ($record->from != auth()->id() && ! $record->users1()->first()->pivot->read) {
+                    if ($record->from != auth()->id() && ! $record->users1->first()->pivot->read) {
                         $record->users1()->updateExistingPivot(auth()->id(), ['read' => true, 'read_date' => now()]);
                     }
                 })->modalHeading(fn (Model $record): string => $record->sub),

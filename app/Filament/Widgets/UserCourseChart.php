@@ -9,8 +9,6 @@ use Illuminate\Support\Arr;
 
 class UserCourseChart extends ChartWidget
 {
-    protected static ?string $heading = 'Users per Certifications';
-
     protected static ?string $pollingInterval = null;
 
     protected static ?string $maxHeight = '200px';
@@ -18,6 +16,10 @@ class UserCourseChart extends ChartWidget
     public function getColumns(): int|string|array
     {
         return 1;
+    }
+    public function getHeading(): ?string
+    {
+        return __('main.w33');
     }
 
     public static function canView(): bool
@@ -28,7 +30,7 @@ class UserCourseChart extends ChartWidget
     protected function getData(): array
     {
         $uc = [[], [], []];
-        $us = Course::withCount('users')->get();
+        $us = Course::select('name')->withCount('users')->get();
         foreach ($us as $val) {
             // dd($val);
             if ($val->users_count > 0) {
@@ -37,7 +39,10 @@ class UserCourseChart extends ChartWidget
                 $uc[2][] = $this->dynColors();
             }
         }
-
+        $mpo=collect($uc[1])->sum();
+        foreach ($uc[1] as $key => $value) {
+            $uc[0][$key]=$uc[0][$key].' ('.round(100 * $value / ($mpo > 0 ? $mpo : 1), 2).'%)';
+        }
         // dd($uc[2]);
         return [
             'datasets' => [

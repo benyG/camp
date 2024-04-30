@@ -25,14 +25,16 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Notification as Notif;
 use Illuminate\Support\Str;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+use Illuminate\Contracts\Pagination\CursorPaginator;
 
 class UsersTable extends BaseWidget
 {
     protected int|string|array $columnSpan = 'full';
-
-    protected static ?string $heading = 'Users summary';
-
     protected static ?string $pollingInterval = null;
+    public function getHeading(): ?string
+    {
+        return __('main.w36');
+    }
 
     public function table(Table $table): Table
     {
@@ -46,8 +48,13 @@ class UsersTable extends BaseWidget
         $rt = Question::with('answers')->get();
         foreach ($uarr as $us) {
             $uarr2[$us->id] = [0, 0, 0, 0, 0];
-            $nt = $us->exams2()->whereNotNull('start_at')->pluck('exam')->intersect($earr->where('type', '0')->pluck('id'))->count();
-            $ne = $us->exams2()->whereNotNull('start_at')->pluck('exam')->intersect($earr->where('type', '1')->pluck('id'))->count();
+
+            $nt = $us->exams2->filter(function (Exam $value, int $key) {
+                return !is_null($value->pivot->start_at);
+            })->pluck('pivot.exam')->intersect($earr->where('type', '0')->pluck('id'))->count();
+            $ne = $us->exams2->filter(function (Exam $value, int $key) {
+                return !is_null($value->pivot->start_at);
+            })->pluck('pivot.exam')->intersect($earr->where('type', '1')->pluck('id'))->count();
             $uarr2[$us->id][1] = $nt;
             $uarr2[$us->id][2] = $ne;
             $qt = 0;
@@ -64,15 +71,21 @@ class UsersTable extends BaseWidget
                     $ca = 0;
                     $rot = $rt->whereIn('id', $arrk);
                     foreach ($rot as $quest) {
-                        $bm = $quest->answers()->where('isok', true)->count() <= 1;
+                        $bm = $quest->answers->sum(function (\App\Models\Answer $aas) {
+                            return $aas->qa->isok==1?1:0;
+                        }) <= 1;
                         if ($bm) {
-                            $ab = $quest->answers()->where('isok', true)->where('answers.id', $res[$quest->id][0])->count();
+                            $ab = $quest->answers->where('id', $res[$quest->id][0])->sum(function (\App\Models\Answer $aas) {
+                                return $aas->qa->isok==1?1:0;
+                            });
                             if ($ab > 0) {
                                 $ca++;
                                 $pga++;
                             }
                         } else {
-                            $ab2 = $quest->answers()->where('isok', false)->whereIn('answers.id', $res[$quest->id])->count();
+                            $ab2 = $quest->answers->whereIn('id', $res[$quest->id])->sum(function (\App\Models\Answer $aas) {
+                                return $aas->qa->isok==0?1:0;
+                            });
                             if ($ab2 == 0) {
                                 $ca++;
                                 $pga++;
@@ -91,7 +104,7 @@ class UsersTable extends BaseWidget
 
         return $table->paginated([5, 10, 25, 50])->queryStringIdentifier('us1')
             ->query(
-                User::with('vagues')->where('ex', '>', 1)->where('id', '<>', auth()->id())
+                User::with('vagues')->where('ex', '>', 1)->where('ex', '<', 6)->where('id', '<>', auth()->id())
             )
             ->columns([
                 Tables\Columns\TextColumn::make('name')
@@ -384,5 +397,9 @@ class UsersTable extends BaseWidget
     public static function canView(): bool
     {
         return auth()->user()->ex == 0;
+    }
+    protected function paginateTableQuery(Builder $query): CursorPaginator
+    {
+        return $query->cursorPaginate(($this->getTableRecordsPerPage() === 'all') ? $query->count() : $this->getTableRecordsPerPage());
     }
 }
