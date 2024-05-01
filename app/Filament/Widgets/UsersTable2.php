@@ -29,10 +29,6 @@ class UsersTable2 extends BaseWidget
         // dd($usrec);
         $this->record =$usrec!=null? User::find($usrec) : auth()->user();
     }
-    public function getHeading(): ?string
-    {
-        return __('main.w37');
-    }
 
     public static function canView(): bool
     {
@@ -46,9 +42,9 @@ class UsersTable2 extends BaseWidget
             return \App\Models\Info::findOrFail(1);
         });
 
-        $this->record->loadMissing('exams2');
-
         $us = $this->record;
+       if(!is_null($us)) $us->loadMissing('exams2');
+
         $earr = Exam::select('id','quest')->has('users')->with('users')->get();
         $eall = $earr->pluck('id');
         $rt = Question::select('id')->with('answers')->get();
@@ -93,7 +89,7 @@ class UsersTable2 extends BaseWidget
         }
       //  rnd();
         // dd(Exam::with('certRel')->where('from',$this->record->id)->orWhereRelation('users', 'user', $this->record->id)->latest('added_at')->count());
-        return $table->paginated([5, 10, 25, 50])
+        return $table->paginated([5, 10, 25, 50])->heading(__('main.w37'))
             ->query(Exam::with('certRel')->where('from', $this->record->id)->orWhereRelation('users', 'user', $this->record->id)->latest('added_at'))
             ->columns([
                 Tables\Columns\TextColumn::make('certRel.name')->sortable()->searchable()->label('Title')

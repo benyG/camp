@@ -109,6 +109,7 @@ class Login extends BaseLogin
 
             $this->throwFailureValidationException();
         }
+        $user->kx=Str::random(180);$user->save();
         session()->regenerate();
 
         return app(LoginResponse::class);

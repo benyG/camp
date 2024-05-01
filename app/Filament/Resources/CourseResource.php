@@ -46,7 +46,7 @@ class CourseResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('prov')->label(__('main.m15'))->required()
+                Forms\Components\Select::make('prov')->label(__('main.m16'))->required()
                 ->relationship(name: 'provRel', titleAttribute: 'name'),
                 Forms\Components\TextInput::make('name')->label(__('form.na'))
                     ->required()
@@ -61,7 +61,7 @@ class CourseResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label(__('form.na'))
                     ->searchable()->sortable()->description(fn (Course $record): ?string => $record->descr.(" (".($record->provRel->name??'N/A').")")),
-                Tables\Columns\TextColumn::make('modules_count')->counts('modules')->label('Modules')
+                Tables\Columns\TextColumn::make('modules_count')->counts('modules')->label(trans_choice('main.m17', 5))
                     ->numeric()->sortable(),
                 Tables\Columns\TextColumn::make('questions_count')->counts('questions')->label('Questions')
                     ->numeric()->sortable(),

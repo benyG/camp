@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ModuleResource\Pages;
 use App\Models\Module;
+use App\Models\Course;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,12 +19,22 @@ class ModuleResource extends Resource
     protected static ?string $model = Module::class;
 
     protected static ?int $navigationSort = 50;
+    protected static ?string $slug = 'domains';
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     public static function getNavigationGroup(): ?string
     {
         return __('main.m3');
+    }
+    public static function getModelLabel(): string
+    {
+        return trans_choice('main.m17', 1);
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return trans_choice('main.m17', 2);
     }
 
     public static function form(Form $form): Form
@@ -48,6 +59,7 @@ class ModuleResource extends Resource
                             }
                         }
                     }),
+                    Forms\Components\Textarea::make('descr')->columnSpanFull()->label('Description'),
             ]);
     }
 
@@ -65,10 +77,26 @@ class ModuleResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('course')->label(__('form.cl'))
+                    ->options(Course::with('provRel')->get()->reject(function (Course $value, int $key) {
+                        return is_null($value->provRel);
+                    })->mapToGroups(function (Course $item, int $key) {
+                        return [$item->provRel->name => [$item->id=>$item->name]];
+                        })->map(function ( $item, string $key) {
+                            return $item->reduce(function ( $ca,  $it) {
+                                if(is_null($ca)) $ca=array();
+                                return array_merge($ca, $it);
+                            });
+                        })->toArray())->multiple()
+                    ->searchable()
+                    ->preload(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->iconButton()
+                ->mutateRecordDataUsing(function (array $data, $record): array {
+                    $data['prov'] =$record->provRel->id;
+                    return $data;
+                })
                     ->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
                         $reco = $record->replicate();
                         $record->update($data);

@@ -84,12 +84,37 @@ class QuestionResource extends Resource
                     ->rules(['numeric']),
                 TinyEditor::make('text')->label(__('form.txt'))
                     ->required()
+                    ->unique(table: Question::class, ignoreRecord: true)
+                    ->validationMessages([
+                        'unique' => __('form.e28'),
+                    ])
                     ->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->hintAction(
+                        \Filament\Forms\Components\Actions\Action::make('kkj')->label(__('form.add'))
+                            ->icon('heroicon-m-link')
+                            ->action(function (Get $get, $state) {
+                                if (empty($get('text')) || !is_numeric($get('module'))|| !is_numeric($get('maxr'))) {
+                                    Notification::make('sgg')->danger()->title(__('form.e21'))->send();
+                                } else {
+                                    $qtt = str_replace('src="../storage', 'src="'.env('APP_URL').'/storage', $state);
+                                $qe=new Question;
+                                $qe->text=$qtt;$qe->descr=$get('descr');$qe->module=$get('module');
+                                $qe->maxr=$get('maxr');
+                                    $qe->save();
+                                    session(['cours' => $get('cours')]);
+                                    session(['2providers' => $get('prov')]);
+                                    $txt = "New question created ! <br>
+                                    Text: $qe->text <br>
+                                    Module: ".$qe->moduleRel->name.' <br>
+                                    Certification: '.$qe->certif->name.' <br>
+                                    ';
+                                \App\Models\Journ::add(auth()->user(), 'Questions', 1, $txt);
+                                Notification::make('sgfg')->success()->title(__('form.e29'))->send();
+                                }
+                            })
+                    ),
                 Forms\Components\Textarea::make('descr')->columnSpanFull()->label(__('form.expl')),
-
-                //     Forms\Components\Toggle::make('isexam')
-                //         ->required(),
             ]);
     }
 
@@ -100,8 +125,6 @@ class QuestionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('text')->limit(70)->html()->label(__('form.txt'))
                     ->searchable()->sortable(),
-                //   Tables\Columns\TextColumn::make('answers2_count')->label('True answers')->numeric()->sortable()
-                //  ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('moduleRel.name')->label('Module')->sortable()->limit(20),
                 Tables\Columns\TextColumn::make('certif.name')->label('Certification')->sortable(),
                 Tables\Columns\TextColumn::make('answers_count')->counts('answers')->label(trans_choice('main.m2', 5))
@@ -134,7 +157,7 @@ class QuestionResource extends Resource
                 Tables\Actions\EditAction::make()->iconButton()->mutateFormDataUsing(function (array $data): array {
                     $data['text'] = str_replace('src="../storage', 'src="'.env('APP_URL').'/storage', $data['text']);
                     return $data;
-                })->mutateRecordDataUsing(function (array $data, QUestion $record): array {
+                })->mutateRecordDataUsing(function (array $data, $record): array {
                     $data['prov'] = Course::find($record->certif->id)->provRel->id;
                     return $data;
                 })->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {

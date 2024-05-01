@@ -31,10 +31,6 @@ class UsersTable extends BaseWidget
 {
     protected int|string|array $columnSpan = 'full';
     protected static ?string $pollingInterval = null;
-    public function getHeading(): ?string
-    {
-        return __('main.w36');
-    }
 
     public function table(Table $table): Table
     {
@@ -102,7 +98,7 @@ class UsersTable extends BaseWidget
             $uarr2[$us->id][4] = round(100 * $pga / ($qt > 0 ? $qt : 1), 2);
         }
 
-        return $table->paginated([5, 10, 25, 50])->queryStringIdentifier('us1')
+        return $table->paginated([5, 10, 25, 50])->queryStringIdentifier('us1')->heading(__('main.w36'))
             ->query(
                 User::with('vagues')->where('ex', '>', 1)->where('ex', '<', 6)->where('id', '<>', auth()->id())
             )
