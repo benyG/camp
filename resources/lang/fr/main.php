@@ -61,7 +61,7 @@ return [
     'w37' => 'Résumé performance',
     'w38' =>'Éval. créées',
     'w39' =>'Évolution performance',
-    'w40' =>'',
+    'w40' =>'Éval. par Certification',
     'w41' =>'',
     'w42' =>'',
     'w43' =>'',

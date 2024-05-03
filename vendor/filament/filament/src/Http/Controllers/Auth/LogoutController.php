@@ -9,9 +9,6 @@ class LogoutController
 {
     public function __invoke(): LogoutResponse
     {
-        \App\Models\Journ::add(auth()->user(), 'Login', 10, 'User logout');
-        if(auth()->user()->ex>6) \App\Models\User::destroy(auth()->id());
-
         Filament::auth()->logout();
 
         session()->invalidate();

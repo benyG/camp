@@ -31,7 +31,7 @@ class UsersTable extends BaseWidget
 {
     protected int|string|array $columnSpan = 'full';
     protected static ?string $pollingInterval = null;
-
+    protected static ?int $sort = 50;
     public function table(Table $table): Table
     {
         $ix = cache()->rememberForever('settings', function () {

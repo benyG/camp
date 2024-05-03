@@ -75,7 +75,7 @@ class UserCourseChart2 extends ChartWidget
         foreach ($mod as $key => $mm) {
             $uc[0][] = substr($mm, 10);
             $uc[1][] = array_key_exists($key, $que) ? $que[$key] : 0;
-            $uc[2][] = $this->dynColors();
+            $uc[2][] = dynColors();
         }
         $mpo=collect($uc[1])->sum();
 
@@ -109,19 +109,6 @@ class UserCourseChart2 extends ChartWidget
     protected function getType(): string
     {
         return 'doughnut';
-    }
-
-    public function dynColors(): string
-    {
-        $col = '#';
-        $ar = ['A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4',
-            '5', '6', '7', '8', '9'];
-        for ($i = 0; $i < 6; $i++) {
-            $col .= Arr::random($ar);
-        }
-
-        return $col;
-
     }
 
     protected function getOptions(): RawJs

@@ -130,16 +130,4 @@ class UserCourseChart4 extends ChartWidget
         JS);
     }
 
-    public function dynColors(): string
-    {
-        $col = '#';
-        $ar = ['A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4',
-            '5', '6', '7', '8', '9'];
-        for ($i = 0; $i < 6; $i++) {
-            $col .= Arr::random($ar);
-        }
-
-        return $col;
-
-    }
 }

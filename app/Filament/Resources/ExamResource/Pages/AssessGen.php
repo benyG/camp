@@ -170,8 +170,10 @@ class AssessGen extends Page implements HasActions, HasForms
 
         //$this->qcur=0;
         if ($this->qcur <= $this->qtot - 1) {
-            $this->bm1 = $this->quest[$this->qcur]->answers()->where('isok', true)->count() <= 1;
-            $this->aa = $this->quest[$this->qcur]->answers()->pluck('text', 'answers.id');
+            $this->bm1 = $this->quest[$this->qcur]->answers->sum(function (\App\Models\Answer $aas) {
+                return $aas->qa->isok==1?1:0;
+            }) <= 1;
+            $this->aa = $this->quest[$this->qcur]->answers->random($this->quest[$this->qcur]->answers->count())->pluck('text', 'id');
             $this->qtext = $this->quest[$this->qcur]->text;
         } else {
             $sc = round(100 * $this->score / $this->qtot, 2);
@@ -382,8 +384,10 @@ class AssessGen extends Page implements HasActions, HasForms
         $this->iati1 = $this->iati = false;
         $this->ico = $this->qcur < $this->qtot ? 'heroicon-m-play' : '';
         if ($this->qcur <= $this->qtot - 1) {
-            $this->aa = $this->quest[$this->qcur]->answers()->pluck('text', 'answers.id');
-            $this->bm1 = $this->quest[$this->qcur]->answers()->where('isok', true)->count() <= 1;
+            $this->aa = $this->quest[$this->qcur]->answers->random($this->quest[$this->qcur]->answers->count())->pluck('text', 'id');
+            $this->bm1 = $this->quest[$this->qcur]->answers->sum(function (\App\Models\Answer $aas) {
+                return $aas->qa->isok==1?1:0;
+            }) <= 1;
             $this->qtext = $this->quest[$this->qcur]->text;
             $this->ans = null;
             $this->ans2 = [];
@@ -428,10 +432,16 @@ class AssessGen extends Page implements HasActions, HasForms
     public function incrQuest()
     {
         if ($this->bm1) {
-            $ab = $this->quest[$this->qcur]->answers()->where('isok', true)->where('answers.id', $this->ans)->count();
+            $ab = $this->quest[$this->qcur]->answers->where('id', $this->ans)->sum(function (\App\Models\Answer $aas) {
+                return $aas->qa->isok==1?1:0;
+            });
             $au = '';
-            if ($this->quest[$this->qcur]->answers()->where('isok', true)->count() > 0) {
-                $au = $this->quest[$this->qcur]->answers()->where('isok', true)->first()->text;
+            if ($this->quest[$this->qcur]->answers->sum(function (\App\Models\Answer $aas) {
+                return $aas->qa->isok==1?1:0;
+            }) > 0) {
+                $au = $this->quest[$this->qcur]->answers->filter(function (\App\Models\Answer $aas, int $key) {
+                    return $aas->qa->isok==1;
+                })->first()->text;
             }
 
             $this->gen[$this->quest[$this->qcur]->id] = [$this->ans];
@@ -450,10 +460,16 @@ class AssessGen extends Page implements HasActions, HasForms
                 $au</span>";
             }
         } else {
-            $ab2 = $this->quest[$this->qcur]->answers()->where('isok', false)->whereIn('answers.id', $this->ans2)->count();
+            $ab2 = $this->quest[$this->qcur]->answers->whereIn('id', $this->ans2)->sum(function (\App\Models\Answer $aas) {
+                return $aas->qa->isok==0?1:0;
+            });
             $au2 = '';
-            if ($this->quest[$this->qcur]->answers()->where('isok', true)->count() > 0) {
-                $au2 = $this->quest[$this->qcur]->answers()->where('isok', true)->pluck('answers.text');
+            if ($this->quest[$this->qcur]->answers->sum(function (\App\Models\Answer $aas) {
+                return $aas->qa->isok==1?1:0;
+            }) > 0) {
+                $au2 = $this->quest[$this->qcur]->answers->filter(function (\App\Models\Answer $aas, int $key) {
+                    return $aas->qa->isok==1;
+                })->pluck('text');
             }
             $this->gen[$this->quest[$this->qcur]->id] = $this->ans2;
             $this->aid = $this->ans2;

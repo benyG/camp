@@ -5,12 +5,11 @@ namespace App\Filament\Widgets;
 use App\Models\Vague;
 use Filament\Support\RawJs;
 use Filament\Widgets\ChartWidget;
-use Illuminate\Support\Arr;
 
 class UserClassChart extends ChartWidget
 {
     protected static ?string $pollingInterval = null;
-
+    protected static ?int $sort = 5;
     protected static ?string $maxHeight = '200px';
 
     public function getColumns(): int|string|array
@@ -36,7 +35,7 @@ class UserClassChart extends ChartWidget
             if ($val->users_count > 0) {
                 $uc[0][] = $val->name;
                 $uc[1][] = $val->users_count;
-                $uc[2][] = $this->dynColors();
+                $uc[2][] = dynColors();
             }
         }
 
@@ -59,19 +58,6 @@ class UserClassChart extends ChartWidget
     protected function getType(): string
     {
         return 'doughnut';
-    }
-
-    public function dynColors(): string
-    {
-        $col = '#';
-        $ar = ['A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4',
-            '5', '6', '7', '8', '9'];
-        for ($i = 0; $i < 6; $i++) {
-            $col .= Arr::random($ar);
-        }
-
-        return $col;
-
     }
 
     protected function getOptions(): RawJs

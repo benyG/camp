@@ -19,7 +19,6 @@ class UserCourseChart5 extends ChartWidget
 
     protected static ?int $sort = 3;
 
-    #[Locked]
     public $record;
 
     public $cs = 0;
@@ -67,9 +66,8 @@ class UserCourseChart5 extends ChartWidget
         });
         $arx = $this->cs2 == '0' ? [0, 1] : [intval($this->cs2) - 1];
         $uc = [[], [], []];
-        $usx=$this->record;
-        if(!is_null($usx)) $usx->loadMissing('exams2');
-
+        $usx=$this->record ?? auth()->user();
+        $usx->loadMissing('exams2');
         $exa = $usx->exams2->where('certi', $this->cs)->whereIn('type', $arx)->take($ix->taff);
         $QUEST=Question::select('id')->with('answers')->get();
         foreach ($exa as $ex) {
