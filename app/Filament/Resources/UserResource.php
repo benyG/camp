@@ -62,10 +62,7 @@ class UserResource extends Resource
                     ->validationMessages([
                         'regex' => __('form.e1'),
                     ])
-                    ->password()->copyable()->regeneratePassword()
-                    ->generatePasswordUsing(function ($state) {
-                        return Str::password(15);
-                    })->regeneratePasswordIconColor('warning')
+                    ->password()->copyable()->regeneratePassword(using: fn () => Str::password(15),color:'warning')
                     ->confirmed(fn (string $operation): bool => $operation === 'create')
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->minLength(8)
