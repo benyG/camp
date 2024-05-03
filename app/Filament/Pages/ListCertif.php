@@ -17,6 +17,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Notification as Notif;
+use Filament\Forms\Get;
 
 class ListCertif extends Page implements HasTable
 {
@@ -45,9 +46,12 @@ class ListCertif extends Page implements HasTable
     {
         return [
             Actions\Action::make('rrtt')->label(__('form.add'))->form([
+                Forms\Components\Select::make('prov')->label(__('main.m16'))->required()
+                ->options(\App\Models\Prov::all()->pluck('name', 'id'))->preload()->live(),
                 Forms\Components\Select::make('cou')->required()
-                    ->options(\App\Models\Course::where('pub', true)->doesntHave('users1')
-                        ->pluck('name', 'id'))->label('Certifications')->multiple()->preload(),
+                    ->options(function(Get $get){
+                        return \App\Models\Course::where('pub', true)->where('prov', $get('prov'))->doesntHave('users1')
+                        ->pluck('name', 'id');})->label('Certifications')->multiple()->preload(),
             ])->action(function ($data) {
                 $ix = cache()->rememberForever('settings', function () {
                     return \App\Models\Info::findOrFail(1);
@@ -86,7 +90,6 @@ class ListCertif extends Page implements HasTable
                     }
                 })->color('success')->modalHeading(__('main.lc2'))
                 ->modalSubmitActionLabel(__('form.rj')),
-
         ];
     }
 

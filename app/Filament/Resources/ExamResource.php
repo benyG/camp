@@ -10,6 +10,7 @@ use App\Models\Module;
 use App\Models\Question;
 use App\Models\User;
 use App\Models\Vague;
+use App\Models\Prov;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
@@ -28,15 +29,10 @@ use Illuminate\Support\Str;
 class ExamResource extends Resource
 {
     protected static ?string $model = Exam::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
-
     protected static ?string $navigationLabel = 'Bootcamp';
-
     protected static ?string $slug = 'bootcamp';
-
     protected static ?int $navigationSort = 10;
-
     protected static bool $hasTitleCaseModelLabel = false;
 
     public static function getModelLabel(): string
@@ -84,11 +80,12 @@ class ExamResource extends Resource
                         };
                     })
                     ->schema([
+                        Forms\Components\Select::make('prov')->label(__('main.m16'))->required()
+                        ->options(Prov::all()->pluck('name', 'id'))->preload()->live(),
                         Forms\Components\Select::make('certi')->label('Certification')
                             ->relationship(name: 'certRel', titleAttribute: 'name',
-                                modifyQueryUsing: fn (Builder $query) => auth()->user()->ex == 0 ? $query : $query->has('users1')->where('pub', true))
-               // ->options( Course::all()->pluck('name', 'id') : Course::->pluck('name', 'id'))
-                            ->afterStateUpdated(function (?string $state, ?string $old, Get $get, Set $set) {
+                                modifyQueryUsing: fn (Builder $query, Get $get, string $operation) => auth()->user()->ex == 0 ? $query->where('prov', $get('prov')) : $query->has('users1')->where('pub', true)->where('prov', $get('prov')))
+                                ->afterStateUpdated(function (?string $state, ?string $old, Get $get, Set $set) {
                                 $ix = cache()->rememberForever('settings', function () {
                                     return \App\Models\Info::findOrFail(1);
                                 });

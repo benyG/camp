@@ -10,6 +10,7 @@ use App\Models\Module;
 use App\Models\Question;
 use App\Models\SMail;
 use App\Models\User;
+use App\Models\Prov;
 use App\Notifications\NewMail;
 use Closure;
 use Filament\Forms;
@@ -244,8 +245,12 @@ class UsersTable extends BaseWidget
                             //
                             Forms\Components\Section::make('General Settings')->columns(3)
                                 ->schema([
+                                    Forms\Components\Select::make('prov')->label(__('main.m16'))->required()
+                                    ->options(Prov::all()->pluck('name', 'id'))->preload()->live(),
                                     Forms\Components\Select::make('certi')->label('Certification')
-                                        ->options(Course::where('pub', true)->get()->pluck('name', 'id'))
+                                        ->options(function(Get $get){
+                                          return  Course::where('pub', true)->where('prov', $get('prov'))->get()->pluck('name', 'id');
+                                        })
                                         ->afterStateUpdated(function (?string $state, ?string $old, Get $get, Set $set) {
                                             $ix = cache()->rememberForever('settings', function () {
                                                 return \App\Models\Info::findOrFail(1);
@@ -364,10 +369,8 @@ class UsersTable extends BaseWidget
                                                 return 'Modules Configuration (Tt. Questions : '.$rd.')';
                                             })
                                                 ->addActionLabel('Add a Module')->reorderable(false)->defaultItems(1)
-                              //  ->relationship()
                                                 ->schema([
                                                     Forms\Components\Select::make('module')->label('Name')
-                                                 //   ->relationship('moduleRel2', 'name',modifyQueryUsing: fn (Builder $query,Get $get) => $query
                                                         ->options(fn (Get $get) => Module::where('course', $get('../../certi'))->pluck('name', 'id'))
                                                         ->required()->disableOptionsWhenSelectedInSiblingRepeaterItems(),
                                                     Forms\Components\TextInput::make('nb')->numeric()->required()->label('Questions')
