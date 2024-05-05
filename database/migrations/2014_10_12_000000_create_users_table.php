@@ -19,6 +19,7 @@ return new class extends Migration
             $table->boolean('ax')->default(true);
             $table->string('kx')->nullable();
             $table->integer('ix')->default(0)->unsigned();
+            $table->timestamp('icx')->nullable();
             $table->string('cx')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

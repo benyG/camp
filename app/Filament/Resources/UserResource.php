@@ -43,7 +43,6 @@ class UserResource extends Resource
         $ix = cache()->rememberForever('settings', function () {
             return \App\Models\Info::findOrFail(1);
         });
-
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->label(__('form.na'))

@@ -57,10 +57,9 @@ class InfoResource extends Resource
                                             ->required()->default(1)->numeric(),
                                     ]),
                             ]),
-                        Forms\Components\Tabs\Tab::make(trans_choice('main.m8', 6))
+                        Forms\Components\Tabs\Tab::make('Packages')
                             ->schema([
                                 Forms\Components\Section::make(__('form.cos'))->columns(3)
-                                //->description('Some string fields contains parameters')
                                     ->schema([
                                         Forms\Components\TextInput::make('wperc')->label(__('form.wpe'))->default(80)
                                             ->rules(['required', 'numeric', 'max:100']),
@@ -68,45 +67,48 @@ class InfoResource extends Resource
                                             ->rules(['required', 'numeric', 'max:255'])->numeric()->step(5),
                                         Forms\Components\TextInput::make('minq')->label(__('form.omq'))
                                             ->required()->default(5)->numeric(),
-                                    ]),
-                                Forms\Components\Section::make(__('form.tim').'s')->columns(5)
-                                    ->description(__('main.in2'))
-                                    ->schema([
                                         Forms\Components\TextInput::make('mint')->label(__('form.emt'))
                                             ->required()->default(15),
-                                        Forms\Components\TextInput::make('maxts')->label(__('form.lim').' - Starter')
-                                            ->required()->numeric()->default(20),
-                                        Forms\Components\TextInput::make('maxtu')->label(__('form.lim').' - User')
-                                            ->required()->numeric()->default(60),
-                                        Forms\Components\TextInput::make('maxtp')->label(__('form.lim').' - Pro')
-                                            ->required()->numeric()->default(120),
-                                        Forms\Components\TextInput::make('maxtv')->label(__('form.lim').' - VIP')
-                                            ->required()->numeric()->default(240),
                                     ]),
-                                Forms\Components\Section::make(__('form.tqu'))->columns(5)
-                                    ->description(__('main.in3').' '.Str::upper(__('form.tst')).'s')
+                                Forms\Components\Section::make('Free')->columns(3)
                                     ->schema([
-                                        Forms\Components\TextInput::make('maxs')->label(__('form.lim').' Q.'.'-Starter')
-                                            ->required()->numeric()->default(10),
-                                        Forms\Components\TextInput::make('maxu')->label(__('form.lim').' Q.'.'-User')
-                                            ->required()->numeric()->default(30),
-                                        Forms\Components\TextInput::make('maxp')->label(__('form.lim').' Q.'.'-Pro')
-                                            ->required()->numeric()->default(50),
-                                        Forms\Components\TextInput::make('maxv')->label(__('form.lim').' Q.'.'-VIP')
+                                        Forms\Components\TextInput::make('maxts')->label(__('form.tim').'s Exam.')
+                                        ->required()->numeric()->default(20),
+                                        Forms\Components\TextInput::make('maxs')->label(__('form.tqu'))
+                                        ->required()->numeric()->default(10),
+                                        Forms\Components\TextInput::make('maxes')->label(__('form.equ'))
+                                        ->required()->numeric()->default(10),
+                                        Forms\Components\TextInput::make('maxes')->label(__('form.equ'))
+                                        ->required()->numeric()->default(10),
+                                    ]),
+                                Forms\Components\Section::make('Basic')->columns(3)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('maxtu')->label(__('form.tim').'s Exam.')
+                                        ->required()->numeric()->default(60),
+                                        Forms\Components\TextInput::make('maxu')->label(__('form.tqu'))
+                                        ->required()->numeric()->default(30),
+                                        Forms\Components\TextInput::make('maxeu')->label(__('form.equ'))
+                                        ->required()->numeric()->default(50),
+                                    ]),
+                                Forms\Components\Section::make('Standard')->columns(3)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('maxtp')->label(__('form.tim').'s Exam.')
+                                        ->required()->numeric()->default(120),
+                                        Forms\Components\TextInput::make('maxp')->label(__('form.tqu'))
+                                        ->required()->numeric()->default(50),
+                                        Forms\Components\TextInput::make('maxep')->label(__('form.equ'))
                                             ->required()->numeric()->default(100),
                                     ]),
-                                Forms\Components\Section::make(__('form.equ'))->columns(5)
-                                    ->description(__('main.in3').' '.Str::upper(__('form.exa')).'s')
+                                Forms\Components\Section::make('Premium')->columns(3)
                                     ->schema([
-                                        Forms\Components\TextInput::make('maxes')->label(__('form.lim').' Q.-Starter')
-                                            ->required()->numeric()->default(10),
-                                        Forms\Components\TextInput::make('maxeu')->label(__('form.lim').' Q.-User')
-                                            ->required()->numeric()->default(50),
-                                        Forms\Components\TextInput::make('maxep')->label(__('form.lim').' Q.-Pro')
-                                            ->required()->numeric()->default(100),
-                                        Forms\Components\TextInput::make('maxev')->label(__('form.lim').' Q.-VIP')
+                                        Forms\Components\TextInput::make('maxtv')->label(__('form.tim').'s Exam.')
+                                        ->required()->numeric()->default(240),
+                                        Forms\Components\TextInput::make('maxv')->label(__('form.tqu'))
+                                        ->required()->numeric()->default(100),
+                                        Forms\Components\TextInput::make('maxev')->label(__('form.equ'))
                                             ->required()->numeric()->default(200),
                                     ]),
+
                             ]),
                         Forms\Components\Tabs\Tab::make(__('form.ai'))
                             ->schema([
@@ -130,6 +132,14 @@ class InfoResource extends Resource
                                         Forms\Components\Textarea::make('cont2')->label(__('form.cont2'))
                                             ->required(),
                                         Forms\Components\Textarea::make('cont3')->label(__('form.cont3'))
+                                            ->required(),
+                                        Forms\Components\Textarea::make('cont4')->label(__('form.cont4'))
+                                            ->required(),
+                                        Forms\Components\Textarea::make('cont5')->label(__('form.cont5'))
+                                            ->required(),
+                                        Forms\Components\Textarea::make('cont6')->label(__('form.cont6'))
+                                            ->required(),
+                                        Forms\Components\Textarea::make('cont7')->label(__('form.cont7'))
                                             ->required(),
                                     ]),
                             ]),
