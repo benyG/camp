@@ -24,7 +24,7 @@ class UserResource extends Resource
 
     protected static ?int $navigationSort = 70;
 
-    protected static ?string $navigationGroup = 'Administration';
+    protected static ?string $navigationGroup = 'Administrationi';
 
     protected static bool $hasTitleCaseModelLabel = false;
 
