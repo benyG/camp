@@ -2,8 +2,8 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Question;
 use App\Models\Answer;
+use App\Models\Question;
 use App\Models\User;
 use Filament\Support\RawJs;
 use Filament\Widgets\ChartWidget;
@@ -32,10 +32,12 @@ class UserCourseChart5 extends ChartWidget
     {
         $this->record = is_int($usrec) ? User::with('exams2')->findOrFail($usrec) : auth()->user();
     }
+
     public function getHeading(): ?string
     {
         return __('main.w39');
     }
+
     public static function canView(): bool
     {
         return auth()->user()->ex > 1;
@@ -66,10 +68,10 @@ class UserCourseChart5 extends ChartWidget
         });
         $arx = $this->cs2 == '0' ? [0, 1] : [intval($this->cs2) - 1];
         $uc = [[], [], []];
-        $usx=$this->record ?? auth()->user();
+        $usx = $this->record ?? auth()->user();
         $usx->loadMissing('exams2');
         $exa = $usx->exams2->where('certi', $this->cs)->whereIn('type', $arx)->take($ix->taff);
-        $QUEST=Question::select('id')->with('answers')->get();
+        $QUEST = Question::select('id')->with('answers')->get();
         foreach ($exa as $ex) {
             $md1 = 0;
             $md2 = 0;
@@ -81,11 +83,11 @@ class UserCourseChart5 extends ChartWidget
                 $rt = $QUEST->whereIn('id', $arrk);
                 foreach ($rt as $quest) {
                     $bm = $quest->answers->sum(function (Answer $aas) {
-                        return $aas->qa->isok==1?1:0;
+                        return $aas->qa->isok == 1 ? 1 : 0;
                     }) <= 1;
                     if ($bm) {
                         $ab = $quest->answers->where('id', $res[$quest->id][0])->sum(function (Answer $aas) {
-                            return $aas->qa->isok==1?1:0;
+                            return $aas->qa->isok == 1 ? 1 : 0;
                         });
                         if ($ab > 0) {
                             $md1++;
@@ -94,7 +96,7 @@ class UserCourseChart5 extends ChartWidget
                         }
                     } else {
                         $ab2 = $quest->answers->whereIn('id', $res[$quest->id])->sum(function (Answer $aas) {
-                            return $aas->qa->isok==0?1:0;
+                            return $aas->qa->isok == 0 ? 1 : 0;
                         });
                         if ($ab2 == 0) {
                             $md1++;
@@ -107,9 +109,9 @@ class UserCourseChart5 extends ChartWidget
             $uc[1][] = $md1;
             $uc[2][] = $md2;
         }
-        $uc[1]=array_reverse($uc[1]);
-        $uc[2]=array_reverse($uc[2]);
-        $uc[0]=array_reverse($uc[0]);
+        $uc[1] = array_reverse($uc[1]);
+        $uc[2] = array_reverse($uc[2]);
+        $uc[0] = array_reverse($uc[0]);
 
         return [
             'datasets' => [

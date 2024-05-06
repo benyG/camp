@@ -24,7 +24,7 @@ class UserResource extends Resource
 
     protected static ?int $navigationSort = 70;
 
-    protected static ?string $navigationGroup = 'Administrationi';
+    protected static ?string $navigationGroup = 'Administration';
 
     protected static bool $hasTitleCaseModelLabel = false;
 
@@ -43,6 +43,7 @@ class UserResource extends Resource
         $ix = cache()->rememberForever('settings', function () {
             return \App\Models\Info::findOrFail(1);
         });
+
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->label(__('form.na'))
@@ -54,14 +55,14 @@ class UserResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Forms\Components\Select::make('ex')->label('Type')
-                    ->options(['1' => 'Admin', '2' => 'Starter', '3' => 'User', '4' => 'Pro', '5' => 'VIP','9'=>__('main.Guest')])
+                    ->options(['1' => 'Admin', '2' => 'Starter', '3' => 'User', '4' => 'Pro', '5' => 'VIP', '9' => __('main.Guest')])
                     ->rules([Rule::in(['1', '2', '3', '4', '5'])]),
                 Password::make('password')->label(__('form.pwd'))
                     ->regex('/^\S*(?=.*\d)(?=\S*[\W])[a-zA-Z\d]\S*$/i')
                     ->validationMessages([
                         'regex' => __('form.e1'),
                     ])
-                    ->password()->copyable()->regeneratePassword(using: fn () => Str::password(15),color:'warning')
+                    ->password()->copyable()->regeneratePassword(using: fn () => Str::password(15), color: 'warning')
                     ->confirmed(fn (string $operation): bool => $operation === 'create')
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->minLength(8)
@@ -107,12 +108,12 @@ class UserResource extends Resource
                     ->formatStateUsing(fn (int $state): string => match ($state) {
                         0 => 'S. Admin',
                         1 => 'Admin', 2 => 'Starter', 3 => 'User', 4 => 'Pro', 5 => 'VIP',
-                        default=>__('main.Guest')
+                        default => __('main.Guest')
                     })
                     ->color(fn (int $state): string => match ($state) {
                         0 => 'S. Admin',
                         1 => 'gray', 2 => 'info', 3 => 'success', 4 => 'danger', 5 => 'warning',
-                        default=>'purple'
+                        default => 'purple'
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ix')->label(__('main.aic'))

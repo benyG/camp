@@ -31,6 +31,7 @@ if (! function_exists('dynColors')) {
         for ($i = 0; $i < 6; $i++) {
             $col .= Arr::random($ar);
         }
+
         return $col;
     }
 }

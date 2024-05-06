@@ -9,13 +9,16 @@ use Filament\Widgets\ChartWidget;
 class UserCourseChart extends ChartWidget
 {
     protected static ?string $pollingInterval = null;
+
     protected static ?int $sort = 10;
+
     protected static ?string $maxHeight = '200px';
 
     public function getColumns(): int|string|array
     {
         return 1;
     }
+
     public function getHeading(): ?string
     {
         return __('main.w33');
@@ -38,10 +41,11 @@ class UserCourseChart extends ChartWidget
                 $uc[2][] = dynColors();
             }
         }
-        $mpo=collect($uc[1])->sum();
+        $mpo = collect($uc[1])->sum();
         foreach ($uc[1] as $key => $value) {
-            $uc[0][$key]=$uc[0][$key].' ('.round(100 * $value / ($mpo > 0 ? $mpo : 1), 2).'%)';
+            $uc[0][$key] = $uc[0][$key].' ('.round(100 * $value / ($mpo > 0 ? $mpo : 1), 2).'%)';
         }
+
         // dd($uc[2]);
         return [
             'datasets' => [

@@ -9,13 +9,16 @@ use Filament\Widgets\ChartWidget;
 class UserClassChart extends ChartWidget
 {
     protected static ?string $pollingInterval = null;
+
     protected static ?int $sort = 5;
+
     protected static ?string $maxHeight = '200px';
 
     public function getColumns(): int|string|array
     {
         return 1;
     }
+
     public function getHeading(): ?string
     {
         return __('main.w34');
@@ -39,10 +42,11 @@ class UserClassChart extends ChartWidget
             }
         }
 
-        $mpo=collect($uc[1])->sum();
+        $mpo = collect($uc[1])->sum();
         foreach ($uc[1] as $key => $value) {
-            $uc[0][$key]=$uc[0][$key].' ('.round(100 * $value / ($mpo > 0 ? $mpo : 1), 2).'%)';
+            $uc[0][$key] = $uc[0][$key].' ('.round(100 * $value / ($mpo > 0 ? $mpo : 1), 2).'%)';
         }
+
         return [
             'datasets' => [
                 [

@@ -8,7 +8,6 @@ use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\Auth\Register;
 use App\Filament\Pages\Auth\RequestPasswordReset;
 use App\Filament\Pages\Auth\ResetPassword;
-use App\Filament\Resources\InfoResource;
 use App\Http\Middleware\LangSwitch;
 use App\Http\Middleware\SessLog;
 use Filament\Http\Middleware\Authenticate;
@@ -80,7 +79,7 @@ class AdminPanelProvider extends PanelProvider
             ->userMenuItems([
                 MenuItem::make()
                     ->label(fn (): string => __('main.m1'))
-                    ->url(fn (): string => InfoResource::getUrl())
+                    ->url(fn (): string => \App\Filament\Pages\Settings::getUrl())
                     ->icon('heroicon-o-cog-6-tooth')
                     ->visible(fn (): bool => auth()->user()->can('viewAny', \App\Models\Info::class)),
                 // ...

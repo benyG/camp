@@ -2,9 +2,9 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Answer;
 use App\Models\Exam;
 use App\Models\Question;
-use App\Models\Answer;
 use App\Models\User;
 use Filament\Widgets\Widget;
 
@@ -47,12 +47,13 @@ class UserOverview extends Widget
         $earr = Exam::has('users1')->with('users1')->get();
         $eall = $earr->pluck('id');
         $rt = Question::select('id')->with('answers')->get();
-        $usx=auth()->user(); $usx->loadMissing('exams2');
+        $usx = auth()->user();
+        $usx->loadMissing('exams2');
         $nt = $usx->exams2->filter(function (Exam $value, int $key) {
-            return !is_null($value->pivot->start_at);
+            return ! is_null($value->pivot->start_at);
         })->pluck('pivot.exam')->intersect($earr->where('type', '0')->pluck('id'))->count();
         $ne = $usx->exams2->filter(function (Exam $value, int $key) {
-            return !is_null($value->pivot->start_at);
+            return ! is_null($value->pivot->start_at);
         })->pluck('pivot.exam')->intersect($earr->where('type', '1')->pluck('id'))->count();
         $this->co = $nt;
         $this->mo = $ne;
@@ -71,11 +72,11 @@ class UserOverview extends Widget
                 $rot = $rt->whereIn('id', $arrk);
                 foreach ($rot as $quest) {
                     $bm = $quest->answers->sum(function (Answer $aas) {
-                        return $aas->qa->isok==1?1:0;
+                        return $aas->qa->isok == 1 ? 1 : 0;
                     }) <= 1;
                     if ($bm) {
                         $ab = $quest->answers->where('id', $res[$quest->id][0])->sum(function (Answer $aas) {
-                            return $aas->qa->isok==1?1:0;
+                            return $aas->qa->isok == 1 ? 1 : 0;
                         });
                         if ($ab > 0) {
                             $ca++;
@@ -83,7 +84,7 @@ class UserOverview extends Widget
                         }
                     } else {
                         $ab2 = $quest->answers->whereIn('id', $res[$quest->id])->sum(function (Answer $aas) {
-                            return $aas->qa->isok==0?1:0;
+                            return $aas->qa->isok == 0 ? 1 : 0;
                         });
                         if ($ab2 == 0) {
                             $ca++;

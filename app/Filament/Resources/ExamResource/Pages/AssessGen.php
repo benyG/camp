@@ -171,7 +171,7 @@ class AssessGen extends Page implements HasActions, HasForms
         //$this->qcur=0;
         if ($this->qcur <= $this->qtot - 1) {
             $this->bm1 = $this->quest[$this->qcur]->answers->sum(function (\App\Models\Answer $aas) {
-                return $aas->qa->isok==1?1:0;
+                return $aas->qa->isok == 1 ? 1 : 0;
             }) <= 1;
             $this->aa = $this->quest[$this->qcur]->answers->random($this->quest[$this->qcur]->answers->count())->pluck('text', 'id');
             $this->qtext = $this->quest[$this->qcur]->text;
@@ -200,7 +200,7 @@ class AssessGen extends Page implements HasActions, HasForms
             ->modalIcon('heroicon-o-question-mark-circle')
             ->modalHeading(__('main.as10'))
             ->modalDescription(__('main.as11'))
-            ->visible(auth()->user()->ex<6)
+            ->visible(auth()->user()->ex < 6)
             ->action(function () {
                 $rev = new \App\Models\Review;
                 $rev->user = auth()->id();
@@ -239,55 +239,56 @@ class AssessGen extends Page implements HasActions, HasForms
             ->icon('heroicon-o-question-mark-circle')
             ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
             ->modalSubmitActionLabel(__('form.yes'))
-            ->modalContent(fn (): View => view('filament.pages.actions.iamod', ['txt' => __('main.i4'),"ex"=>auth()->user()->ex]))
+            ->modalContent(fn (): View => view('filament.pages.actions.iamod', ['txt' => __('main.i4'), 'ex' => auth()->user()->ex]))
             ->action(function () {
-                if(auth()->user()->ex<6){
-                $ix = cache()->rememberForever('settings', function () {
-                    return \App\Models\Info::findOrFail(1);
-                });
-                $ik = 1;
-                $aitx = '';
-                foreach ($this->aa as $value) {
-                    if (! is_string($value)) {
-                        $value = $value->text;
+                if (auth()->user()->ex < 6) {
+                    $ix = cache()->rememberForever('settings', function () {
+                        return \App\Models\Info::findOrFail(1);
+                    });
+                    $ik = 1;
+                    $aitx = '';
+                    foreach ($this->aa as $value) {
+                        if (! is_string($value)) {
+                            $value = $value->text;
+                        }
+                        $aitx .= $ik.'. '.$value."\n ";
+                        $ik++;
                     }
-                    $aitx .= $ik.'. '.$value."\n ";
-                    $ik++;
-                }
-                $stats = $this->record->certRel->name." certification exam:
+                    $stats = $this->record->certRel->name." certification exam:
                     - Question :
                     $this->qtext
                     - Answers choices :".$aitx.'.';
-                try {
-                    //sk-proj-9wUzwTSySTReFOcOu9b0T3BlbkFJtQVe3XZltaUtCJ6SStK4
-                    $apk = Crypt::decryptString($ix->apk);
-                      //dd( $apk);
-                    $response = Http::withToken($apk)->post($ix->endp, [
-                        'model' => $ix->model,
-                        'messages' => [
-                            ['role' => 'system', 'content' => $ix->cont1],
-                            ['role' => 'user', 'content' => $stats.__('main.i5')],
-                        ],
-                    ])
-                        ->json();
-                    // dd($response["choices"][0]["message"]["content"]);
-                    if (is_array($response['choices'])) {
-                        $this->iatext3 = __('main.i6', ['name' => auth()->user()->name]);
-                        $this->iati = true;
-                        if (! $this->iati3) {
-                            $this->iati3 = true;
+                    try {
+                        //sk-proj-9wUzwTSySTReFOcOu9b0T3BlbkFJtQVe3XZltaUtCJ6SStK4
+                        $apk = Crypt::decryptString($ix->apk);
+                        //dd( $apk);
+                        $response = Http::withToken($apk)->post($ix->endp, [
+                            'model' => $ix->model,
+                            'messages' => [
+                                ['role' => 'system', 'content' => $ix->cont1],
+                                ['role' => 'user', 'content' => $stats.__('main.i5')],
+                            ],
+                        ])
+                            ->json();
+                        // dd($response["choices"][0]["message"]["content"]);
+                        if (is_array($response['choices'])) {
+                            $this->iatext3 = __('main.i6', ['name' => auth()->user()->name]);
+                            $this->iati = true;
+                            if (! $this->iati3) {
+                                $this->iati3 = true;
+                            }
+                            $this->iatext = $response['choices'][0]['message']['content'];
+                            \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
+                            // dd(auth()->user()->ix);
+                        } else {
+                            Notification::make()->danger()->title(__('form.e10'))->send();
                         }
-                        $this->iatext =$response['choices'][0]['message']['content'];
-                        \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
-                        // dd(auth()->user()->ix);
-                    } else {
-                        Notification::make()->danger()->title(__('form.e10'))->send();
+                    } catch (DecryptException $e) {
+                        Notification::make()->danger()->title(__('form.e11'))->send();
+                    } catch (ConnectionException $e) {
+                        Notification::make()->danger()->title(__('form.e12'))->send();
                     }
-                } catch (DecryptException $e) {
-                    Notification::make()->danger()->title(__('form.e11'))->send();
-                } catch (ConnectionException $e) {
-                    Notification::make()->danger()->title(__('form.e12'))->send();
-                } }
+                }
             });
 
     }
@@ -310,55 +311,55 @@ class AssessGen extends Page implements HasActions, HasForms
                 }
             })
             ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
-            ->modalContent(fn (): View => view('filament.pages.actions.iamod', ['txt' => __('main.i7'),"ex"=>auth()->user()->ex]))
+            ->modalContent(fn (): View => view('filament.pages.actions.iamod', ['txt' => __('main.i7'), 'ex' => auth()->user()->ex]))
             ->action(function () {
-                if(auth()->user()->ex<6){
-                $ix = cache()->rememberForever('settings', function () {
-                    return \App\Models\Info::findOrFail(1);
-                });
-                $ik = 1;
-                $aitx = '';
-                foreach ($this->aa as $value) {
-                    if (! is_string($value)) {
-                        $value = $value->text;
+                if (auth()->user()->ex < 6) {
+                    $ix = cache()->rememberForever('settings', function () {
+                        return \App\Models\Info::findOrFail(1);
+                    });
+                    $ik = 1;
+                    $aitx = '';
+                    foreach ($this->aa as $value) {
+                        if (! is_string($value)) {
+                            $value = $value->text;
+                        }
+                        $aitx .= $ik.'. '.$value."\n ";
+                        $ik++;
                     }
-                    $aitx .= $ik.'. '.$value."\n ";
-                    $ik++;
-                }
-                $stats = $this->record->certRel->name." certification exam:
+                    $stats = $this->record->certRel->name." certification exam:
                  - Question :
                  $this->qtext
                  - Answers choice :".$aitx.'.';
-                try {
-                    $apk = Crypt::decryptString($ix->apk);
-                    //  dd($apk);
-                    $response = Http::withToken($apk)->post($ix->endp, [
-                        'model' => $ix->model,
-                        'messages' => [
-                            ['role' => 'system', 'content' => $ix->cont2],
-                            ['role' => 'user', 'content' => $stats.__('main.i5')],
-                        ],
-                    ])
-                        ->json();
-                    // dd($response["choices"][0]["message"]["content"]);
-                    if (is_array($response['choices'])) {
-                        $this->iatext3 = __('main.i6', ['name' => auth()->user()->name]);
-                        $this->iati2 = true;
-                        if (! $this->iati3) {
-                            $this->iati3 = true;
+                    try {
+                        $apk = Crypt::decryptString($ix->apk);
+                        //  dd($apk);
+                        $response = Http::withToken($apk)->post($ix->endp, [
+                            'model' => $ix->model,
+                            'messages' => [
+                                ['role' => 'system', 'content' => $ix->cont2],
+                                ['role' => 'user', 'content' => $stats.__('main.i5')],
+                            ],
+                        ])
+                            ->json();
+                        // dd($response["choices"][0]["message"]["content"]);
+                        if (is_array($response['choices'])) {
+                            $this->iatext3 = __('main.i6', ['name' => auth()->user()->name]);
+                            $this->iati2 = true;
+                            if (! $this->iati3) {
+                                $this->iati3 = true;
+                            }
+                            //   $this->iatext2 = preg_replace('/\\(.?)\\*/', '<strong>$1</strong>',$response['choices'][0]['message']['content'] );
+                            $this->iatext2 = $response['choices'][0]['message']['content'];
+                            \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
+                        } else {
+                            Notification::make()->danger()->title(__('form.e10'))->send();
                         }
-                     //   $this->iatext2 = preg_replace('/\\(.?)\\*/', '<strong>$1</strong>',$response['choices'][0]['message']['content'] );
-                        $this->iatext2 = $response['choices'][0]['message']['content'];
-                        \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
-                    } else {
-                        Notification::make()->danger()->title(__('form.e10'))->send();
+                    } catch (DecryptException $e) {
+                        Notification::make()->danger()->title(__('form.e11'))->send();
+                    } catch (ConnectionException $e) {
+                        Notification::make()->danger()->title(__('form.e12'))->send();
                     }
-                } catch (DecryptException $e) {
-                    Notification::make()->danger()->title(__('form.e11'))->send();
-                } catch (ConnectionException $e) {
-                    Notification::make()->danger()->title(__('form.e12'))->send();
                 }
-            }
             });
     }
 
@@ -371,8 +372,8 @@ class AssessGen extends Page implements HasActions, HasForms
             ]);
         } else {
             $this->validate([
-               'ans2' => 'required',
-        ]);
+                'ans2' => 'required',
+            ]);
         }
     }
 
@@ -386,7 +387,7 @@ class AssessGen extends Page implements HasActions, HasForms
         if ($this->qcur <= $this->qtot - 1) {
             $this->aa = $this->quest[$this->qcur]->answers->random($this->quest[$this->qcur]->answers->count())->pluck('text', 'id');
             $this->bm1 = $this->quest[$this->qcur]->answers->sum(function (\App\Models\Answer $aas) {
-                return $aas->qa->isok==1?1:0;
+                return $aas->qa->isok == 1 ? 1 : 0;
             }) <= 1;
             $this->qtext = $this->quest[$this->qcur]->text;
             $this->ans = null;
@@ -433,14 +434,14 @@ class AssessGen extends Page implements HasActions, HasForms
     {
         if ($this->bm1) {
             $ab = $this->quest[$this->qcur]->answers->where('id', $this->ans)->sum(function (\App\Models\Answer $aas) {
-                return $aas->qa->isok==1?1:0;
+                return $aas->qa->isok == 1 ? 1 : 0;
             });
             $au = '';
             if ($this->quest[$this->qcur]->answers->sum(function (\App\Models\Answer $aas) {
-                return $aas->qa->isok==1?1:0;
+                return $aas->qa->isok == 1 ? 1 : 0;
             }) > 0) {
                 $au = $this->quest[$this->qcur]->answers->filter(function (\App\Models\Answer $aas, int $key) {
-                    return $aas->qa->isok==1;
+                    return $aas->qa->isok == 1;
                 })->first()->text;
             }
 
@@ -461,14 +462,14 @@ class AssessGen extends Page implements HasActions, HasForms
             }
         } else {
             $ab2 = $this->quest[$this->qcur]->answers->whereIn('id', $this->ans2)->sum(function (\App\Models\Answer $aas) {
-                return $aas->qa->isok==0?1:0;
+                return $aas->qa->isok == 0 ? 1 : 0;
             });
             $au2 = '';
             if ($this->quest[$this->qcur]->answers->sum(function (\App\Models\Answer $aas) {
-                return $aas->qa->isok==1?1:0;
+                return $aas->qa->isok == 1 ? 1 : 0;
             }) > 0) {
                 $au2 = $this->quest[$this->qcur]->answers->filter(function (\App\Models\Answer $aas, int $key) {
-                    return $aas->qa->isok==1;
+                    return $aas->qa->isok == 1;
                 })->pluck('text');
             }
             $this->gen[$this->quest[$this->qcur]->id] = $this->ans2;

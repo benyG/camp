@@ -2,29 +2,34 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Widgets\ChartWidget;
-use Filament\Support\RawJs;
 use App\Models\Course;
+use Filament\Support\RawJs;
+use Filament\Widgets\ChartWidget;
 
 class TestCertifChart extends ChartWidget
 {
     protected static ?string $pollingInterval = null;
+
     protected static ?int $sort = 15;
+
     protected static ?string $maxHeight = '200px';
 
     public function getColumns(): int|string|array
     {
         return 1;
     }
-     public static function canView(): bool
+
+    public static function canView(): bool
     {
         return auth()->user()->ex <= 1;
     }
+
     public function getHeading(): ?string
     {
         return __('main.w40');
     }
-   protected function getData(): array
+
+    protected function getData(): array
     {
         $uc = [[], [], []];
         $us = Course::select('name')->withCount('exams')->get();
@@ -36,10 +41,11 @@ class TestCertifChart extends ChartWidget
             }
         }
 
-        $mpo=collect($uc[1])->sum();
+        $mpo = collect($uc[1])->sum();
         foreach ($uc[1] as $key => $value) {
-            $uc[0][$key]=$uc[0][$key].' ('.round(100 * $value / ($mpo > 0 ? $mpo : 1), 2).'%)';
+            $uc[0][$key] = $uc[0][$key].' ('.round(100 * $value / ($mpo > 0 ? $mpo : 1), 2).'%)';
         }
+
         return [
             'datasets' => [
                 [
@@ -49,12 +55,14 @@ class TestCertifChart extends ChartWidget
                 ],
             ],
             'labels' => $uc[0],
-        ];    }
+        ];
+    }
 
     protected function getType(): string
     {
         return 'pie';
     }
+
     protected function getOptions(): RawJs
     {
         return RawJs::make(<<<'JS'

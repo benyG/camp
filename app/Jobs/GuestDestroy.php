@@ -25,6 +25,6 @@ class GuestDestroy implements ShouldQueue
      */
     public function handle(): void
     {
-       \App\Models\User::where('ex','>', 6)->delete();
+        \App\Models\User::where('ex', '>', 6)->delete();
     }
 }

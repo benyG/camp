@@ -29,6 +29,6 @@ class JournDestroy implements ShouldQueue
             return \App\Models\Info::findOrFail(1);
         });
 
-        \App\Models\Journ::whereRaw("datediff(CURRENT_DATE,created_at) > ?", [$ix->log*30])->delete();
+        \App\Models\Journ::whereRaw('datediff(CURRENT_DATE,created_at) > ?', [$ix->log * 30])->delete();
     }
 }

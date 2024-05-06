@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\NewMail;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Tables;
@@ -17,7 +18,6 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Notification as Notif;
-use Filament\Forms\Get;
 
 class ListCertif extends Page implements HasTable
 {
@@ -30,8 +30,6 @@ class ListCertif extends Page implements HasTable
     protected static string $view = 'filament.pages.list-certif';
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-
-    protected static ?int $navigationSort = 5;
 
     public function mount(): void
     {
@@ -47,11 +45,12 @@ class ListCertif extends Page implements HasTable
         return [
             Actions\Action::make('rrtt')->label(__('form.add'))->form([
                 Forms\Components\Select::make('prov')->label(__('main.m16'))->required()
-                ->options(\App\Models\Prov::all()->pluck('name', 'id'))->preload()->live(),
+                    ->options(\App\Models\Prov::all()->pluck('name', 'id'))->preload()->live(),
                 Forms\Components\Select::make('cou')->required()
-                    ->options(function(Get $get){
+                    ->options(function (Get $get) {
                         return \App\Models\Course::where('pub', true)->where('prov', $get('prov'))->doesntHave('users1')
-                        ->pluck('name', 'id');})->label('Certifications')->multiple()->preload(),
+                            ->pluck('name', 'id');
+                    })->label('Certifications')->multiple()->preload(),
             ])->action(function ($data) {
                 $ix = cache()->rememberForever('settings', function () {
                     return \App\Models\Info::findOrFail(1);

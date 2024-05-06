@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Str;
 
 class Module extends Model
 {
     public $timestamps = false;
 
     protected $fillable = [
-        'name', 'course','descr'
+        'name', 'course', 'descr',
     ];
 
     protected function slug(): Attribute
@@ -43,6 +43,7 @@ class Module extends Model
         //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
         return $this->belongsToMany(Exam::class, 'exam_modules', 'module', 'exam');
     }
+
     public function provRel(): HasOneThrough
     {
         return $this->hasOneThrough(

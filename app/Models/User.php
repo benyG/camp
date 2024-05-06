@@ -55,9 +55,8 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'password' => 'hashed','certs' => 'array',
     ];
-
     protected function createdAt(): Attribute
     {
         return Attribute::make(
@@ -80,7 +79,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function vagues(): BelongsToMany
     {
-        //    return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');
         return $this->belongsToMany(Vague::class, 'user_classes', 'user', 'clas');
     }
 
@@ -140,5 +138,11 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function oauthProviders(): HasMany
     {
         return $this->hasMany(OAuthProvider::class, 'provider_user_id');
+    }
+
+    public function pckRel(): BelongsTo
+    {
+        //    return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');
+        return $this->belongsTo(Pck::class, 'pack', 'id');
     }
 }

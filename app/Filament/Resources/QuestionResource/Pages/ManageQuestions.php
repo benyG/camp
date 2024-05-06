@@ -21,6 +21,7 @@ class ManageQuestions extends ManageRecords
                 $data['text'] = str_replace('src="../storage', 'src="'.env('APP_URL').'/storage', $data['text']);
                 session(['cours' => $data['cours']]);
                 session(['2providers' => $data['prov']]);
+
                 //   session(['cours'=>$data['cours']]);
                 return $data;
             })->after(function ($record) {
@@ -33,7 +34,7 @@ class ManageQuestions extends ManageRecords
             })
                 ->successRedirectUrl(fn (Model $record): string => $this->getResource()::getUrl('view', [
                     'record' => $record->id,
-                ]))->createAnother(false)
+                ]))->createAnother(false),
         ];
     }
 
@@ -42,7 +43,7 @@ class ManageQuestions extends ManageRecords
         $b1 = \App\Models\Question::withCount('answers2')->having('answers2_count', '=', 0)->count();
         $b2 = \App\Models\Question::withCount('answers')->having('answers_count', '=', 0)->count();
         $b3 = \App\Models\Question::has('reviews')->count();
-     //   $b4 = \App\Models\Question::selectRaw('count(text),id')->groupBy("text",'id')->having('count(text)','>',1)->count();
+        //   $b4 = \App\Models\Question::selectRaw('count(text),id')->groupBy("text",'id')->having('count(text)','>',1)->count();
         $b4 = \App\Models\Question::whereIn('text', array_column(DB::select('select text,count(text) from questions group by text having count(text) > 1'), 'text'))->count();
 
         return [
@@ -61,7 +62,7 @@ class ManageQuestions extends ManageRecords
                 ->badgeColor(fn () => $b3 > 0 ? 'danger' : 'success'),
             __('form.du') => Tab::make()->badge($b4)
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereIn('text', array_column(DB::select('select text,count(text) from questions group by text having count(text) > 1'), 'text'))->orderBy('text'))
-                ->badgeColor(fn () => $b4> 0 ? 'danger' : 'success'),
+                ->badgeColor(fn () => $b4 > 0 ? 'danger' : 'success'),
         ];
     }
 }

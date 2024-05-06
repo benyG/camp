@@ -2,16 +2,14 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Answer;
 use App\Models\Course;
 use App\Models\Exam;
 use App\Models\Question;
-use App\Models\Answer;
 use App\Models\User;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
-use Illuminate\Contracts\Pagination\CursorPaginator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class UsersTable2 extends BaseWidget
@@ -27,7 +25,7 @@ class UsersTable2 extends BaseWidget
     public function mount($usrec = null)
     {
         // dd($usrec);
-        $this->record =$usrec!=null? User::find($usrec) : auth()->user();
+        $this->record = $usrec != null ? User::find($usrec) : auth()->user();
     }
 
     public static function canView(): bool
@@ -43,9 +41,11 @@ class UsersTable2 extends BaseWidget
         });
 
         $us = $this->record;
-       if(!is_null($us)) $us->loadMissing('exams2');
+        if (! is_null($us)) {
+            $us->loadMissing('exams2');
+        }
 
-        $earr = Exam::select('id','quest')->has('users')->with('users')->get();
+        $earr = Exam::select('id', 'quest')->has('users')->with('users')->get();
         $eall = $earr->pluck('id');
         $rt = Question::select('id')->with('answers')->get();
         $uarr2 = [];
@@ -57,21 +57,21 @@ class UsersTable2 extends BaseWidget
                     $ca = 0;
                     $rot = $rt->whereIn('id', $arrk);
                     foreach ($rot as $quest) {
-                       // dd($quest->answers);
+                        // dd($quest->answers);
                         $bm = $quest->answers->sum(function (Answer $aas) {
-                            return $aas->qa->isok?1:0;
+                            return $aas->qa->isok ? 1 : 0;
                         }) <= 1;
                         if ($bm) {
-                           // dd($quest->answers->where('id',$res[$quest->id][0]));
-                            $ab = $quest->answers->where('id',$res[$quest->id][0])->sum(function (Answer $aas) {
-                                return $aas->qa->isok==1?1:0;
+                            // dd($quest->answers->where('id',$res[$quest->id][0]));
+                            $ab = $quest->answers->where('id', $res[$quest->id][0])->sum(function (Answer $aas) {
+                                return $aas->qa->isok == 1 ? 1 : 0;
                             });
                             if ($ab > 0) {
                                 $ca++;
                             }
                         } else {
                             $ab2 = $quest->answers->whereIn('id', $res[$quest->id])->sum(function (Answer $aas) {
-                                return $aas->qa->isok==0?1:0;
+                                return $aas->qa->isok == 0 ? 1 : 0;
                             });
                             if ($ab2 == 0) {
                                 $ca++;
@@ -87,7 +87,8 @@ class UsersTable2 extends BaseWidget
                 }
             }
         }
-      //  rnd();
+
+        //  rnd();
         // dd(Exam::with('certRel')->where('from',$this->record->id)->orWhereRelation('users', 'user', $this->record->id)->latest('added_at')->count());
         return $table->paginated([5, 10, 25, 50])->heading(__('main.w37'))
             ->query(Exam::with('certRel')->where('from', $this->record->id)->orWhereRelation('users', 'user', $this->record->id)->latest('added_at'))

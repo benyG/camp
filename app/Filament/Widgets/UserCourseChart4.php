@@ -7,7 +7,6 @@ use App\Models\ExamUser;
 use App\Models\User;
 use Filament\Support\RawJs;
 use Filament\Widgets\ChartWidget;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 
@@ -35,10 +34,12 @@ class UserCourseChart4 extends ChartWidget
     {
         $this->record = is_int($usrec) ? User::with('exams2')->findOrFail($usrec) : auth()->user();
     }
+
     public function getHeading(): ?string
     {
         return __('main.w38');
     }
+
     public static function canView(): bool
     {
         return auth()->user()->ex > 1;
@@ -68,9 +69,9 @@ class UserCourseChart4 extends ChartWidget
             return \App\Models\Info::findOrFail(1);
         });
         $uc = [[], [], []];
-       // $this->record = $this->record ?? auth()->user();
+        // $this->record = $this->record ?? auth()->user();
         $arx = $this->cs2 == 'X' ? [0, 1] : [intval($this->cs2)];
-        $exx = Exam::select('id','type','added_at','certi')->where('certi', $this->cs)->whereIn('type', $arx)->latest('added_at')->get()->pluck('id')->toArray();
+        $exx = Exam::select('id', 'type', 'added_at', 'certi')->where('certi', $this->cs)->whereIn('type', $arx)->latest('added_at')->get()->pluck('id')->toArray();
         $exa = ExamUser::selectRaw('DATE(added) as ax,COUNT(*) as exa')
             ->where('user', $this->record->id)->whereIn('exam', $exx)->limit($ix->taff)->
         groupBy(DB::raw('DATE(added)'))->latest('ax')->get();
@@ -79,8 +80,9 @@ class UserCourseChart4 extends ChartWidget
             $uc[0][] = $ex->ax;
             $uc[1][] = $ex->exa;
         }
-        $uc[1]=array_reverse($uc[1]);
-        $uc[0]=array_reverse($uc[0]);
+        $uc[1] = array_reverse($uc[1]);
+        $uc[0] = array_reverse($uc[0]);
+
         return [
             'datasets' => [
                 [
@@ -129,5 +131,4 @@ class UserCourseChart4 extends ChartWidget
             }
         JS);
     }
-
 }

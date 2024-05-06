@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Course extends Model
 {
@@ -25,6 +25,7 @@ class Course extends Model
             get: fn (mixed $value, array $attributes) => Str::slug($attributes['name'], '-')
         );
     }
+
     public function provRel(): BelongsTo
     {
         //    return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');

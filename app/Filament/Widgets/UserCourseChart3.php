@@ -33,6 +33,7 @@ class UserCourseChart3 extends ChartWidget
     {
         $this->record = is_int($usrec) ? User::with('exams2')->findOrFail($usrec) : auth()->user();
     }
+
     public function getHeading(): ?string
     {
         return '% '.__('main.w35');
@@ -68,11 +69,11 @@ class UserCourseChart3 extends ChartWidget
     {
         $uc = [[], [], []];
         if (! empty($this->cos) > 0) {
-          //  $this->record = $this->record ?? auth()->user();
+            //  $this->record = $this->record ?? auth()->user();
             $exa = $this->record->exams2()->where('certi', $this->cs)->get();
             $md1 = 0;
             $md2 = 0;
-            $QUEST=Question::select('id','module')->with('answers')->get();
+            $QUEST = Question::select('id', 'module')->with('answers')->get();
             foreach ($exa as $ex) {
                 if (! empty($ex->pivot->gen) && is_array($ex->pivot->gen)) {
                     $res = $ex->pivot->gen;
@@ -82,11 +83,11 @@ class UserCourseChart3 extends ChartWidget
                     $QUEST->whereIn('id', $arrk)->where('module', $this->mod);
                     foreach ($rt as $quest) {
                         $bm = $quest->answers->sum(function (\App\Models\Answer $aas) {
-                            return $aas->qa->isok==1?1:0;
+                            return $aas->qa->isok == 1 ? 1 : 0;
                         }) <= 1;
                         if ($bm) {
                             $ab = $quest->answers->where('id', $res[$quest->id][0])->sum(function (\App\Models\Answer $aas) {
-                                return $aas->qa->isok==1?1:0;
+                                return $aas->qa->isok == 1 ? 1 : 0;
                             });
                             if ($ab > 0) {
                                 $md1++;
@@ -95,7 +96,7 @@ class UserCourseChart3 extends ChartWidget
                             }
                         } else {
                             $ab2 = $quest->answers->whereIn('id', $res[$quest->id])->sum(function (\App\Models\Answer $aas) {
-                                return $aas->qa->isok==0?1:0;
+                                return $aas->qa->isok == 0 ? 1 : 0;
                             });
                             if ($ab2 == 0) {
                                 $md1++;
@@ -114,9 +115,9 @@ class UserCourseChart3 extends ChartWidget
             $uc[1][] = $md2;
             $uc[2][] = '#FF0000';
         }
-        $mpo=collect($uc[1])->sum();
+        $mpo = collect($uc[1])->sum();
         foreach ($uc[1] as $key => $value) {
-            $uc[0][$key]=$uc[0][$key].' ('.round(100 * $value / ($mpo > 0 ? $mpo : 1), 2).'%)';
+            $uc[0][$key] = $uc[0][$key].' ('.round(100 * $value / ($mpo > 0 ? $mpo : 1), 2).'%)';
         }
 
         return [
