@@ -108,7 +108,9 @@ class Settings extends Page implements HasActions, HasForms
                                             ->required()->default(false),
                                         Forms\Components\Toggle::make('ftg_f')->label(__('form.ftg'))
                                             ->required()->default(false)->inline(false),
-                                        Forms\Components\Toggle::make('pa_f')->label(__('form.sta'))
+                                        Forms\Components\Toggle::make('sta_f')->label(__('form.sta'))
+                                            ->required()->default(false)->inline(false),
+                                        Forms\Components\Toggle::make('pa_f')->label(__('form.pa'))
                                             ->required()->default(false)->inline(false),
                                     ]),
                                 Forms\Components\Section::make('Basic')->columns($cgrid)
@@ -131,7 +133,9 @@ class Settings extends Page implements HasActions, HasForms
                                             ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('ftg_b')->label(__('form.ftg'))
                                             ->required()->default(false)->inline(false),
-                                        Forms\Components\Toggle::make('pa_b')->label(__('form.sta'))
+                                        Forms\Components\Toggle::make('sta_b')->label(__('form.sta'))
+                                            ->required()->default(false)->inline(false),
+                                        Forms\Components\Toggle::make('pa_b')->label(__('form.pa'))
                                             ->required()->default(false)->inline(false),
                                     ]),
                                 Forms\Components\Section::make('Standard')->columns($cgrid)
@@ -154,7 +158,9 @@ class Settings extends Page implements HasActions, HasForms
                                             ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('ftg_s')->label(__('form.ftg'))
                                             ->required()->default(false)->inline(false),
-                                        Forms\Components\Toggle::make('pa_s')->label(__('form.sta'))
+                                        Forms\Components\Toggle::make('sta_s')->label(__('form.sta'))
+                                            ->required()->default(false)->inline(false),
+                                        Forms\Components\Toggle::make('pa_s')->label(__('form.pa'))
                                             ->required()->default(false)->inline(false),
                                     ]),
                                 Forms\Components\Section::make('Premium')->columns($cgrid)
@@ -177,7 +183,9 @@ class Settings extends Page implements HasActions, HasForms
                                             ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('ftg_p')->label(__('form.ftg'))
                                             ->required()->default(false)->inline(false),
-                                        Forms\Components\Toggle::make('pa_p')->label(__('form.sta'))
+                                        Forms\Components\Toggle::make('sta_p')->label(__('form.sta'))
+                                            ->required()->default(false)->inline(false),
+                                        Forms\Components\Toggle::make('pa_p')->label(__('form.pa'))
                                             ->required()->default(false)->inline(false),
                                     ]),
                             ]),
