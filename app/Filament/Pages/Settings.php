@@ -103,13 +103,13 @@ class Settings extends Page implements HasActions, HasForms
                                         Forms\Components\TextInput::make('eca_f')->label(__('form.eac'))
                                             ->required()->numeric()->default(1),
                                         Forms\Components\Toggle::make('tec_f')->label(__('form.tec'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('tga_f')->label(__('form.tga'))
                                             ->required()->default(false),
                                         Forms\Components\Toggle::make('ftg_f')->label(__('form.ftg'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('pa_f')->label(__('form.sta'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                     ]),
                                 Forms\Components\Section::make('Basic')->columns($cgrid)
                                     ->schema([
@@ -126,13 +126,13 @@ class Settings extends Page implements HasActions, HasForms
                                         Forms\Components\TextInput::make('eca_b')->label(__('form.eac'))
                                             ->required()->numeric()->default(1),
                                         Forms\Components\Toggle::make('tec_b')->label(__('form.tec'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('tga_b')->label(__('form.tga'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('ftg_b')->label(__('form.ftg'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('pa_b')->label(__('form.sta'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                     ]),
                                 Forms\Components\Section::make('Standard')->columns($cgrid)
                                     ->schema([
@@ -149,13 +149,13 @@ class Settings extends Page implements HasActions, HasForms
                                         Forms\Components\TextInput::make('eca_s')->label(__('form.eac'))
                                             ->required()->numeric()->default(1),
                                         Forms\Components\Toggle::make('tec_s')->label(__('form.tec'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('tga_s')->label(__('form.tga'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('ftg_s')->label(__('form.ftg'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('pa_s')->label(__('form.sta'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                     ]),
                                 Forms\Components\Section::make('Premium')->columns($cgrid)
                                     ->schema([
@@ -172,13 +172,13 @@ class Settings extends Page implements HasActions, HasForms
                                         Forms\Components\TextInput::make('eca_p')->label(__('form.eac'))
                                             ->required()->numeric()->default(1),
                                         Forms\Components\Toggle::make('tec_p')->label(__('form.tec'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('tga_p')->label(__('form.tga'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('ftg_p')->label(__('form.ftg'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('pa_p')->label(__('form.sta'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                     ]),
                             ]),
                         Forms\Components\Tabs\Tab::make(__('form.ai'))
