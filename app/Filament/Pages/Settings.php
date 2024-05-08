@@ -35,6 +35,10 @@ class Settings extends Page implements HasActions, HasForms
        $this->info=Info::findOrFail(1);
         $this->form->fill($this->info->toArray());
     }
+    public static function canAccess(): bool
+    {
+        return auth()->user()->ex ==0;
+    }
     public static function getNavigationLabel(): string
     {
         return trans_choice('main.m9', 2);
@@ -88,6 +92,12 @@ class Settings extends Page implements HasActions, HasForms
                                         Forms\Components\TextInput::make('mint')->label(__('form.emt'))
                                             ->required()->default(15),
                                     ]),
+                                Forms\Components\Section::make('Guest')->columns($cgrid)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('maxtg')->label(__('form.tim').'s Exam.')
+                                            ->required()->numeric()->default(20),
+                                        Forms\Components\TextInput::make('maxeg')->label(__('form.equ'))
+                                    ]),
                                 Forms\Components\Section::make('Free')->columns($cgrid)
                                     ->schema([
                                         Forms\Components\TextInput::make('maxts')->label(__('form.tim').'s Exam.')
@@ -105,7 +115,7 @@ class Settings extends Page implements HasActions, HasForms
                                         Forms\Components\Toggle::make('tec_f')->label(__('form.tec'))
                                             ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('tga_f')->label(__('form.tga'))
-                                            ->required()->default(false),
+                                            ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('ftg_f')->label(__('form.ftg'))
                                             ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('sta_f')->label(__('form.sta'))

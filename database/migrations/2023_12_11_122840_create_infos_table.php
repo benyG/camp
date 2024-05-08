@@ -78,6 +78,8 @@ return new class extends Migration
             $table->text('cont9')->nullable();
             $table->tinyInteger('taff')->default(30)->unsigned();
             $table->tinyInteger('log')->default(1)->unsigned();
+            $table->smallInteger('maxeg')->default(10)->unsigned();
+            $table->smallInteger('maxtg')->default(10)->unsigned();
         });
     }
 

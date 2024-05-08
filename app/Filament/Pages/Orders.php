@@ -19,12 +19,7 @@ class Orders extends Page implements HasTable
     protected static ?string $slug = 'orders';
 
     protected static string $view = 'filament.pages.orders';
-
-    public static function getNavigationGroup(): ?string
-    {
-        return auth()->user()->ex == 0 ? 'Administration' : '';
-    }
-
+    protected static ?string $navigationGroup = 'Administration';
     public static function getNavigationSort(): ?int
     {
         return auth()->user()->ex == 0 ? 150 : 30;

@@ -74,7 +74,7 @@ class UserCourseChart2 extends ChartWidget
         $que = Question::selectRaw('count(id) as quest, module')->whereIn('id', $que)->groupBy('module')->get()->pluck('quest', 'module')->toArray();
         $uc = [[], [], []];
         foreach ($mod as $key => $mm) {
-            $uc[0][] = substr($mm, 10);
+            $uc[0][] = $mm;
             $uc[1][] = array_key_exists($key, $que) ? $que[$key] : 0;
             $uc[2][] = dynColors();
         }

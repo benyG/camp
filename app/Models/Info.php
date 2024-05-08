@@ -20,5 +20,6 @@ class Info extends Model
         'iac_b', 'saa_b', 'tec_b', 'ftg_b', 'tga_b', 'sta_b', 'pa_b', 'eca_b',
         'iac_s', 'saa_s', 'tec_s', 'ftg_s', 'tga_s', 'sta_s', 'pa_s', 'eca_s',
         'iac_p', 'saa_p', 'tec_p', 'ftg_p', 'tga_p', 'sta_p', 'pa_p', 'eca_p',
+        'maxeg', 'maxtg',
     ];
 }

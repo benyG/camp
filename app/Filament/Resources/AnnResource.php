@@ -48,7 +48,7 @@ class AnnResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('type')->label(__('form.uty'))
                             ->required()->multiple()
-                            ->options(['1' => 'Admin', '2' => 'Starter', '3' => 'User', '4' => 'Pro', '5' => 'VIP']),
+                            ->options(['1' => 'Admin', '2' => 'Starter', '3' => 'User', '4' => 'Pro', '5' => 'VIP', '9' => 'Guest']),
                         Forms\Components\DatePicker::make('due')->label(__('main.dd'))->minDate(now()),
                         Forms\Components\Toggle::make('hid')->label(__('form.dis').__('main.space').'?')
                             ->required()->inline(false)->default(true),

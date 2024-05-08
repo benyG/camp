@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->tinyInteger('type')->default(0)->unsigned();
             $table->timestamps();
+            $table->timestamp('exp')->useCurrent();
             $table->string('pbi');
+            $table->string('cus')->nullable();
+            $table->smallInteger('amount')->default(0)->unsigned();
             $table->unsignedBigInteger('user')->nullable();
             $table->foreign('user')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
         });

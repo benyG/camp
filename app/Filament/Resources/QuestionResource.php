@@ -230,11 +230,15 @@ class QuestionResource extends Resource
     {
         return $infolist
             ->schema([
+                Infolists\Components\Grid::make()->columns(3)
+                    ->schema([
                 Infolists\Components\TextEntry::make('moduleRel.name')->label('Modules'),
                 Infolists\Components\TextEntry::make('maxr')->label(__('form.mans')),
+                Infolists\Components\TextEntry::make('rev')->label(__('form.rev')),
+                    ]),
                 Infolists\Components\TextEntry::make('text')->html(),
                 Infolists\Components\TextEntry::make('descr')->html()->label(__('form.expl')),
-                Infolists\Components\TextEntry::make('reviews.id')->html()->label('Reviews')->columnSpanFull()->placeholder(__('form.non'))
+                Infolists\Components\TextEntry::make('reviews.id')->html()->label(__('form.rev'))->columnSpanFull()->placeholder(__('form.non'))
                     ->formatStateUsing(function ($state) {
                         $htm = "<div class='text-sm text-gray-400 fi-in-placeholder dark:text-gray-500'>".__('form.non').'</div>';
                         $st = \App\Models\Review::with('userRel')->whereIn('id', explode(',', $state))->get();
@@ -255,8 +259,7 @@ class QuestionResource extends Resource
                             ->icon('heroicon-m-check-circle')->color('warning')
                             ->visible(fn ($record): bool => $record->reviews->count() > 0)
                             ->action(function ($record) {
-                                $record->rev++;
-                                $record->save();
+                                $record->rev++;$record->save();
                                 foreach ($record->reviews as $rev) {
                                     $ma = new \App\Models\SMail;
                                     $ma->from = auth()->id();

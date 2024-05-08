@@ -158,7 +158,7 @@ return [
     'm15' => 'Provider|Providers',
     'm16' => 'Provider',
     'm17' => 'Domain|Domains',
-    'm18' => 'Order',
+    'm18' => 'Billing',
     'm19' => '',
     'm20' => '',
     'm21' => '',

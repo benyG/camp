@@ -9,10 +9,11 @@ use Filament\Widgets\ChartWidget;
 class TestCertifChart extends ChartWidget
 {
     protected static ?string $pollingInterval = null;
+    protected static string $view = 'filament.widgets.testcert';
 
-    protected static ?int $sort = 15;
+    protected static ?int $sort = 10;
 
-    protected static ?string $maxHeight = '200px';
+    protected static ?string $maxHeight = '500px';
 
     public function getColumns(): int|string|array
     {

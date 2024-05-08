@@ -24,11 +24,15 @@ return new class extends Migration
             $table->rememberToken();
             //pck
              $table->integer('ix')->default(0)->unsigned(); //ia calls
-             $table->timestamp('icx')->nullable();
-             $table->json('certs')->nullable();
-             $table->boolean('aqa')->default(true);
-             $table->boolean('pa')->default(true);
-             $table->boolean('itg')->default(true);
+             $table->timestamp('icx')->nullable();//last ia call
+             $table->json('certs')->nullable(); //nb cert for ECA
+             $table->boolean('lom')->default(false); //mfa
+             $table->boolean('aqa')->default(true); //automatique question explain
+             $table->boolean('pa')->default(true); // perf anal
+             $table->boolean('itg')->default(true); //intelligent test generation
+             $table->boolean('vo')->default(true); //vocal ai
+             $table->string('pk')->defaul('0'); // pck selected
+             $table->integer('eca')->default(0)->unsigned(); //eca unit
 
            $table->timestamps();
             $table->foreign('vague')->references('id')->on('vagues')->cascadeOnUpdate()->nullOnDelete();
