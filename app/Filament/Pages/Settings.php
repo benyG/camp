@@ -23,7 +23,6 @@ class Settings extends Page implements HasActions, HasForms
     use InteractsWithForms;
 
     protected static ?int $navigationSort = 500;
-
     protected static ?string $navigationGroup = 'Administration';
 
     public ?array $data = [];
