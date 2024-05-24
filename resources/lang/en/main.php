@@ -61,7 +61,7 @@ return [
     'w38' => 'Assess. created',
     'w39' => 'Performance evolution',
     'w40' => 'Assess. per Certification',
-    'w41' => 'Billing List',
+    'w41' => 'Billing Center',
     'w42' => '',
     'w43' => '',
     'w44' => '',
