@@ -69,7 +69,7 @@ class ListCertif extends Page implements HasTable
                         \App\Models\Journ::add(auth()->user(), 'Portfolio', 8, $txt);
                     }
                 })->color('success')->modalHeading(__('main.lc2'))
-                ->modalSubmitActionLabel(__('form.rj'))
+                ->modalSubmitActionLabel(__('form.add'))
                 ->disabled(fn()=>auth()->user()->eca<=auth()->user()->courses()->count()),
         ];
     }
