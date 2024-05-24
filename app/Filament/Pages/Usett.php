@@ -83,6 +83,7 @@ class Usett extends Page implements HasActions, HasForms
 
     public static function canAccess(): bool
     {
-        return auth()->user()->ex > 1 && auth()->user()->ex < 6;
+       // return auth()->user()->ex > 1 && auth()->user()->ex < 6;
+        return false;
     }
 }
