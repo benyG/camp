@@ -133,7 +133,7 @@ class UserResource extends Resource
                 Tables\Actions\Action::make('jjj')->color('success')->label('Portfolio')
                     ->fillForm(fn (User $record): array => [
                         'cou' => \App\Models\Course::join('users_course', 'users_course.course', '=', 'courses.id')
-                            ->where('user', $record->id)->where('approve', true)->pluck('courses.id'),
+                            ->where('user', $record->id)->pluck('courses.id'),
                     ])
                     ->form([
                         Forms\Components\Select::make('cou')
