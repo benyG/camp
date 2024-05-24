@@ -76,8 +76,9 @@ class ListCertif extends Page implements HasTable
 
     public function table(Table $table): Table
     {
+        $eca=auth()->user()->eca-auth()->user()->courses()->count();
         return $table
-        ->heading(fn()=>__('form.eca2').__('main.space').': '.(auth()->user()->eca-auth()->user()->courses()->count()))
+        ->heading(fn()=>__('form.eca2').__('main.space').': '.($eca<0?0:$eca))
             ->query(Course::has('users1')->with('users1')->withCount('modules')->withCount('questions')->where('pub', true))
             ->emptyStateHeading(__('main.lc3'))->emptyStateIcon('heroicon-o-bookmark')
             ->emptyStateDescription(__('main.lc4'))
