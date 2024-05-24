@@ -166,7 +166,7 @@ return [
     'm23' => '',
     'm24' => '',
     'm25' => '',
-    'lc1' => 'Check the list of the certifications you are following. Use the button Add to request for more.',
+    'lc1' => 'Check the list of the certifications you are enrolled in. Use the button Add for more.',
     'lc2' => 'Add to portfolio',
     'lc3' => 'No certification yet',
     'lc4' => 'Please click on the Add button to see the list of available certifications',

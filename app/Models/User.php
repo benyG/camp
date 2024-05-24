@@ -14,6 +14,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
@@ -25,7 +26,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
      * @var bool
      */
     public $timestamps = true;
-
+    protected $with = ['sub'];
     /**
      * The attributes that are mass assignable.
      *
@@ -146,6 +147,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     }
     public function sub(): HasOne
     {
-        return $this->hasOne(Order::class)->where('type',0)->latestOfMany();
+        return $this->hasOne(Order::class,'user')->where('type',0)->latestOfMany();
     }
 }

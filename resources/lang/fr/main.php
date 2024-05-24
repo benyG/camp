@@ -167,7 +167,7 @@ return [
     'm23' => '',
     'm24' => '',
     'm25' => '',
-    'lc1' => 'Vérifiez la liste des certifications pour lesquelles vous êtes enrollés. Utilisez le bouton Ajouter pour demander d\'autres enrollements',
+    'lc1' => 'Vérifiez la liste des certifications pour lesquelles vous êtes enrollés. Utilisez le bouton Ajouter pour voir d\'autres.',
     'lc2' => 'Ajouter au portfolio',
     'lc3' => 'Aucune certification pour le moment',
     'lc4' => 'Cliquez sur le bouton Ajouter pour voir la liste des certifications disponibles',

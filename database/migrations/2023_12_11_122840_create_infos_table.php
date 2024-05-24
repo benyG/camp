@@ -80,6 +80,39 @@ return new class extends Migration
             $table->tinyInteger('log')->default(1)->unsigned();
             $table->smallInteger('maxeg')->default(10)->unsigned();
             $table->smallInteger('maxtg')->default(10)->unsigned();
+
+            $table->string('bp_id');
+            $table->smallInteger('bp_amm')->default(0)->unsigned();
+            $table->smallInteger('bp_amy')->default(0)->unsigned();
+            $table->string('bp_ml');
+            $table->string('bp_yl');
+            $table->string('sp_id');
+            $table->smallInteger('sp_amm')->default(0)->unsigned();
+            $table->smallInteger('sp_amy')->default(0)->unsigned();
+            $table->string('sp_ml');
+            $table->string('sp_yl');
+            $table->string('pp_id');
+            $table->smallInteger('pp_amm')->default(0)->unsigned();
+            $table->smallInteger('pp_amy')->default(0)->unsigned();
+            $table->string('pp_ml');
+            $table->string('pp_yl');
+            $table->string('iac1_id');
+            $table->smallInteger('iac1_am')->default(0)->unsigned();
+            $table->string('iac1_li');
+            $table->string('iac2_id');
+            $table->smallInteger('iac2_am')->default(0)->unsigned();
+            $table->string('iac2_li');
+            $table->string('iac3_id');
+            $table->smallInteger('iac3_am')->default(0)->unsigned();
+            $table->string('iac3_li');
+            $table->string('eca_id');
+            $table->smallInteger('eca_am')->default(0)->unsigned();
+            $table->string('eca_li');
+            $table->smallInteger('iac1_qt')->default(0)->unsigned();
+            $table->smallInteger('iac2_qt')->default(0)->unsigned();
+            $table->smallInteger('iac3_qt')->default(0)->unsigned();
+            $table->smallInteger('eac_qt')->default(0)->unsigned();
+
         });
     }
 

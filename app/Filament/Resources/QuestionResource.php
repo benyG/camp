@@ -321,7 +321,8 @@ class QuestionResource extends Resource
                                         ],
                                     ])
                                         ->json();
-                                    if (is_array($response['choices'])) {
+                                     //   dd($response);
+                                    if (array_key_exists('choices',$response)) {
                                         $txot = $response['choices'][0]['message']['content'];
                                         \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
                                     } else {

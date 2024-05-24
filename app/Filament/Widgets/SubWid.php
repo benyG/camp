@@ -17,7 +17,10 @@ class SubWid extends Widget
 
     public function mount()
     {
-        $this->items = auth()->user()->ex == 0 ? \App\Models\Ann::where('hid', true)->whereDate('due', '>', now())->get()->toArray() :
-        \App\Models\Ann::where('hid', true)->whereDate('due', '>', now())->where('type', 'like', '%'.auth()->user()->ex.'%')->get()->toArray();
+    }
+    public static function canView(): bool
+    {
+      return false;
+     // return auth()->user()->ex > 1 && (is_null(auth()->user()->sub) || now()>auth()->user()->sub->exp);
     }
 }

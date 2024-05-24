@@ -25,14 +25,14 @@ return new class extends Migration
             //pck
              $table->integer('ix')->default(0)->unsigned(); //ia calls
              $table->timestamp('icx')->nullable();//last ia call
-             $table->json('certs')->nullable(); //nb cert for ECA
+             $table->json('certs')->nullable(); //nb cert for perf anal
              $table->boolean('lom')->default(false); //mfa
              $table->boolean('aqa')->default(true); //automatique question explain
              $table->boolean('pa')->default(true); // perf anal
              $table->boolean('itg')->default(true); //intelligent test generation
              $table->boolean('vo')->default(true); //vocal ai k
              $table->string('pk')->defaul('0'); // pck selected
-             $table->integer('eca')->default(0)->unsigned(); //eca unit
+             $table->integer('eca')->default(1)->unsigned(); //eca unit
 
            $table->timestamps();
             $table->foreign('vague')->references('id')->on('vagues')->cascadeOnUpdate()->nullOnDelete();

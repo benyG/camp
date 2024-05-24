@@ -3,7 +3,7 @@
     <form wire:submit="create">
         {{ $this->form }}
 <br/><br/>
-<x-filament::button type="submit" color="success">
+<x-filament::button type="submit" wire:target="create" color="success">
     {{__('form.sa')}}
 </x-filament::button>
     </form>

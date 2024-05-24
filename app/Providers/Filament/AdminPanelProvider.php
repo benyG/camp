@@ -77,6 +77,10 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook('panels::auth.register.form.after', fn (): string => Blade::render('footer4'))
             ->renderHook('panels::user-menu.before', fn (): string => Blade::render('head1'))
             ->userMenuItems([
+                /* MenuItem::make()
+                ->label(fn (): string => __('form.upp'))
+                ->url(fn (): string => \App\Filament\Pages\Pricing::getUrl())
+                ->icon('heroicon-o-bars-arrow-up'), */
                 MenuItem::make()
                     ->label(fn (): string => __('main.m1'))
                     ->url(fn (): string => \App\Filament\Pages\Settings::getUrl())

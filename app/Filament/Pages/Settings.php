@@ -59,6 +59,11 @@ class Settings extends Page implements HasActions, HasForms
             'md' => 2,
             'lg' => 4,
         ];
+        $sgrid = [
+            'sm' => 1,
+            'md' => 3,
+        ];
+      //  str_pad(,2,"0",1);
         return $form->model($this->info)->statePath('data')
             ->schema([
                 Forms\Components\Tabs::make('Tabs')->columnSpanFull()
@@ -201,7 +206,6 @@ class Settings extends Page implements HasActions, HasForms
                         Forms\Components\Tabs\Tab::make(__('form.ai'))
                             ->schema([
                                 Forms\Components\Section::make(__('form.apis'))->columns(2)
-                               // ->description('Some string fields contains parameters')
                                     ->schema([
                                         Password::make('apk')->label(__('form.apik'))
                                             ->required()
@@ -230,6 +234,66 @@ class Settings extends Page implements HasActions, HasForms
                                         Forms\Components\Textarea::make('cont7')->label(__('form.cont7'))
                                             ->required(),
                                     ]),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Stripe')
+                            ->schema([
+                                Forms\Components\Section::make('Basic')->columns($sgrid)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('bp_id')->label(__('form.pid'))->required(),
+                                        Forms\Components\TextInput::make('bp_ml')->label(__('form.mli'))->required(),
+                                        Forms\Components\TextInput::make('bp_yl')->label(__('form.ali'))->required(),
+                                        Forms\Components\TextInput::make('bp_amm')->label(__('form.amm'))
+                                            ->required()->numeric()->default(0),
+                                        Forms\Components\TextInput::make('bp_amy')->label(__('form.amy'))
+                                            ->required()->numeric()->default(0),
+                                    ]),
+                                Forms\Components\Section::make('Standar')->columns($sgrid)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('sp_id')->label(__('form.pid'))->required(),
+                                        Forms\Components\TextInput::make('sp_ml')->label(__('form.mli'))->required(),
+                                        Forms\Components\TextInput::make('sp_yl')->label(__('form.ali'))->required(),
+                                        Forms\Components\TextInput::make('sp_amm')->label(__('form.amm'))
+                                            ->required()->numeric()->default(0),
+                                        Forms\Components\TextInput::make('sp_amy')->label(__('form.amy'))
+                                            ->required()->numeric()->default(0),
+                                    ]),
+                                Forms\Components\Section::make('Premium')->columns($sgrid)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('pp_id')->label(__('form.pid'))->required(),
+                                        Forms\Components\TextInput::make('pp_ml')->label(__('form.mli'))->required(),
+                                        Forms\Components\TextInput::make('pp_yl')->label(__('form.ali'))->required(),
+                                        Forms\Components\TextInput::make('pp_amm')->label(__('form.amm'))
+                                            ->required()->numeric()->default(0),
+                                        Forms\Components\TextInput::make('pp_amy')->label(__('form.amy'))
+                                            ->required()->numeric()->default(0),
+                                    ]),
+                                Forms\Components\Section::make(__('main.aic'))->columns($sgrid)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('iac1_id')->label(__('form.pid').' 1')->required(),
+                                        Forms\Components\TextInput::make('iac1_li')->label(__('form.pli').' 1')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('iac1_qt')->label(__('form.amo').' 1')
+                                            ->required()->numeric()->default(0),
+                                        Forms\Components\TextInput::make('iac2_id')->label(__('form.pid').' 2')->required(),
+                                        Forms\Components\TextInput::make('iac2_li')->label(__('form.pli').' 2')
+                                                ->required(),
+                                        Forms\Components\TextInput::make('iac2_qt')->label(__('form.amo').' 2')
+                                                ->required()->numeric()->default(0),
+                                        Forms\Components\TextInput::make('iac3_id')->label(__('form.pid').' 3')->required(),
+                                        Forms\Components\TextInput::make('iac3_li')->label(__('form.pli').' 3')
+                                                    ->required(),
+                                        Forms\Components\TextInput::make('iac3_qt')->label(__('form.amo').' 3')
+                                                    ->required()->numeric()->default(0),
+                                    ]),
+                                Forms\Components\Section::make(__('form.eac'))->columns($sgrid)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('eca_id')->label(__('form.pid'))->required(),
+                                        Forms\Components\TextInput::make('eca_li')->label(__('form.pli'))
+                                            ->required(),
+                                        Forms\Components\TextInput::make('eca_qt')->label(__('form.amo'))
+                                            ->required()->numeric()->default(0),
+                                    ]),
+
                             ]),
                     ]),
             ]);

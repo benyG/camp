@@ -171,7 +171,7 @@ class ExamResource extends Resource
                                 1 => $ix->maxts,0 => 40000000,
                                 2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv,default => $ix->maxts
                             }]),
-                        Forms\Components\TextInput::make('quest')->numeric()->required()->label('Nb. Questions')->readonly(fn (Get $get): bool => $get('typee') == '1')
+                        Forms\Components\TextInput::make('quest')->numeric()->required()->label('Nb. Questions')->readonly(fn (Get $get): bool => $get('typee') == '1')->default(10)
                             ->rules(['min:'.$ix->minq, fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
                                 $ix = cache()->rememberForever('settings', function () {
                                     return \App\Models\Info::findOrFail(1);
