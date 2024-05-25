@@ -247,7 +247,7 @@ class Settings extends Page implements HasActions, HasForms
                                         Forms\Components\TextInput::make('bp_amy')->label(__('form.amy'))
                                             ->required()->numeric()->default(0),
                                     ]),
-                                Forms\Components\Section::make('Standar')->columns($sgrid)
+                                Forms\Components\Section::make('Standard')->columns($sgrid)
                                     ->schema([
                                         Forms\Components\TextInput::make('sp_id')->label(__('form.pid'))->required(),
                                         Forms\Components\TextInput::make('sp_ml')->label(__('form.mli'))->required(),
