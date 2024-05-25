@@ -11,6 +11,8 @@ use Filament\Support\Facades\FilamentColor;
 use Filament\Support\Facades\FilamentView;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Filament\Forms\Components\Field;
+use Filament\Forms\Components\Actions\Action;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -52,6 +54,14 @@ class AppServiceProvider extends ServiceProvider
             EmailVerificationResponse::class,
             \App\Http\Responses\EmailVerificationResponse::class
         ); */
-
+        Field::macro("tooltip", function(string $tooltip) {
+            return $this->hintAction(
+                Action::make('help')
+                    ->icon('heroicon-o-question-mark-circle')
+                    ->extraAttributes(["class" => "text-gray-500"])
+                    ->label("")
+                    ->tooltip($tooltip)
+            );
+        });
     }
 }

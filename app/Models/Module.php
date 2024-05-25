@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Support\Str;
 
 class Module extends Model
@@ -13,7 +14,7 @@ class Module extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name', 'course',
+        'name', 'course', 'descr',
     ];
 
     protected function slug(): Attribute
@@ -41,5 +42,17 @@ class Module extends Model
         //D'acc
         //return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
         return $this->belongsToMany(Exam::class, 'exam_modules', 'module', 'exam');
+    }
+
+    public function provRel(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Prov::class,
+            Course::class,
+            'id', // Foreign key on the cars table...
+            'id', // Foreign key on the owners table...
+            'course', // Local key on the mechanics table...
+            'prov' // Local key on the cars table...
+        );
     }
 }

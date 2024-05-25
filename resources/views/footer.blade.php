@@ -4,7 +4,7 @@
             {{__('email.m7')}}
         </p>
         <p class="m-0 mb-1 text-[8px]">
-            @ 2024 ITEXAMBOOTCAMP. All rights reserved.
+            @ 2024 EXAMBOOT. All rights reserved.
         </p>
 
         <p style='--c-400:var(--primary-400);--c-600:var(--primary-600);' class="cursor-default">

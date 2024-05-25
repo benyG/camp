@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Answer;
 use App\Models\Course;
 use App\Models\Exam;
 use App\Models\Question;
@@ -9,15 +10,11 @@ use App\Models\User;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
-use Illuminate\Contracts\Pagination\CursorPaginator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class UsersTable2 extends BaseWidget
 {
     protected int|string|array $columnSpan = 'full';
-
-    protected static ?string $heading = 'Performance summary';
 
     protected static ?string $pollingInterval = null;
 
@@ -28,7 +25,7 @@ class UsersTable2 extends BaseWidget
     public function mount($usrec = null)
     {
         // dd($usrec);
-        $this->record = User::find($usrec) ?? auth()->user();
+        $this->record = $usrec != null ? User::find($usrec) : auth()->user();
     }
 
     public static function canView(): bool
@@ -43,12 +40,14 @@ class UsersTable2 extends BaseWidget
             return \App\Models\Info::findOrFail(1);
         });
 
-        $this->record->loadMissing('exams2');
-
         $us = $this->record;
-        $earr = Exam::has('users')->with('users')->get();
+        if (! is_null($us)) {
+            $us->loadMissing('exams2');
+        }
+
+        $earr = Exam::select('id', 'quest')->has('users')->with('users')->get();
         $eall = $earr->pluck('id');
-        $rt = Question::with('answers')->get();
+        $rt = Question::select('id')->with('answers')->get();
         $uarr2 = [];
         foreach ($us->exams2 as $exa) {
             if (in_array($exa->pivot->exam, $eall->toArray())) {
@@ -58,14 +57,22 @@ class UsersTable2 extends BaseWidget
                     $ca = 0;
                     $rot = $rt->whereIn('id', $arrk);
                     foreach ($rot as $quest) {
-                        $bm = $quest->answers()->where('isok', true)->count() <= 1;
+                        // dd($quest->answers);
+                        $bm = $quest->answers->sum(function (Answer $aas) {
+                            return $aas->qa->isok ? 1 : 0;
+                        }) <= 1;
                         if ($bm) {
-                            $ab = $quest->answers()->where('isok', true)->where('answers.id', $res[$quest->id][0])->count();
+                            // dd($quest->answers->where('id',$res[$quest->id][0]));
+                            $ab = $quest->answers->where('id', $res[$quest->id][0])->sum(function (Answer $aas) {
+                                return $aas->qa->isok == 1 ? 1 : 0;
+                            });
                             if ($ab > 0) {
                                 $ca++;
                             }
                         } else {
-                            $ab2 = $quest->answers()->where('isok', false)->whereIn('answers.id', $res[$quest->id])->count();
+                            $ab2 = $quest->answers->whereIn('id', $res[$quest->id])->sum(function (Answer $aas) {
+                                return $aas->qa->isok == 0 ? 1 : 0;
+                            });
                             if ($ab2 == 0) {
                                 $ca++;
                             }
@@ -81,8 +88,9 @@ class UsersTable2 extends BaseWidget
             }
         }
 
+        //  rnd();
         // dd(Exam::with('certRel')->where('from',$this->record->id)->orWhereRelation('users', 'user', $this->record->id)->latest('added_at')->count());
-        return $table->paginated([5, 10, 25, 50])->queryStringIdentifier('us2')
+        return $table->paginated([5, 10, 25, 50])->heading(__('main.w37'))
             ->query(Exam::with('certRel')->where('from', $this->record->id)->orWhereRelation('users', 'user', $this->record->id)->latest('added_at'))
             ->columns([
                 Tables\Columns\TextColumn::make('certRel.name')->sortable()->searchable()->label('Title')
@@ -112,10 +120,5 @@ class UsersTable2 extends BaseWidget
                 Tables\Filters\SelectFilter::make('type')->label('Type')
                     ->options(['0' => 'Test', '1' => 'Exam']),
             ]);
-    }
-
-    protected function paginateTableQuery(Builder $query): CursorPaginator
-    {
-        return $query->cursorPaginate(($this->getTableRecordsPerPage() === 'all') ? $query->count() : $this->getTableRecordsPerPage());
     }
 }

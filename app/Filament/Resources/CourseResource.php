@@ -46,8 +46,8 @@ class CourseResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('prov')->label(__('main.m15'))->required()
-                ->relationship(name: 'provRel', titleAttribute: 'name'),
+                Forms\Components\Select::make('prov')->label(__('main.m16'))->required()
+                    ->relationship(name: 'provRel', titleAttribute: 'name'),
                 Forms\Components\TextInput::make('name')->label(__('form.na'))
                     ->required()
                     ->maxLength(255),
@@ -60,8 +60,8 @@ class CourseResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label(__('form.na'))
-                    ->searchable()->sortable()->description(fn (Course $record): ?string => $record->descr.(" (".($record->provRel->name??'N/A').")")),
-                Tables\Columns\TextColumn::make('modules_count')->counts('modules')->label('Modules')
+                    ->searchable()->sortable()->description(fn (Course $record): ?string => $record->descr.(' ('.($record->provRel->name ?? 'N/A').')')),
+                Tables\Columns\TextColumn::make('modules_count')->counts('modules')->label(trans_choice('main.m17', 5))
                     ->numeric()->sortable(),
                 Tables\Columns\TextColumn::make('questions_count')->counts('questions')->label('Questions')
                     ->numeric()->sortable(),
@@ -74,9 +74,9 @@ class CourseResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('prov')
-                ->relationship(name: 'provRel', titleAttribute: 'name')
-                ->searchable()->label(__('main.m16'))->multiple()
-                ->preload(),
+                    ->relationship(name: 'provRel', titleAttribute: 'name')
+                    ->searchable()->label(__('main.m16'))->multiple()
+                    ->preload(),
             ])
             ->actions([
                 Tables\Actions\Action::make('resend')->iconButton()->icon(fn (Course $record): string => $record->pub ? 'heroicon-o-eye-slash' : 'heroicon-o-eye')
