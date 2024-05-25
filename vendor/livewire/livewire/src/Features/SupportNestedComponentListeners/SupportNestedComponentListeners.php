@@ -37,7 +37,11 @@ class SupportNestedComponentListeners extends ComponentHook
 
             if (! $attributes) return;
 
-            $replaceHtml(Utils::insertAttributesIntoHtmlRoot($html, $attributes));
+            foreach ($attributes as $key => $value) {
+                $replaceHtml(Utils::insertAttributesIntoHtmlRoot($html, [
+                    $key => $value,
+                ]));
+            }
         };
     }
 

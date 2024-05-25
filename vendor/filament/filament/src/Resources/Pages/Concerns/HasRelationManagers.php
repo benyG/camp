@@ -2,7 +2,6 @@
 
 namespace Filament\Resources\Pages\Concerns;
 
-use Filament\Resources\Pages\ContentTabPosition;
 use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\RelationManagers\RelationManagerConfiguration;
@@ -66,16 +65,6 @@ trait HasRelationManagers
     }
 
     public function getContentTabLabel(): ?string
-    {
-        return null;
-    }
-
-    public function getContentTabIcon(): ?string
-    {
-        return null;
-    }
-
-    public function getContentTabPosition(): ?ContentTabPosition
     {
         return null;
     }

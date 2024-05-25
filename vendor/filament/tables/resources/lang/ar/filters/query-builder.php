@@ -36,8 +36,8 @@ return [
     'no_rules' => '(بدون قواعد)',
 
     'item_separators' => [
-        'and' => 'و',
-        'or' => 'أو',
+        'and' => 'أو',
+        'or' => 'و',
     ],
 
     'operators' => [

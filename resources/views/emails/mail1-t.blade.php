@@ -13,5 +13,5 @@
 {{ __('email.m5') }}{{$email}}
 {{ __('email.m6') }}.
 
-ExamBoot
+ITExamBootCamp
 {{ __('email.m7') }}

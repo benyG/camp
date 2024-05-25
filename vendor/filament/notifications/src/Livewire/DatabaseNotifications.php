@@ -74,7 +74,7 @@ class DatabaseNotifications extends Component
             return $this->getNotificationsQuery()->get();
         }
 
-        return $this->getNotificationsQuery()->simplePaginate(50, pageName: 'database-notifications-page');
+        return $this->getNotificationsQuery()->simplePaginate(50);
     }
 
     public function isPaginated(): bool

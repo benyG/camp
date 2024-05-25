@@ -7,14 +7,13 @@ use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
@@ -26,7 +25,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
      * @var bool
      */
     public $timestamps = true;
-    protected $with = ['sub'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -56,8 +55,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed','certs' => 'array',
+        'password' => 'hashed',
     ];
+
     protected function createdAt(): Attribute
     {
         return Attribute::make(
@@ -80,6 +80,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function vagues(): BelongsToMany
     {
+        //    return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');
         return $this->belongsToMany(Vague::class, 'user_classes', 'user', 'clas');
     }
 
@@ -115,7 +116,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             ->withPivot('start_at')
             ->withPivot('gen')
             ->withPivot('id')
-            ->latest('added_at')
             ->using(ExamUser::class);
     }
 
@@ -139,14 +139,5 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function oauthProviders(): HasMany
     {
         return $this->hasMany(OAuthProvider::class, 'provider_user_id');
-    }
-
-    public function orders(): HasMany
-    {
-        return $this->hasMany(Order::class, 'user');
-    }
-    public function sub(): HasOne
-    {
-        return $this->hasOne(Order::class,'user')->where('type',0)->latestOfMany();
     }
 }

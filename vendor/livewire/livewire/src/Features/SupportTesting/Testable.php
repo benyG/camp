@@ -7,7 +7,6 @@ use Livewire\Features\SupportValidation\TestsValidation;
 use Livewire\Features\SupportRedirects\TestsRedirects;
 use Livewire\Features\SupportEvents\TestsEvents;
 use Illuminate\Support\Traits\Macroable;
-use BackedEnum;
 
 /** @mixin \Illuminate\Testing\TestResponse */
 
@@ -132,8 +131,6 @@ class Testable
             return $this->upload($name, [$value]);
         } elseif (is_array($value) && isset($value[0]) && $value[0] instanceof \Illuminate\Http\UploadedFile) {
             return $this->upload($name, $value, $isMultiple = true);
-        } elseif ($value instanceof BackedEnum) {
-            $value = $value->value;
         }
 
         return $this->update(updates: [$name => $value]);
@@ -249,11 +246,6 @@ class Testable
     function instance()
     {
         return $this->lastState->getComponent();
-    }
-
-    function invade()
-    {
-        return \Livewire\invade($this->lastState->getComponent());
     }
 
     function dump()

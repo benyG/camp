@@ -15,6 +15,11 @@ return [
             'success_message' => 'New password was generated!',
         ],
 
+        'reveal' => [
+            'show' => 'Show password',
+            'hide' => 'Hide password',
+        ],
+
     ],
 
 ];

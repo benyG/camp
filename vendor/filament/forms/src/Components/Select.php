@@ -245,7 +245,7 @@ class Select extends Field implements Contracts\CanDisableOptions, Contracts\Has
         return $this;
     }
 
-    public function createOptionUsing(?Closure $callback): static
+    public function createOptionUsing(Closure $callback): static
     {
         $this->createOptionUsing = $callback;
 
@@ -391,7 +391,7 @@ class Select extends Field implements Contracts\CanDisableOptions, Contracts\Has
         return $this;
     }
 
-    public function updateOptionUsing(?Closure $callback): static
+    public function updateOptionUsing(Closure $callback): static
     {
         $this->updateOptionUsing = $callback;
 
@@ -808,10 +808,7 @@ class Select extends Field implements Contracts\CanDisableOptions, Contracts\Has
 
             $relationship = $component->getRelationship();
 
-            if (
-                ($relationship instanceof BelongsToMany) ||
-                ($relationship instanceof HasManyThrough)
-            ) {
+            if ($relationship instanceof BelongsToMany) {
                 /** @var Collection $relatedModels */
                 $relatedModels = $relationship->getResults();
 
@@ -821,7 +818,7 @@ class Select extends Field implements Contracts\CanDisableOptions, Contracts\Has
                     //
                     // https://github.com/filamentphp/filament/issues/1111
                     $relatedModels
-                        ->pluck(($relationship instanceof BelongsToMany) ? $relationship->getRelatedKeyName() : $relationship->getRelated()->getKeyName())
+                        ->pluck($relationship->getRelatedKeyName())
                         ->map(static fn ($key): string => strval($key))
                         ->toArray(),
                 );
@@ -829,7 +826,10 @@ class Select extends Field implements Contracts\CanDisableOptions, Contracts\Has
                 return;
             }
 
-            if ($relationship instanceof BelongsToThrough) {
+            if (
+                ($relationship instanceof HasManyThrough) ||
+                ($relationship instanceof BelongsToThrough)
+            ) {
                 $relatedModel = $relationship->getResults();
 
                 $component->state(

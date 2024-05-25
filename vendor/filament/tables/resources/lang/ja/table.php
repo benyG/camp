@@ -84,7 +84,7 @@ return [
         ],
 
         'filter' => [
-            'label' => 'フィルタ',
+            'label' => 'フィルター',
         ],
 
         'group' => [
@@ -105,7 +105,7 @@ return [
 
         'heading' => ':modelが見つかりません',
 
-        'description' => ':modelを作成してください。',
+        'description' => ':modelを作成して始めてください。',
 
     ],
 
@@ -113,17 +113,13 @@ return [
 
         'actions' => [
 
-            'apply' => [
-                'label' => 'フィルタを適用',
-            ],
-
             'remove' => [
-                'label' => 'フィルタを解除',
+                'label' => 'フィルターを解除',
             ],
 
             'remove_all' => [
-                'label' => 'すべてのフィルタを解除',
-                'tooltip' => 'すべてのフィルタを解除',
+                'label' => 'すべてのフィルターを解除',
+                'tooltip' => 'すべてのフィルターを解除',
             ],
 
             'reset' => [
@@ -132,9 +128,9 @@ return [
 
         ],
 
-        'heading' => 'フィルタ',
+        'heading' => 'フィルター',
 
-        'indicator' => '有効なフィルタ',
+        'indicator' => '有効なフィルター',
 
         'multi_select' => [
             'placeholder' => '全件',

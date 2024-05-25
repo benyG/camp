@@ -11,6 +11,8 @@ use Livewire\Attributes\On;
 
 class UserCourseChart3 extends ChartWidget
 {
+    protected static ?string $heading = '% Good/Bad Ans.';
+
     protected static string $view = 'filament.widgets.uc3';
 
     protected static ?string $pollingInterval = null;
@@ -32,11 +34,6 @@ class UserCourseChart3 extends ChartWidget
     public function mount($usrec = null): void
     {
         $this->record = is_int($usrec) ? User::with('exams2')->findOrFail($usrec) : auth()->user();
-    }
-
-    public function getHeading(): ?string
-    {
-        return '% '.__('main.w35');
     }
 
     public static function canView(): bool
@@ -69,35 +66,28 @@ class UserCourseChart3 extends ChartWidget
     {
         $uc = [[], [], []];
         if (! empty($this->cos) > 0) {
-            //  $this->record = $this->record ?? auth()->user();
+            $this->record = $this->record ?? auth()->user();
             $exa = $this->record->exams2()->where('certi', $this->cs)->get();
             $md1 = 0;
             $md2 = 0;
-            $QUEST = Question::select('id', 'module')->with('answers')->get();
             foreach ($exa as $ex) {
                 if (! empty($ex->pivot->gen) && is_array($ex->pivot->gen)) {
                     $res = $ex->pivot->gen;
                     $arrk = array_keys($ex->pivot->gen);
                     $qrr = [];
-                    $rt = $this->mod == 0 ? $QUEST->whereIn('id', $arrk) :
-                    $QUEST->whereIn('id', $arrk)->where('module', $this->mod);
+                    $rt = $this->mod == 0 ? Question::whereIn('id', $arrk)->get() :
+                    Question::whereIn('id', $arrk)->where('module', $this->mod)->get();
                     foreach ($rt as $quest) {
-                        $bm = $quest->answers->sum(function (\App\Models\Answer $aas) {
-                            return $aas->qa->isok == 1 ? 1 : 0;
-                        }) <= 1;
+                        $bm = $quest->answers()->where('isok', true)->count() <= 1;
                         if ($bm) {
-                            $ab = $quest->answers->where('id', $res[$quest->id][0])->sum(function (\App\Models\Answer $aas) {
-                                return $aas->qa->isok == 1 ? 1 : 0;
-                            });
+                            $ab = $quest->answers()->where('isok', true)->where('answers.id', $res[$quest->id][0])->count();
                             if ($ab > 0) {
                                 $md1++;
                             } else {
                                 $md2++;
                             }
                         } else {
-                            $ab2 = $quest->answers->whereIn('id', $res[$quest->id])->sum(function (\App\Models\Answer $aas) {
-                                return $aas->qa->isok == 0 ? 1 : 0;
-                            });
+                            $ab2 = $quest->answers()->where('isok', false)->whereIn('answers.id', $res[$quest->id])->count();
                             if ($ab2 == 0) {
                                 $md1++;
                             } else {
@@ -114,10 +104,7 @@ class UserCourseChart3 extends ChartWidget
             $uc[0][] = 'Bad Answers';
             $uc[1][] = $md2;
             $uc[2][] = '#FF0000';
-        }
-        $mpo = collect($uc[1])->sum();
-        foreach ($uc[1] as $key => $value) {
-            $uc[0][$key] = $uc[0][$key].' ('.round(100 * $value / ($mpo > 0 ? $mpo : 1), 2).'%)';
+
         }
 
         return [

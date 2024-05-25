@@ -2,7 +2,6 @@
 
 namespace Filament\Forms\Concerns;
 
-use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 
@@ -221,11 +220,9 @@ trait HasState
     /**
      * @return array<string, mixed>
      */
-    public function getState(bool $shouldCallHooksBefore = true, ?Closure $afterValidate = null): array
+    public function getState(bool $shouldCallHooksBefore = true): array
     {
         $state = $this->validate();
-
-        value($afterValidate);
 
         if ($shouldCallHooksBefore) {
             $this->callBeforeStateDehydrated();

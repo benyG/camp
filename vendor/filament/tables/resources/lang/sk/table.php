@@ -11,11 +11,6 @@ return [
     'columns' => [
 
         'text' => [
-            'actions' => [
-                'collapse_list' => 'Zobraziť o :count menej',
-                'expand_list' => 'Zobraziť o :count viac',
-            ],
-
             'more_list_items' => 'a ďalších :count',
         ],
 
@@ -48,8 +43,8 @@ return [
         'heading' => 'Sumár',
 
         'subheadings' => [
-            'all' => 'Všetko',
-            'group' => 'Sumár (:group)',
+            'all' => 'Všetky :label',
+            'group' => ':group sumár',
             'page' => 'Táto strana',
         ],
 
@@ -110,10 +105,6 @@ return [
     'filters' => [
 
         'actions' => [
-
-            'apply' => [
-                'label' => 'Použiť filtre',
-            ],
 
             'remove' => [
                 'label' => 'Odstrániť filter',

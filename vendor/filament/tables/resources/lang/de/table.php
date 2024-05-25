@@ -102,7 +102,7 @@ return [
 
     'empty' => [
 
-        'heading' => 'Keine :model',
+        'heading' => 'Keine Datensätze gefunden',
 
         'description' => 'Erstelle ein(e) :model um zu beginnen.',
 

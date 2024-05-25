@@ -32,16 +32,16 @@ return [
 
     'multiple' => [
 
-        'label' => 'ဖျက်ပါ',
+        'label' => 'Delete selected',
 
         'modal' => [
 
-            'heading' => 'ရွေးချယ်ထားသည့် :label (များ)အား ဖျက်ပါ',
+            'heading' => 'Delete selected :label',
 
             'actions' => [
 
                 'delete' => [
-                    'label' => 'ဖျက်ပါ',
+                    'label' => 'Delete selected',
                 ],
 
             ],
@@ -51,7 +51,7 @@ return [
         'notifications' => [
 
             'deleted' => [
-                'title' => 'ဖျက်ပြီးပါပြီ',
+                'title' => 'Deleted',
             ],
 
         ],

@@ -85,6 +85,7 @@ final class Reader
 
                     $description = $issueElement->textContent;
 
+                    assert(!empty($file));
                     assert($line > 0);
                     assert(!empty($hash));
                     assert(!empty($description));

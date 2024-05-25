@@ -299,9 +299,4 @@ trait HasFilters
             0,
         );
     }
-
-    public function isFiltered(): bool
-    {
-        return $this->getActiveFiltersCount() > 0;
-    }
 }

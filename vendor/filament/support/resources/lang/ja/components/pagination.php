@@ -22,16 +22,8 @@ return [
 
     'actions' => [
 
-        'first' => [
-            'label' => '最初',
-        ],
-
         'go_to_page' => [
             'label' => ':pageページへ移動',
-        ],
-
-        'last' => [
-            'label' => '最後',
         ],
 
         'next' => [

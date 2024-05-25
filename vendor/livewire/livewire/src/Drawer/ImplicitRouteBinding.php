@@ -46,21 +46,14 @@ class ImplicitRouteBinding
         // Livewire component, to get the proper implicit bindings.
         $route->uses(get_class($component).'@mount');
 
-        try {
-            // This is normally handled in the "SubstituteBindings" middleware, but
-            // because that middleware has already ran, we need to run them again.
-            $this->container['router']->substituteImplicitBindings($route);
+        // This is normally handled in the "SubstituteBindings" middleware, but
+        // because that middleware has already ran, we need to run them again.
+        $this->container['router']->substituteImplicitBindings($route);
 
-            $parameters = $route->resolveMethodDependencies($route->parameters(), new ReflectionMethod($component, 'mount'));
+        $parameters = $route->resolveMethodDependencies($route->parameters(), new ReflectionMethod($component, 'mount'));
 
-            // Restore the original route action...
-            $route->uses($cache);
-        } catch(\Exception $e) {
-            // Restore the original route action before an exception is thrown...
-            $route->uses($cache);
-
-            throw $e;
-        }
+        // Restore the original route action.
+        $route->uses($cache);
 
         return new Collection($parameters);
     }

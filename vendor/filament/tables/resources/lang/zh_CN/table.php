@@ -11,12 +11,6 @@ return [
     'columns' => [
 
         'text' => [
-
-            'actions' => [
-                'collapse_list' => '收起 :count 条记录',
-                'expand_list' => '展示 :count 条记录',
-            ],
-
             'more_list_items' => '还有 :count 条记录',
         ],
 
@@ -111,10 +105,6 @@ return [
     'filters' => [
 
         'actions' => [
-
-            'apply' => [
-                'label' => '确定',
-            ],
 
             'remove' => [
                 'label' => '取消筛选条件',

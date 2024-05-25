@@ -59,7 +59,7 @@ return [
         'actions' => [
 
             'deselect_all' => [
-                'label' => 'Fjern alle',
+                'label' => 'Avvelg alle',
             ],
 
             'select_all' => [
@@ -185,15 +185,6 @@ return [
 
             ],
 
-            'svg' => [
-
-                'messages' => [
-                    'confirmation' => 'Redigering av SVG filer er ikke anbefalt da det kan resultere i tap av kvalitet ved skalering.\n Er du sikker på at du vil fortsette?',
-                    'disabled' => 'Redigering av SVG filer er deaktivert da det kan føre til tap av kvalitet ved skalering.',
-                ],
-
-            ],
-
         ],
 
     ],
@@ -250,25 +241,12 @@ return [
 
     ],
 
-    'radio' => [
-
-        'boolean' => [
-            'true' => 'Ja',
-            'false' => 'Nei',
-        ],
-
-    ],
-
     'repeater' => [
 
         'actions' => [
 
             'add' => [
                 'label' => 'Legg til i :label',
-            ],
-
-            'add_between' => [
-                'label' => 'Legg til mellom',
             ],
 
             'delete' => [
@@ -405,7 +383,7 @@ return [
 
         'max_items_message' => 'Bare :count kan velges.',
 
-        'no_search_results_message' => 'Ingen alternativer matcher ditt søk.',
+        'no_search_results_message' => 'No alternativer matcher ditt søk.',
 
         'placeholder' => 'Velg et alternativ',
 
@@ -417,31 +395,6 @@ return [
 
     'tags_input' => [
         'placeholder' => 'Ny emneknagg',
-    ],
-
-    'text_input' => [
-
-        'actions' => [
-
-            'hide_password' => [
-                'label' => 'Skjul passord',
-            ],
-
-            'show_password' => [
-                'label' => 'Vis passord',
-            ],
-
-        ],
-
-    ],
-
-    'toggle_buttons' => [
-
-        'boolean' => [
-            'true' => 'Ja',
-            'false' => 'Nei',
-        ],
-
     ],
 
     'wizard' => [

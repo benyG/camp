@@ -52,12 +52,4 @@ return [
 
     ],
 
-    'avatar' => [
-        'alt' => ':name 아바타',
-    ],
-
-    'logo' => [
-        'alt' => ':name 로고',
-    ],
-
 ];
