@@ -276,7 +276,7 @@ class AssessGen extends Page implements HasActions, HasForms
                             if (! $this->iati3) {
                                 $this->iati3 = true;
                             }
-                            $this->iatext = preg_replace('/(\d+\. \*\*|- \*\*|- )/', '<br>$1',$response['choices'][0]['message']['content'] );
+                          //  $this->iatext = preg_replace('/(\d+\. \*\*|- \*\*|- )/', '<br>$1',$response['choices'][0]['message']['content'] );
                             $this->iatext = $response['choices'][0]['message']['content'];
                        //     \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
                             // dd(auth()->user()->ix);
@@ -348,8 +348,8 @@ class AssessGen extends Page implements HasActions, HasForms
                             if (! $this->iati3) {
                                 $this->iati3 = true;
                             }
-                          $this->iatext2 = preg_replace('/(\d+\. \*\*|- \*\*|- )/', '<br>$1',$response['choices'][0]['message']['content'] );
-                          //  $this->iatext2 = $response['choices'][0]['message']['content'];
+                         // $this->iatext2 = preg_replace('/(\d+\. \*\*|- \*\*|- )/', '<br>$1',$response['choices'][0]['message']['content'] );
+                            $this->iatext2 = $response['choices'][0]['message']['content'];
                             \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
                         } else {
                             Notification::make()->danger()->title(__('form.e10'))->send();
