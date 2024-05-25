@@ -86,7 +86,7 @@ return [
     'pub3' => 'unpublished',
     'pas' => 'passed',
     'fail' => 'failed',
-    'tyk' => 'Test your knowlegde',
+    'tyk' => 'Knowlegde Test',
     'cex' => 'Class Examination',
     'exas' => 'Exam Simulation',
     'tbf' => 'Test based on failures',

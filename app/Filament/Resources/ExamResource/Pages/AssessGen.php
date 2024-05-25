@@ -259,9 +259,8 @@ class AssessGen extends Page implements HasActions, HasForms
                     $this->qtext
                     - Answers choices :".$aitx.'.';
                     try {
-                        //sk-proj-9wUzwTSySTReFOcOu9b0T3BlbkFJtQVe3XZltaUtCJ6SStK4
                         $apk = Crypt::decryptString($ix->apk);
-                        //dd( $apk);
+                     //   dd( $apk);
                         $response = Http::withToken($apk)->post($ix->endp, [
                             'model' => $ix->model,
                             'messages' => [
@@ -270,15 +269,16 @@ class AssessGen extends Page implements HasActions, HasForms
                             ],
                         ])
                             ->json();
-                        // dd($response["choices"][0]["message"]["content"]);
+                      //   dd($response);
                         if (is_array($response['choices'])) {
                             $this->iatext3 = __('main.i6', ['name' => auth()->user()->name]);
                             $this->iati = true;
                             if (! $this->iati3) {
                                 $this->iati3 = true;
                             }
+                            $this->iatext = preg_replace('/(\d+\. \*\*|- \*\*|- )/g', '<br>$1',$response['choices'][0]['message']['content'] );
                             $this->iatext = $response['choices'][0]['message']['content'];
-                            \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
+                       //     \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
                             // dd(auth()->user()->ix);
                         } else {
                             Notification::make()->danger()->title(__('form.e10'))->send();
@@ -348,8 +348,8 @@ class AssessGen extends Page implements HasActions, HasForms
                             if (! $this->iati3) {
                                 $this->iati3 = true;
                             }
-                            //   $this->iatext2 = preg_replace('/\\(.?)\\*/', '<strong>$1</strong>',$response['choices'][0]['message']['content'] );
-                            $this->iatext2 = $response['choices'][0]['message']['content'];
+                          $this->iatext2 = preg_replace('/(\d+\. \*\*|- \*\*|- )/g', '<br>$1',$response['choices'][0]['message']['content'] );
+                          //  $this->iatext2 = $response['choices'][0]['message']['content'];
                             \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
                         } else {
                             Notification::make()->danger()->title(__('form.e10'))->send();

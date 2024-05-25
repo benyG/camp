@@ -55,7 +55,7 @@ class UserResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Forms\Components\Select::make('ex')->label('Type')
-                    ->options(['1' => 'Admin', '2' => 'Starter', '3' => 'User', '4' => 'Pro', '5' => 'VIP', '9' => __('main.Guest')])
+                    ->options(['1' => 'Admin', '2' => 'Starter', '3' => 'Basic', '4' => 'Standard', '5' => 'Premium', '9' => __('main.Guest')])
                     ->rules([Rule::in(['1', '2', '3', '4', '5'])]),
                 Password::make('password')->label(__('form.pwd'))
                     ->regex('/^\S*(?=.*\d)(?=\S*[\W])[a-zA-Z\d]\S*$/i')
@@ -107,7 +107,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('ex')->label('Type')->badge()
                     ->formatStateUsing(fn (int $state): string => match ($state) {
                         0 => 'S. Admin',
-                        1 => 'Admin', 2 => 'Starter', 3 => 'User', 4 => 'Pro', 5 => 'VIP',
+                        1 => 'Admin', 2 => 'Starter', 3 => 'Basic', 4 => 'Standard', 5 => 'Premium',
                         default => __('main.Guest')
                     })
                     ->color(fn (int $state): string => match ($state) {
@@ -133,7 +133,7 @@ class UserResource extends Resource
                 Tables\Actions\Action::make('jjj')->color('success')->label('Portfolio')
                     ->fillForm(fn (User $record): array => [
                         'cou' => \App\Models\Course::join('users_course', 'users_course.course', '=', 'courses.id')
-                            ->where('user', $record->id)->pluck('courses.id'),
+                            ->where('Basic', $record->id)->pluck('courses.id'),
                     ])
                     ->form([
                         Forms\Components\Select::make('cou')
@@ -181,11 +181,11 @@ class UserResource extends Resource
                         if ($record->ex != intval($data['ex'])) {
                             $txt .= "Rank was changed from '".match (intval($data['ex'])) {
                                 0 => 'S. Admin',
-                                1 => 'Admin', 2 => 'Starter', 3 => 'User', 4 => 'Pro', 5 => 'VIP'
+                                1 => 'Admin', 2 => 'Starter', 3 => 'Basic', 4 => 'Standard', 5 => 'Premium'
                             }
                             ."' <br>to '".match ($record->ex) {
                                 0 => 'S. Admin',
-                                1 => 'Admin', 2 => 'Starter', 3 => 'User', 4 => 'Pro', 5 => 'VIP'
+                                1 => 'Admin', 2 => 'Starter', 3 => 'Basic', 4 => 'Standard', 5 => 'Premium'
                             }."' <br>";
                         }
                         if ($record->wasChanged('tz')) {
