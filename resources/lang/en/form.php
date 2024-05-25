@@ -201,7 +201,7 @@ return [
      'sp_t1' => 'Accelerate your path to success.',
      'pp_t1' => 'Unlock your full potential with AI.',
      'mo' => 'month',
-     'eca2' => 'Certification Config Activation Unit (CCAU)',
+     'eca2' => 'Exam Config Activation (ECA) units',
      'iac2' => 'AI Call units/month',
      'saa2' => 'Max simultaneous Active assessments',
      'mcde' => 'Max configurable delay for Exams',

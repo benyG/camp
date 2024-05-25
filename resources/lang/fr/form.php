@@ -203,7 +203,7 @@ return [
      'sp_t1' => 'Accélérez votre avancée vers le succès.',
      'pp_t1' => 'Débloquez votre plein potentiel avec l\'IA.',
      'mo' => 'mois',
-     'eca2' => 'Unité d\'activation de configuration d\'examen (ECA)',
+     'eca2' => 'Unités d\'activation de configuration d\'examen (ECA)',
      'iac2' => 'Unités d\'appel IA/mois',
      'saa2' => 'Max d\'évaluations actives en simultané',
      'mcde' => 'de délai configurable par examen',
