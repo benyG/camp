@@ -323,8 +323,10 @@ class QuestionResource extends Resource
                                         ->json();
                                      //   dd($response);
                                     if (array_key_exists('choices',$response)) {
-                                        $txot = $response['choices'][0]['message']['content'];
-                                        \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
+                                      //  $txot = $response['choices'][0]['message']['content'];
+                                      $txot = preg_replace('/(\d+\. \*\*|- \*\*|- )/', '<br>$1',$response['choices'][0]['message']['content'] );
+                                      $txot = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>',$txot );
+                                      \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
                                     } else {
                                         Notification::make()->danger()->title(__('form.e10'))->send();
                                     }
