@@ -149,7 +149,7 @@ return [
     'm6' => 'Approvals',
     'm7' => 'Certification|Certifications',
     'm8' => 'Assessment|Assessments',
-    'm9' => 'settings|settings',
+    'm9' => 'settings|Settings',
     'm10' => 'Activity Logs',
     'm11' => 'log',
     'm12' => 'Question|Questions',
