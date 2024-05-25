@@ -3,25 +3,26 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProvResource\Pages;
+use App\Filament\Resources\ProvResource\RelationManagers;
 use App\Models\Prov;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProvResource extends Resource
 {
     protected static ?string $model = Prov::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
-
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?int $navigationSort = 65;
 
     protected static ?string $modelLabel = 'provider';
 
     protected static ?string $slug = 'providers';
-
     public static function getNavigationGroup(): ?string
     {
         return __('main.m3');
@@ -54,7 +55,7 @@ class ProvResource extends Resource
                 Tables\Columns\TextColumn::make('name')->label(__('form.na'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('courses_count')->counts('courses')->label('Certifications')
-                    ->numeric()->sortable(),
+                ->numeric()->sortable(),
 
             ])
             ->filters([
@@ -88,7 +89,7 @@ class ProvResource extends Resource
                             $txt = "Removed certification $value->name";
                             \App\Models\Journ::add(auth()->user(), 'Certifications', 4, $txt);
                         }
-                    }),
+                    })
                 ]),
             ]);
     }

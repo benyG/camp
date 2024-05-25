@@ -40,13 +40,13 @@ Textarea::make('description')
 
 ## Making the field read-only
 
-Not to be confused with [disabling the field](getting-started#disabling-a-field), you may make the field "read-only" using the `readOnly()` method:
+Not to be confused with [disabling the field](getting-started#disabling-a-field), you may make the field "read-only" using the `readonly()` method:
 
 ```php
 use Filament\Forms\Components\Textarea;
 
 Textarea::make('description')
-    ->readOnly()
+    ->readonly()
 ```
 
 There are a few differences, compared to [`disabled()`](getting-started#disabling-a-field):

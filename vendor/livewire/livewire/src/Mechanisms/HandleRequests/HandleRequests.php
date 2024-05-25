@@ -77,34 +77,30 @@ class HandleRequests extends Mechanism
 
     function handleUpdate()
     {
-        $requestPayload = request('components');
+        $components = request('components');
 
-        $finish = trigger('request', $requestPayload);
+        $responses = [];
 
-        $requestPayload = $finish($requestPayload);
-
-        $componentResponses = [];
-
-        foreach ($requestPayload as $componentPayload) {
-            $snapshot = json_decode($componentPayload['snapshot'], associative: true);
-            $updates = $componentPayload['updates'];
-            $calls = $componentPayload['calls'];
+        foreach ($components as $component) {
+            $snapshot = json_decode($component['snapshot'], associative: true);
+            $updates = $component['updates'];
+            $calls = $component['calls'];
 
             [ $snapshot, $effects ] = app('livewire')->update($snapshot, $updates, $calls);
 
-            $componentResponses[] = [
+            $responses[] = [
                 'snapshot' => json_encode($snapshot),
                 'effects' => $effects,
             ];
         }
 
-        $responsePayload = [
-            'components' => $componentResponses,
+        $response = [
+            'components' => $responses,
             'assets' => SupportScriptsAndAssets::getAssets(),
         ];
 
-        $finish = trigger('response', $responsePayload);
+        $finish = trigger('response', $response);
 
-        return $finish($responsePayload);
+        return $finish($response);
     }
 }

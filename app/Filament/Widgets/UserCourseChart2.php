@@ -8,10 +8,11 @@ use App\Models\Question;
 use App\Models\User;
 use Filament\Support\RawJs;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Support\Arr;
 
 class UserCourseChart2 extends ChartWidget
 {
-    // protected static ?string $heading = '% Questions answered per Module';
+    protected static ?string $heading = '% Questions answered per Module';
 
     protected static string $view = 'filament.widgets.uc2';
 
@@ -37,11 +38,6 @@ class UserCourseChart2 extends ChartWidget
         // $this->cos=Course::get();
     }
 
-    public function getHeading(): ?string
-    {
-        return '% '.__('main.w32');
-    }
-
     public static function canView(): bool
     {
         return auth()->user()->ex > 1;
@@ -62,8 +58,8 @@ class UserCourseChart2 extends ChartWidget
 
     protected function getData(): array
     {
-        $mod = Module::select('id', 'name')->where('course', $this->cs)->get()->pluck('name', 'id')->toArray();
-        //  $this->record = $this->record ?? auth()->user();
+        $mod = Module::where('course', $this->cs)->get()->pluck('name', 'id')->toArray();
+        $this->record = $this->record ?? auth()->user();
         $exa = $this->record->exams2()->where('certi', $this->cs)->get();
         $que = [];
         foreach ($exa as $ex) {
@@ -74,14 +70,9 @@ class UserCourseChart2 extends ChartWidget
         $que = Question::selectRaw('count(id) as quest, module')->whereIn('id', $que)->groupBy('module')->get()->pluck('quest', 'module')->toArray();
         $uc = [[], [], []];
         foreach ($mod as $key => $mm) {
-            $uc[0][] = $mm;
+            $uc[0][] = substr($mm, 10);
             $uc[1][] = array_key_exists($key, $que) ? $que[$key] : 0;
-            $uc[2][] = dynColors();
-        }
-        $mpo = collect($uc[1])->sum();
-
-        foreach ($uc[1] as $key => $value) {
-            $uc[0][$key] = $uc[0][$key].' ('.round(100 * $value / ($mpo > 0 ? $mpo : 1), 2).'%)';
+            $uc[2][] = $this->dynColors();
         }
 
         //  dd($uc);
@@ -111,6 +102,19 @@ class UserCourseChart2 extends ChartWidget
     protected function getType(): string
     {
         return 'doughnut';
+    }
+
+    public function dynColors(): string
+    {
+        $col = '#';
+        $ar = ['A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4',
+            '5', '6', '7', '8', '9'];
+        for ($i = 0; $i < 6; $i++) {
+            $col .= Arr::random($ar);
+        }
+
+        return $col;
+
     }
 
     protected function getOptions(): RawJs

@@ -23,14 +23,6 @@ class TemporaryUploadedFile extends UploadedFile
         $tmpFile = tmpfile();
 
         parent::__construct(stream_get_meta_data($tmpFile)['uri'], $this->path);
-
-        // While running tests, update the last modified timestamp to the current
-        // Carbon timestamp (which respects time traveling), because otherwise
-        // cleanupOldUploads() will mess up with the filesystem...
-        if (app()->runningUnitTests())
-        {
-            @touch($this->path(), now()->timestamp);
-        }
     }
 
     public function getPath(): string

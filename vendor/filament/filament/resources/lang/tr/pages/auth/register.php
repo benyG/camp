@@ -31,13 +31,13 @@ return [
         ],
 
         'password_confirmation' => [
-            'label' => 'Şifreyi onayla',
+            'label' => 'Şifreyi Onayla',
         ],
 
         'actions' => [
 
             'register' => [
-                'label' => 'Üye ol',
+                'label' => 'Üye Ol',
             ],
 
         ],

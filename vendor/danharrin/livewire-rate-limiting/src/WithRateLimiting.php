@@ -18,7 +18,7 @@ trait WithRateLimiting
         RateLimiter::clear($key);
     }
 
-    protected function getRateLimitKey($method, $component = null)
+    protected function getRateLimitKey($method, $component)
     {
         $method ??= debug_backtrace(limit: 2)[1]['function'];
 

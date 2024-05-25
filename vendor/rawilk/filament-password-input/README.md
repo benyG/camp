@@ -17,8 +17,6 @@ features to your password inputs:
 
 ## Installation
 
-> Upgrading to 2.0 from 1.x? Be sure to follow the [Upgrade](https://github.com/rawilk/filament-password-input/blob/main/upgrade.md) guide for breaking changes.
-
 You can install the package via composer:
 
 ```bash
@@ -31,6 +29,12 @@ if necessary in your application. You may publish the language files with:
 
 ```bash
 php artisan vendor:publish --tag=filament-password-input-translations
+```
+
+If you want to override the views from the package, you may publish them with:
+
+```bash
+php artisan vendor:publish --tag=filament-password-input-views
 ```
 
 ## Usage
@@ -70,9 +74,33 @@ public function form(Form $form): Form
             // ...
             Password::make('password')
                 ->label('Password')
-                ->revealable(false),
+                ->canRevealPassword(false),
         ]);
 }
+```
+
+### Button Icons
+
+If you want to use different icons for the on/off state of the password reveal toggle button, you can do so like this:
+
+```php
+Password::make('password')
+    ->showPasswordIcon('heroicon-o-eye')
+    ->hidePasswordIcon('heroicon-o-eye-off'),
+```
+
+Like many of the other methods available on this input, you may use a closure to dynamically set the icon instead of passing
+in a string to either method.
+
+### Tooltip Text
+
+You can customize the text that shows up in the tooltip for this button by either overriding the `filament-password-input::password.actions.reveal.show`
+and `filament-password-input::password.actions.reveal.hide` language keys, or by providing your own text to the `showPasswordText` and `hidePasswordText` methods:
+
+```php
+Password::make('password')
+    ->showPasswordText('Show password')
+    ->hidePasswordText('Hide password'),
 ```
 
 ## Copy to Clipboard
@@ -91,19 +119,36 @@ Password::make('password')
 
 If you'd like the copy button to show up as an inline suffix instead, you can simply call the `inlineSuffix()` method on the input.
 
-### Icon Color
+### Copy Icon
 
-You can customize the color of the icon by passing in a color to the `copyable` method:
+You can easily use a different icon for the copy button like this:
 
 ```php
 Password::make('password')
-    ->copyable(color: 'success'),
+    ->copyable()
+    ->copyIcon('heroicon-o-clipboard'),
 ```
 
-### Title/Label
+### Icon Color
 
-When you hover over the copy button, a title saying `Copy to clipboard` will show up. You can customize this text globally
-by overriding the `filament-password-input::password.actions.copy.tooltip` language key.
+You can customize the color of the icon by using the `copyIconColor` method:
+
+```php
+Password::make('password')
+    ->copyable()
+    ->copyIconColor('success'),
+```
+
+### Tooltip
+
+When you hover over the copy button, a tooltip saying `Copy to clipboard` will show up. You can customize this text globally
+by overriding the `filament-password-input::password.actions.copy.tooltip` language key, or individually by using the `copyTooltip` method:
+
+```php
+Password::make('password')
+    ->copyable()
+    ->copyTooltip('Copy password'),
+```
 
 ### Confirmation Text
 
@@ -152,15 +197,18 @@ on the input.
 By default, the password generation is handled with Laravel's `Str::password()` helper method. This will generate a random, strong password that is 32
 characters long for you. If you have a `maxLength()` set on the input, that length will be used instead for the character length.
 
-You may also use a completely custom generation method by providing a closure to the `regeneratePassword` method:
+You may also use a completely custom generation method by providing a closure to the `generatePasswordUsing` method:
 
 ```php
 Password::make('password')
-    ->regeneratePassword(using: fn () => 'my-custom-password'),
+    ->regeneratePassword()
+    ->generatePasswordUsing(function ($state) {
+        // State is the current value of the input
+        return 'my-custom-password';
+    }),
 ```
 
-Now when the button is clicked, `my-custom-password` will be filled into the input instead. Like with most callbacks in filament, you are able to inject
-filament's utilities into the callback as well.
+Now when the button is clicked, `my-custom-password` will be filled into the input instead.
 
 ### Password Max Length
 
@@ -176,38 +224,55 @@ Password::make('password')
 
 > **Note:** Due to how Laravel's `Str::password()` helper works, the password max length must be a minimum of 3 characters long.
 
-If you want to use a different length than the input's max length, you can also use the `newPasswordLength` method as well:
+### Button Icon
+
+You can easily use a different icon for the generate password button using the `regeneratePasswordIcon` method:
 
 ```php
-Password::make()
+Password::make('password')
     ->regeneratePassword()
-    ->newPasswordLength(8),
+    ->regeneratePasswordIcon('heroicon-m-arrow-path'),
 ```
 
 ### Icon Color
 
-You can customize the color of the icon by passing a color to the `regeneratePassword` method:
+You can customize the color of the icon by using the `regeneratePasswordIconColor` method:
 
 ```php
 Password::make('password')
-    ->regeneratePassword(color: 'success'),
+    ->regeneratePassword()
+    ->regeneratePasswordIconColor('success'),
 ```
 
-### Title/Label
+### Tooltip
 
-When you hover the generate password action button, the text `Generate new password` will show up. You can customize this text globally
-by overriding the `filament-password-input::password.actions.regenerate.tooltip` language key.
+When you hover the generate password action button, the text `Generate new password` will show up in a tooltip. You can customize this text globally
+by overriding the `filament-password-input::password.actions.regenerate.tooltip` language key, or individually by using the `regeneratePasswordTooltip` method:
+
+```php
+Password::make('password')
+    ->regeneratePassword()
+    ->regeneratePasswordTooltip('Generate new password'),
+```
 
 ### Confirmation Message
 
 Once a new password is generated and returned to the UI, the component will make use of a filament `Notification` with the text `New password was generated!`.
-You can customize this globally by overriding the `filament-password-input::password.actions.regenerate.success_message` language key.
-
-You may also disable this notification all-together by providing a `false` value to the `regeneratePassword` method:
+You can customize this globally by overriding the `filament-password-input::password.actions.regenerate.success_message` language key, or individually by using the
+`passwordRegeneratedMessage` method:
 
 ```php
 Password::make('password')
-    ->regeneratePassword(notify: false),
+    ->regeneratePassword()
+    ->passwordRegeneratedMessage('New password was generated!'),
+```
+
+You may also disable this notification all-together by providing a `false` value to `notifyOnPasswordRegenerate`:
+
+```php
+Password::make('password')
+    ->regeneratePassword()
+    ->notifyOnPasswordRegenerate(false),
 ```
 
 ## Password Managers
@@ -226,23 +291,6 @@ Password::make('password')
 This will add `data-1p-ignore` and `data-lpignore="true"` attributes to the input to attempt to block password managers from injecting their buttons. This isn't always
 100% effective, but it should work in most cases. If you know of a better way to handle this, PR's are always welcome.
 
-## Icons
-
-The icons for used in the actions on this component can be customized in a service provider by registering their aliases with filament.
-
-```php
-\Filament\Support\Facades\FilamentIcon::register([
-    'filament-password-input::regenerate' => 'heroicon-o-key',
-])
-```
-
-Here are the aliases required to modify each icon:
-
--   `filament-password-input::copy` - copy to clipboard action
--   `filament-password-input::regenerate` - regenerate password action
--   `forms::components.text-input.actions.show-password` - show password reveal button
--   `forms::components.text-input.actions.hide-password` - hide password reveal button
-
 ## Kitchen Sink Example
 
 Here is an example of an input with all the actions enabled:
@@ -250,9 +298,11 @@ Here is an example of an input with all the actions enabled:
 ```php
 Password::make('password')
     ->label('Password')
-    ->copyable(color: 'warning')
-    ->regeneratePassword(color: 'primary')
-    ->inlineSuffix(),
+    ->inlineSuffix()
+    ->copyable()
+    ->regeneratePassword()
+    ->copyIconColor('warning')
+    ->regeneratePasswordIconColor('primary'),
 ```
 
 ![kitchen sink](https://github.com/rawilk/filament-password-input/raw/main/docs/images/kitchen-sink.png)
@@ -273,7 +323,8 @@ class AppServiceProvider extends ServiceProvider
         Password::configureUsing(function (Password $password) {
             $password
                 ->maxLength(24)
-                ->copyable();
+                ->copyable()
+                ->copyIcon('heroicon-o-clipboard');
                 // ->...
         });
     }
@@ -291,6 +342,10 @@ For convenience, you can run the setup bin script for easy installation for loca
 ```bash
 ./bin/setup.sh
 ```
+
+### Build
+
+Any time changes are made to the blade file, the `./bin/build.sh` script should be run so our css can be recompiled.
 
 ### Formatting
 

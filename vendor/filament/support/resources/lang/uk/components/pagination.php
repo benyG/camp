@@ -22,16 +22,8 @@ return [
 
     'actions' => [
 
-        'first' => [
-            'label' => 'Перша',
-        ],
-
         'go_to_page' => [
             'label' => 'Перейти до сторінки :page',
-        ],
-
-        'last' => [
-            'label' => 'Остання',
         ],
 
         'next' => [

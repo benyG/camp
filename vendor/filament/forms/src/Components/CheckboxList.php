@@ -19,7 +19,6 @@ class CheckboxList extends Field implements Contracts\CanDisableOptions, Contrac
     use Concerns\CanDisableOptions;
     use Concerns\CanDisableOptionsWhenSelectedInSiblingRepeaterItems;
     use Concerns\CanFixIndistinctState;
-    use Concerns\CanLimitItemsLength;
     use Concerns\HasDescriptions;
     use Concerns\HasExtraInputAttributes;
     use Concerns\HasGridDirection;

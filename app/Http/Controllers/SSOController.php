@@ -142,8 +142,6 @@ class SSOController extends Controller
 
             return redirect()->to(filament()->getLoginUrl());
         }
-        $user->kx = Str::random(180);
-        $user->save();
         session()->regenerate();
 
         return redirect()->to(filament()->getLoginUrl());

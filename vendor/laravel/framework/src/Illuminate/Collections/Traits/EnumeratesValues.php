@@ -2,7 +2,6 @@
 
 namespace Illuminate\Support\Traits;
 
-use BackedEnum;
 use CachingIterator;
 use Closure;
 use Exception;
@@ -14,6 +13,7 @@ use Illuminate\Support\Enumerable;
 use Illuminate\Support\HigherOrderCollectionProxy;
 use InvalidArgumentException;
 use JsonSerializable;
+use Symfony\Component\VarDumper\VarDumper;
 use Traversable;
 use UnexpectedValueException;
 use UnitEnum;
@@ -164,7 +164,7 @@ trait EnumeratesValues
      * @param  (callable(int): TTimesValue)|null  $callback
      * @return static<int, TTimesValue>
      */
-    public static function times($number, ?callable $callback = null)
+    public static function times($number, callable $callback = null)
     {
         if ($number < 1) {
             return new static;
@@ -200,7 +200,7 @@ trait EnumeratesValues
     }
 
     /**
-     * Dump the given arguments and terminate execution.
+     * Dump the items and end the script.
      *
      * @param  mixed  ...$args
      * @return never
@@ -209,18 +209,21 @@ trait EnumeratesValues
     {
         $this->dump(...$args);
 
-        dd();
+        exit(1);
     }
 
     /**
      * Dump the items.
      *
-     * @param  mixed  ...$args
      * @return $this
      */
-    public function dump(...$args)
+    public function dump()
     {
-        dump($this->all(), ...$args);
+        (new Collection(func_get_args()))
+            ->push($this->all())
+            ->each(function ($item) {
+                VarDumper::dump($item);
+            });
 
         return $this;
     }
@@ -327,7 +330,7 @@ trait EnumeratesValues
     {
         $allowedTypes = is_array($type) ? $type : [$type];
 
-        return $this->each(function ($item, $index) use ($allowedTypes) {
+        return $this->each(function ($item) use ($allowedTypes) {
             $itemType = get_debug_type($item);
 
             foreach ($allowedTypes as $allowedType) {
@@ -337,7 +340,7 @@ trait EnumeratesValues
             }
 
             throw new UnexpectedValueException(
-                sprintf("Collection should only include [%s] items, but '%s' found at position %d.", implode(', ', $allowedTypes), $itemType, $index)
+                sprintf("Collection should only include [%s] items, but '%s' found.", implode(', ', $allowedTypes), $itemType)
             );
         });
     }
@@ -411,10 +414,6 @@ trait EnumeratesValues
      */
     public function mapInto($class)
     {
-        if (is_subclass_of($class, BackedEnum::class)) {
-            return $this->map(fn ($value, $key) => $class::from($value));
-        }
-
         return $this->map(fn ($value, $key) => new $class($value, $key));
     }
 
@@ -535,7 +534,7 @@ trait EnumeratesValues
      * @param  (callable($this): TWhenEmptyReturnType)|null  $default
      * @return $this|TWhenEmptyReturnType
      */
-    public function whenEmpty(callable $callback, ?callable $default = null)
+    public function whenEmpty(callable $callback, callable $default = null)
     {
         return $this->when($this->isEmpty(), $callback, $default);
     }
@@ -549,7 +548,7 @@ trait EnumeratesValues
      * @param  (callable($this): TWhenNotEmptyReturnType)|null  $default
      * @return $this|TWhenNotEmptyReturnType
      */
-    public function whenNotEmpty(callable $callback, ?callable $default = null)
+    public function whenNotEmpty(callable $callback, callable $default = null)
     {
         return $this->when($this->isNotEmpty(), $callback, $default);
     }
@@ -563,7 +562,7 @@ trait EnumeratesValues
      * @param  (callable($this): TUnlessEmptyReturnType)|null  $default
      * @return $this|TUnlessEmptyReturnType
      */
-    public function unlessEmpty(callable $callback, ?callable $default = null)
+    public function unlessEmpty(callable $callback, callable $default = null)
     {
         return $this->whenNotEmpty($callback, $default);
     }
@@ -577,7 +576,7 @@ trait EnumeratesValues
      * @param  (callable($this): TUnlessNotEmptyReturnType)|null  $default
      * @return $this|TUnlessNotEmptyReturnType
      */
-    public function unlessNotEmpty(callable $callback, ?callable $default = null)
+    public function unlessNotEmpty(callable $callback, callable $default = null)
     {
         return $this->whenEmpty($callback, $default);
     }

@@ -48,14 +48,12 @@
         },
 
         getStepIndex: function (step) {
-            let index = this.getSteps().findIndex(
-                (indexedStep) => indexedStep === step,
-            )
-
+            let index = this.getSteps().findIndex((indexedStep) => indexedStep === step)
+            
             if (index === -1) {
                 return 0
             }
-
+            
             return index
         },
 
@@ -160,13 +158,9 @@
                                 getStepIndex(step) < {{ $loop->index }},
                         }"
                     >
-                        @php
-                            $completedIcon = $step->getCompletedIcon();
-                        @endphp
-
                         <x-filament::icon
-                            :alias="filled($completedIcon) ? null : 'forms::components.wizard.completed-step'"
-                            :icon="$completedIcon ?? 'heroicon-o-check'"
+                            alias="forms::components.wizard.completed-step"
+                            icon="heroicon-o-check"
                             x-cloak="x-cloak"
                             x-show="getStepIndex(step) > {{ $loop->index }}"
                             class="fi-fo-wizard-header-step-icon h-6 w-6 text-white"

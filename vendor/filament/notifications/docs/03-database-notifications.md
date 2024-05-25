@@ -3,9 +3,7 @@ title: Database notifications
 ---
 import AutoScreenshot from "@components/AutoScreenshot.astro"
 
-<AutoScreenshot name="notifications/database" alt="Database notifications" version="3.x" />
-
-## Setting up the notifications database table
+## Overview
 
 Before we start, make sure that the [Laravel notifications table](https://laravel.com/docs/notifications#database-prerequisites) is added to your database:
 
@@ -21,17 +19,15 @@ php artisan notifications:table
 
 > If you're using UUIDs for your `User` model, make sure that your `notifiable` column is using `uuidMorphs()`: `$table->uuidMorphs('notifiable')`.
 
-## Rendering the database notifications modal
-
-> If you want to add database notifications to a panel, [follow this part of the guide](#adding-database-notifications-to-a-panel).
-
-If you'd like to render the database notifications modal outside of the [Panel Builder](../panels), you'll need to add a new Livewire component to your Blade layout:
+To add database notifications to your app, you must add a new Livewire component to your Blade layout:
 
 ```blade
 @livewire('database-notifications')
 ```
 
-To open the modal, you must have a "trigger" button in your view. Create a new trigger button component in your app, for instance at `/resources/views/filament/notifications/database-notifications-trigger.blade.php`:
+<AutoScreenshot name="notifications/database" alt="Database notifications" version="3.x" />
+
+Database notifications will be rendered within a modal. To open this modal, you must have a "trigger" button in your view. Create a new trigger button component in your app, for instance at `/resources/views/filament/notifications/database-notifications-trigger.blade.php`:
 
 ```blade
 <button type="button">
@@ -50,23 +46,6 @@ DatabaseNotifications::trigger('filament.notifications.database-notifications-tr
 ```
 
 Now, click on the trigger button that is rendered in your view. A modal should appear containing your database notifications when clicked!
-
-### Adding the database notifications modal to a panel
-
-You can enable database notifications in a panel's [configuration](../panels/configuration):
-
-```php
-use Filament\Panel;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->databaseNotifications();
-}
-```
-
-To learn more, visit the [Panel Builder documentation](../panels/notifications).
 
 ## Sending database notifications
 
@@ -125,7 +104,8 @@ By default, Livewire polls for new notifications every 30 seconds:
 ```php
 use Filament\Notifications\Livewire\DatabaseNotifications;
 
-DatabaseNotifications::pollingInterval('30s');
+DatabaseNotifications::databaseNotifications();
+DatabaseNotifications::databaseNotificationsPollingInterval('30s');
 ```
 
 You may completely disable polling if you wish:
@@ -133,7 +113,8 @@ You may completely disable polling if you wish:
 ```php
 use Filament\Notifications\Livewire\DatabaseNotifications;
 
-DatabaseNotifications::pollingInterval(null);
+DatabaseNotifications::databaseNotifications();
+DatabaseNotifications::databaseNotificationsPollingInterval(null);
 ```
 
 ### Using Echo to receive new database notifications with websockets

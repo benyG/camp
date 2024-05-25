@@ -12,7 +12,6 @@ use Livewire\Mechanisms\ComponentRegistry;
 use Livewire\Features\SupportTesting\Testable;
 use Livewire\Features\SupportTesting\DuskTestable;
 use Livewire\Features\SupportAutoInjectedAssets\SupportAutoInjectedAssets;
-use Livewire\Features\SupportLazyLoading\SupportLazyLoading;
 
 class LivewireManager
 {
@@ -180,13 +179,6 @@ class LivewireManager
         return $this;
     }
 
-    function withoutLazyLoading()
-    {
-        SupportLazyLoading::disableWhileTesting();
-
-        return $this;
-    }
-
     function test($name, $params = [])
     {
         return Testable::create(
@@ -194,7 +186,7 @@ class LivewireManager
             $params,
             $this->queryParamsForTesting,
             $this->cookiesForTesting,
-            $this->headersForTesting,
+            $this->headersForTesting
         );
     }
 

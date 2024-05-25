@@ -38,6 +38,7 @@ ToggleButtons::make('status')
         'scheduled' => 'warning',
         'published' => 'success',
     ])
+])
 ```
 
 If you are using an enum for the options, you can use the [`HasColor` interface](../../support/enums#enum-colors) to define colors instead.
@@ -62,6 +63,7 @@ ToggleButtons::make('status')
         'scheduled' => 'heroicon-o-clock',
         'published' => 'heroicon-o-check-circle',
     ])
+])
 ```
 
 If you are using an enum for the options, you can use the [`HasIcon` interface](../../support/enums#enum-icons) to define icons instead.

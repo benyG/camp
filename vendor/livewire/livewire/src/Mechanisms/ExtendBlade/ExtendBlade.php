@@ -76,7 +76,9 @@ class ExtendBlade extends Mechanism
         // We're using "precompiler" as a hook for the point in time when
         // Laravel compiles a Blade view...
         app('blade.compiler')->precompiler(function ($value) {
-            app(DeterministicBladeKeys::class)->hookIntoCompile(app('blade.compiler'), $value);
+            app(DeterministicBladeKeys::class)->interceptCompile(
+                app('blade.compiler'),
+            );
 
             return $value;
         });

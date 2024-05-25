@@ -22,16 +22,8 @@ return [
 
     'actions' => [
 
-        'first' => [
-            'label' => 'Pirmas',
-        ],
-
         'go_to_page' => [
             'label' => 'Eiti į puslapį :page',
-        ],
-
-        'last' => [
-            'label' => 'Paskutinis',
         ],
 
         'next' => [

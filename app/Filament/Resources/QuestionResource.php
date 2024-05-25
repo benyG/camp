@@ -50,21 +50,21 @@ class QuestionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('prov')->label(__('main.m16'))->required()
-                    ->options(Prov::all()->pluck('name', 'id'))->default(session('2providers'))
-                    ->preload()->live(),
+                ->options(Prov::all()->pluck('name', 'id'))->default(session('2providers'))
+                ->preload()->live(),
                 Forms\Components\Select::make('cours')->label('Certifications')
-                    ->relationship(name: 'certif', titleAttribute: 'name',
-                        modifyQueryUsing: function (Builder $query, Get $get, string $operation) {
-                            if ($operation == 'create') {
-                                return $query->where('prov', $get('prov'));
-                            } else {
-                                if (is_numeric($get('prov'))) {
-                                    return $query->where('prov', $get('prov'));
-                                } else {
-                                    return $query;
-                                }
-                            }
-                        })->default(session('cours'))->preload()->live(),
+                ->relationship(name: 'certif', titleAttribute: 'name',
+                modifyQueryUsing: function (Builder $query, Get $get, string $operation) {
+                    if ($operation == 'create') {
+                        return $query->where('prov', $get('prov'));
+                    } else {
+                        if (is_numeric($get('prov'))) {
+                            return $query->where('prov', $get('prov'));
+                        } else {
+                            return $query;
+                        }
+                    }
+                })->default(session('cours'))->preload()->live(),
                 Forms\Components\Select::make('module')->label('Modules')->required()
                     ->relationship(name: 'moduleRel', titleAttribute: 'name',
                         modifyQueryUsing: function (Builder $query, Get $get, string $operation) {
@@ -84,39 +84,12 @@ class QuestionResource extends Resource
                     ->rules(['numeric']),
                 TinyEditor::make('text')->label(__('form.txt'))
                     ->required()
-                    ->unique(table: Question::class, ignoreRecord: true)
-                    ->validationMessages([
-                        'unique' => __('form.e28'),
-                    ])
                     ->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads')
-                    ->columnSpanFull()
-                    ->hintAction(
-                        \Filament\Forms\Components\Actions\Action::make('kkj')->label(__('form.add'))
-                            ->icon('heroicon-m-link')
-                            ->action(function (Get $get, $state) {
-                                if (empty($get('text')) || ! is_numeric($get('module')) || ! is_numeric($get('maxr'))) {
-                                    Notification::make('sgg')->danger()->title(__('form.e21'))->send();
-                                } else {
-                                    $qtt = str_replace('src="../storage', 'src="'.env('APP_URL').'/storage', $state);
-                                    $qe = new Question;
-                                    $qe->text = $qtt;
-                                    $qe->descr = $get('descr');
-                                    $qe->module = $get('module');
-                                    $qe->maxr = $get('maxr');
-                                    $qe->save();
-                                    session(['cours' => $get('cours')]);
-                                    session(['2providers' => $get('prov')]);
-                                    $txt = "New question created ! <br>
-                                    Text: $qe->text <br>
-                                    Module: ".$qe->moduleRel->name.' <br>
-                                    Certification: '.$qe->certif->name.' <br>
-                                    ';
-                                    \App\Models\Journ::add(auth()->user(), 'Questions', 1, $txt);
-                                    Notification::make('sgfg')->success()->title(__('form.e29'))->send();
-                                }
-                            })
-                    ),
+                    ->columnSpanFull(),
                 Forms\Components\Textarea::make('descr')->columnSpanFull()->label(__('form.expl')),
+
+                //     Forms\Components\Toggle::make('isexam')
+                //         ->required(),
             ]);
     }
 
@@ -127,6 +100,8 @@ class QuestionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('text')->limit(70)->html()->label(__('form.txt'))
                     ->searchable()->sortable(),
+                //   Tables\Columns\TextColumn::make('answers2_count')->label('True answers')->numeric()->sortable()
+                //  ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('moduleRel.name')->label('Module')->sortable()->limit(20),
                 Tables\Columns\TextColumn::make('certif.name')->label('Certification')->sortable(),
                 Tables\Columns\TextColumn::make('answers_count')->counts('answers')->label(trans_choice('main.m2', 5))
@@ -158,11 +133,9 @@ class QuestionResource extends Resource
                 Tables\Actions\ViewAction::make()->iconButton(),
                 Tables\Actions\EditAction::make()->iconButton()->mutateFormDataUsing(function (array $data): array {
                     $data['text'] = str_replace('src="../storage', 'src="'.env('APP_URL').'/storage', $data['text']);
-
                     return $data;
-                })->mutateRecordDataUsing(function (array $data, $record): array {
+                })->mutateRecordDataUsing(function (array $data, QUestion $record): array {
                     $data['prov'] = Course::find($record->certif->id)->provRel->id;
-
                     return $data;
                 })->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
                     $reco = $record->replicate();
@@ -230,15 +203,11 @@ class QuestionResource extends Resource
     {
         return $infolist
             ->schema([
-                Infolists\Components\Grid::make()->columns(3)
-                    ->schema([
                 Infolists\Components\TextEntry::make('moduleRel.name')->label('Modules'),
                 Infolists\Components\TextEntry::make('maxr')->label(__('form.mans')),
-                Infolists\Components\TextEntry::make('rev')->label(__('form.rev')),
-                    ]),
                 Infolists\Components\TextEntry::make('text')->html(),
                 Infolists\Components\TextEntry::make('descr')->html()->label(__('form.expl')),
-                Infolists\Components\TextEntry::make('reviews.id')->html()->label(__('form.rev'))->columnSpanFull()->placeholder(__('form.non'))
+                Infolists\Components\TextEntry::make('reviews.id')->html()->label('Reviews')->columnSpanFull()->placeholder(__('form.non'))
                     ->formatStateUsing(function ($state) {
                         $htm = "<div class='text-sm text-gray-400 fi-in-placeholder dark:text-gray-500'>".__('form.non').'</div>';
                         $st = \App\Models\Review::with('userRel')->whereIn('id', explode(',', $state))->get();
@@ -255,90 +224,86 @@ class QuestionResource extends Resource
 
                         return $htm;
                     })->hintActions([
-                        \Filament\Infolists\Components\Actions\Action::make('ooi')->label(__('form.mrev'))->requiresConfirmation()
-                            ->icon('heroicon-m-check-circle')->color('warning')
-                            ->visible(fn ($record): bool => $record->reviews->count() > 0)
-                            ->action(function ($record) {
-                                $record->rev++;$record->save();
-                                foreach ($record->reviews as $rev) {
-                                    $ma = new \App\Models\SMail;
-                                    $ma->from = auth()->id();
-                                    $ma->sub = 'Question Reviewed !';
-                                    $ans = '';
-                                    $record->loadMissing('answers2');
-                                    if ($record->answers2->count() == 1) {
-                                        $ans = $record->answers2->first()->text;
-                                    } elseif ($record->answers2->count() < 1) {
-                                        $ans = 'None';
-                                    } else {
-                                        $ans = '<ul><li>'.implode('<li>', $record->answers2->pluck('text')).'</ul>';
-                                    }
-                                    $ma->content = 'Dear Bootcamper , <br><br>'.
-                                    'On '.Carbon::parse($rev->created_at)->toDayDateTimeString().', you requested a review of this question: <br><br> <b>'.$record->text.'</b>'
-                                        .'<br> We are pleased to let you know that the question was reviewed by our team, and this is the validated answer:<br><b>'.
-                                        $ans.'</b>
+                    \Filament\Infolists\Components\Actions\Action::make('ooi')->label(__('form.mrev'))->requiresConfirmation()
+                        ->icon('heroicon-m-check-circle')->color('warning')
+                        ->visible(fn ($record): bool => $record->reviews()->count() > 0)
+                        ->action(function ($record) {
+                            $record->rev++;$record->save();
+                            foreach ($record->reviews as $rev) {
+                                $ma = new \App\Models\SMail;
+                                $ma->from = auth()->id();
+                                $ma->sub = 'Question Reviewed !';
+                                $ans = '';
+                                if ($record->answers2()->count() == 1) {
+                                    $ans = $record->answers2()->first()->text;
+                                } elseif ($record->answers2()->count() < 1) {
+                                    $ans = 'None';
+                                } else {
+                                    $ans = '<ul><li>'.implode('<li>', $record->answers2()->pluck('text')).'</ul>';
+                                }
+                                $ma->content = 'Dear Bootcamper , <br><br>'.
+                                'On '.Carbon::parse($rev->created_at)->toDayDateTimeString().', you requested a review of this question: <br><br> <b>'.$record->text.'</b>'
+                                    .'<br> We are pleased to let you know that the question was reviewed by our team, and this is the validated answer:<br><b>'.
+                                    $ans.'</b>
                                     <br><br> Thank you for your contribution !<br><i>The ITExamBootCamp Team</i>';
-                                    $ma->save();
-                                    $ma->users2()->attach($rev->user);
+                                $ma->save();
+                                $ma->users2()->attach($rev->user);
+                            }
+                            Notification::make()->success()->title('Question reviewed.')->send();
+                            \App\Models\Review::destroy($record->reviews()->pluck('id'));
+                            Notification::make()->success()->title('Users Notified.')->send();
+                        }),
+                    \Filament\Infolists\Components\Actions\Action::make('otoi')->label(__('form.aai'))//->requiresConfirmation()
+                        ->icon('heroicon-m-question-mark-circle')->color('primary')
+                        ->action(function () {
+                        })
+                        ->modalWidth(\Filament\Support\Enums\MaxWidth::Medium)
+                        ->modalCancelActionLabel('OK')
+                        ->modalCancelAction(fn (\Filament\Actions\StaticAction $action) => $action->color('primary'))
+                        ->modalSubmitAction(false)
+                        ->modalContent(function ($record): \Illuminate\Contracts\View\View {
+                            $ix = cache()->rememberForever('settings', function () {
+                                return \App\Models\Info::findOrFail(1);
+                            });
+                            $ik = 1;
+                            $aitx = '';
+                            foreach ($record->answers as $value) {
+                                if (! is_string($value)) {
+                                    $value = $value->text;
                                 }
-                                Notification::make()->success()->title('Question reviewed.')->send();
-                                \App\Models\Review::destroy($record->reviews->pluck('id'));
-                                Notification::make()->success()->title('Users Notified.')->send();
-                            }),
-                        \Filament\Infolists\Components\Actions\Action::make('otoi')->label(__('form.aai'))//->requiresConfirmation()
-                            ->icon('heroicon-m-question-mark-circle')->color('primary')
-                            ->action(function () {
-                            })
-                            ->modalWidth(\Filament\Support\Enums\MaxWidth::Medium)
-                            ->modalCancelActionLabel('OK')
-                            ->modalCancelAction(fn (\Filament\Actions\StaticAction $action) => $action->color('primary'))
-                            ->modalSubmitAction(false)
-                            ->modalContent(function ($record): \Illuminate\Contracts\View\View {
-                                $ix = cache()->rememberForever('settings', function () {
-                                    return \App\Models\Info::findOrFail(1);
-                                });
-                                $ik = 1;
-                                $aitx = '';
-                                foreach ($record->answers as $value) {
-                                    if (! is_string($value)) {
-                                        $value = $value->text;
-                                    }
-                                    $aitx .= $ik.'. '.$value."\n ";
-                                }
-                                $stats = $record->certif->name." certification exam:
+                                $aitx .= $ik.'. '.$value."\n ";
+                            }
+                            $stats = $record->certif->name." certification exam:
                             - Question :
                             $record->text
                             - Answers choice :".$aitx.'.';
-                                $txot = '';
-                                try {
-                                    $apk = \Illuminate\Support\Facades\Crypt::decryptString($ix->apk);
-                                    //  dd($apk);
-                                    $response = \Illuminate\Support\Facades\Http::withToken($apk)->post($ix->endp, [
-                                        'model' => $ix->model,
-                                        'messages' => [
-                                            ['role' => 'system', 'content' => str_replace('XoXo', auth()->user()->name, $ix->cont2)],
-                                            ['role' => 'user', 'content' => $stats],
-                                        ],
-                                    ])
-                                        ->json();
-                                     //   dd($response);
-                                    if (array_key_exists('choices',$response)) {
-                                      //  $txot = $response['choices'][0]['message']['content'];
-                                      $txot = preg_replace('/(\d+\. \*\*|- \*\*|- )/', '<br>$1',$response['choices'][0]['message']['content'] );
-                                      $txot = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>',$txot );
-                                      \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
-                                    } else {
-                                        Notification::make()->danger()->title(__('form.e10'))->send();
-                                    }
-                                } catch (DecryptException $e) {
-                                    Notification::make()->danger()->title(__('form.e11'))->send();
-                                } catch (ConnectionException $e) {
-                                    Notification::make()->danger()->title(__('form.e12'))->send();
+                            $txot = '';
+                            try {
+                                $apk = \Illuminate\Support\Facades\Crypt::decryptString($ix->apk);
+                                //  dd($apk);
+                                $response = \Illuminate\Support\Facades\Http::withToken($apk)->post($ix->endp, [
+                                    'model' => $ix->model,
+                                    'messages' => [
+                                        ['role' => 'system', 'content' => str_replace('XoXo', auth()->user()->name, $ix->cont2)],
+                                        ['role' => 'user', 'content' => $stats],
+                                    ],
+                                ])
+                                    ->json();
+                                if (is_array($response['choices'])) {
+                                    $txot = $response['choices'][0]['message']['content'];
+                                    \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
+                                } else {
+                                    Notification::make()->danger()->title(__('form.e10'))->send();
                                 }
+                            } catch (DecryptException $e) {
+                                Notification::make()->danger()->title(__('form.e11'))->send();
+                            } catch (ConnectionException $e) {
+                                Notification::make()->danger()->title(__('form.e12'))->send();
+                            }
 
-                                return view('filament.pages.actions.iamod2', ['txt' => $txot]);
-                            }),
-                    ]),
+                            return view('filament.pages.actions.iamod2', ['txt' => $txot]);
+                        }),
+                ]),
             ]);
     }
 

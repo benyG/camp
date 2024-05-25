@@ -4,9 +4,7 @@ namespace Filament\Commands;
 
 use Filament\Facades\Filament;
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'filament:cache-components')]
 class CacheComponentsCommand extends Command
 {
     protected $description = 'Cache all components';

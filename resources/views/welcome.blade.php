@@ -4958,7 +4958,7 @@
     }
     </style>
     <div class="footer-overflow-container">
-    <p> &copy; 2024 <span >EXAMBOOT.</span> All rights reserved. |
+    <p> &copy; 2024 <span >IT EXAM BOOT CAMP.</span> All rights reserved. |
                 <a href="https://www.termsfeed.com/live/2214b8f2-eb0d-4feb-9afa-f4bdce142c37" target='_blank'>
                    {{ __('main.pol') }}
                 </a> | {{__('main.w28')}}

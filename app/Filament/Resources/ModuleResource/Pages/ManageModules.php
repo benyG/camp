@@ -14,7 +14,7 @@ class ManageModules extends ManageRecords
     {
         return [
             Actions\CreateAction::make()->after(function ($record) {
-                session(['1providers' => $record->provRel->id]);
+                session(['1providers' => $data['providers']]);
                 //  dd($record);
                 $txt = "New module created ! <br>
                 Name: $record->name <br>

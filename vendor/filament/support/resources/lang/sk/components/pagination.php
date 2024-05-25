@@ -22,16 +22,8 @@ return [
 
     'actions' => [
 
-        'first' => [
-            'label' => 'Prvá',
-        ],
-
         'go_to_page' => [
             'label' => 'Prejsť na stranu :page',
-        ],
-
-        'last' => [
-            'label' => 'Posledná',
         ],
 
         'next' => [

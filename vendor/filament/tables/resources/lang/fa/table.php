@@ -11,14 +11,7 @@ return [
     'columns' => [
 
         'text' => [
-
-            'actions' => [
-                'collapse_list' => 'نمایش :count کمتر',
-                'expand_list' => 'نمایش :count بیشتر',
-            ],
-
             'more_list_items' => 'و :count تا بیشتر',
-
         ],
 
     ],
@@ -31,10 +24,6 @@ return [
 
         'bulk_select_record' => [
             'label' => 'انتخاب / عدم‌انتخاب مورد :key برای اقدامات گروهی',
-        ],
-
-        'bulk_select_group' => [
-            'label' => 'انتخاب / عدم‌انتخاب گروه :title برای اقدامات گروهی.',
         ],
 
         'search' => [
@@ -112,10 +101,6 @@ return [
     'filters' => [
 
         'actions' => [
-
-            'apply' => [
-                'label' => 'اعمال فیلترها',
-            ],
 
             'remove' => [
                 'label' => 'حذف فیلتر',

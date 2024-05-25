@@ -4,7 +4,7 @@ return [
 
     'title' => 'Zobraziť :label',
 
-    'breadcrumb' => 'Detail',
+    'breadcrumb' => 'Zobraziť',
 
     'content' => [
 

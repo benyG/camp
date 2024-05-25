@@ -3,9 +3,7 @@
 namespace Filament\Commands\Aliases;
 
 use Filament\Commands;
-use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'filament:cluster')]
 class MakeClusterCommand extends Commands\MakeClusterCommand
 {
     protected $hidden = true;

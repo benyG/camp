@@ -8,6 +8,7 @@ use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\Auth\Register;
 use App\Filament\Pages\Auth\RequestPasswordReset;
 use App\Filament\Pages\Auth\ResetPassword;
+use App\Filament\Resources\InfoResource;
 use App\Http\Middleware\LangSwitch;
 use App\Http\Middleware\SessLog;
 use Filament\Http\Middleware\Authenticate;
@@ -77,13 +78,9 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook('panels::auth.register.form.after', fn (): string => Blade::render('footer4'))
             ->renderHook('panels::user-menu.before', fn (): string => Blade::render('head1'))
             ->userMenuItems([
-                /* MenuItem::make()
-                ->label(fn (): string => __('form.upp'))
-                ->url(fn (): string => \App\Filament\Pages\Pricing::getUrl())
-                ->icon('heroicon-o-bars-arrow-up'), */
                 MenuItem::make()
                     ->label(fn (): string => __('main.m1'))
-                    ->url(fn (): string => \App\Filament\Pages\Settings::getUrl())
+                    ->url(fn (): string => InfoResource::getUrl())
                     ->icon('heroicon-o-cog-6-tooth')
                     ->visible(fn (): bool => auth()->user()->can('viewAny', \App\Models\Info::class)),
                 // ...

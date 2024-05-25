@@ -93,10 +93,6 @@ class DataStore extends Mechanism
             return;
         }
 
-        if (! isset($this->lookup[$instance][$key])) {
-            return;
-        }
-
         if ($iKey !== null) {
             // Set a local variable to avoid the "indirect modification" error.
             $keyValue = $this->lookup[$instance][$key];

@@ -11,12 +11,6 @@ return [
     'columns' => [
 
         'text' => [
-
-            'actions' => [
-                'collapse_list' => 'Slėpti :count',
-                'expand_list' => 'Rodyti dar :count',
-            ],
-
             'more_list_items' => 'ir dar :count',
         ],
 
@@ -30,10 +24,6 @@ return [
 
         'bulk_select_record' => [
             'label' => 'Pažymėti/atžymėti įrašą :key masiniam veiksmui.',
-        ],
-
-        'bulk_select_group' => [
-            'label' => 'Pažymėti/atžymėti grupę :title masiniam veiksmui.',
         ],
 
         'search' => [
@@ -111,10 +101,6 @@ return [
     'filters' => [
 
         'actions' => [
-
-            'apply' => [
-                'label' => 'Taikyti filtrus',
-            ],
 
             'remove' => [
                 'label' => 'Pašalinti filtrą',

@@ -36,29 +36,23 @@
     </div>
 
     <div class="flex gap-x-3">
-        {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::SELECTION_INDICATOR_ACTIONS_BEFORE, scopes: static::class) }}
+        <x-filament::link
+            color="primary"
+            :id="$this->getId() . '.table.selection.indicator.record-count.' . $allSelectableRecordsCount"
+            tag="button"
+            :x-on:click="$selectAllRecordsAction"
+            :x-show="$allSelectableRecordsCount . ' !== ' . $selectedRecordsPropertyName . '.length'"
+        >
+            {{ trans_choice('filament-tables::table.selection_indicator.actions.select_all.label', $allSelectableRecordsCount) }}
+        </x-filament::link>
 
-        <div class="flex gap-x-3">
-            <x-filament::link
-                color="primary"
-                :id="$this->getId() . '.table.selection.indicator.record-count.' . $allSelectableRecordsCount"
-                tag="button"
-                :x-on:click="$selectAllRecordsAction"
-                :x-show="$allSelectableRecordsCount . ' !== ' . $selectedRecordsPropertyName . '.length'"
-            >
-                {{ trans_choice('filament-tables::table.selection_indicator.actions.select_all.label', $allSelectableRecordsCount) }}
-            </x-filament::link>
-
-            <x-filament::link
-                color="danger"
-                tag="button"
-                :x-on:click="$deselectAllRecordsAction"
-            >
-                {{ __('filament-tables::table.selection_indicator.actions.deselect_all.label') }}
-            </x-filament::link>
-        </div>
-
-        {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\Tables\View\TablesRenderHook::SELECTION_INDICATOR_ACTIONS_AFTER, scopes: static::class) }}
+        <x-filament::link
+            color="danger"
+            tag="button"
+            :x-on:click="$deselectAllRecordsAction"
+        >
+            {{ __('filament-tables::table.selection_indicator.actions.deselect_all.label') }}
+        </x-filament::link>
 
         {{ $end }}
     </div>

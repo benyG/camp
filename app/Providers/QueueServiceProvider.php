@@ -26,8 +26,7 @@ class QueueServiceProvider extends ServiceProvider
             $schedule->command('queue:work --stop-when-empty')->everyMinute()->withoutOverlapping(10);
             $schedule->command('queue:restart')->hourly();
             $schedule->command('queue:db-monitor')->everyTenMinutes();
-            $schedule->job(new \App\Jobs\GuestDestroy)->daily();
-            $schedule->job(new \App\Jobs\JournDestroy)->daily();
+            // $schedule->job(new Heartbeat)->daily();
         });
     }
 

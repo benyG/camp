@@ -27,9 +27,7 @@ trait WithFileUploads
 
     function _finishUpload($name, $tmpPath, $isMultiple)
     {
-        if (FileUploadConfiguration::shouldCleanupOldUploads()) {
-            $this->cleanupOldUploads();
-        }
+        $this->cleanupOldUploads();
 
         if ($isMultiple) {
             $file = collect($tmpPath)->map(function ($i) {

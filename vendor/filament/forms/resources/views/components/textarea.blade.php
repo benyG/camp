@@ -46,7 +46,6 @@
                 x-intersect.once="render()"
                 x-on:input="render()"
                 x-on:resize.window="render()"
-                wire:ignore.style.height
                 {{ $getExtraAlpineAttributeBag() }}
             @endif
             {{

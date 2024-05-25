@@ -8,41 +8,32 @@ class DeterministicBladeKeys
 {
     protected $countersByPath = [];
 
-    protected $currentPathHash;
+    protected $lastPath;
 
     public function generate()
     {
-        if (! $this->currentPathHash) {
+        if (! $this->lastPath) {
             throw new \Exception('Latest compiled component path not found.');
         }
 
-        $path = $this->currentPathHash;
+        $path = $this->lastPath;
         $count = $this->counter();
 
         // $key = "lw-[hash of Blade view path]-[current @livewire directive count]"
-        return 'lw-' . $this->currentPathHash . '-' . $count;
+        return 'lw-' . crc32($this->lastPath) . '-' . $count;
     }
 
     public function counter()
     {
-        if (! isset($this->countersByPath[$this->currentPathHash])) {
-            $this->countersByPath[$this->currentPathHash] = 0;
+        if (! isset($this->countersByPath[$this->lastPath])) {
+            $this->countersByPath[$this->lastPath] = 0;
         }
 
-        return $this->countersByPath[$this->currentPathHash]++;
+        return $this->countersByPath[$this->lastPath]++;
     }
 
-    public function hookIntoCompile(BladeCompiler $compiler, $viewContent)
+    public function interceptCompile(BladeCompiler $compiler)
     {
-        $path = $compiler->getPath();
-
-        // If there is no path this means this Blade is being compiled
-        // with ->compileString(...) directly instead of ->compile()
-        // therefore we'll generate a hash of the contents instead
-        if ($path === null) {
-            $path = $viewContent;
-        }
-
-        $this->currentPathHash = crc32($path);
+        $this->lastPath = $compiler->getPath();
     }
 }

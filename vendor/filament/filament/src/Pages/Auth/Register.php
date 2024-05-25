@@ -53,11 +53,7 @@ class Register extends SimplePage
             redirect()->intended(Filament::getUrl());
         }
 
-        $this->callHook('beforeFill');
-
         $this->form->fill();
-
-        $this->callHook('afterFill');
     }
 
     public function register(): ?RegistrationResponse
@@ -81,23 +77,9 @@ class Register extends SimplePage
         }
 
         $user = $this->wrapInDatabaseTransaction(function () {
-            $this->callHook('beforeValidate');
-
             $data = $this->form->getState();
 
-            $this->callHook('afterValidate');
-
-            $data = $this->mutateFormDataBeforeRegister($data);
-
-            $this->callHook('beforeRegister');
-
-            $user = $this->handleRegistration($data);
-
-            $this->form->model($user)->saveRelationships();
-
-            $this->callHook('afterRegister');
-
-            return $user;
+            return $this->handleRegistration($data);
         });
 
         event(new Registered($user));
@@ -135,7 +117,7 @@ class Register extends SimplePage
             throw new Exception("Model [{$userClass}] does not have a [notify()] method.");
         }
 
-        $notification = app(VerifyEmail::class);
+        $notification = new VerifyEmail();
         $notification->url = Filament::getVerifyEmailUrl($user);
 
         $user->notify($notification);
@@ -260,14 +242,5 @@ class Register extends SimplePage
     protected function hasFullWidthFormActions(): bool
     {
         return true;
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
-     */
-    protected function mutateFormDataBeforeRegister(array $data): array
-    {
-        return $data;
     }
 }

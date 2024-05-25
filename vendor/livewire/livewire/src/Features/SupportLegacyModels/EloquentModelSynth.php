@@ -62,8 +62,6 @@ class EloquentModelSynth extends Synth
 
     public function hydrate($data, $meta, $hydrateChild)
     {
-        if ($data === '' || $data === null) return null;
-        
         if (isset($meta['__child_from_parent'])) {
             $model = $meta['__child_from_parent'];
 
@@ -106,10 +104,6 @@ class EloquentModelSynth extends Synth
 
         if ($target->relationLoaded($key)) {
             return $target->setRelation($key, $value);
-        }
-
-        if (array_key_exists($key, $target->getCasts()) && enum_exists($target->getCasts()[$key]) && $value === '') {
-            $value = null;
         }
 
         $target->$key = $value;

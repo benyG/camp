@@ -24,9 +24,6 @@
     $isReorderableWithButtons = $isReorderableWithButtons();
     $isReorderableWithDragAndDrop = $isReorderableWithDragAndDrop();
 
-    $collapseAllActionIsVisible = $isCollapsible && $collapseAllAction->isVisible();
-    $expandAllActionIsVisible = $isCollapsible && $expandAllAction->isVisible();
-
     $statePath = $getStatePath();
 @endphp
 
@@ -39,14 +36,14 @@
                 ->class(['fi-fo-builder grid gap-y-4'])
         }}
     >
-        @if ($collapseAllActionIsVisible || $expandAllActionIsVisible)
+        @if ($isCollapsible && ($collapseAllAction->isVisible() || $expandAllAction->isVisible()))
             <div
                 @class([
                     'flex gap-x-3',
                     'hidden' => count($containers) < 2,
                 ])
             >
-                @if ($collapseAllActionIsVisible)
+                @if ($collapseAllAction->isVisible())
                     <span
                         x-on:click="$dispatch('builder-collapse', '{{ $statePath }}')"
                     >
@@ -54,7 +51,7 @@
                     </span>
                 @endif
 
-                @if ($expandAllActionIsVisible)
+                @if ($expandAllAction->isVisible())
                     <span
                         x-on:click="$dispatch('builder-expand', '{{ $statePath }}')"
                     >
@@ -82,15 +79,6 @@
                             $extraItemActions,
                             fn (Action $action): bool => $action(['item' => $uuid])->isVisible(),
                         );
-                        $cloneAction = $cloneAction(['item' => $uuid]);
-                        $cloneActionIsVisible = $isCloneable && $cloneAction->isVisible();
-                        $deleteAction = $deleteAction(['item' => $uuid]);
-                        $deleteActionIsVisible = $isDeletable && $deleteAction->isVisible();
-                        $moveDownAction = $moveDownAction(['item' => $uuid])->disabled($loop->last);
-                        $moveDownActionIsVisible = $isReorderableWithButtons && $moveDownAction->isVisible();
-                        $moveUpAction = $moveUpAction(['item' => $uuid])->disabled($loop->first);
-                        $moveUpActionIsVisible = $isReorderableWithButtons && $moveUpAction->isVisible();
-                        $reorderActionIsVisible = $isReorderableWithDragAndDrop && $reorderAction->isVisible();
                     @endphp
 
                     <li
@@ -105,7 +93,7 @@
                         class="fi-fo-builder-item rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-white/5 dark:ring-white/10"
                         x-bind:class="{ 'fi-collapsed overflow-hidden': isCollapsed }"
                     >
-                        @if ($reorderActionIsVisible || $moveUpActionIsVisible || $moveDownActionIsVisible || $hasBlockLabels || $cloneActionIsVisible || $deleteActionIsVisible || $isCollapsible || $visibleExtraItemActions)
+                        @if ($isReorderableWithDragAndDrop || $isReorderableWithButtons || $hasBlockLabels || $isCloneable || $isDeletable || $isCollapsible || count($visibleExtraItemActions))
                             <div
                                 @if ($isCollapsible)
                                     x-on:click.stop="isCollapsed = !isCollapsed"
@@ -115,9 +103,9 @@
                                     'cursor-pointer select-none' => $isCollapsible,
                                 ])
                             >
-                                @if ($reorderActionIsVisible || $moveUpActionIsVisible || $moveDownActionIsVisible)
+                                @if ($isReorderableWithDragAndDrop || $isReorderableWithButtons)
                                     <ul class="flex items-center gap-x-3">
-                                        @if ($reorderActionIsVisible)
+                                        @if ($isReorderableWithDragAndDrop)
                                             <li
                                                 x-sortable-handle
                                                 x-on:click.stop
@@ -126,13 +114,13 @@
                                             </li>
                                         @endif
 
-                                        @if ($moveUpActionIsVisible || $moveDownActionIsVisible)
+                                        @if ($isReorderableWithButtons)
                                             <li x-on:click.stop>
-                                                {{ $moveUpAction }}
+                                                {{ $moveUpAction(['item' => $uuid])->disabled($loop->first) }}
                                             </li>
 
                                             <li x-on:click.stop>
-                                                {{ $moveDownAction }}
+                                                {{ $moveDownAction(['item' => $uuid])->disabled($loop->last) }}
                                             </li>
                                         @endif
                                     </ul>
@@ -153,7 +141,7 @@
                                     </h4>
                                 @endif
 
-                                @if ($cloneActionIsVisible || $deleteActionIsVisible || $isCollapsible || $visibleExtraItemActions)
+                                @if ($isCloneable || $isDeletable || $isCollapsible || count($visibleExtraItemActions))
                                     <ul
                                         class="ms-auto flex items-center gap-x-3"
                                     >
@@ -163,15 +151,15 @@
                                             </li>
                                         @endforeach
 
-                                        @if ($cloneActionIsVisible)
+                                        @if ($isCloneable)
                                             <li x-on:click.stop>
-                                                {{ $cloneAction }}
+                                                {{ $cloneAction(['item' => $uuid]) }}
                                             </li>
                                         @endif
 
-                                        @if ($deleteActionIsVisible)
+                                        @if ($isDeletable)
                                             <li x-on:click.stop>
-                                                {{ $deleteAction }}
+                                                {{ $deleteAction(['item' => $uuid]) }}
                                             </li>
                                         @endif
 
@@ -210,7 +198,7 @@
                     </li>
 
                     @if (! $loop->last)
-                        @if ($isAddable && $addBetweenAction(['afterItem' => $uuid])->isVisible())
+                        @if ($isAddable && $addBetweenAction->isVisible())
                             <li class="relative -top-2 !mt-0 h-0">
                                 <div
                                     class="flex w-full justify-center opacity-0 transition duration-75 hover:opacity-100"
@@ -227,7 +215,7 @@
                                             :width="$blockPickerWidth"
                                         >
                                             <x-slot name="trigger">
-                                                {{ $addBetweenAction(['afterItem' => $uuid]) }}
+                                                {{ $addBetweenAction }}
                                             </x-slot>
                                         </x-filament-forms::builder.block-picker>
                                     </div>
