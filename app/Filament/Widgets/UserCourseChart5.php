@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Answer;
 use App\Models\Question;
 use App\Models\User;
 use Filament\Support\RawJs;
@@ -10,8 +11,6 @@ use Livewire\Attributes\On;
 
 class UserCourseChart5 extends ChartWidget
 {
-    protected static ?string $heading = 'Performance evolution';
-
     protected static string $view = 'filament.widgets.uc5';
 
     protected static ?string $pollingInterval = null;
@@ -20,7 +19,6 @@ class UserCourseChart5 extends ChartWidget
 
     protected static ?int $sort = 3;
 
-    #[Locked]
     public $record;
 
     public $cs = 0;
@@ -33,6 +31,11 @@ class UserCourseChart5 extends ChartWidget
     public function mount($usrec = null): void
     {
         $this->record = is_int($usrec) ? User::with('exams2')->findOrFail($usrec) : auth()->user();
+    }
+
+    public function getHeading(): ?string
+    {
+        return __('main.w39');
     }
 
     public static function canView(): bool
@@ -65,8 +68,10 @@ class UserCourseChart5 extends ChartWidget
         });
         $arx = $this->cs2 == '0' ? [0, 1] : [intval($this->cs2) - 1];
         $uc = [[], [], []];
-        $this->record = $this->record ?? auth()->user();
-        $exa = $this->record->exams2()->where('certi', $this->cs)->whereIn('type', $arx)->limit($ix->taff)->latest('added_at')->get();
+        $usx = $this->record ?? auth()->user();
+        $usx->loadMissing('exams2');
+        $exa = $usx->exams2->where('certi', $this->cs)->whereIn('type', $arx)->take($ix->taff);
+        $QUEST = Question::select('id')->with('answers')->get();
         foreach ($exa as $ex) {
             $md1 = 0;
             $md2 = 0;
@@ -75,18 +80,24 @@ class UserCourseChart5 extends ChartWidget
                 $res = $ex->pivot->gen;
                 $arrk = array_keys($ex->pivot->gen);
                 $qrr = [];
-                $rt = Question::whereIn('id', $arrk)->get();
+                $rt = $QUEST->whereIn('id', $arrk);
                 foreach ($rt as $quest) {
-                    $bm = $quest->answers()->where('isok', true)->count() <= 1;
+                    $bm = $quest->answers->sum(function (Answer $aas) {
+                        return $aas->qa->isok == 1 ? 1 : 0;
+                    }) <= 1;
                     if ($bm) {
-                        $ab = $quest->answers()->where('isok', true)->where('answers.id', $res[$quest->id][0])->count();
+                        $ab = $quest->answers->where('id', $res[$quest->id][0])->sum(function (Answer $aas) {
+                            return $aas->qa->isok == 1 ? 1 : 0;
+                        });
                         if ($ab > 0) {
                             $md1++;
                         } else {
                             $md2++;
                         }
                     } else {
-                        $ab2 = $quest->answers()->where('isok', false)->whereIn('answers.id', $res[$quest->id])->count();
+                        $ab2 = $quest->answers->whereIn('id', $res[$quest->id])->sum(function (Answer $aas) {
+                            return $aas->qa->isok == 0 ? 1 : 0;
+                        });
                         if ($ab2 == 0) {
                             $md1++;
                         } else {
@@ -98,9 +109,9 @@ class UserCourseChart5 extends ChartWidget
             $uc[1][] = $md1;
             $uc[2][] = $md2;
         }
-        $uc[1]=array_reverse($uc[1]);
-        $uc[2]=array_reverse($uc[2]);
-        $uc[0]=array_reverse($uc[0]);
+        $uc[1] = array_reverse($uc[1]);
+        $uc[2] = array_reverse($uc[2]);
+        $uc[0] = array_reverse($uc[0]);
 
         return [
             'datasets' => [

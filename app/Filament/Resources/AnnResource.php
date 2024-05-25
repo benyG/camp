@@ -48,7 +48,7 @@ class AnnResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('type')->label(__('form.uty'))
                             ->required()->multiple()
-                            ->options(['1' => 'Admin', '2' => 'Starter', '3' => 'User', '4' => 'Pro', '5' => 'VIP']),
+                            ->options(['1' => 'Admin', '2' => 'Starter', '3' => 'User', '4' => 'Pro', '5' => 'VIP', '9' => 'Guest']),
                         Forms\Components\DatePicker::make('due')->label(__('main.dd'))->minDate(now()),
                         Forms\Components\Toggle::make('hid')->label(__('form.dis').__('main.space').'?')
                             ->required()->inline(false)->default(true),
@@ -74,8 +74,8 @@ class AnnResource extends Resource
                     ->dateTime()->since()->sortable(),
                 Tables\Columns\TextColumn::make('type')->label(trans_choice('main.m5', 2))->sortable()
                     ->formatStateUsing(function ($state): string {
-                        $arrs = ['1', '2', '3', '4', '5','9'];
-                        $arru = ['Admin', 'Starter', 'User', 'Pro', 'VIP','Guest'];
+                        $arrs = ['1', '2', '3', '4', '5', '9'];
+                        $arru = ['Admin', 'Starter', 'User', 'Pro', 'VIP', 'Guest'];
 
                         return str_replace($arrs, $arru, $state);
                     }),
@@ -140,21 +140,21 @@ class AnnResource extends Resource
                 }),
             ])
             ->bulkActions([
-                    Tables\Actions\BulkActionGroup::make([
-                        Tables\Actions\DeleteBulkAction::make()->after(function (\Illuminate\Database\Eloquent\Collection $record) {
-                            foreach ($record as $value) {
-                                $txt = "Removed announcement ID $value->id.
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()->after(function (\Illuminate\Database\Eloquent\Collection $record) {
+                        foreach ($record as $value) {
+                            $txt = "Removed announcement ID $value->id.
                             Description: $value->descr <br>
                             Url: $value->url <br>
                             Users: ".str_replace(['1', '2', '3', '4', '5'], ['Admin', 'Starter', 'User', 'Pro', 'VIP'], implode(',', $value->type)).' <br>
                             Display: '.(intval($value->hid) == 0 ? 'No' : 'Yes')." <br>
                             Due date: $value->due <br>
                                  ";
-                                \App\Models\Journ::add(auth()->user(), 'Answers', 4, $txt);
-                            }
-                        }),
-                    ]),
-                ])
+                            \App\Models\Journ::add(auth()->user(), 'Answers', 4, $txt);
+                        }
+                    }),
+                ]),
+            ])
             ->deferLoading()->striped()->persistFiltersInSession()
             ->persistSearchInSession()->persistColumnSearchesInSession();
     }

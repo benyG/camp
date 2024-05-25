@@ -18,10 +18,12 @@ class SessLog
         if (! session()->has('lastActivityTime')) {
             session(['lastActivityTime' => now()]);
         }
-        if (now()->diffInMinutes(session('lastActivityTime')) >= 60) {
+        if (abs(now()->diffInMinutes(session('lastActivityTime'))) >= 60 || (auth()->check() && auth()->user()->ex > 1 && \App\Models\User::where('id', auth()->id())->first()->kx != auth()->user()->kx)) {
             if (auth()->check()) {
                 \App\Models\Journ::add(auth()->user(), 'Login', 10, 'Session expiration. Loging out');
-                if(auth()->user()->ex>6) \App\Models\User::destroy(auth()->id());
+                if (auth()->user()->ex > 6) {
+                    \App\Models\User::destroy(auth()->id());
+                }
                 auth()->logout();
                 session()->forget('lastActivityTime');
                 session()->invalidate();

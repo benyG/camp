@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
 use Filament\Notifications\Notification;
 use Filament\Pages\Auth\Register as BaseRegister;
+use Filament\Forms\Get;
 
 class Register extends BaseRegister
 {
@@ -33,10 +34,10 @@ class Register extends BaseRegister
                         $this->getPasswordFormComponent()
                             ->regex('/^\S*(?=.*\d)(?=\S*[\W])[a-zA-Z\d]\S*$/i')
                             ->validationMessages([
-                                'regex' => 'There should be at least one uppercase and lowercase letter, one special character, and one digit. No spaces',
+                                'regex' => __('form.e1'),
                             ]),
                         $this->getPasswordConfirmationFormComponent(),
-                        Forms\Components\Select::make('tz')->label('Timezone')->required()
+                        Forms\Components\Select::make('tz')->label(__('form.tz'))->required()
                             ->options(function () {
                                 $oo = mtz();
                                 $ap = [];
@@ -46,6 +47,10 @@ class Register extends BaseRegister
 
                                 return $ap;
                             }),
+                        Forms\Components\Select::make('pck')->label('Package')->required()
+                            ->options(['0'=>"Free",'1'=>"Basic",'2'=>"Standard",'3'=>"Premium"])->live(),
+                        Forms\Components\Select::make('bil')->label(__('form.bil'))->required(fn(Get $get):bool=>intval($get('pck')!=0))
+                            ->options(['0'=>__('form.mon'),'1'=>__('form.ann')])->visible(fn(Get $get):bool=>intval($get('pck')!=0)),
                     ])
                     ->statePath('data'),
             ),
@@ -80,6 +85,8 @@ class Register extends BaseRegister
         $data = $this->form->getState();
 
         $user = $this->getUserModel()::create($data);
+        $pck=intval($data['pck']);
+        $user->pk=$pck.($pck>0?'|'.intval($data['bil']):'');$user->save();
         $txt = 'New user registered with email '.$data['email'];
         \App\Models\Journ::add(null, 'Register', 1, $txt, $this->ox);
 

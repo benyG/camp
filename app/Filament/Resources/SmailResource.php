@@ -20,7 +20,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-//use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification as Notif;
 use Illuminate\Support\Str;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
@@ -88,15 +87,15 @@ class SmailResource extends Resource
                     ->formatStateUsing(fn (Model $record): string => $record->from == auth()->id() ? Str::remove(['"', '[', ']'], $record->users2->pluck('name')) : $record->user1->name)
                     ->sortable()->hidden(fn (): bool => auth()->user()->ex >= 2),
                 Tables\Columns\IconColumn::make('sent')->label(__('form.svs'))->hidden(fn (): bool => auth()->user()->ex >= 2)
-                    ->getStateUsing(fn (Smail $record) => $record->users1()->first()->pivot->sent ?? null)
+                    ->getStateUsing(fn (Smail $record) => $record->users1->first()->pivot->sent ?? null)
                     ->icon(fn ($state): string => $state ? 'heroicon-o-envelope' : '')
-                    ->tooltip(fn (Smail $record): string => $record->users1()->first()->pivot->sent == 1 ? __('form.lso')." {$record->users1()->first()->pivot->last_sent}" : '')
+                    ->tooltip(fn (Smail $record): string => $record->users1->first()->pivot->sent == 1 ? __('form.lso')." {$record->users1->first()->pivot->last_sent}" : '')
                     ->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('read')->label(__('form.read1'))
-                    ->getStateUsing(fn (Smail $record) => $record->users1()->first()->pivot->read ?? null)
+                    ->getStateUsing(fn (Smail $record) => $record->users1->first()->pivot->read ?? null)
                     ->color(fn ($state): string => $state ? 'success' : 'danger')
                     ->icon(fn ($state, Smail $record): string => $record->from == auth()->user()->id ? '' : ($state ? 'heroicon-o-envelope-open' : 'heroicon-o-envelope'))
-                    ->tooltip(fn (Smail $record): string => $record->from == auth()->user()->id ? '' : ($record->users1()->first()->pivot->read ? "Read on {$record->users1()->first()->pivot->read_date}" : ''))
+                    ->tooltip(fn (Smail $record): string => $record->from == auth()->user()->id ? '' : ($record->users1->first()->pivot->read ? "Read on {$record->users1->first()->pivot->read_date}" : ''))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')->label('Date')
                     ->dateTime()
@@ -111,72 +110,72 @@ class SmailResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make('jjhg')->label(__('form.read'))->beforeFormFilled(function (Model $record) {
-                    if ($record->from != auth()->id() && ! $record->users1()->first()->pivot->read) {
+                    if ($record->from != auth()->id() && ! $record->users1->first()->pivot->read) {
                         $record->users1()->updateExistingPivot(auth()->id(), ['read' => true, 'read_date' => now()]);
                     }
                 })->modalHeading(fn (Model $record): string => $record->sub),
                 Tables\Actions\Action::make('transfer')->modalHeading(__('form.tr'))
                     ->icon('heroicon-o-envelope')
                     ->label(__('form.tr'))->form([
-                    Forms\Components\Select::make('user4')->label('To')
-                        ->multiple()->hidden(fn (): bool => auth()->user()->ex >= 2)
-                        ->required(fn (): bool => auth()->user()->ex < 2)
-                        ->options(function () {
-                            $vagues = Vague::with('users')->get();
-                            $users = User::doesntHave('vagues')->where('id', '<>', auth()->user()->id)->get();
-                            $bg = [];
-                            $er = [];
-                            foreach ($users as $uy) {
-                                $er[$uy->id] = $uy->name;
-                            }
-                            $bg['N/A'] = $er;
-                            foreach ($vagues as $vague) {
-                                $ez = $vague->users;
-                                $ee = [];
-                                foreach ($ez as $us) {
-                                    $ee[$us->id] = $us->name;
+                        Forms\Components\Select::make('user4')->label('To')
+                            ->multiple()->hidden(fn (): bool => auth()->user()->ex >= 2)
+                            ->required(fn (): bool => auth()->user()->ex < 2)
+                            ->options(function () {
+                                $vagues = Vague::with('users')->get();
+                                $users = User::doesntHave('vagues')->where('id', '<>', auth()->user()->id)->get();
+                                $bg = [];
+                                $er = [];
+                                foreach ($users as $uy) {
+                                    $er[$uy->id] = $uy->name;
                                 }
-                                $bg[$vague->name] = $ee;
-                            }
+                                $bg['N/A'] = $er;
+                                foreach ($vagues as $vague) {
+                                    $ez = $vague->users;
+                                    $ee = [];
+                                    foreach ($ez as $us) {
+                                        $ee[$us->id] = $us->name;
+                                    }
+                                    $bg[$vague->name] = $ee;
+                                }
 
-                            return $bg;
-                        })
-                        ->preload(),
-                    Forms\Components\TextInput::make('sub')->label(__('form.sub'))
-                        ->required()
-                        ->maxLength(255),
-                    Forms\Components\TextInput::make('from')
-                        ->hidden(),
-                    TinyEditor::make('content')->label(__('form.cnt'))
-                        ->required()
-                        ->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads')
-                        ->columnSpanFull(),
-                ])->fillForm(fn (Smail $record): array => [
-                    'content' => $record->content,
-                    'sub' => $record->sub,
-                ])->action(function (array $data, Smail $record, string $model): void {
-                    $data['from'] = auth()->user()->id;
-                    $rec = $model::create($data);
-                    $rec->users()->attach($data['user4']);
-                    Notification::make()->success()->title(__('form.e26'))->send();
-                    $txt = "Message ID $record->id tranfered
+                                return $bg;
+                            })
+                            ->preload(),
+                        Forms\Components\TextInput::make('sub')->label(__('form.sub'))
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('from')
+                            ->hidden(),
+                        TinyEditor::make('content')->label(__('form.cnt'))
+                            ->required()
+                            ->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads')
+                            ->columnSpanFull(),
+                    ])->fillForm(fn (Smail $record): array => [
+                        'content' => $record->content,
+                        'sub' => $record->sub,
+                    ])->action(function (array $data, Smail $record, string $model): void {
+                        $data['from'] = auth()->user()->id;
+                        $rec = $model::create($data);
+                        $rec->users()->attach($data['user4']);
+                        Notification::make()->success()->title(__('form.e26'))->send();
+                        $txt = "Message ID $record->id tranfered
                         Sub: $record->sub <br>
                         To: ".implode(',', $rec->users2()->pluck('name')->toArray());
-                    \App\Models\Journ::add(auth()->user(), 'Inbox', 1, $txt);
-                    foreach ($rec->users2 as $us) {
-                        try {
-                            //   Notif::send($us, new NewMail($record->sub,$para,$opt));
-                            SendEmail::dispatch($us, $rec->sub, $para, $opt);
-                            $record->users2()->updateExistingPivot($us->id, ['sent' => true, 'last_sent' => now()]);
-                            Notification::make()->success()->title(__('form.e8').$us->email)->send();
-                        } catch (Exception $exception) {
-                            Notification::make()
-                                ->title(__('form.e7').$us->email)
-                                ->danger()
-                                ->send();
+                        \App\Models\Journ::add(auth()->user(), 'Inbox', 1, $txt);
+                        foreach ($rec->users2 as $us) {
+                            try {
+                                //   Notif::send($us, new NewMail($record->sub,$para,$opt));
+                                SendEmail::dispatch($us, $rec->sub, $para, $opt);
+                                $record->users2()->updateExistingPivot($us->id, ['sent' => true, 'last_sent' => now()]);
+                                Notification::make()->success()->title(__('form.e8').$us->email)->send();
+                            } catch (Exception $exception) {
+                                Notification::make()
+                                    ->title(__('form.e7').$us->email)
+                                    ->danger()
+                                    ->send();
+                            }
                         }
-                    }
-                })->hidden(fn (): bool => auth()->user()->ex >= 2),
+                    })->hidden(fn (): bool => auth()->user()->ex >= 2),
                 Tables\Actions\Action::make('resend')->color('warning')->label(__('form.res2'))->icon('heroicon-o-paper-airplane')
                     ->after(function ($record) {
                         $txt = "Message ID $record->id, resent via SMTP

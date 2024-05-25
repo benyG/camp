@@ -278,7 +278,7 @@
                         }'
                         x-init="setInterval(function() {
                             if ($wire.iati) {
-                                let current = $wire.iatext;
+                                let current = $wire.iatext.replace(/(\d+\. \*\*|- \*\*|- )/g, '<br>$1').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                                 $data.text = current.substring(0, $data.charIndex);
                                 $data.charIndex += 1;
                                 if ($data.charIndex >= $wire.iatext.length) { $wire.iati = false;
@@ -299,7 +299,7 @@
                         }'
                         x-init="setInterval(function() {
                             if ($wire.iati2) {
-                                let current = $wire.iatext2;
+                                let current = $wire.iatext2.replace(/(\d+\. \*\*|- \*\*|- )/g, '<br>$1').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                                 $data.text = current.substring(0, $data.charIndex);
                                 $data.charIndex += 1;
                                 if ($data.charIndex >= $wire.iatext2.length) { $wire.iati2 = false;

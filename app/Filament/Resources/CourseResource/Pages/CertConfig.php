@@ -66,9 +66,9 @@ class CertConfig extends Page
                     ->content(new HtmlString('<span class="text-lg font-bold">'.$this->record->name.'<span>')),
                 Forms\Components\Section::make(__('form.gs'))->columns(2)
                     ->schema([
-                        Forms\Components\TextInput::make('timer')->numeric()->step(5)->requiredIf('type', '1')->label(__('form.tim').' (min)')
+                        Forms\Components\TextInput::make('timer')->numeric()->requiredIf('type', '1')->label(__('form.tim').' (min)')
                             ->rules(['numeric']),
-                        Forms\Components\TextInput::make('quest')->numeric()->step(5)->required()->label('Nb. Questions')
+                        Forms\Components\TextInput::make('quest')->numeric()->required()->label('Nb. Questions')
                             ->rules(['numeric']),
                     ]),
                 Forms\Components\Section::make(__('main.cc3'))
@@ -80,7 +80,7 @@ class CertConfig extends Page
                                     ->options(Module::where('course', $this->record->id)->pluck('name', 'id'))->required()
                                     ->preload()
                                     ->disableOptionsWhenSelectedInSiblingRepeaterItems(),
-                                Forms\Components\TextInput::make('nb')->numeric()->step(5)->required()->label('Questions')->rules(['numeric'])
+                                Forms\Components\TextInput::make('nb')->numeric()->required()->label('Questions')->rules(['numeric'])
                                     ->default($ix->minq),
                             ])->minItems(1)->maxItems(Module::where('course', $this->record->id)->count()),
                     ]),

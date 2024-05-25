@@ -10,6 +10,7 @@
     'color' => 'primary',
     'disabled' => false,
     'form' => null,
+    'formId' => null,
     'href' => null,
     'icon' => null,
     'iconAlias' => null,
@@ -133,7 +134,8 @@
             x-data="{}"
         @endif
         @if ($keyBindings)
-            x-mousetrap.global.{{ collect($keyBindings)->map(fn (string $keyBinding): string => str_replace('+', '-', $keyBinding))->implode('.') }}
+            x-bind:id="$id('key-bindings')"
+            x-mousetrap.global.{{ collect($keyBindings)->map(fn (string $keyBinding): string => str_replace('+', '-', $keyBinding))->implode('.') }}="document.getElementById($el.id).click()"
         @endif
         @if ($hasTooltip)
             x-tooltip="{
@@ -180,7 +182,8 @@
             x-data="{}"
         @endif
         @if ($keyBindings)
-            x-mousetrap.global.{{ collect($keyBindings)->map(fn (string $keyBinding): string => str_replace('+', '-', $keyBinding))->implode('.') }}
+            x-bind:id="$id('key-bindings')"
+            x-mousetrap.global.{{ collect($keyBindings)->map(fn (string $keyBinding): string => str_replace('+', '-', $keyBinding))->implode('.') }}="document.getElementById($el.id).click()"
         @endif
         @if ($hasTooltip)
             x-tooltip="{
@@ -192,6 +195,7 @@
             $attributes
                 ->merge([
                     'disabled' => $disabled,
+                    'form' => $formId,
                     'type' => $type,
                     'wire:loading.attr' => 'disabled',
                     'wire:target' => ($hasLoadingIndicator && $loadingIndicatorTarget) ? $loadingIndicatorTarget : null,

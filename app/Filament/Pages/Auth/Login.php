@@ -4,16 +4,16 @@ namespace App\Filament\Pages\Auth;
 
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
+use Filament\Forms;
+use Filament\Forms\Components\Component;
 use Filament\Forms\Form;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Notifications\Notification;
 use Filament\Pages\Auth\Login as BaseLogin;
-use Illuminate\Validation\ValidationException;
-use Filament\Forms\Components\Component;
-use Filament\Forms;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class Login extends BaseLogin
 {
@@ -28,6 +28,7 @@ class Login extends BaseLogin
             $this->getPasswordFormComponent(),
         ])->statePath('data');
     }
+
     protected function getPasswordFormComponent(): Component
     {
         return Forms\Components\TextInput::make('password')
@@ -38,6 +39,7 @@ class Login extends BaseLogin
             ->required()
             ->extraInputAttributes(['tabindex' => 2]);
     }
+
     public function getHeading(): string
     {
         return __('main.log');
@@ -109,10 +111,13 @@ class Login extends BaseLogin
 
             $this->throwFailureValidationException();
         }
+        $user->kx = Str::random(180);
+        $user->save();
         session()->regenerate();
 
         return app(LoginResponse::class);
     }
+
     public function authenticate2(): ?LoginResponse
     {
         try {
@@ -132,13 +137,14 @@ class Login extends BaseLogin
 
             return null;
         }
-        $user= new \App\Models\User;
-        $user->name="Guest";
-        $user->email='user'.Str::remove(['-',' ',':'], now()."").Str::random(3).'@itexambootcamp.com';
-        $sp=Str::random(20);
-        $user->password=Hash::make($sp);
-        $user->email_verified_at=now();
-        $user->ex=9;$user->ax=1;
+        $user = new \App\Models\User;
+        $user->name = 'Guest';
+        $user->email = 'user'.Str::remove(['-', ' ', ':'], now().'').Str::random(3).'@itexambootcamp.com';
+        $sp = Str::random(20);
+        $user->password = Hash::make($sp);
+        $user->email_verified_at = now();
+        $user->ex = 9;
+        $user->ax = 1;
         $user->tz = isset(session('auth_ip')['timezone']) ? session('auth_ip')['timezone'] : 'UTC';
         $user->save();
         if (! Filament::auth()->attempt([
@@ -155,8 +161,6 @@ class Login extends BaseLogin
         $user = Filament::auth()->user();
         $txt = "Successful login of a guest '$user->name' ($user->email)";
         \App\Models\Journ::add($user, 'Login', 0, $txt, $this->ox);
-
-
 
         if (
             ($user instanceof FilamentUser) &&
