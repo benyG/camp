@@ -13,6 +13,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Notification as Notif;
 use Illuminate\Support\Str;
+use Illuminate\Contracts\View\View;
 
 class AssessCreate extends CreateRecord
 {
@@ -26,10 +27,15 @@ class AssessCreate extends CreateRecord
             Actions\Action::make('reset')->label(__('form.res'))
                 ->action(function (): void {
                     $this->form->fill();
-                    Notification::make()
+                    PriceNotif::make()
+                    ->title(__('form.e5'))
+                    ->success()
+                    ->send();
+
+                   /*  Notification::make()
                         ->title(__('form.e5'))
                         ->success()
-                        ->send();
+                        ->send(); */
                 }),
         ];
     }
@@ -116,4 +122,21 @@ class AssessCreate extends CreateRecord
         \App\Models\Journ::add(auth()->user(), 'Assessments', 1, $txt);
 
     }
+    protected function getFormActions(): array
+{
+   $ix= cache()->rememberForever('settings', function () {
+        return \App\Models\Info::findOrFail(1);
+    });
+    return [
+        Actions\Action::make('re')->label('Create')
+        ->color('primary')
+        ->modalContent(fn (): View => view('filament.pages.actions.pricing1', ['ix' => $ix,'msg'=>""]))
+        ->action(function (): void {
+        }),
+        Actions\Action::make('cane')->label(__('form.res'))->color('gray')
+        ->action(function (): void {
+        }),
+
+        ];
+}
 }

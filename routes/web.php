@@ -16,6 +16,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::get('/ui2', function () {
+    return view('welcome2');
+})->name('home2');
+
 Route::post('login', 'App\Filament\Pages\Auth\LoginController@authenticate2');
 // OAuth2 routes
 Route::post('auth/{driver}', 'App\Http\Controllers\SSOController@redirectToProvider')->name('oauth.redirect');
