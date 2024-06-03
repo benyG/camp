@@ -100,7 +100,6 @@ class ModuleResource extends Resource
                 Tables\Actions\EditAction::make()->iconButton()
                     ->mutateRecordDataUsing(function (array $data, $record): array {
                         $data['prov'] = $record->provRel->id;
-
                         return $data;
                     })
                     ->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
@@ -115,7 +114,6 @@ class ModuleResource extends Resource
                                 \App\Models\Journ::add(auth()->user(), 'Modules', 3, $txt);
                             }
                         }
-
                         return $record;
                     }),
                 Tables\Actions\DeleteAction::make()->iconButton()->after(function ($record) {

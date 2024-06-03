@@ -45,7 +45,7 @@ class ExamPolicy
      */
     public function delete(User $user, Exam $exam): bool
     {
-        return $user->id == $exam->from && empty($exam->users1()->first()->pivot->start_at);
+        return $user->id == $exam->from && empty($exam->users1->first()->pivot->start_at);
     }
 
     /**

@@ -113,11 +113,47 @@ class Login extends BaseLogin
         }
         $user->kx = Str::random(180);
         $user->save();
+        if(auth()->check() && auth()->user()->ex>1){
+            $ix = cache()->rememberForever('settings', function () {
+                return \App\Models\Info::findOrFail(1);
+            });
+            //plan
+            $user=auth()->user();
+            if(is_null($user->sub) || $user->sub->exp < now()){
+                $user->ex=2;$user->save();
+            }else{
+                $ex=0;$iac=0;
+                switch ($user->sub->pbi) {
+                    case $ix->bp_id : $ex=3;
+                        break;
+                    case $ix->sp_id : $ex=4;
+                        break;
+                    case $ix->pp_id : $ex=5;
+                        break;
+                    default: $ex=2; break;
+                }
+                if($user->ex!=$ex) {$user->ex=$ex;$user->save();}
+                //ia
+                if(is_null($user->icx) || $user->exp->month!=$user->icx->month) {
+                    switch ($user->sub->pbi) {
+                        case $ix->bp_id : $iac=$ix->iac_b;
+                            break;
+                        case $ix->sp_id : $iac=$ix->iac_s;
+                            break;
+                        case $ix->pp_id : $iac=$ix->iac_p;
+                            break;
+                        default: $ex=2; break;
+                    }
+                    $user->save();
+                }
+            }
+        }
         session()->regenerate();
 
         return app(LoginResponse::class);
     }
 
+    //Login Guest
     public function authenticate2(): ?LoginResponse
     {
         try {
@@ -137,13 +173,17 @@ class Login extends BaseLogin
 
             return null;
         }
+        $ix = cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+        });
+
         $user = new \App\Models\User;
         $user->name = 'Guest';
-        $user->email = 'user'.Str::remove(['-', ' ', ':'], now().'').Str::random(3).'@itexambootcamp.com';
+        $user->email = 'user'.Str::remove(['-', ' ', ':'], now().'').Str::random(3).'@examboot.net';
         $sp = Str::random(20);
         $user->password = Hash::make($sp);
         $user->email_verified_at = now();
-        $user->ex = 9;
+        $user->ex = 9;$user->ix = $ix->iac_g;
         $user->ax = 1;
         $user->tz = isset(session('auth_ip')['timezone']) ? session('auth_ip')['timezone'] : 'UTC';
         $user->save();
@@ -155,7 +195,6 @@ class Login extends BaseLogin
                 ->title(__('form.e10'))->danger()->send();
             $txt = 'Failed login with email '.$user->email;
             \App\Models\Journ::add(null, 'Login', 5, $txt, $this->ox);
-
         }
 
         $user = Filament::auth()->user();

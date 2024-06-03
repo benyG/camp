@@ -28,7 +28,7 @@ class OrderPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->ex == 0;
     }
 
     /**
@@ -36,7 +36,7 @@ class OrderPolicy
      */
     public function update(User $user, Order $order): bool
     {
-        return false;
+        return $user->ex == 0;
     }
 
     /**
@@ -44,7 +44,7 @@ class OrderPolicy
      */
     public function delete(User $user, Order $order): bool
     {
-        return false;
+        return $user->ex == 0;
     }
 
     /**

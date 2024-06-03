@@ -11,6 +11,7 @@ use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
 use Filament\Notifications\Notification;
 use Filament\Pages\Auth\Register as BaseRegister;
 use Filament\Forms\Get;
+use Livewire\Features\SupportRedirects\Redirector;
 
 class Register extends BaseRegister
 {
@@ -44,7 +45,6 @@ class Register extends BaseRegister
                                 foreach ($oo as $timezone) {
                                     $ap[$timezone['timezone']] = '(GMT '.$timezone['offset'].') '.$timezone['name'];
                                 }
-
                                 return $ap;
                             }),
                         Forms\Components\Select::make('pck')->label('Package')->required()
@@ -62,10 +62,10 @@ class Register extends BaseRegister
         session(['auth_ip' => $this->ox]);
     }
 
-    public function register(): ?RegistrationResponse
+    public function register2(): RegistrationResponse|Redirector
     {
         try {
-            $this->rateLimit(2);
+            $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
             Notification::make()
                 ->title(__('filament-panels::pages/auth/register.notifications.throttled.title', [
@@ -81,12 +81,16 @@ class Register extends BaseRegister
 
             return null;
         }
+        $ix = cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+        });
 
         $data = $this->form->getState();
-
         $user = $this->getUserModel()::create($data);
-        $pck=intval($data['pck']);
-        $user->pk=$pck.($pck>0?'|'.intval($data['bil']):'');$user->save();
+       // $pck=intval($data['pck']);
+       //  $user->pk=$pck.($pck>0?'|'.intval($data['bil']):'');
+        $user->ix=$ix->iac_f;
+        $user->save();
         $txt = 'New user registered with email '.$data['email'];
         \App\Models\Journ::add(null, 'Register', 1, $txt, $this->ox);
 
@@ -97,6 +101,19 @@ class Register extends BaseRegister
         Filament::auth()->login($user);
 
         session()->regenerate();
+        //redirections
+        $ix = cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+        });
+        switch ($pck) {
+            case 1:
+                return redirect(intval($data['bil'])?$ix->bp_ml."?prefilled_email=".urlencode(auth()->user()->email):$ix->bp_yl."?prefilled_email=".urlencode(auth()->user()->email));break;
+            case 2:
+                return redirect(intval($data['bil'])?$ix->sp_ml."?prefilled_email=".urlencode(auth()->user()->email):$ix->sp_yl."?prefilled_email=".urlencode(auth()->user()->email));break;
+            case 3:
+                return redirect(intval($data['bil'])?$ix->pp_ml."?prefilled_email=".urlencode(auth()->user()->email):$ix->pp_yl."?prefilled_email=".urlencode(auth()->user()->email));break;
+            default:break;
+        }
 
         return app(RegistrationResponse::class);
     }

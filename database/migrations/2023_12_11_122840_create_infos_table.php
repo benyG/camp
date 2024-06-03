@@ -29,10 +29,10 @@ return new class extends Migration
             $table->smallInteger('maxep')->default(100)->unsigned();
             $table->tinyInteger('wperc')->default(50)->unsigned();
             $table->tinyInteger('maxcl')->default(20)->unsigned();
-            $table->tinyInteger('iac_f')->default(10)->unsigned();
-            $table->tinyInteger('iac_b')->default(10)->unsigned();
-            $table->tinyInteger('iac_s')->default(10)->unsigned();
-            $table->tinyInteger('iac_p')->default(10)->unsigned();
+            $table->integer('iac_f')->default(10)->unsigned();
+            $table->integer('iac_b')->default(10)->unsigned();
+            $table->integer('iac_s')->default(10)->unsigned();
+            $table->integer('iac_p')->default(10)->unsigned();
             $table->tinyInteger('saa_f')->default(1)->unsigned();
             $table->tinyInteger('saa_b')->default(1)->unsigned();
             $table->tinyInteger('saa_s')->default(1)->unsigned();

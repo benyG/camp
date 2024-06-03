@@ -21,7 +21,6 @@ class Exam extends Model
     protected function slug(): Attribute
     {
         return Attribute::make(
-            //   get: fn (string $value) => ucfirst($value),
             get: fn (mixed $value, array $attributes) => Str::slug($attributes['name'], '-')
         );
     }

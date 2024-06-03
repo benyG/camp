@@ -61,7 +61,8 @@ class Settings extends Page implements HasActions, HasForms
         ];
         $sgrid = [
             'sm' => 1,
-            'md' => 3,
+            'md' => 2,
+            'lg' => 4,
         ];
       //  str_pad(,2,"0",1);
         return $form->model($this->info)->statePath('data')
@@ -101,7 +102,26 @@ class Settings extends Page implements HasActions, HasForms
                                         Forms\Components\TextInput::make('maxtg')->label(__('form.tim').'s Exam.')
                                             ->required()->numeric()->default(20),
                                         Forms\Components\TextInput::make('maxeg')->label(__('form.equ'))
+                                            ->required()->numeric()->default(10),
+                                        Forms\Components\TextInput::make('iac_g')->label(__('main.aic'))
+                                            ->required()->numeric()->default(0),
+                                        Forms\Components\TextInput::make('saa_g')->label(__('form.saa'))
+                                            ->required()->numeric()->default(1),
+                                        Forms\Components\TextInput::make('eca_g')->label(__('form.eac'))
+                                            ->required()->numeric()->default(1),
+                                        Forms\Components\Toggle::make('tec_g')->label(__('form.tec'))
+                                            ->required()->default(false)->inline(false),
+                                        Forms\Components\Toggle::make('tga_g')->label(__('form.tga'))
+                                            ->required()->default(false)->inline(false),
+                                        Forms\Components\Toggle::make('ftg_g')->label(__('form.ftg'))
+                                            ->required()->default(false)->inline(false),
+                                        Forms\Components\Toggle::make('sta_g')->label(__('form.sta'))
+                                            ->required()->default(false)->inline(false),
+                                        Forms\Components\Toggle::make('pa_g')->label(__('form.pa'))
+                                            ->required()->default(false)->inline(false),
+
                                     ]),
+
                                 Forms\Components\Section::make('Free')->columns($cgrid)
                                     ->schema([
                                         Forms\Components\TextInput::make('maxts')->label(__('form.tim').'s Exam.')
@@ -272,17 +292,23 @@ class Settings extends Page implements HasActions, HasForms
                                         Forms\Components\TextInput::make('iac1_id')->label(__('form.pid').' 1')->required(),
                                         Forms\Components\TextInput::make('iac1_li')->label(__('form.pli').' 1')
                                             ->required(),
-                                        Forms\Components\TextInput::make('iac1_qt')->label(__('form.amo').' 1')
-                                            ->required()->numeric()->default(0),
+                                        Forms\Components\TextInput::make('iac1_qt')->label(__('form.qty').' 1')
+                                            ->required()->numeric()->default(1),
+                                        Forms\Components\TextInput::make('iac1_am')->label(__('form.amo').' 1')
+                                            ->required()->numeric()->default(1),
                                         Forms\Components\TextInput::make('iac2_id')->label(__('form.pid').' 2')->required(),
                                         Forms\Components\TextInput::make('iac2_li')->label(__('form.pli').' 2')
                                                 ->required(),
-                                        Forms\Components\TextInput::make('iac2_qt')->label(__('form.amo').' 2')
-                                                ->required()->numeric()->default(0),
+                                        Forms\Components\TextInput::make('iac2_qt')->label(__('form.qty').' 2')
+                                                ->required()->numeric()->default(1),
+                                        Forms\Components\TextInput::make('iac2_am')->label(__('form.amo').' 2')
+                                                ->required()->numeric()->default(1),
                                         Forms\Components\TextInput::make('iac3_id')->label(__('form.pid').' 3')->required(),
                                         Forms\Components\TextInput::make('iac3_li')->label(__('form.pli').' 3')
                                                     ->required(),
-                                        Forms\Components\TextInput::make('iac3_qt')->label(__('form.amo').' 3')
+                                        Forms\Components\TextInput::make('iac3_qt')->label(__('form.qty').' 3')
+                                                    ->required()->numeric()->default(1),
+                                        Forms\Components\TextInput::make('iac3_am')->label(__('form.amo').' 3')
                                                     ->required()->numeric()->default(0),
                                     ]),
                                 Forms\Components\Section::make(__('form.eac'))->columns($sgrid)
@@ -290,8 +316,10 @@ class Settings extends Page implements HasActions, HasForms
                                         Forms\Components\TextInput::make('eca_id')->label(__('form.pid'))->required(),
                                         Forms\Components\TextInput::make('eca_li')->label(__('form.pli'))
                                             ->required(),
-                                        Forms\Components\TextInput::make('eca_qt')->label(__('form.amo'))
-                                            ->required()->numeric()->default(0),
+                                        Forms\Components\TextInput::make('eca_qt')->label(__('form.qty'))
+                                            ->required()->numeric()->default(1),
+                                        Forms\Components\TextInput::make('eca_am')->label(__('form.amo'))
+                                            ->required()->numeric()->default(1),
                                     ]),
 
                             ]),

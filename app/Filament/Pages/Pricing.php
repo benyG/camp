@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use Filament\Pages\Page;
+use Illuminate\Contracts\Support\Htmlable;
 
 class Pricing extends Page
 {
@@ -14,4 +15,14 @@ class Pricing extends Page
             return \App\Models\Info::findOrFail(1);
         });
     }
+    public function getTitle(): string|Htmlable
+    {
+        return __('main.m19');
+    }
+
+    public function getHeading(): string
+    {
+        return __('main.m19');
+    }
+
 }

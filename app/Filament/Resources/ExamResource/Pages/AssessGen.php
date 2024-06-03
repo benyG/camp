@@ -237,11 +237,16 @@ class AssessGen extends Page implements HasActions, HasForms
                 }
             })
             ->icon('heroicon-o-question-mark-circle')
-            ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
+            ->closeModalByClickingAway(false)
+            ->modalWidth(auth()->user()->can('call-ai')?\Filament\Support\Enums\MaxWidth::Small:\Filament\Support\Enums\MaxWidth::ExtraLarge)
             ->modalSubmitActionLabel(__('form.yes'))
-            ->modalContent(fn (): View => view('filament.pages.actions.iamod', ['txt' => __('main.i4'), 'ex' => auth()->user()->ex]))
+            ->modalDescription(fn (): string =>auth()->user()->can('call-ai')?"":__('form.e33'))
+            ->modalSubmitAction(auth()->user()->can('call-ai')?null:false)
+            ->modalCancelAction(auth()->user()->can('call-ai')?null:false)
+            ->modalContent(fn (): View => view(auth()->user()->can('call-ai')?'filament.pages.actions.iamod':'components.pricing2',
+            auth()->user()->can('call-ai')? ['txt' => __('main.i4'), 'ex' => auth()->user()->ex]:['ix'=>cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);})]))
             ->action(function () {
-                if (auth()->user()->ex < 6) {
+                if (auth()->user()->can('call-ai')) {
                     $ix = cache()->rememberForever('settings', function () {
                         return \App\Models\Info::findOrFail(1);
                     });
@@ -277,8 +282,7 @@ class AssessGen extends Page implements HasActions, HasForms
                                 $this->iati3 = true;
                             }
                             $this->iatext = $response['choices'][0]['message']['content'];
-                       //     \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
-                            // dd(auth()->user()->ix);
+                            iac_decr();
                         } else {
                             Notification::make()->danger()->title(__('form.e10'))->send();
                         }
@@ -294,6 +298,10 @@ class AssessGen extends Page implements HasActions, HasForms
 
     public function inaAction(): Action1
     {
+        $ix = cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+        });
+
         return Action1::make('ina')->label(__('main.i8'))->size(ActionSize::Small)->modalSubmitActionLabel('Yes')
             ->icon('heroicon-o-light-bulb')->disabled(function (): bool {
                 if (empty($this->cans)) {
@@ -309,10 +317,15 @@ class AssessGen extends Page implements HasActions, HasForms
                     return empty($this->iatext2) ? 'primary' : 'gray';
                 }
             })
-            ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
-            ->modalContent(fn (): View => view('filament.pages.actions.iamod', ['txt' => __('main.i7'), 'ex' => auth()->user()->ex]))
+            ->closeModalByClickingAway(false)
+            ->modalWidth(auth()->user()->can('call-ai')?\Filament\Support\Enums\MaxWidth::Small:\Filament\Support\Enums\MaxWidth::ExtraLarge)
+            ->modalContent(fn (): View => view(auth()->user()->can('call-ai')?'filament.pages.actions.iamod':'components.pricing2',
+            auth()->user()->can('call-ai')? ['txt' => __('main.i7'), 'ex' => auth()->user()->ex]:['ix'=>cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);})]))
+            ->modalSubmitAction(auth()->user()->can('call-ai')?null:false)
+            ->modalCancelAction(auth()->user()->can('call-ai')?null:false)
+            ->modalDescription(fn (): string =>auth()->user()->can('call-ai')?"":__('form.e33'))
             ->action(function () {
-                if (auth()->user()->ex < 6) {
+                if (auth()->user()->can('call-ai')) {
                     $ix = cache()->rememberForever('settings', function () {
                         return \App\Models\Info::findOrFail(1);
                     });
@@ -349,7 +362,7 @@ class AssessGen extends Page implements HasActions, HasForms
                             }
                          // $this->iatext2 = preg_replace('/(\d+\. \*\*|- \*\*|- )/', '<br>$1',$response['choices'][0]['message']['content'] );
                             $this->iatext2 = $response['choices'][0]['message']['content'];
-                            \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
+                            iac_decr();
                         } else {
                             Notification::make()->danger()->title(__('form.e10'))->send();
                         }

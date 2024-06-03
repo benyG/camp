@@ -9,7 +9,7 @@
 
     {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::AUTH_REGISTER_FORM_BEFORE, scopes: $this->getRenderHookScopes()) }}
 
-    <x-filament-panels::form wire:submit="register">
+    <x-filament-panels::form wire:submit="register2" x-init="$wire.data.tz=Intl.DateTimeFormat().resolvedOptions().timeZone">
         {{ $this->form }}
  <x-ip />
         <x-filament-panels::form.actions

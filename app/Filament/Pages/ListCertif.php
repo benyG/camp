@@ -18,7 +18,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Notification as Notif;
-
+use Illuminate\Contracts\View\View;
 class ListCertif extends Page implements HasTable
 {
     use InteractsWithTable;
@@ -42,6 +42,9 @@ class ListCertif extends Page implements HasTable
 
     protected function getHeaderActions(): array
     {
+                $ix = cache()->rememberForever('settings', function () {
+                    return \App\Models\Info::findOrFail(1);
+                });
         return [
             Actions\Action::make('rrtt')->label(__('form.add'))->form([
                 Forms\Components\Select::make('prov')->label(__('main.m16'))->required()
@@ -52,34 +55,43 @@ class ListCertif extends Page implements HasTable
                             ->pluck('name', 'id');
                     })->label('Certifications')->multiple()->preload(),
             ])->action(function ($data) {
-                $ix = cache()->rememberForever('settings', function () {
-                    return \App\Models\Info::findOrFail(1);
-                });
+                if(auth()->user()->can('add-course',\App\Models\Course::class)){
                 foreach ($data['cou'] as $cer) {
                     $rec = Course::findorFail($cer);
                     $rec->users()->attach(auth()->id());
                     Notification::make()->success()->title(__('form.e31', ['name' => $rec->name]))->send();
                 }
+                }
             })->closeModalByClickingAway(false)
             ->modalDescription(__('form.e32'))
                 ->after(function ($data) {
-                    foreach ($data['cou'] as $cer) {
-                        $rec = Course::findorFail($cer);
-                        $txt = "Certification '$rec->name' added";
-                        \App\Models\Journ::add(auth()->user(), 'Portfolio', 8, $txt);
+                    if(auth()->user()->can('add-course',\App\Models\Course::class)){
+                        foreach ($data['cou'] as $cer) {
+                            $rec = Course::findorFail($cer);
+                            $txt = "Certification '$rec->name' added";
+                            \App\Models\Journ::add(auth()->user(), 'Portfolio', 8, $txt);
+                        }
                     }
                 })->color('success')->modalHeading(__('main.lc2'))
                 ->modalSubmitActionLabel(__('form.add'))
-                ->disabled(fn()=>auth()->user()->eca<=auth()->user()->courses()->count()),
+                ->visible(fn():bool=>auth()->user()->can('add-course',\App\Models\Course::class)),
+            Actions\Action::make('inv14')->label(__('form.add'))->closeModalByClickingAway(false)
+            ->modalContent(fn (): View => view('components.pricing3', ['ix' => $ix]))
+                ->color('primary')->closeModalByClickingAway(false)
+                ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
+                ->modalDescription(__('main.w43',['rst'=>'ECA']))
+                ->modalSubmitAction(false)
+                ->modalCancelAction(false)
+                ->visible(fn (): bool => auth()->user()->cannot('add-course',\App\Models\Course::class))
         ];
     }
 
     public function table(Table $table): Table
     {
-        $eca=auth()->user()->eca-auth()->user()->courses()->count();
+        $eca=auth()->user()->eca-auth()->user()->courses->count();
         return $table
         ->heading(fn()=>__('form.eca2').__('main.space').': '.($eca<0?0:$eca))
-            ->query(Course::has('users1')->with('users1')->withCount('modules')->withCount('questions')->where('pub', true))
+            ->query(Course::has('users1')->withCount('modules')->withCount('questions')->where('pub', true))
             ->emptyStateHeading(__('main.lc3'))->emptyStateIcon('heroicon-o-bookmark')
             ->emptyStateDescription(__('main.lc4'))
             ->columns([

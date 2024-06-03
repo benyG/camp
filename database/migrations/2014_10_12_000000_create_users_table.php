@@ -23,8 +23,9 @@ return new class extends Migration
             $table->unsignedBigInteger('vague')->nullable();
             $table->rememberToken();
             //pck
-             $table->integer('ix')->default(0)->unsigned(); //ia calls
-             $table->timestamp('icx')->nullable();//last ia call
+            $table->integer('ix')->default(0)->unsigned(); //ia calls plan
+            $table->integer('ix2')->default(0)->unsigned(); //ia calls unit
+            $table->timestamp('icx')->nullable();//last ia call
              $table->json('certs')->nullable(); //nb cert for perf anal
              $table->boolean('lom')->default(false); //mfa
              $table->boolean('aqa')->default(true); //automatique question explain
@@ -32,7 +33,6 @@ return new class extends Migration
              $table->boolean('itg')->default(true); //intelligent test generation
              $table->boolean('vo')->default(true); //vocal ai k
              $table->string('pk')->defaul('0'); // pck selected
-             $table->integer('eca')->default(1)->unsigned(); //eca unit
 
            $table->timestamps();
             $table->foreign('vague')->references('id')->on('vagues')->cascadeOnUpdate()->nullOnDelete();

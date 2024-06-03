@@ -14,9 +14,14 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger('type')->default(0)->unsigned();
+            // 0 subs
+            // 1 ia
+            // 2 eca
+            $table->tinyInteger('qte')->default(1)->unsigned();
             $table->timestamps();
             $table->timestamp('exp')->useCurrent();
-            $table->string('pbi');
+            $table->string('pbi'); // product id
+            $table->string('sid'); // stripe id
             $table->string('cus')->nullable();
             $table->smallInteger('amount')->default(0)->unsigned();
             $table->unsignedBigInteger('user')->nullable();

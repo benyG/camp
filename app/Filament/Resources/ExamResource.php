@@ -412,7 +412,7 @@ class ExamResource extends Resource
                     ->requiresConfirmation()
                     ->modalIcon(fn (Exam $record): string => $record->pub ? 'heroicon-o-eye-slash' : 'heroicon-m-play')
                     ->modalHeading(fn ($record) => empty($record->users1->first()->pivot->start_at) ? __('main.as23') : __('main.as24'))
-                    ->modalDescription(fn (Exam $record): string => empty($record->users1->first()->pivot->start_at) ? __('main.as25').' \''.$record->name.'\''.__('main.space').'? '.__('main.as27').'.' :
+                    ->modalDescription(fn (Exam $record): string => empty($record->users1->first()->pivot->start_at) ? __('main.as25').' \''.$record->name.'\''.__('main.space').'? '.__('main.as27') :
                         __('main.as26').' \''.$record->name.'\''.__('main.space').'?')
                     ->action(function (Exam $record) {
                         $txt = (empty($record->users1->first()->pivot->start_at) ? 'Starting the Assessment' : 'Continuing the Assessment')."
@@ -424,8 +424,6 @@ class ExamResource extends Resource
                         return redirect()->to(ExamResource::getUrl('assess', ['ex' => $record->name]));
                     })
                     ->visible(function (Exam $record) {
-                        // $rr=(!empty($record->users1->first()->pivot->start_at) && $record->timer-now()->diffInMinutes($record->users1->first()->pivot->start_at)>0);
-                        // if($record->id==5) dd($rr);
                         if (empty($record->users1->first()->pivot->start_at)) {
                             return $record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due;
                         } else {

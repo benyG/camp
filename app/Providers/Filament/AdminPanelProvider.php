@@ -80,7 +80,9 @@ class AdminPanelProvider extends PanelProvider
                  MenuItem::make()
                 ->label(fn (): string => __('form.upp'))
                 ->url(fn (): string => \App\Filament\Pages\Pricing::getUrl())
-                ->icon('heroicon-o-bars-arrow-up'),
+                ->icon('heroicon-o-bars-arrow-up')
+                ->visible(fn (): bool => auth()->user()->ex!=0 && auth()->user()->ex!=1)
+                ,
                 MenuItem::make()
                     ->label(fn (): string => __('main.m1'))
                     ->url(fn (): string => \App\Filament\Pages\Settings::getUrl())

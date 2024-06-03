@@ -166,6 +166,11 @@ class UserCourseChart5 extends ChartWidget
                         },
                     },
                 },
+                elements: {
+                    line: {
+                        tension: 0.5,
+                    }
+                }
             }
         JS);
     }

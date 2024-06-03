@@ -26,17 +26,14 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
      * @var bool
      */
     public $timestamps = true;
-    protected $with = ['sub'];
+    protected $with = ['sub','ecas','courses'];
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'tz',
+        'name','email','password','tz',
     ];
 
     /**
@@ -62,6 +59,16 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     {
         return Attribute::make(
             get: fn (string $value) => (new Carbon($value))->setTimezone(auth()->user()->tz),
+        );
+    }
+    protected function eca(): Attribute
+    {
+        $ix= cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+        });
+
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes):int => $attributes['ex']==9? $ix->eca_g: ($attributes['ex']==0? 10 : $this->ecas->sum('qte')),
         );
     }
 
@@ -145,8 +152,12 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     {
         return $this->hasMany(Order::class, 'user');
     }
+    public function ecas(): HasMany
+    {
+        return $this->hasMany(Order::class, 'user')->where('type',2);
+    }
     public function sub(): HasOne
     {
-        return $this->hasOne(Order::class,'user')->where('type',0)->latestOfMany();
+        return $this->hasOne(Order::class,'user')->where('type',0);
     }
 }
