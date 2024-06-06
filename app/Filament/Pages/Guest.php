@@ -13,6 +13,10 @@ class Guest extends Page
     {
         if(auth()->user()->ex==9){
         \Filament\Facades\Filament::auth()->logout();
+        session()->forget('lastActivityTime');
+        session()->invalidate();
+        session()->regenerateToken();
+
         return redirect(filament()->getRegistrationUrl());
         }else abort(403);
     }

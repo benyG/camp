@@ -19,6 +19,9 @@ Route::get('/', function () {
 Route::get('/ui2', function () {
     return view('welcome2');
 })->name('home2');
+Route::get('/ui3', function () {
+    return view('welcome3');
+})->name('home3');
 
 Route::post('login', 'App\Filament\Pages\Auth\LoginController@authenticate2');
 // OAuth2 routes

@@ -54,6 +54,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed','certs' => 'array',
+        'aqa'=>'boolean',
     ];
     protected function createdAt(): Attribute
     {

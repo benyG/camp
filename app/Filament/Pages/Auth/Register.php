@@ -47,10 +47,6 @@ class Register extends BaseRegister
                                 }
                                 return $ap;
                             }),
-                        Forms\Components\Select::make('pck')->label('Package')->required()
-                            ->options(['0'=>"Free",'1'=>"Basic",'2'=>"Standard",'3'=>"Premium"])->live(),
-                        Forms\Components\Select::make('bil')->label(__('form.bil'))->required(fn(Get $get):bool=>intval($get('pck')!=0))
-                            ->options(['0'=>__('form.mon'),'1'=>__('form.ann')])->visible(fn(Get $get):bool=>intval($get('pck')!=0)),
                     ])
                     ->statePath('data'),
             ),
@@ -87,8 +83,6 @@ class Register extends BaseRegister
 
         $data = $this->form->getState();
         $user = $this->getUserModel()::create($data);
-       // $pck=intval($data['pck']);
-       //  $user->pk=$pck.($pck>0?'|'.intval($data['bil']):'');
         $user->ix=$ix->iac_f;
         $user->save();
         $txt = 'New user registered with email '.$data['email'];
@@ -101,19 +95,6 @@ class Register extends BaseRegister
         Filament::auth()->login($user);
 
         session()->regenerate();
-        //redirections
-        $ix = cache()->rememberForever('settings', function () {
-            return \App\Models\Info::findOrFail(1);
-        });
-        switch ($pck) {
-            case 1:
-                return redirect(intval($data['bil'])?$ix->bp_ml."?prefilled_email=".urlencode(auth()->user()->email):$ix->bp_yl."?prefilled_email=".urlencode(auth()->user()->email));break;
-            case 2:
-                return redirect(intval($data['bil'])?$ix->sp_ml."?prefilled_email=".urlencode(auth()->user()->email):$ix->sp_yl."?prefilled_email=".urlencode(auth()->user()->email));break;
-            case 3:
-                return redirect(intval($data['bil'])?$ix->pp_ml."?prefilled_email=".urlencode(auth()->user()->email):$ix->pp_yl."?prefilled_email=".urlencode(auth()->user()->email));break;
-            default:break;
-        }
 
         return app(RegistrationResponse::class);
     }

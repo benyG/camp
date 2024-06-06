@@ -81,7 +81,7 @@ a:hover
                         </font>
                             @break
                         @case(403)
-                        <font style="font-size:19px" color="#FFFFFF" face="Arial">{{__('main.e4')}}.<br>
+                        <font style="font-size:19px" color="#FFFFFF" face="Arial">{{__('main.e7')}}.<br>
                         </font>
                             @break
                         @case(500)

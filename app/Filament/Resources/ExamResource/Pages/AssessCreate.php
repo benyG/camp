@@ -58,17 +58,19 @@ class AssessCreate extends CreateRecord
                 if($dt['type']!='0'){
                     if(intval($dt['type'])>match (auth()->user()->ex) {
                         1 => $ix->maxts,0 => 40000000,
-                        2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv,default => $ix->maxts
+                        2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp,
+                        5 => $ix->maxtv, 9=> $ix->maxtg,default => $ix->maxts
                     })
                     $msg=__('main.w43',['rst'=>lcfirst(__('form.tim'))]).' '.__('main.w42');
                 }
                 $mq = $dt['type'] == '1' ? match (auth()->user()->ex) {
                     1 => $ix->maxes,0 => 400000000,
-                    2 => $ix->maxes, 3 => $ix->maxeu, 4 => $ix->maxep, 5 => $ix->maxev,default => $ix->maxes
+                    2 => $ix->maxes, 3 => $ix->maxeu, 4 => $ix->maxep,
+                    5 => $ix->maxev,9 => $ix->maxeg,default => $ix->maxes
                 }
                 : match (auth()->user()->ex) {
                     1 => $ix->maxes,0 => 4000000,
-                    2 => $ix->maxs, 3 => $ix->maxu, 4 => $ix->maxp, 5 => $ix->maxv,default => $ix->maxes
+                    2 => $ix->maxs, 3 => $ix->maxu, 4 => $ix->maxp, 5 => $ix->maxv,9 => $ix->maxeg,default => $ix->maxes
                 };
                if($mq < intval($dt['quest'])) $msg=__('main.w43',['rst'=>'questions']).' '.__('main.w42');
             return $msg;
@@ -167,16 +169,16 @@ class AssessCreate extends CreateRecord
             if($dt['type']!='0'){
                 $bol= intval($dt['type'])<=match (auth()->user()->ex) {
                     1 => $ix->maxts,0 => 40000000,
-                    2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv,default => $ix->maxts
+                    2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv,9 => $ix->maxtg,default => $ix->maxts
                 };
             }
             $mq = $dt['type'] == '1' ? match (auth()->user()->ex) {
                 1 => $ix->maxes,0 => 400000000,
-                2 => $ix->maxes, 3 => $ix->maxeu, 4 => $ix->maxep, 5 => $ix->maxev,default => $ix->maxes
+                2 => $ix->maxes, 3 => $ix->maxeu, 4 => $ix->maxep, 5 => $ix->maxev,9 => $ix->maxeg,default => $ix->maxes
             }
             : match (auth()->user()->ex) {
                 1 => $ix->maxes,0 => 4000000,
-                2 => $ix->maxs, 3 => $ix->maxu, 4 => $ix->maxp, 5 => $ix->maxv,default => $ix->maxes
+                2 => $ix->maxs, 3 => $ix->maxu, 4 => $ix->maxp, 5 => $ix->maxv,9 => $ix->maxeg,default => $ix->maxes
             };
            $bol=$mq >= intval($dt['quest']);
 

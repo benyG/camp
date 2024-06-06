@@ -11,6 +11,10 @@ use Filament\Actions\Contracts\HasActions;
 use Filament\Forms;
 use Illuminate\Contracts\Support\Htmlable;
 use Filament\Support\Enums\VerticalAlignment;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Filament\Notifications\Notification;
+use Filament\Forms\Components\Component;
 
 class Usett extends Page implements HasActions, HasForms
 {
@@ -25,7 +29,7 @@ class Usett extends Page implements HasActions, HasForms
 
     public function mount(): void
     {
-        $this->form->fill(auth()->user()->toArray());
+        $this->form->fill();
     }
     public static function getNavigationLabel(): string
     {
@@ -42,48 +46,167 @@ class Usett extends Page implements HasActions, HasForms
     }
     public function form(Form $form): Form
     {
+        $ix = cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+        });
         return $form
         ->schema([
-            Forms\Components\Section::make(__('form.gs'))->columns(2)->description(__('main.in1'))
+            Forms\Components\Section::make()->columns(3)
                 ->schema([
-                    Forms\Components\TextInput::make('ix')->label(__('form.adme'))
-                        ->readOnly(),
-                    Forms\Components\Actions::make([
-                        Forms\Components\Actions\Action::make('jjk')->label(__('form.add'))
-                            ->color('success')
-                            ->action(function () {
-                            //  $resetStars();
-                            })
-                        ])->verticalAlignment(VerticalAlignment::End),
+                    Forms\Components\Placeholder::make('email')
+                    ->content(fn (): string => auth()->user()->email),
+                    Forms\Components\Placeholder::make('iac4')->label(__('form.iac'))
+                    ->content(fn (): int => auth()->user()->ix+auth()->user()->ix2)->key('action_test_2')
+                    ->hintAction(
+                        \Filament\Forms\Components\Actions\Action::make('eers')->label(__('form.add'))
+                        ->closeModalByClickingAway(false)
+                        ->modalContent(fn (): \Illuminate\Contracts\View\View => view('components.pricing2', ['ix' => $ix]))
+                        ->color('primary')->closeModalByClickingAway(false)
+                        ->modalWidth(\Filament\Support\Enums\MaxWidth::ExtraLarge)
+                        ->modalSubmitAction(false)
+                        ->modalCancelAction(false)
+                        ->icon('heroicon-m-plus')
+                    ),
+                    Forms\Components\Placeholder::make('eca')->label(__('form.eca2'))->key('action_test_3')
+                    ->content(fn (): int => auth()->user()->eca)
+                    ->hintAction(
+                        \Filament\Forms\Components\Actions\Action::make('ee0rs')->label(__('form.add'))
+                        ->closeModalByClickingAway(false)
+                        ->modalContent(fn (): \Illuminate\Contracts\View\View => view('components.pricing3', ['ix' => $ix]))
+                        ->color('primary')->closeModalByClickingAway(false)
+                        ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
+                        ->modalSubmitAction(false)
+                        ->modalCancelAction(false)
+                        ->icon('heroicon-m-plus')
+                    ),
+                ]),
+                Forms\Components\Section::make(__('form.pa2'))->columns(2)->description(__('form.pa3'))->columns(2)
+                ->schema([
+                    Forms\Components\Select::make('pa1')->label(__('form.pa4'))->live()
+                    ->options(auth()->user()->courses->pluck('name','id'))->selectablePlaceholder(false)
+                    ->suffixAction(
+                        \Filament\Forms\Components\Actions\Action::make('e03rs')->label(function(Get $get){
+                            if(is_null($get('pa1')))
+                            return __('form.add');
+                            else
+                            {
+                                return auth()->user()->courses->where('id',intval($get('pa1')))->first()->pivot->approve?__('form.add'):__('form.rm');}
+                        })
+                        ->color('warning')
+                        ->icon(function(Get $get){
+                            if(is_null($get('pa1')))
+                            return 'heroicon-m-plus';
+                            else
+                            {
+                                return auth()->user()->courses->where('id',intval($get('pa1')))->first()->pivot->approve?'heroicon-m-minus':'heroicon-m-plus';}
+                        })->iconButton()
+                        ->action(function(Set $set, $state){
+                            if(!is_null($state)){
+                                $ape=!auth()->user()->courses->where('id',intval($state))->first()->pivot->approve;
+                                auth()->user()->courses()->updateExistingPivot(intval($state), [
+                                    'approve' => $ape,
+                                ]);
+                                Notification::make()->title($ape?__('form.e29'):__('form.e35'))->success()->send();
+                                $this->js('window.location.reload()');
+                            }else Notification::make()->title(__('form.e36'))->danger()->send();
+                        })
+                    ),
+                    Forms\Components\Placeholder::make('dd2')->label(__('form.in'))
+                    ->content(fn (): string => auth()->user()->courses->filter(function(\App\Models\Course $rec, int $ket){return $rec->pivot->approve;})->pluck('name','id')->join(', ')),
                 ]),
                 Forms\Components\Section::make(__('form.gs'))->columns(3)
                 ->schema([
-                    Forms\Components\Toggle::make('smtp')->label(__('form.ase'))->tooltip('dddf')
-                        ->required()->inline(false)->default(true),
-                        Forms\Components\Toggle::make('smtp')->label(__('form.ase'))->tooltip('dddf')
-                        ->required()->inline(false)->default(true),
+                    Forms\Components\Toggle::make('aca')->label(__('form.aeq'))->tooltip(__('form.aeq2'))
+                        ->default(auth()->user()->aqa)->inline(false),
+                    $this->getITG(),
+                    $this->getVO(),
                 ]),
-                Forms\Components\Section::make(__('form.gs'))->columns(2)->description(__('main.in1'))
-                ->schema([
-                    Forms\Components\Toggle::make('smtp')->label(__('form.ase'))
-                        ->required()->inline(false)->default(true),
-                    Forms\Components\Select::make('log')->label(__('form.lgd')),
-                ]),
-        ])->statePath('data');
+      ])->statePath('data');
     }
 
     public function create(): void
     {
-        $this->info->update($this->form->getState());
+        $dt=$this->form->getState();
+       // dd($dt);
+        $user = auth()->user();
+        $user->vo=$dt['vo'];$user->aqa=$dt['aca'];$user->itg=$dt['itg'];
+        $user->save();
         Notification::make()->title(__('form.e30'))->success()->send();
-        if ($this->info->wasChanged()) {
-            \App\Models\Journ::add(auth()->user(), 'Settings', 3, 'Settings was changed');
+        if (auth()->user()->wasChanged()) {
+            \App\Models\Journ::add(auth()->user(), 'Settings', 3, 'User changed his settings');
         }
     }
 
     public static function canAccess(): bool
     {
-       // return auth()->user()->ex > 1 && auth()->user()->ex < 6;
-        return false;
+        return collect(['2','3','4','5'])->contains(auth()->user()->ex);
+    }
+    protected function getVO(): Component
+    {
+        $ix = cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+        });
+        $oo=false;
+        switch (auth()->user()->ex) {
+            case 2:
+                $oo=$ix->sta_f;
+                break;
+            case 3:
+                $oo=$ix->sta_b;
+                break;
+            case 4:
+                $oo=$ix->sta_s;
+                break;
+            case 5:
+                $oo=$ix->sta_p;
+                break;
+            default:
+                $oo=false;
+                break;
+        }
+        return $oo?Forms\Components\Toggle::make('vo')->label(__('form.sta2'))->inline(false)->tooltip(__('form.sta3'))
+        ->default(auth()->user()->vo):
+            Forms\Components\Toggle::make('vo')->label(__('form.sta2'))->inline(false)->tooltip(__('form.sta3'))->disabled(true)
+            ->hintAction(
+                \Filament\Forms\Components\Actions\Action::make('c12')->label(__('form.upg'))
+                ->closeModalByClickingAway(false)
+                ->modalContent(fn (): \Illuminate\Contracts\View\View => view('components.pricing1', ['ix' => $ix]))
+                ->color('primary')->closeModalByClickingAway(false)
+                ->modalSubmitAction(false)->modalCancelAction(false)
+                )->default(false)->declined();
+    }
+    protected function getITG(): Component
+    {
+        $ix = cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+        });
+        $oo=false;
+        switch (auth()->user()->ex) {
+            case 2:
+                $oo=$ix->tga_f;
+                break;
+            case 3:
+                $oo=$ix->tga_b;
+                break;
+            case 4:
+                $oo=$ix->tga_s;
+                break;
+            case 5:
+                $oo=$ix->tga_p;
+                break;
+            default:
+                $oo=false;
+                break;
+        }
+        return $oo?Forms\Components\Toggle::make('itg')->label(__('form.tga2'))->inline(false)->tooltip(__('form.tga3'))
+        ->default(auth()->user()->itg):
+        Forms\Components\Toggle::make('itg')->label(__('form.tga2'))->inline(false)->tooltip(__('form.tga3'))->disabled(true)
+            ->hintAction(
+                \Filament\Forms\Components\Actions\Action::make('c12')->label(__('form.upg'))
+                ->closeModalByClickingAway(false)
+                ->modalContent(fn (): \Illuminate\Contracts\View\View => view('components.pricing1', ['ix' => $ix]))
+                ->color('primary')->closeModalByClickingAway(false)
+                ->modalSubmitAction(false)->modalCancelAction(false)
+                )->default(false)->declined();
     }
 }

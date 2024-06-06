@@ -2,7 +2,7 @@
 <div>
     <form wire:submit="create">
         {{ $this->form }}
-<br/><br/>
+<br/>
 <x-filament::button type="submit" color="success">
     {{__('form.sa')}}
 </x-filament::button>

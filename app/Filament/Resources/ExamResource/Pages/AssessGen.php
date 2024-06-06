@@ -293,7 +293,6 @@ class AssessGen extends Page implements HasActions, HasForms
                     }
                 }
             });
-
     }
 
     public function inaAction(): Action1
