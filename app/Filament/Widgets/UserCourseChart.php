@@ -10,7 +10,7 @@ class UserCourseChart extends ChartWidget
 {
     protected static ?string $pollingInterval = null;
 
-    protected static ?int $sort = 15;
+    protected static ?int $sort = 7;
 
     protected static ?string $maxHeight = '200px';
 

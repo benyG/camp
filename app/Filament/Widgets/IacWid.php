@@ -6,14 +6,29 @@ use App\Models\Course;
 use Filament\Support\RawJs;
 use Filament\Widgets\ChartWidget;
 
-class TestCertifChart extends ChartWidget
+class IacWid extends ChartWidget
 {
     protected static ?string $pollingInterval = null;
-    protected static string $view = 'filament.widgets.testcert';
+    protected static string $view = 'filament.widgets.iac-wid';
 
-    protected static ?int $sort = 50;
+    protected static ?int $sort = 9;
 
     protected static ?string $maxHeight = '500px';
+    #[Locked]
+    public $iac;
+
+    #[Locked]
+    public $max=400;
+
+    #[Locked]
+    public $ang;
+
+    public function mount(): void
+    {
+       $this->iac=\App\Models\User::all()->sum('ix');
+       $this->ang=intval($this->iac*180/$this->max);
+        if($this->ang>180) $this->ang=180;
+    }
 
     public function getColumns(): int|string|array
     {
@@ -22,7 +37,7 @@ class TestCertifChart extends ChartWidget
 
     public static function canView(): bool
     {
-        return false;
+        return auth()->user()->ex==0;
     }
 
     public function getHeading(): ?string
@@ -48,14 +63,6 @@ class TestCertifChart extends ChartWidget
         }
 
         return [
-            'datasets' => [
-                [
-                    'data' => $uc[1],
-                    'backgroundColor' => $uc[2],
-                    'borderColor' => $uc[2],
-                ],
-            ],
-            'labels' => $uc[0],
         ];
     }
 
@@ -64,29 +71,4 @@ class TestCertifChart extends ChartWidget
         return 'pie';
     }
 
-    protected function getOptions(): RawJs
-    {
-        return RawJs::make(<<<'JS'
-            {
-                scales: {
-                    y: {
-                        grid: {
-                            display: false,
-                        },
-                        ticks: {
-                            display: false,
-                        },
-                    },
-                    x: {
-                        grid: {
-                            display: false,
-                        },
-                        ticks: {
-                            display: false,
-                        },
-                    },
-                },
-            }
-        JS);
-    }
 }

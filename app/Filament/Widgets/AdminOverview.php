@@ -11,13 +11,15 @@ class AdminOverview extends Widget
     protected static bool $isLazy = true;
 
     protected static string $view = 'filament.widgets.adm-ovv';
-    // protected int | string | array $columnSpan = 'full';
+    protected int | string | array $columnSpan = 'full';
 
     #[Locked]
     public $va;
 
     #[Locked]
     public $co;
+    #[Locked]
+    public $pro;
 
     #[Locked]
     public $mo;
@@ -26,16 +28,17 @@ class AdminOverview extends Widget
     public $qu;
 
     #[Locked]
-    public $iac;
+    public $us;
 
     public function mount()
     {
 
         $this->va = \App\Models\Vague::count();
+        $this->pro = \App\Models\Prov::count();
         $this->co = \App\Models\Course::count();
         $this->mo = \App\Models\Module::count();
         $this->qu = \App\Models\Question::count();
-        $this->iac = \App\Models\User::all()->sum('ix');
+        $this->us = \App\Models\User::count();
     }
 
     public static function canView(): bool
