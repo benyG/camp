@@ -53,24 +53,20 @@ class ListCertif extends Page implements HasTable
                     ->options(function (Get $get) {
                         return \App\Models\Course::where('pub', true)->where('prov', $get('prov'))->doesntHave('users1')
                             ->pluck('name', 'id');
-                    })->label('Certifications')->multiple()->preload(),
+                    })->label('Certifications')->preload(),
             ])->action(function ($data) {
                 if(auth()->user()->can('add-course',\App\Models\Course::class)){
-                foreach ($data['cou'] as $cer) {
-                    $rec = Course::findorFail($cer);
+                    $rec = Course::findorFail($data['cou']);
                     $rec->users()->attach(auth()->id());
                     Notification::make()->success()->title(__('form.e31', ['name' => $rec->name]))->send();
-                }
                 }
             })->closeModalByClickingAway(false)
             ->modalDescription(__('form.e32'))
                 ->after(function ($data) {
                     if(auth()->user()->can('add-course',\App\Models\Course::class)){
-                        foreach ($data['cou'] as $cer) {
-                            $rec = Course::findorFail($cer);
+                            $rec = Course::findorFail($data['cou']);
                             $txt = "Certification '$rec->name' added";
                             \App\Models\Journ::add(auth()->user(), 'Portfolio', 8, $txt);
-                        }
                     }
                 })->color('success')->modalHeading(__('main.lc2'))
                 ->modalSubmitActionLabel(__('form.add'))
@@ -90,7 +86,7 @@ class ListCertif extends Page implements HasTable
     {
         $eca=auth()->user()->eca-auth()->user()->courses->count();
         return $table
-        ->heading(fn()=>__('form.eca2').__('main.space').': '.($eca<0?0:$eca))
+        ->heading(fn(Get $get)=>__('form.eca2').__('main.space').': '.($eca<0?0:$eca))
             ->query(Course::has('users1')->withCount('modules')->withCount('questions')->where('pub', true))
             ->emptyStateHeading(__('main.lc3'))->emptyStateIcon('heroicon-o-bookmark')
             ->emptyStateDescription(__('main.lc4'))
