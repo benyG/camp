@@ -233,7 +233,7 @@ return [
      'aeq2' => 'Enable so that your AI coach ​​now automatically explains all questions during a test. Each AI request consumes your AI credit.',
      'pa4' => 'Select certifications you want to include',
      'in' => 'Included',
-    // '' => '',
+     'fv' => 'Forever',
     // '' => '',
     // '' => '',
     // '' => '',

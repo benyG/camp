@@ -234,7 +234,7 @@ return [
      'aeq2' => 'Activer pour que votre coach IA explique désormais automatiquement toutes les questions pendant un test. Chaque requette IA consomme votre credit IA.',
      'pa4' => 'Sélectionnez les certifications à inclure',
      'in' => 'Inclus',
-    // '' => '',
+     'fv' => 'Indéfiniment',
     // '' => '',
     // '' => '',
     // '' => '',

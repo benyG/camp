@@ -65,7 +65,7 @@ return [
     'w41' => 'Historique des paiements',
     'w42' => 'Veuillez élever votre plan d\'abonnement pour en recevoir plus.',
     'w43' => 'Limite de :rst atteinte.',
-    'w44' => '',
+    'w44' => 'Tester nos produits',
     'w45' => '',
     'w46' => '',
     'w47' => '',

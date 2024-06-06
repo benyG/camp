@@ -64,7 +64,7 @@ return [
     'w41' => 'Billing Center',
     'w42' => 'Please upgrade your subscription plan to get more.',
     'w43' => 'Maximum of :rst reached.',
-    'w44' => '',
+    'w44' => 'Test our products',
     'w45' => '',
     'w46' => '',
     'w47' => '',

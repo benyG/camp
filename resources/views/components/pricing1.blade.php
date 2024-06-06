@@ -27,6 +27,94 @@
                     <!-- Pricing Card -->
                     <div
                         class="flex flex-col p-6 text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow gap-y-2 dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
+                        <h3 class="text-2xl font-semibold">Free</h3>
+                        <p class="text-sm font-light text-gray-500 dark:text-gray-400">{{ __('main.w44') }}</p>
+                        <div class="flex flex-row gap-2 mx-auto text-left">
+                            <div class="mr-4 text-3xl font-extrabold text-black dark:text-white">$0</div>
+                            <div class="flex flex-col">
+                                <div class="text-xs text-gray-500 dark:text-gray-400">&nbsp;</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('form.fv') }}</div>
+                            </div>
+                        </div>
+                        <!-- List -->
+                        <ul role="list" class="flex flex-col mx-auto mb-8 text-xs gap-y-4">
+                            <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                <!-- Icon -->
+                                <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                <span><span class="font-bold">{{ str_pad($ix->eca_f, 2, '0', 0) }}</span>
+                                    {{ __('form.eca2') }}</span>
+                            </li>
+                            <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                <!-- Icon -->
+                                <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                <span><span class="font-bold">{{ str_pad($ix->iac_f, 2, '0', 0) }}</span>
+                                    {{ __('form.iac2') }}</span>
+                            </li>
+                            <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                <!-- Icon -->
+                                <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                <span><span class="font-bold">{{ str_pad($ix->saa_f, 2, '0', 0) }}</span>
+                                    {{ __('form.saa2') }}</span>
+                            </li>
+                            <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                <!-- Icon -->
+                                <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                <span><span class="font-bold">{{ str_pad($ix->maxts, 2, '0', 0) }}</span> min
+                                    {{ __('form.mcde') }}</span>
+                            </li>
+                            <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                <!-- Icon -->
+                                <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                <span><span class="font-bold">{{ str_pad($ix->maxs, 2, '0', 0) }}</span>
+                                    {{ __('form.mqt') }}</span>
+                            </li>
+                            <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                <!-- Icon -->
+                                <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                <span><span class="font-bold">{{ str_pad($ix->maxes, 2, '0', 0) }}</span>
+                                    {{ __('form.mqe') }}</span>
+                            </li>
+                            @if ($ix->tec_f)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.tec2') }}</span>
+                                </li>
+                            @endif
+                            @if ($ix->ftg_f)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.ftg2') }}</span>
+                                </li>
+                            @endif
+                            @if ($ix->pa_f)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.pa2') }}</span>
+                                </li>
+                            @endif
+                            @if ($ix->tga_f)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.tga2') }}</span>
+                                </li>
+                            @endif
+
+                            @if ($ix->sta_f)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.sta2') }}</span>
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+                    <!-- Pricing Card -->
+                    <div
+                        class="flex flex-col p-6 text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow gap-y-2 dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
                         <h3 class="text-2xl font-semibold">Basic</h3>
                         <p class="text-sm font-light text-gray-500 dark:text-gray-400">{{ __('form.bp_t1') }}</p>
                         <div class="flex flex-row gap-2 mx-auto text-left">
@@ -68,19 +156,19 @@
                             <li class="grid justify-start grid-flow-col text-left gap-x-1">
                                 <!-- Icon -->
                                 <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
-                                <span><span class="font-bold">{{ str_pad($ix->maxts, 2, '0', 0) }}</span> min
+                                <span><span class="font-bold">{{ str_pad($ix->maxtu, 2, '0', 0) }}</span> min
                                     {{ __('form.mcde') }}</span>
                             </li>
                             <li class="grid justify-start grid-flow-col text-left gap-x-1">
                                 <!-- Icon -->
                                 <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
-                                <span><span class="font-bold">{{ str_pad($ix->maxs, 2, '0', 0) }}</span>
+                                <span><span class="font-bold">{{ str_pad($ix->maxu, 2, '0', 0) }}</span>
                                     {{ __('form.mqt') }}</span>
                             </li>
                             <li class="grid justify-start grid-flow-col text-left gap-x-1">
                                 <!-- Icon -->
                                 <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
-                                <span><span class="font-bold">{{ str_pad($ix->maxes, 2, '0', 0) }}</span>
+                                <span><span class="font-bold">{{ str_pad($ix->maxeu, 2, '0', 0) }}</span>
                                     {{ __('form.mqe') }}</span>
                             </li>
                             @if ($ix->tec_b)
