@@ -39,7 +39,6 @@ class ExamResource extends Resource
     protected static ?int $navigationSort = 10;
 
     protected static bool $hasTitleCaseModelLabel = false;
-
     public static function getModelLabel(): string
     {
         return trans_choice('main.m8', 1);
@@ -86,11 +85,11 @@ class ExamResource extends Resource
                     })
                     ->schema([
                         Forms\Components\Select::make('prov')->label(__('main.m16'))->required()
-                            ->options(Prov::all()->pluck('name', 'id'))->preload()->live(),
-                        Forms\Components\Select::make('certi')->label('Certification')
-                            ->relationship(name: 'certRel', titleAttribute: 'name',
-                                modifyQueryUsing: fn (Builder $query, Get $get, string $operation) => auth()->user()->ex == 0 ? $query->where('prov', $get('prov')) : $query->has('users1')->where('pub', true)->where('prov', $get('prov')))
-                            ->afterStateUpdated(function (?string $state, ?string $old, Get $get, Set $set) {
+                            ->options(Prov::all()->pluck('name', 'id'))->preload()->live()->visible(auth()->user()->ex==0),
+                            Forms\Components\Select::make('certi')
+                                ->relationship(name: 'certRel', titleAttribute: 'name',
+                                modifyQueryUsing: fn (Builder $query, Get $get, string $operation) => auth()->user()->ex == 0 ? $query->where('prov', $get('prov'))->orderBy('name') : $query->has('users1')->where('pub', true)->orderBy('name'))->preload()
+                                ->label('Certification')->afterStateUpdated(function (?string $state, ?string $old, Get $get, Set $set) {
                                 $ix = cache()->rememberForever('settings', function () {
                                     return \App\Models\Info::findOrFail(1);
                                 });

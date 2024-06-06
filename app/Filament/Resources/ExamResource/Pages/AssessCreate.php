@@ -20,7 +20,6 @@ class AssessCreate extends CreateRecord
     protected static string $resource = ExamResource::class;
 
     protected static bool $canCreateAnother = false;
-
     protected function getHeaderActions(): array
     {
         return [
