@@ -71,7 +71,60 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('call-ai', function (\App\Models\User $user) {
             return ($user->ix+$user->ix2)>0;
         });
-
+        Gate::define('vo', function (\App\Models\User $user) {
+            $ix= cache()->rememberForever('settings', function () {
+                return \App\Models\Info::findOrFail(1);
+            });
+            $oo=false;
+            switch (auth()->user()->ex) {
+                case 2:
+                    $oo=$ix->sta_f;
+                    break;
+                case 3:
+                    $oo=$ix->sta_b;
+                    break;
+                case 4:
+                    $oo=$ix->sta_s;
+                    break;
+                case 5:
+                    $oo=$ix->sta_p;
+                    break;
+                case 9:
+                    $oo=$ix->sta_g;
+                    break;
+                default:
+                    $oo=false;
+                    break;
+            }
+            return $oo;
+        });
+        Gate::define('tga', function (\App\Models\User $user) {
+            $ix= cache()->rememberForever('settings', function () {
+                return \App\Models\Info::findOrFail(1);
+            });
+            $oo=false;
+            switch (auth()->user()->ex) {
+                case 2:
+                    $oo=$ix->tga_f;
+                    break;
+                case 3:
+                    $oo=$ix->tga_b;
+                    break;
+                case 4:
+                    $oo=$ix->tga_s;
+                    break;
+                case 5:
+                    $oo=$ix->tga_p;
+                    break;
+                case 9:
+                    $oo=$ix->tga_g;
+                    break;
+                default:
+                    $oo=false;
+                    break;
+            }
+            return $oo;
+        });
         /** END Gates */
 
         FilamentColor::register([

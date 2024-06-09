@@ -110,7 +110,7 @@ class AssessCreate extends CreateRecord
                 foreach ($datt['examods'] as $es) {
                     $record->modules()->attach($es['module'], ['nb' => $es['nb']]);
                 }
-
+                Notification::make()->success()->title(__('form.e18'))->send();
                 if (auth()->user()->ex == 0) {
                     $ix = cache()->rememberForever('settings', function () {
                         return \App\Models\Info::findOrFail(1);
@@ -153,6 +153,7 @@ class AssessCreate extends CreateRecord
                 Module configuration: '.json_encode($datt['examods'][array_key_first($datt['examods'])]).' <br>
                 ';
                 \App\Models\Journ::add(auth()->user(), 'Assessments', 1, $txt);
+                redirect()->to($this->getResource()::getUrl('index'));
             }
         })
         ->modalSubmitAction(false)

@@ -146,25 +146,7 @@ class Usett extends Page implements HasActions, HasForms
         $ix = cache()->rememberForever('settings', function () {
             return \App\Models\Info::findOrFail(1);
         });
-        $oo=false;
-        switch (auth()->user()->ex) {
-            case 2:
-                $oo=$ix->sta_f;
-                break;
-            case 3:
-                $oo=$ix->sta_b;
-                break;
-            case 4:
-                $oo=$ix->sta_s;
-                break;
-            case 5:
-                $oo=$ix->sta_p;
-                break;
-            default:
-                $oo=false;
-                break;
-        }
-        return $oo?Forms\Components\Toggle::make('vo')->label(__('form.sta2'))->inline(false)->tooltip(__('form.sta3'))
+        return auth()->user()->can('vo')?Forms\Components\Toggle::make('vo')->label(__('form.sta2'))->inline(false)->tooltip(__('form.sta3'))
         ->default(auth()->user()->vo):
             Forms\Components\Toggle::make('vo')->label(__('form.sta2'))->inline(false)->tooltip(__('form.sta3'))->disabled(true)
             ->hintAction(
@@ -180,25 +162,8 @@ class Usett extends Page implements HasActions, HasForms
         $ix = cache()->rememberForever('settings', function () {
             return \App\Models\Info::findOrFail(1);
         });
-        $oo=false;
-        switch (auth()->user()->ex) {
-            case 2:
-                $oo=$ix->tga_f;
-                break;
-            case 3:
-                $oo=$ix->tga_b;
-                break;
-            case 4:
-                $oo=$ix->tga_s;
-                break;
-            case 5:
-                $oo=$ix->tga_p;
-                break;
-            default:
-                $oo=false;
-                break;
-        }
-        return $oo?Forms\Components\Toggle::make('itg')->label(__('form.tga2'))->inline(false)->tooltip(__('form.tga3'))
+
+        return auth()->user()->can('tga')?Forms\Components\Toggle::make('itg')->label(__('form.tga2'))->inline(false)->tooltip(__('form.tga3'))
         ->default(auth()->user()->itg):
         Forms\Components\Toggle::make('itg')->label(__('form.tga2'))->inline(false)->tooltip(__('form.tga3'))->disabled(true)
             ->hintAction(

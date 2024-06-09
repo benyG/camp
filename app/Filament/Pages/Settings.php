@@ -82,6 +82,10 @@ class Settings extends Page implements HasActions, HasForms
                                             ->required()->default(20)->numeric(),
                                         Forms\Components\TextInput::make('log')->label(__('form.lgd'))
                                             ->required()->default(1)->numeric(),
+                                            Forms\Components\TextInput::make('mia')->label(__('form.mia'))
+                                            ->required()->default(0)->numeric(),
+                                        Forms\Components\TextInput::make('mlc')->label(__('form.mia'))
+                                            ->required()->default(30)->numeric(),
                                     ]),
                             ]),
                         Forms\Components\Tabs\Tab::make('Packages')
@@ -233,8 +237,14 @@ class Settings extends Page implements HasActions, HasForms
                                             ->dehydrated(fn (?string $state): bool => filled($state)),
                                         Forms\Components\TextInput::make('endp')->label(__('form.enu'))
                                             ->required()->rules(['url']),
+                                        Forms\Components\TextInput::make('endp2')->label(__('form.enu2'))
+                                            ->required()->rules(['url']),
                                         Forms\Components\TextInput::make('model')->label(__('form.aimo'))
                                             ->required()->rules(['max:255']),
+                                        Forms\Components\TextInput::make('model2')->label(__('form.aimo2'))
+                                            ->required()->rules(['max:255']),
+                                        Forms\Components\TextInput::make('aivo')->label(__('form.aivo'))
+                                            ->required()->rules(['max:200']),
                                     ]),
                                 Forms\Components\Section::make(__('form.cont'))
                                     ->description(__('main.in4'))

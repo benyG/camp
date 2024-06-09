@@ -14,6 +14,13 @@ class ConnWid extends ChartWidget
     protected static ?int $sort = 10;
 
     protected static ?string $maxHeight = '200px';
+    #[Locked]
+    public $mlc;
+
+    public function mount(): void
+    {
+        $this->mlc=\App\Models\Info::first()->mlc;
+    }
 
     public function getColumns(): int|string|array
     {
@@ -27,7 +34,7 @@ class ConnWid extends ChartWidget
 
     public function getHeading(): ?string
     {
-        return __('main.w40');
+        return __('main.w46').' /'.$this->mlc.' '.trans_choice('form.day',5);
     }
 
     protected function getData(): array
@@ -84,7 +91,7 @@ class ConnWid extends ChartWidget
                             display: true,
                         },
                         ticks: {
-                            display: true,
+                            display: false,
                         },
                     },
                 },

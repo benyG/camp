@@ -9,9 +9,11 @@
 
 <x-filament-widgets::widget class="row-span-2 my-auto fi-wi-chart">
     <x-forms.section :description="$description" :heading="$heading">
-        @if ($pollingInterval = $this->getPollingInterval())
-            wire:poll.{{ $pollingInterval }}="updateChartData"
-        @endif
+        <x-slot name="headerEnd">
+            <x-filament::button wire:click="priAction">
+                {{ __('form.res') }}
+            </x-filament::button>
+        </x-slot>
         <div @if (FilamentView::hasSpaMode()) ax-load="visible"
                 @else
                     ax-load @endif
@@ -28,9 +30,6 @@
             ])>
 
             <style>
-                .gauge-wrapper {
-                }
-
                 .gauge {
                     background: #e7e7e7;
                     box-shadow: 0 -3px 6px 2px rgba(0, 0, 0, 0.50);
@@ -56,6 +55,7 @@
                     bottom: 0;
                     z-index: 10;
                 }
+
                 .needle {
                     width: 160px;
                     height: 14px;
@@ -91,7 +91,6 @@
                     border: 100px solid transparent;
                 }
 
-
                 .four .slice-colors .st.slice-item:nth-child(2) {
                     border-top: 100px #f1c40f solid;
                     border-right: 100px #f1c40f solid;
@@ -105,14 +104,13 @@
                     background-color: #e67e22;
                 }
 
-
                 @-webkit-keyframes fourspeed1 {
                     0% {
                         transform: rotate(0);
                     }
 
                     100% {
-                        transform: rotate({{$ang}}deg);
+                        transform: rotate({{ $ang }}deg);
                     }
                 }
             </style>
@@ -125,9 +123,9 @@
                         <div class="st slice-item"></div>
                         <div class="st slice-item"></div>
                     </div>
-                    <div class="bg-white needle dark:bg-gray-900"></div>
+                    <div class="bg-gray-400 needle"></div>
                     <div class="flex items-end justify-center bg-white gauge-center dark:bg-gray-900">
-                        <div class="text-lg font-bold number">{{$iac}}</div>
+                        <div class="text-lg font-bold number" x-text="$wire.iac"></div>
                     </div>
                 </div>
             </div>

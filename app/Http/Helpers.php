@@ -38,7 +38,13 @@ if (! function_exists('dynColors')) {
 if (! function_exists('iac_decr')) {
     function iac_decr(): void
     {
-        if(auth()->user()->ix>0)  \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix - 1]);
-        else if(auth()->user()->ix2>0)  \App\Models\User::where('id', auth()->id())->update(['ix2' => auth()->user()->ix2 - 1]);
+        if(auth()->user()->ix>0)  {\App\Models\User::where('id', auth()->id())->decrement('ix');iac_incr();}
+        else if(auth()->user()->ix2>0)  {\App\Models\User::where('id', auth()->id())->decrement('ix2');iac_incr();}
+    }
+}
+if (! function_exists('iac_incr')) {
+    function iac_incr(): void
+    {
+        \App\Models\Info::first()->increment('iac');
     }
 }

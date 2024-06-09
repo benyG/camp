@@ -51,8 +51,9 @@ class CourseResource extends Resource
                 Forms\Components\TextInput::make('name')->label(__('form.na'))
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('descr')->columnSpanFull()->label('Description'),
-            ])->columns(2);
+                    Forms\Components\Textarea::make('descr2')->columnSpanFull()->label('Description'),
+                    Forms\Components\Textarea::make('descr')->columnSpanFull()->label(__('form.descr')),
+                    ])->columns(2);
     }
 
     public static function table(Table $table): Table
@@ -60,7 +61,7 @@ class CourseResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label(__('form.na'))
-                    ->searchable()->sortable()->description(fn (Course $record): ?string => $record->descr.(' ('.($record->provRel->name ?? 'N/A').')')),
+                    ->searchable()->sortable()->description(fn (Course $record): ?string => $record->descr2.(' ('.($record->provRel->name ?? 'N/A').')')),
                 Tables\Columns\TextColumn::make('modules_count')->counts('modules')->label(trans_choice('main.m17', 5))
                     ->numeric()->sortable(),
                 Tables\Columns\TextColumn::make('questions_count')->counts('questions')->label('Questions')
@@ -106,8 +107,11 @@ class CourseResource extends Resource
                             if ($record->wasChanged('name')) {
                                 $txt .= "Name was changed from '$reco->name' to '$record->name' <br>";
                             }
+                            if ($record->wasChanged('descr2')) {
+                                $txt .= "Description was changed from '$reco->descr2' <br>to '$record->descr2' <br>";
+                            }
                             if ($record->wasChanged('descr')) {
-                                $txt .= "Description was changed from '$reco->descr' <br>to '$record->descr' <br>";
+                                $txt .= "Full Description was changed from '$reco->descr' <br>to '$record->descr' <br>";
                             }
                             if (strlen($txt) > 0) {
                                 \App\Models\Journ::add(auth()->user(), 'Certifications', 3, 'Course ID '.$record->id.'<br>'.$txt);

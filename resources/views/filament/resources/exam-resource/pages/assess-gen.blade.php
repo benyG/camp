@@ -18,7 +18,7 @@
                             </div>
                             <div class="grid justify-items-start">
                                 <span class="text-sm font-medium fi-fo-wizard-header-step-label">
-                                   {{__('main.as1')}}
+                                    {{ __('main.as1') }}
                                 </span>
                                 <span
                                     class="text-sm text-gray-500 fi-fo-wizard-header-step-description text-start dark:text-gray-400">
@@ -33,7 +33,7 @@
                             </div>
                             <div class="grid justify-items-start">
                                 <span class="text-sm font-medium fi-fo-wizard-header-step-label">
-                                    {{__('main.as4')}}
+                                    {{ __('main.as4') }}
                                 </span>
                             </div>
                         @endif
@@ -61,7 +61,7 @@
 
                             <div class="grid justify-items-start">
                                 <span class="text-sm font-medium fi-fo-wizard-header-step-label">
-                                    {{__('main.as5')}}
+                                    {{ __('main.as5') }}
                                 </span>
                                 <span
                                     class="text-sm font-bold text-gray-500 fi-fo-wizard-header-step-description text-start dark:text-gray-400">
@@ -130,7 +130,7 @@
                                         time() {
                                             return {
                                                 //      days:this.format(this.days().value),
-                                                hours:this.format(this.hours().value),
+                                                hours: this.format(this.hours().value),
                                                 minutes: this.format(this.minutes().value),
                                                 seconds: this.format(this.seconds().value),
                                             }
@@ -141,19 +141,20 @@
                             <div class="grid justify-items-start">
                                 <span
                                     class="text-sm font-medium fi-fo-wizard-header-step-label text-primary-500 dark:text-primary-400">
-                                    {{__('main.as6')}}
+                                    {{ __('main.as6') }}
                                 </span>
                                 @if ($record->type == '0')
                                     <span
-                                        class="text-sm font-bold text-gray-500 fi-fo-wizard-header-step-description text-start dark:text-gray-400">{{__('main.as7')}}</span>
+                                        class="text-sm font-bold text-gray-500 fi-fo-wizard-header-step-description text-start dark:text-gray-400">{{ __('main.as7') }}</span>
                                 @else
                                     <span x-data="timer({{ $tim }})" x-init="init();
                                     setTimeout(() => { $wire.closeComlp() }, {{ $tim }} * 60000);"
-                                        :class="parseInt(time().hours)<=0 && parseInt(time().minutes) < 10 ? 'text-danger-500 dark:text-danger-400' :
+                                        :class="parseInt(time().hours) <= 0 && parseInt(time().minutes) < 10 ?
+                                            'text-danger-500 dark:text-danger-400' :
                                             'text-gray-500 dark:text-gray-400'"
                                         class="text-sm font-bold fi-fo-wizard-header-step-description text-start">
-                                        <span x-text="time().hours >0?time().hours+':':''"></span><span x-text="time().minutes"></span>:<span
-                                            x-text="time().seconds"></span></span>
+                                        <span x-text="time().hours >0?time().hours+':':''"></span><span
+                                            x-text="time().minutes"></span>:<span x-text="time().seconds"></span></span>
                                 @endif
                             </div>
                         </button>
@@ -167,8 +168,9 @@
                     <div class="fi-fo-{{ $bm1 ? 'radio' : 'checkbox' }} gap-4 pt-2">
                         @foreach ($aa as $ke => $al)
                             <label class="flex items-center pt-4 gap-x-3">
-                                <input value="{{ $ke }}" {{ $bm2 ? 'disabled' : '' }} id='iiu{{ $ke }}'
-                                    wire:model="{{ $bm1 ? 'ans' : 'ans2' }}" type="{{ $bm1 ? 'radio' : 'checkbox' }}"
+                                <input value="{{ $ke }}" {{ $bm2 ? 'disabled' : '' }}
+                                    id='iiu{{ $ke }}' wire:model="{{ $bm1 ? 'ans' : 'ans2' }}"
+                                    type="{{ $bm1 ? 'radio' : 'checkbox' }}"
                                     class="transition duration-75 bg-white border-none shadow-sm fi-radio-input ring-1 checked:ring-0 focus:ring-2 focus:ring-offset-0 disabled:bg-gray-50 disabled:text-gray-50 disabled:checked:bg-current disabled:checked:text-gray-400 dark:bg-white/5 dark:disabled:bg-transparent dark:disabled:checked:bg-gray-600 text-primary-600 ring-gray-950/10 dark:text-primary-500 dark:ring-white/20 dark:checked:bg-primary-500 dark:disabled:ring-white/10"
                                     {{-- 'text-primary-600 ring-gray-950/10 focus:ring-primary-600 checked:focus:ring-primary-500/50 dark:text-primary-500 dark:ring-white/20 dark:checked:bg-primary-500 dark:focus:ring-primary-500 dark:checked:focus:ring-primary-400/50 dark:disabled:ring-white/10' => $valid,
                             'fi-invalid text-danger-600 ring-danger-600 focus:ring-danger-600 checked:focus:ring-danger-500/50 dark:text-danger-500 dark:ring-danger-500 dark:checked:bg-danger-500 dark:focus:ring-danger-500 dark:checked:focus:ring-danger-400/50' => ! $valid, --}} />
@@ -199,7 +201,8 @@
                                 font-size: 10px !important;
                             }
                         </style>
-                        <div id='dd4' style="font-size:10px"> <br><br>{{__('main.as8')}} {{ $this->revAction }}</div>
+                        <div id='dd4' style="font-size:10px"> <br><br>{{ __('main.as8') }}
+                            {{ $this->revAction }}</div>
                     @endif
                 </div>
                 {!! $btext !!}
@@ -234,7 +237,7 @@
                             <img style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
                                 src='{{ asset('img/ac.png') }}'
                                 class="row-span-2 mx-auto rounded-full ring-custom-600 dark:ring-custom-400 ring-2 w-11 h-11" />
-                            <div><span style="font-size:10px">{{__('main.i2')}}</span></div>
+                            <div><span style="font-size:10px">{{ __('main.i2') }}</span></div>
                         </div>
                         <div class='self-center '>
                             {{ $this->invAction }}
@@ -242,12 +245,15 @@
                         <div class='self-center '>
                             {{ $this->inaAction }}
                         </div>
+                        <div class='self-center '>
+                            {{ $this->ssAction }}
+                        </div>
                     </div>
                 </div>
-                <div class="flex flex-col gap-3 grow">
+                <div class="flex flex-col grow">
                     <div style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
                         id='rr19'
-                        class="p-1 text-sm
+                        class="p-1 text-sm mb-2
                         @if (empty($iatext3)) hidden @endif
                         grow rounded-xl"
                         x-data='{
@@ -256,12 +262,12 @@
                             typeSpeed: 10,
                         }'
                         x-init="setInterval(function() {
-                            if(!$wire.iati3) {$data.charIndex=0;}
+                            if (!$wire.iati3) { $data.charIndex = 0; }
                             if ($wire.iati3) {
                                 let current = $wire.iatext3;
                                 $data.text = current.substring(0, $data.charIndex);
                                 $data.charIndex += 1;
-                                if ($data.charIndex >= $wire.iatext3.length) {$data.charIndex=$wire.iatext3.length;}
+                                if ($data.charIndex >= $wire.iatext3.length) { $data.charIndex = $wire.iatext3.length; }
                             }
                         }, $data.typeSpeed)">
                         <span x-html="text"></span>
@@ -281,15 +287,24 @@
                                 let current = $wire.iatext.replace(/(\d+\. \*\*|- \*\*|- )/g, '<br>$1').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                                 $data.text = current.substring(0, $data.charIndex);
                                 $data.charIndex += 1;
-                                if ($data.charIndex >= $wire.iatext.length) { $wire.iati = false;
-                                    $data.charIndex = 0; }
+                                if ($data.charIndex >= $wire.iatext.length) {
+                                    $wire.iati = false;
+                                    $data.charIndex = 0;
+                                }
                             }
                         }, $data.typeSpeed)">
                         <span x-html="text"></span>
                     </div>
+                    <div
+                        class="px-4 py-1 justify-end w-full grow @if (empty($iatext)) hidden @else flex @endif">
+                        <x-filament::link tag="button" wire:click="ssPick1" icon="heroicon-m-play">
+                            {{ __('form.rpl') }}
+                        </x-filament::link>
+                    </div>
+
                     <div id='rr13'
                         style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
-                        class="p-4 ring-custom-600 dark:ring-custom-400 ring-2
+                        class="mt-3 p-4 ring-custom-600 dark:ring-custom-400 ring-2
                         @if (empty($iatext2)) hidden @endif
                         grow rounded-xl text-sm dark:bg-gray-950 bg-gray-50"
                         x-data='{
@@ -302,11 +317,19 @@
                                 let current = $wire.iatext2.replace(/(\d+\. \*\*|- \*\*|- )/g, '<br>$1').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                                 $data.text = current.substring(0, $data.charIndex);
                                 $data.charIndex += 1;
-                                if ($data.charIndex >= $wire.iatext2.length) { $wire.iati2 = false;
-                                    $data.charIndex = 0; }
+                                if ($data.charIndex >= $wire.iatext2.length) {
+                                    $wire.iati2 = false;
+                                    $data.charIndex = 0;
+                                }
                             }
                         }, $data.typeSpeed)">
                         <span x-html="text"></span>
+                    </div>
+                    <div
+                        class="px-4 py-1 justify-end w-full grow @if (empty($iatext2)) hidden @else flex @endif">
+                        <x-filament::link tag="button" wire:click="ssPick2" icon="heroicon-m-play">
+                            {{ __('form.rpl') }}
+                        </x-filament::link>
                     </div>
                 </div>
             </div>

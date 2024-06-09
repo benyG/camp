@@ -46,6 +46,13 @@ class ListCertif extends Page implements HasTable
                     return \App\Models\Info::findOrFail(1);
                 });
         return [
+            Actions\Action::make('inv14')->label(__('form.eca4'))->closeModalByClickingAway(false)
+            ->modalContent(fn (): View => view('components.pricing3', ['ix' => $ix]))
+                ->color('info')->closeModalByClickingAway(false)
+                ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
+                ->modalDescription(__('main.w43',['rst'=>'ECA']))
+                ->modalSubmitAction(false)
+                ->modalCancelAction(false),
             Actions\Action::make('rrtt')->label(__('form.add'))->form([
                 Forms\Components\Select::make('prov')->label(__('main.m16'))->required()
                     ->options(\App\Models\Prov::all()->pluck('name', 'id'))->preload()->live(),
@@ -53,7 +60,11 @@ class ListCertif extends Page implements HasTable
                     ->options(function (Get $get) {
                         return \App\Models\Course::where('pub', true)->where('prov', $get('prov'))->doesntHave('users1')
                             ->pluck('name', 'id');
-                    })->label('Certifications')->preload(),
+                    })->label('Certifications')->preload()->live(),
+                Forms\Components\Placeholder::make('Description')
+                    ->hidden(fn(Get $get):bool=>empty($get('cou')))
+                    ->content(fn (Get $get): ?string => empty($get('cou'))? '': \App\Models\Course::where('id', $get('cou'))->first()->descr),
+
             ])->action(function ($data) {
                 if(auth()->user()->can('add-course',\App\Models\Course::class)){
                     $rec = Course::findorFail($data['cou']);
@@ -70,15 +81,7 @@ class ListCertif extends Page implements HasTable
                     }
                 })->color('success')->modalHeading(__('main.lc2'))
                 ->modalSubmitActionLabel(__('form.add'))
-                ->visible(fn():bool=>auth()->user()->can('add-course',\App\Models\Course::class)),
-            Actions\Action::make('inv14')->label(__('form.add'))->closeModalByClickingAway(false)
-            ->modalContent(fn (): View => view('components.pricing3', ['ix' => $ix]))
-                ->color('primary')->closeModalByClickingAway(false)
-                ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
-                ->modalDescription(__('main.w43',['rst'=>'ECA']))
-                ->modalSubmitAction(false)
-                ->modalCancelAction(false)
-                ->visible(fn (): bool => auth()->user()->cannot('add-course',\App\Models\Course::class))
+                ->disabled(fn():bool=>auth()->user()->cannot('add-course',\App\Models\Course::class)),
         ];
     }
 

@@ -19,7 +19,8 @@ class ManageCourses extends ManageRecords
                 ->after(function ($data) {
                     $txt = 'New Certification created ! <br>
                 Name: '.$data['name'].' <br>
-                Description: '.$data['descr'].' <br>
+                Description: '.$data['descr2'].' <br>
+                Full Description: '.$data['descr'].' <br>
                 ';
                     \App\Models\Journ::add(auth()->user(), 'Certifications', 1, $txt);
                 }),

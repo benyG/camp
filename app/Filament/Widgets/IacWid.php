@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Course;
 use Filament\Support\RawJs;
 use Filament\Widgets\ChartWidget;
+use Filament\Notifications\Notification;
 
 class IacWid extends ChartWidget
 {
@@ -18,15 +19,16 @@ class IacWid extends ChartWidget
     public $iac;
 
     #[Locked]
-    public $max=400;
+    public $max;
 
     #[Locked]
     public $ang;
 
     public function mount(): void
     {
-       $this->iac=\App\Models\User::all()->sum('ix');
-       $this->ang=intval($this->iac*180/$this->max);
+        $this->iac=\App\Models\Info::first()->iac;
+        $this->max=\App\Models\Info::first()->mia;
+        $this->ang=intval($this->iac*180/$this->max);
         if($this->ang>180) $this->ang=180;
     }
 
@@ -42,7 +44,7 @@ class IacWid extends ChartWidget
 
     public function getHeading(): ?string
     {
-        return __('main.w40');
+        return __('main.w45').' /'.$this->max;
     }
 
     protected function getData(): array
@@ -65,7 +67,12 @@ class IacWid extends ChartWidget
         return [
         ];
     }
-
+    public function priAction()
+    {
+        \App\Models\Info::where('id', 1)->update(['iac'=>0]);
+        $this->iac=0;
+        Notification::make()->title(__('form.e30'))->success()->send();
+    }
     protected function getType(): string
     {
         return 'pie';

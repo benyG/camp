@@ -120,6 +120,12 @@ class AssessGen extends Page implements HasActions, HasForms
 
     #[Validate('required', onUpdate: false)]
     public $ans2 = [];
+    #[Locked]
+    public $ias1;
+
+    #[Locked]
+    public $ias2;
+
 
     protected static string $view = 'filament.resources.exam-resource.pages.assess-gen';
 
@@ -138,8 +144,6 @@ class AssessGen extends Page implements HasActions, HasForms
                 redirect()->to(ExamResource::getUrl());
             }
         }
-        //  cache()->forget('carr_'.$this->record->id.'_'.auth()->id());
-        // $this->record->users1()->first()->pivot->start_at=now();
         $this->ix = cache()->rememberForever('settings', function () {
             return \App\Models\Info::findOrFail(1);
         });
@@ -269,8 +273,8 @@ class AssessGen extends Page implements HasActions, HasForms
                         $response = Http::withToken($apk)->post($ix->endp, [
                             'model' => $ix->model,
                             'messages' => [
-                                ['role' => 'system', 'content' => $ix->cont1],
-                                ['role' => 'user', 'content' => $stats.__('main.i5')],
+                                ['role' => 'system', 'content' => $ix->cont1.__('main.i5')],
+                                ['role' => 'user', 'content' => $stats],
                             ],
                         ])
                             ->json();
@@ -283,6 +287,7 @@ class AssessGen extends Page implements HasActions, HasForms
                             }
                             $this->iatext = $response['choices'][0]['message']['content'];
                             iac_decr();
+                            if(auth()->user()->vo) $this->ssPick($this->iatext);
                         } else {
                             Notification::make()->danger()->title(__('form.e10'))->send();
                         }
@@ -347,8 +352,8 @@ class AssessGen extends Page implements HasActions, HasForms
                         $response = Http::withToken($apk)->post($ix->endp, [
                             'model' => $ix->model,
                             'messages' => [
-                                ['role' => 'system', 'content' => $ix->cont2],
-                                ['role' => 'user', 'content' => $stats.__('main.i5')],
+                                ['role' => 'system', 'content' => $ix->cont2.__('main.i5')],
+                                ['role' => 'user', 'content' => $stats],
                             ],
                         ])
                             ->json();
@@ -362,6 +367,7 @@ class AssessGen extends Page implements HasActions, HasForms
                          // $this->iatext2 = preg_replace('/(\d+\. \*\*|- \*\*|- )/', '<br>$1',$response['choices'][0]['message']['content'] );
                             $this->iatext2 = $response['choices'][0]['message']['content'];
                             iac_decr();
+                            if(auth()->user()->vo) $this->ssPick($this->iatext2);
                         } else {
                             Notification::make()->danger()->title(__('form.e10'))->send();
                         }
@@ -373,7 +379,68 @@ class AssessGen extends Page implements HasActions, HasForms
                 }
             });
     }
-
+    public function ssAction(): Action1
+    {
+        return Action1::make('in41')->label(__('main.i9'))->size(ActionSize::Small)
+            ->link()->disabled(fn():bool=>auth()->user()->can('call-ai'))
+            ->closeModalByClickingAway(false)
+            ->modalWidth(\Filament\Support\Enums\MaxWidth::ExtraLarge)
+            ->modalContent(fn (): View => view('components.pricing2',['ix'=>cache()->rememberForever('settings', function () {return \App\Models\Info::findOrFail(1);})]))
+            ->modalSubmitAction(false)
+            ->modalHidden(fn():bool=>auth()->user()->can('call-ai'))
+            ->modalCancelAction(false)
+            ->modalDescription(__('form.e33'))
+            ->color(function () {
+                if (auth()->user()->can('vo')) {
+                    return auth()->user()->vo ? 'primary' : 'gray';
+                } else {
+                    return 'gray';
+                }
+            })
+            ->icon('heroicon-o-play')
+            ;
+    }
+    public function ssPick1()
+    {
+        $ix = cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+        });
+        if(!empty($this->iatext)){$this->js("new Audio('data:audio/mp3;base64,".$this->ias1."').play()");}
+    }
+    public function ssPick2()
+    {
+        $ix = cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+        });
+        if(!empty($this->iatext2)){$this->js("new Audio('data:audio/mp3;base64,".$this->ias2."').play()");}
+    }
+    public function ssPick($txt)
+    {
+        if (auth()->user()->can('call-ai') && !empty($txt)) {
+            try {
+                $apk = Crypt::decryptString($this->ix->apk);
+              //  dd($apk);
+                $response = Http::withToken($apk)->post($this->ix->endp2, [
+                    'model' => $this->ix->model2,
+                    'input' => $txt,
+                    'voice' => $this->ix->aivo,
+                    'response_format ' => 'mp3',
+                ]);
+                   // dd($response->getBody()->getContents());
+                    if (!empty($response)) {
+                    $this->ias1 =base64_encode($response->getBody()->getContents());
+                    $this->js("new Audio('data:audio/mp3;base64,".$this->ias1."').play()");
+                                        iac_decr();
+                } else {
+                    Notification::make()->danger()->title(__('form.e10'))->send();
+                }
+            } catch (DecryptException $e) {
+                Notification::make()->danger()->title(__('form.e11'))->send();
+            } catch (ConnectionException $e) {
+                Notification::make()->danger()->title(__('form.e12'))->send();
+            }
+        }
+    }
     public function validateData()
     {
         // dd($this->qcur);
