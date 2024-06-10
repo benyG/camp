@@ -2,20 +2,19 @@
 
 namespace App\Filament\Pages;
 
-use Filament\Pages\Page;
+use App\Models\Info;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
+use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Notifications\Notification;
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Crypt;
-use Rawilk\FilamentPasswordInput\Password;
-use Illuminate\Support\Str;
 use Filament\Forms\Form;
-use App\Models\Info;
-use Filament\Forms;
+use Filament\Notifications\Notification;
+use Filament\Pages\Page;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
+use Rawilk\FilamentPasswordInput\Password;
 
 class Settings extends Page implements HasActions, HasForms
 {
@@ -23,25 +22,33 @@ class Settings extends Page implements HasActions, HasForms
     use InteractsWithForms;
 
     protected static ?int $navigationSort = 500;
+
     protected static ?string $navigationGroup = 'Administration';
 
     public ?array $data = [];
+
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
+
     protected static string $view = 'filament.pages.settings';
+
     public Info $info;
+
     public function mount(): void
     {
-       $this->info=Info::findOrFail(1);
+        $this->info = Info::findOrFail(1);
         $this->form->fill($this->info->toArray());
     }
+
     public static function canAccess(): bool
     {
-        return auth()->user()->ex ==0;
+        return auth()->user()->ex == 0;
     }
+
     public static function getNavigationLabel(): string
     {
         return trans_choice('main.m9', 2);
     }
+
     public function getTitle(): string|Htmlable
     {
         return trans_choice('main.m9', 2);
@@ -64,7 +71,8 @@ class Settings extends Page implements HasActions, HasForms
             'md' => 2,
             'lg' => 4,
         ];
-      //  str_pad(,2,"0",1);
+
+        //  str_pad(,2,"0",1);
         return $form->model($this->info)->statePath('data')
             ->schema([
                 Forms\Components\Tabs::make('Tabs')->columnSpanFull()
@@ -82,7 +90,7 @@ class Settings extends Page implements HasActions, HasForms
                                             ->required()->default(20)->numeric(),
                                         Forms\Components\TextInput::make('log')->label(__('form.lgd'))
                                             ->required()->default(1)->numeric(),
-                                            Forms\Components\TextInput::make('mia')->label(__('form.mia'))
+                                        Forms\Components\TextInput::make('mia')->label(__('form.mia'))
                                             ->required()->default(0)->numeric(),
                                         Forms\Components\TextInput::make('mlc')->label(__('form.mia'))
                                             ->required()->default(30)->numeric(),
@@ -229,21 +237,23 @@ class Settings extends Page implements HasActions, HasForms
                             ]),
                         Forms\Components\Tabs\Tab::make(__('form.ai'))
                             ->schema([
-                                Forms\Components\Section::make(__('form.apis'))->columns(2)
+                                Forms\Components\Section::make(__('form.apis'))->columns(3)
                                     ->schema([
                                         Password::make('apk')->label(__('form.apik'))
-                                            ->required()
+                                            ->required()->columnSpanFull()
                                             ->dehydrateStateUsing(fn (string $state): string => $state != Info::first()->apk ? Crypt::encryptString($state) : $state)
                                             ->dehydrated(fn (?string $state): bool => filled($state)),
                                         Forms\Components\TextInput::make('endp')->label(__('form.enu'))
-                                            ->required()->rules(['url']),
-                                        Forms\Components\TextInput::make('endp2')->label(__('form.enu2'))
-                                            ->required()->rules(['url']),
+                                            ->required()->rules(['url'])->columnSpan(2),
                                         Forms\Components\TextInput::make('model')->label(__('form.aimo'))
                                             ->required()->rules(['max:255']),
+                                        Forms\Components\TextInput::make('endp2')->label(__('form.enu2'))
+                                            ->required()->rules(['url'])->columnSpan(2),
                                         Forms\Components\TextInput::make('model2')->label(__('form.aimo2'))
                                             ->required()->rules(['max:255']),
                                         Forms\Components\TextInput::make('aivo')->label(__('form.aivo'))
+                                            ->required()->rules(['max:200']),
+                                        Forms\Components\TextInput::make('aivo')->label(__('form.aivo2'))
                                             ->required()->rules(['max:200']),
                                     ]),
                                 Forms\Components\Section::make(__('form.cont'))
@@ -308,18 +318,18 @@ class Settings extends Page implements HasActions, HasForms
                                             ->required()->numeric()->default(1),
                                         Forms\Components\TextInput::make('iac2_id')->label(__('form.pid').' 2')->required(),
                                         Forms\Components\TextInput::make('iac2_li')->label(__('form.pli').' 2')
-                                                ->required(),
+                                            ->required(),
                                         Forms\Components\TextInput::make('iac2_qt')->label(__('form.qty').' 2')
-                                                ->required()->numeric()->default(1),
+                                            ->required()->numeric()->default(1),
                                         Forms\Components\TextInput::make('iac2_am')->label(__('form.amo').' 2')
-                                                ->required()->numeric()->default(1),
+                                            ->required()->numeric()->default(1),
                                         Forms\Components\TextInput::make('iac3_id')->label(__('form.pid').' 3')->required(),
                                         Forms\Components\TextInput::make('iac3_li')->label(__('form.pli').' 3')
-                                                    ->required(),
+                                            ->required(),
                                         Forms\Components\TextInput::make('iac3_qt')->label(__('form.qty').' 3')
-                                                    ->required()->numeric()->default(1),
+                                            ->required()->numeric()->default(1),
                                         Forms\Components\TextInput::make('iac3_am')->label(__('form.amo').' 3')
-                                                    ->required()->numeric()->default(0),
+                                            ->required()->numeric()->default(0),
                                     ]),
                                 Forms\Components\Section::make(__('form.eac'))->columns($sgrid)
                                     ->schema([
@@ -336,6 +346,7 @@ class Settings extends Page implements HasActions, HasForms
                     ]),
             ]);
     }
+
     public function create(): void
     {
         $this->info->update($this->form->getState());

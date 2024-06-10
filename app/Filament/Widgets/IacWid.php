@@ -3,18 +3,19 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Course;
-use Filament\Support\RawJs;
-use Filament\Widgets\ChartWidget;
 use Filament\Notifications\Notification;
+use Filament\Widgets\ChartWidget;
 
 class IacWid extends ChartWidget
 {
     protected static ?string $pollingInterval = null;
+
     protected static string $view = 'filament.widgets.iac-wid';
 
     protected static ?int $sort = 9;
 
     protected static ?string $maxHeight = '500px';
+
     #[Locked]
     public $iac;
 
@@ -26,10 +27,12 @@ class IacWid extends ChartWidget
 
     public function mount(): void
     {
-        $this->iac=\App\Models\Info::first()->iac;
-        $this->max=\App\Models\Info::first()->mia;
-        $this->ang=intval($this->iac*180/$this->max);
-        if($this->ang>180) $this->ang=180;
+        $this->iac = \App\Models\Info::first()->iac;
+        $this->max = \App\Models\Info::first()->mia;
+        $this->ang = intval($this->iac * 180 / $this->max);
+        if ($this->ang > 180) {
+            $this->ang = 180;
+        }
     }
 
     public function getColumns(): int|string|array
@@ -39,7 +42,7 @@ class IacWid extends ChartWidget
 
     public static function canView(): bool
     {
-        return auth()->user()->ex==0;
+        return auth()->user()->ex == 0;
     }
 
     public function getHeading(): ?string
@@ -67,15 +70,16 @@ class IacWid extends ChartWidget
         return [
         ];
     }
+
     public function priAction()
     {
-        \App\Models\Info::where('id', 1)->update(['iac'=>0]);
-        $this->iac=0;
+        \App\Models\Info::where('id', 1)->update(['iac' => 0]);
+        $this->iac = 0;
         Notification::make()->title(__('form.e30'))->success()->send();
     }
+
     protected function getType(): string
     {
         return 'pie';
     }
-
 }

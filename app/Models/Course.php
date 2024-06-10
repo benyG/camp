@@ -15,7 +15,7 @@ class Course extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name', 'pub', 'descr','descr2'
+        'name', 'pub', 'descr', 'descr2',
     ];
 
     protected function slug(): Attribute

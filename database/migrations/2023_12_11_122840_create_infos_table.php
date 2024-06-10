@@ -73,6 +73,7 @@ return new class extends Migration
             $table->boolean('sta_p')->default(false);
             $table->string('efrom');
             $table->string('aivo')->nullable();
+            $table->string('aivo2')->nullable();
             $table->boolean('smtp')->default(true);
             $table->tinyInteger('var1')->default(0);
             $table->text('apk')->nullable();

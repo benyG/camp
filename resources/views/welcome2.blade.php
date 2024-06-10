@@ -24,9 +24,9 @@
                             <div class="header-row">
                                 <div class="header-logo header-logo-sticky-change" style="width: 82px; height: 40px;">
                                     <a href="index.html">
-                                        <img class="header-logo-non-sticky opacity-0" alt="Porto" width="82"
+                                        <img class="opacity-0 header-logo-non-sticky" alt="Porto"
                                             height="40" src="{{ asset('img/logo-default-slim-dark.png')}}">
-                                        <img class="header-logo-sticky opacity-0" alt="Porto" width="82"
+                                        <img class="opacity-0 header-logo-sticky" alt="Porto"
                                             height="40" src="{{ asset('img/logo-default-slim.png')}}">
                                     </a>
                                 </div>
@@ -41,7 +41,7 @@
                                         <nav class="collapse">
                                             <ul class="nav nav-pills" id="mainNav">
                                                 <li class="active"><a data-hash data-hash-offset="60" href="#intro"
-                                                        class="dropdown-item active">INTRO</a></li>
+                                                        class="dropdown-item active">HOME</a></li>
                                                 <li><a data-hash data-hash-offset="60" href="#features"
                                                         class="dropdown-item">FEATURES</a></li>
                                                 <li><a data-hash data-hash-offset="60" href="#overview"
@@ -53,7 +53,7 @@
                                                 <li><a data-hash data-hash-offset="60" href="#faqs"
                                                         class="dropdown-item">FAQ'S</a></li>
                                                 <li><a data-hash data-hash-offset="60" href="#trial"
-                                                        class="dropdown-item">TRIAL</a></li>
+                                                        class="dropdown-item">CONTACT</a></li>
                                             </ul>
                                         </nav>
                                     </div>
@@ -84,7 +84,7 @@
 
         <div role="main" class="main">
 
-            <section class="section bg-primary curved-border position-relative border-0 m-0" style="height: 100vh;"
+            <section class="m-0 border-0 section bg-primary curved-border position-relative" style="height: 100vh;"
                 id="intro">
 
                 <div class="appear-animation position-absolute" data-appear-animation="zoomIn"
@@ -125,22 +125,21 @@
                 </div>
 
                 <div class="container pt-5 mt-5">
-                    <div class="row justify-content-center pt-5 mt-5">
-                        <div class="col-lg-7 text-center pt-3">
+                    <div class="pt-5 mt-5 row justify-content-center">
+                        <div class="pt-3 text-center col-lg-7">
                             <h1 class="text-color-light font-weight-extra-bold text-12 line-height-2 appear-animation"
-                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="500">The
-                                Dashboard to Manage All your Projects</h1>
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="500">Modern AI powered exam simulation platform</h1>
                             <div class="appear-animation" data-appear-animation="fadeInUpShorter"
                                 data-appear-animation-delay="700">
-                                <p class="text-color-light opacity-6 text-5 pb-3 mb-4">Porto is used by several
+                                <p class="pb-3 mb-4 text-color-light opacity-6 text-5">Porto is used by several
                                     companies to manage their projects.</p>
                             </div>
                             <a href="#"
-                                class="btn btn-light text-color-dark custom-secondary-font font-weight-bold text-3 px-5 py-3 appear-animation"
+                                class="px-5 py-3 btn btn-light text-color-dark custom-secondary-font font-weight-bold text-3 appear-animation"
                                 data-appear-animation="fadeInRightShorter" data-appear-animation-delay="900">GET
                                 STARTED</a>
                             <a href="#"
-                                class="btn btn-dark custom-secondary-font font-weight-bold text-3 px-5 py-3 ml-4 appear-animation"
+                                class="px-5 py-3 ml-4 btn btn-dark custom-secondary-font font-weight-bold text-3 appear-animation"
                                 data-appear-animation="fadeInLeftShorter" data-appear-animation-delay="900">VIEW OUR
                                 PLANS</a>
                         </div>
@@ -158,12 +157,12 @@
 
             <div class="custom-screens-carousel">
                 <div class="container">
-                    <div class="row justify-content-center text-center">
+                    <div class="text-center row justify-content-center">
                         <div class="col appear-animation" data-appear-animation="fadeInUpShorter"
                             data-appear-animation-delay="200">
                             <div class="carousel-ipad">
                                 <div class="carousel-ipad-camera"></div>
-                                <div class="owl-carousel owl-theme nav-style-1 m-0"
+                                <div class="m-0 owl-carousel owl-theme nav-style-1"
                                     data-plugin-options="{'autoHeight': true, 'items': 1, 'margin': 10, 'nav': false, 'dots': false, 'stagePadding': 0, 'animateOut': 'fadeOut', 'autoplay': true, 'autoplayTimeout': 3000}">
                                     <div>
                                         <img alt="" class="img-fluid rounded-0"
@@ -186,30 +185,11 @@
             </div>
 
             <div class="container my-5">
-                <div class="row text-center py-5">
-                    <div class="col px-5">
-                        <h1 class="word-rotator-title font-weight-bold text-9 mb-3 appear-animation"
-                            data-appear-animation="fadeInUpShorter">
-                            Porto is Incredibly Powerful and Easy-to-Use
-                        </h1>
-                        <p class="lead px-5 mb-0 appear-animation" data-appear-animation="fadeInUpShorter"
-                            data-appear-animation-delay="200">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce elementum, nulla vel
-                            pellentesque consequat, ante nulla hendrerit arcu, ac tincidunt mauris lacus sed leo. vamus
-                            suscipit molestie vestibulum.
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="divider">
-                            <div class="divider-small-text">
-                                As Seen On
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row text-center mt-5 pb-3">
+
+                <div class="pb-3 mt-5 text-center row">
+
+                    <p class="lead">Exam simulation for these IT certification providers is available on ExamBoot. Connect and Test yourself.</p>
+
                     <div class="owl-carousel owl-theme carousel-center-active-item"
                         data-plugin-options="{'responsive': {'0': {'items': 1}, '476': {'items': 1}, '768': {'items': 5}, '992': {'items': 7}, '1200': {'items': 7}}, 'autoplay': true, 'autoplayTimeout': 3000, 'dots': false}">
                         <div>
@@ -231,36 +211,46 @@
                             <img class="img-fluid" src="{{ asset('img/logos/logo-6.png')}}" alt="">
                         </div>
                         <div>
-                            <img class="img-fluid" src="{{ asset('img/logos/logo-4.png')}}" alt="">
+                            <img class="img-fluid" src="{{ asset('img/logos/logo-7.png')}}" alt="">
                         </div>
                         <div>
-                            <img class="img-fluid" src="{{ asset('img/logos/logo-2.png')}}" alt="">
+                            <img class="img-fluid" src="{{ asset('img/logos/logo-8.png')}}" alt="">
+                        </div>
+                        <div>
+                            <img class="img-fluid" src="{{ asset('img/logos/logo-9.png')}}" alt="">
+                        </div>
+                        <div>
+                            <img class="img-fluid" src="{{ asset('img/logos/logo-10.png')}}" alt="">
                         </div>
                     </div>
                 </div>
             </div>
 
-            <section class="section m-0 mt-4 border-0 p-relative" id="features">
+            <section class="m-0 mt-4 border-0 section p-relative" id="features">
                 <div class="container">
-                    <div class="row py-2 align-items-center justify-content-center">
-                        <div class="col-lg-6 text-center">
-                            <img class="img-fluid" src="{{ asset('img/demos/sass/features/feature-1.gif')}}"" alt="">
+                    <div class="py-2 row align-items-center justify-content-center">
+                        <div class="text-center col-lg-6">
+                            <img class="img-fluid" src="{{ asset('img/demos/sass/features/feature-1.png')}}"" alt="">
                         </div>
-                        <div class="col-lg-6 text-center text-lg-left">
-                            <h2 class="text-color-dark font-weight-bold text-6 mb-1 appear-animation"
-                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">Manage any
-                                Project is Easy</h2>
+                        <div class="text-center col-lg-6 text-lg-left">
+                            <h2 class="mb-1 text-color-dark font-weight-bold text-6 appear-animation"
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">Unique, AI-connected exam simulation engine.</h2>
                             <p class="lead appear-animation" data-appear-animation="fadeInUpShorter"
-                                data-appear-animation-delay="200">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                elit massa enim. Nullam id varius nunc. </p>
+                                data-appear-animation-delay="200">
+
+                            </p>
                             <p class="appear-animation" data-appear-animation="fadeInUpShorter"
-                                data-appear-animation-delay="400">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                elit. Phasellus blandit massa enim. Nullam id varius nunc. Vivamus bibendum magna ex, et
-                                faucibus lacus venenatis.</p>
-                            <a href="#"
-                                class="btn btn-dark custom-secondary-font font-weight-bold text-3 px-5 py-3 mt-3 appear-animation"
-                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="600">VIEW OUR
-                                PLANS</a>
+                                data-appear-animation-delay="400">
+                                 <ul>
+                                    <li>Access exam dumps database of over 30,000 questions through a configurable environment designed to replicate REAL exam conditions.</li>
+                                    <li>With our exam engine, you can continuously simulate exams and test your readiness.</li>
+                                    <li>Be ready for several professional certifications (CISSP, CISM, CISA, CCSP, CompTIA Security+, PMP and more).</li>
+                                </ul>
+                            </p>
+                            <a href="https://examboot.net/boss/login"
+                                class="px-5 py-3 mt-3 btn btn-dark custom-secondary-font font-weight-bold text-3 appear-animation"
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="600">TEST YOUR SKILLS
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -274,11 +264,66 @@
                 </div>
             </section>
 
-            <section class="section bg-transparent m-0 border-0">
+            <section class="m-0 bg-transparent border-0 section">
                 <div class="container">
-                    <div class="row py-2 align-items-center justify-content-center">
-                        <div class="col-lg-6 text-center text-lg-left">
-                            <h2 class="text-color-dark font-weight-bold text-6 mb-1 appear-animation"
+                    <div class="py-2 row align-items-center justify-content-center">
+                        <div class="text-center col-lg-6 text-lg-left">
+                            <h2 class="mb-1 text-color-dark font-weight-bold text-6 appear-animation"
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">Drag n’ Drop
+                                Features</h2>
+                            <p class="lead appear-animation" data-appear-animation="fadeInUpShorter"
+                                data-appear-animation-delay="200">
+                                Real-time performance analysis
+                            </p>
+                            <p class="appear-animation" data-appear-animation="fadeInUpShorter"
+                                data-appear-animation-delay="400">
+                                <ul>
+                                    <li>Track and visualize your progress over time, providing detailed statistics on your performance across different IT skill categories and subcategories.</li>
+                                    <li>Enjoy AI-powered technology to help you analyze your performances.</li>
+                               </ul>
+                                                           </p>
+                            <a href="https://examboot.net/boss/login"
+                                class="px-5 py-3 mt-3 btn btn-dark custom-secondary-font font-weight-bold text-3 appear-animation"
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="600">VIEW OUR
+                                PLANS</a>
+                        </div>
+                        <div class="text-center col-lg-6">
+                            <img class="img-fluid" src="{{ asset('img/demos/sass/features/feature-2.png')}}"" alt="">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="m-0 border-0 section">
+                <div class="container">
+                    <div class="py-2 row align-items-center justify-content-center">
+                        <div class="text-center col-lg-6">
+                            <img class="img-fluid" src="{{ asset('img/demos/sass/features/feature-3.png')}}"" alt="">
+                        </div>
+                        <div class="text-center col-lg-6 text-lg-left">
+                            <h2 class="mb-1 text-color-dark font-weight-bold text-6 appear-animation"
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">Advanced
+                                Reporting Features</h2>
+                            <p class="lead appear-animation" data-appear-animation="fadeInUpShorter"
+                                data-appear-animation-delay="200">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                elit massa enim.</p>
+                            <p class="appear-animation" data-appear-animation="fadeInUpShorter"
+                                data-appear-animation-delay="400">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                elit. Phasellus blandit massa enim. Nullam id varius nunc.</p>
+                            <a href="#"
+                                class="px-5 py-3 mt-3 btn btn-dark custom-secondary-font font-weight-bold text-3 appear-animation"
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="600">VIEW OUR
+                                PLANS</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="m-0 bg-transparent border-0 section">
+                <div class="container">
+                    <div class="py-2 row align-items-center justify-content-center">
+                        <div class="text-center col-lg-6 text-lg-left">
+                            <h2 class="mb-1 text-color-dark font-weight-bold text-6 appear-animation"
                                 data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">Drag n’ Drop
                                 Features</h2>
                             <p class="lead appear-animation" data-appear-animation="fadeInUpShorter"
@@ -289,47 +334,23 @@
                                 elit. Phasellus blandit massa enim. Nullam id varius nunc. Vivamus bibendum magna ex, et
                                 faucibus lacus venenatis eget.</p>
                             <a href="#"
-                                class="btn btn-dark custom-secondary-font font-weight-bold text-3 px-5 py-3 mt-3 appear-animation"
+                                class="px-5 py-3 mt-3 btn btn-dark custom-secondary-font font-weight-bold text-3 appear-animation"
                                 data-appear-animation="fadeInUpShorter" data-appear-animation-delay="600">VIEW OUR
                                 PLANS</a>
                         </div>
-                        <div class="col-lg-6 text-center">
-                            <img class="img-fluid" src="{{ asset('img/demos/sass/features/feature-2.gif')}}"" alt="">
+                        <div class="text-center col-lg-6">
+                            <img class="img-fluid" src="{{ asset('img/demos/sass/features/feature-4.png')}}"" alt="">
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section class="section m-0 border-0">
-                <div class="container">
-                    <div class="row py-2 align-items-center justify-content-center">
-                        <div class="col-lg-6 text-center">
-                            <img class="img-fluid" src="{{ asset('img/demos/sass/features/feature-3.gif')}}"" alt="">
-                        </div>
-                        <div class="col-lg-6 text-center text-lg-left">
-                            <h2 class="text-color-dark font-weight-bold text-6 mb-1 appear-animation"
-                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">Advanced
-                                Reporting Features</h2>
-                            <p class="lead appear-animation" data-appear-animation="fadeInUpShorter"
-                                data-appear-animation-delay="200">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                elit massa enim.</p>
-                            <p class="appear-animation" data-appear-animation="fadeInUpShorter"
-                                data-appear-animation-delay="400">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                elit. Phasellus blandit massa enim. Nullam id varius nunc.</p>
-                            <a href="#"
-                                class="btn btn-dark custom-secondary-font font-weight-bold text-3 px-5 py-3 mt-3 appear-animation"
-                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="600">VIEW OUR
-                                PLANS</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section bg-dark section-height-3 m-0 border-0" id="overview">
+            <!--
+            <section class="m-0 border-0 section bg-dark section-height-3" id="overview">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col text-center">
-                            <h2 class="text-color-light font-weight-bold text-7 mb-1">Control your Business like a Pro
+                        <div class="text-center col">
+                            <h2 class="mb-1 text-color-light font-weight-bold text-7">Control your Business like a Pro
                             </h2>
                             <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
@@ -337,9 +358,9 @@
                 </div>
 
                 <div class="row justify-content-center">
-                    <div class="col-11 py-4">
+                    <div class="py-4 col-11">
 
-                        <div class="owl-carousel owl-theme stage-margin stage-margin-lg nav-style-2 mb-3 mt-4"
+                        <div class="mt-4 mb-3 owl-carousel owl-theme stage-margin stage-margin-lg nav-style-2"
                             data-plugin-options="{'responsive': {'0': {'items': 1}, '479': {'items': 1}, '768': {'items': 2}, '979': {'items': 2}, '1199': {'items': 2}}, 'margin': 50, 'loop': true, 'nav': true, 'dots': false, 'stagePadding': 100, 'autoplay': true, 'autoplayTimeout': 5000}">
                             <div>
                                 <div class="carousel-ipad carousel-ipad-sm">
@@ -383,16 +404,17 @@
                 </div>
 
             </section>
+            -->
 
-            <section class="section section-height-3 m-0 border-0" id="reviews">
+            <section class="m-0 border-0 section section-height-3" id="reviews">
                 <div class="container">
-                    <div class="row py-2">
-                        <div class="col text-center">
-                            <h2 class="text-color-dark font-weight-bold text-7 mb-1">User Reviews</h2>
+                    <div class="py-2 row">
+                        <div class="text-center col">
+                            <h2 class="mb-1 text-color-dark font-weight-bold text-7">User Reviews</h2>
                             <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit massa enim.</p>
                         </div>
                     </div>
-                    <div class="row pt-3">
+                    <div class="pt-3 row">
                         <div class="col-md-4 appear-animation" data-appear-animation="fadeInLeftShorter"
                             data-appear-animation-delay="500">
                             <div class="testimonial testimonial-light">
@@ -448,16 +470,16 @@
                 </div>
             </section>
 
-            <section class="section section-height-3 bg-transparent m-0 border-0" id="pricing">
+            <section class="m-0 bg-transparent border-0 section section-height-3" id="pricing">
                 <div class="container">
-                    <div class="row py-2">
-                        <div class="col text-center">
-                            <h2 class="text-color-dark font-weight-bold text-7 mb-1">Pricing</h2>
+                    <div class="py-2 row">
+                        <div class="text-center col">
+                            <h2 class="mb-1 text-color-dark font-weight-bold text-7">Pricing</h2>
                             <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit massa enim.</p>
                         </div>
                     </div>
 
-                    <div class="pricing-table py-5">
+                    <div class="py-5 pricing-table">
                         <div class="col-md-6 col-lg-3">
                             <div class="plan">
                                 <div class="plan-header">
@@ -476,7 +498,7 @@
                                     </ul>
                                 </div>
                                 <div class="plan-footer">
-                                    <a href="#" class="btn btn-dark btn-modern btn-outline py-2 px-4">Sign
+                                    <a href="#" class="px-4 py-2 btn btn-dark btn-modern btn-outline">Sign
                                         Up</a>
                                 </div>
                             </div>
@@ -499,7 +521,7 @@
                                     </ul>
                                 </div>
                                 <div class="plan-footer">
-                                    <a href="#" class="btn btn-dark btn-modern btn-outline py-2 px-4">Sign
+                                    <a href="#" class="px-4 py-2 btn btn-dark btn-modern btn-outline">Sign
                                         Up</a>
                                 </div>
                             </div>
@@ -522,7 +544,7 @@
                                     </ul>
                                 </div>
                                 <div class="plan-footer">
-                                    <a href="#" class="btn btn-primary btn-modern py-2 px-4">Sign Up</a>
+                                    <a href="#" class="px-4 py-2 btn btn-primary btn-modern">Sign Up</a>
                                 </div>
                             </div>
                         </div>
@@ -544,7 +566,7 @@
                                     </ul>
                                 </div>
                                 <div class="plan-footer">
-                                    <a href="#" class="btn btn-dark btn-modern btn-outline py-2 px-4">Sign
+                                    <a href="#" class="px-4 py-2 btn btn-dark btn-modern btn-outline">Sign
                                         Up</a>
                                 </div>
                             </div>
@@ -554,15 +576,15 @@
                 </div>
             </section>
 
-            <section class="section section-height-3 curved-border m-0 border-0" id="faqs">
+            <section class="m-0 border-0 section section-height-3 curved-border" id="faqs">
                 <div class="container">
-                    <div class="row py-2">
-                        <div class="col text-center">
-                            <h2 class="text-color-dark font-weight-bold text-7 mb-1">Frequent Asked Questions</h2>
+                    <div class="py-2 row">
+                        <div class="text-center col">
+                            <h2 class="mb-1 text-color-dark font-weight-bold text-7">Frequent Asked Questions</h2>
                             <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit massa enim.</p>
                         </div>
                     </div>
-                    <div class="row py-3 align-items-center justify-content-center">
+                    <div class="py-3 row align-items-center justify-content-center">
                         <div class="col-sm-9">
 
                             <div class="toggle toggle-minimal toggle-primary" data-plugin-toggle>
@@ -646,16 +668,16 @@
                 </div>
             </section>
 
-            <section class="section section-height-3 bg-transparent m-0 border-0">
+            <section class="m-0 bg-transparent border-0 section section-height-3">
                 <div class="container">
-                    <div class="row justify-content-center counters counters-lg pt-2">
+                    <div class="pt-2 row justify-content-center counters counters-lg">
                         <div class="col-md-3 appear-animation" data-appear-animation="fadeInLeftShorter"
                             data-appear-animation-delay="500">
                             <div class="counter counter-with-unit counter-unit-on-top">
                                 <strong class="text-color-dark font-weight-extra-bold text-13 text-lg-15"
                                     data-to="100">0</strong>
                                 <strong class="unit text-color-dark font-weight-bold text-5 text-lg-8">%</strong>
-                                <label class="font-weight-normal text-3 text-lg-4 px-5 px-lg-4">Percent of happy users
+                                <label class="px-5 font-weight-normal text-3 text-lg-4 px-lg-4">Percent of happy users
                                     using Porto</label>
                             </div>
                         </div>
@@ -665,7 +687,7 @@
                                 <strong class="text-color-dark font-weight-extra-bold text-13 text-lg-15"
                                     data-to="50">0</strong>
                                 <strong class="unit text-color-dark font-weight-bold text-5 text-lg-8">+</strong>
-                                <label class="font-weight-normal text-3 text-lg-4 px-5">Projects managed with
+                                <label class="px-5 font-weight-normal text-3 text-lg-4">Projects managed with
                                     Porto</label>
                             </div>
                         </div>
@@ -675,7 +697,7 @@
                                 <strong class="text-color-dark font-weight-extra-bold text-13 text-lg-15"
                                     data-to="350">0</strong>
                                 <strong class="unit text-color-dark font-weight-bold text-5 text-lg-8">+</strong>
-                                <label class="font-weight-normal text-3 text-lg-4 px-5">Number of clients around the
+                                <label class="px-5 font-weight-normal text-3 text-lg-4">Number of clients around the
                                     world</label>
                             </div>
                         </div>
@@ -684,7 +706,7 @@
             </section>
 
             <section
-                class="section section-height-5 bg-primary curved-border curved-border-top overflow-hidden border-0 m-0"
+                class="m-0 overflow-hidden border-0 section section-height-5 bg-primary curved-border curved-border-top"
                 id="trial">
                 <div class="custom-animated-circles custom-animated-circles-pos-2">
                     <div class="circle"></div>
@@ -707,9 +729,9 @@
                     style="top: 57%; left: 73%;" />
 
                 <div class="container pb-5 mb-5">
-                    <div class="row pb-2 mb-4">
-                        <div class="col text-center">
-                            <h2 class="text-color-light font-weight-bold text-10 mb-2">Start Free Trial Now - 30 Days
+                    <div class="pb-2 mb-4 row">
+                        <div class="text-center col">
+                            <h2 class="mb-2 text-color-light font-weight-bold text-10">Start Free Trial Now - 30 Days
                             </h2>
                             <p class="text-color-light opacity-6 text-4">Lorem ipsum dolor sit amet, consectetur
                                 adipiscing elit. </p>
@@ -719,11 +741,11 @@
                         <div class="col-lg-6">
                             <form class="contact-form custom-form-style-1 form-errors-light"
                                 action="php/contact-form.php" method="POST">
-                                <div class="contact-form-success alert alert-success d-none mt-4">
+                                <div class="mt-4 contact-form-success alert alert-success d-none">
                                     <strong>Success!</strong> Your message has been sent to us.
                                 </div>
 
-                                <div class="contact-form-error alert alert-danger d-none mt-4">
+                                <div class="mt-4 contact-form-error alert alert-danger d-none">
                                     <strong>Error!</strong> There was an error sending your message.
                                     <span class="mail-error-message text-1 d-block"></span>
                                 </div>
@@ -731,14 +753,14 @@
                                 <input type="hidden" name="subject" id="subject"
                                     value="Contact Form - Start Free Trial" />
                                 <div class="form-row">
-                                    <div class="form-group col mb-2">
+                                    <div class="mb-2 form-group col">
                                         <input type="text" value=""
                                             data-msg-required="Please enter your name." maxlength="100"
                                             class="form-control" name="name" placeholder="Name" required>
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col mb-2">
+                                    <div class="mb-2 form-group col">
                                         <input type="text" value=""
                                             data-msg-required="Please enter the phone." maxlength="100"
                                             class="form-control" name="phone" id="phone" placeholder="Phone"
@@ -746,7 +768,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col mb-5">
+                                    <div class="mb-5 form-group col">
                                         <input type="email" value=""
                                             data-msg-required="Please enter your email address."
                                             data-msg-email="Please enter a valid email address." maxlength="100"
@@ -754,9 +776,9 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col text-center">
+                                    <div class="text-center form-group col">
                                         <input type="submit" value="GET STARTED"
-                                            class="btn btn-dark btn-modern custom-secondary-font text-3 px-5 py-3"
+                                            class="px-5 py-3 btn btn-dark btn-modern custom-secondary-font text-3"
                                             data-loading-text="Loading...">
                                     </div>
                                 </div>
@@ -766,15 +788,16 @@
                 </div>
             </section>
 
+            <!--
             <div class="container">
                 <div class="row" style="margin-top: -130px;">
 
                     <div class="col-md-4">
                         <a href="#" class="text-decoration-none">
-                            <div class="card border-0 border-radius-0 custom-box-shadow-1">
-                                <div class="card-body text-center p-5 my-2">
-                                    <i class="icon-screen-smartphone icons text-color-dark text-11 mb-3 d-block"></i>
-                                    <h4 class="text-color-primary font-weight-bold text-4 pb-1 mb-2">APP AVAILABLE</h4>
+                            <div class="border-0 card border-radius-0 custom-box-shadow-1">
+                                <div class="p-5 my-2 text-center card-body">
+                                    <i class="mb-3 icon-screen-smartphone icons text-color-dark text-11 d-block"></i>
+                                    <h4 class="pb-1 mb-2 text-color-primary font-weight-bold text-4">APP AVAILABLE</h4>
                                     <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit
                                         phasellus.</p>
                                 </div>
@@ -783,10 +806,10 @@
                     </div>
                     <div class="col-md-4">
                         <a href="#" class="text-decoration-none">
-                            <div class="card border-0 border-radius-0 custom-box-shadow-1">
-                                <div class="card-body text-center p-5 my-2">
-                                    <i class="icon-magnifier icons text-color-dark text-11 mb-3 d-block"></i>
-                                    <h4 class="text-color-primary font-weight-bold text-4 pb-1 mb-2">KNOWLEDGE BASE
+                            <div class="border-0 card border-radius-0 custom-box-shadow-1">
+                                <div class="p-5 my-2 text-center card-body">
+                                    <i class="mb-3 icon-magnifier icons text-color-dark text-11 d-block"></i>
+                                    <h4 class="pb-1 mb-2 text-color-primary font-weight-bold text-4">KNOWLEDGE BASE
                                     </h4>
                                     <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit
                                         phasellus.</p>
@@ -796,10 +819,10 @@
                     </div>
                     <div class="col-md-4">
                         <a href="#" class="text-decoration-none">
-                            <div class="card border-0 border-radius-0 custom-box-shadow-1">
-                                <div class="card-body text-center p-5 my-2">
-                                    <i class="icon-screen-desktop icons text-color-dark text-11 mb-3 d-block"></i>
-                                    <h4 class="text-color-primary font-weight-bold text-4 pb-1 mb-2">USERS FORUM</h4>
+                            <div class="border-0 card border-radius-0 custom-box-shadow-1">
+                                <div class="p-5 my-2 text-center card-body">
+                                    <i class="mb-3 icon-screen-desktop icons text-color-dark text-11 d-block"></i>
+                                    <h4 class="pb-1 mb-2 text-color-primary font-weight-bold text-4">USERS FORUM</h4>
                                     <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit
                                         phasellus.</p>
                                 </div>
@@ -809,34 +832,35 @@
 
                 </div>
             </div>
+            -->
 
         </div>
 
-        <footer id="footer" class="bg-light border-0">
+        <footer id="footer" class="border-0 bg-light">
             <div class="container my-4">
-                <div class="row py-5">
-                    <div class="col-md-6 col-lg-3 mb-5 mb-lg-0">
+                <div class="py-5 row">
+                    <div class="mb-5 col-md-6 col-lg-3 mb-lg-0">
                         <a href="#" class="text-decoration-none">
                             <img class="mt-4" alt="Porto Website Template" src="{{ asset('img/logo-footer-dark.png')}}"
                                 height="42">
                         </a>
                     </div>
-                    <div class="col-6 col-lg-2 mb-5 mb-lg-0">
+                    <div class="mb-5 col-6 col-lg-2 mb-lg-0">
                         <ul class="list list-icons list-icons-sm">
                             <li><i class="fas fa-angle-right text-color-default"></i><a href="page-services.html"
-                                    class="link-hover-style-1 text-color-default ml-1"> Our Services</a></li>
+                                    class="ml-1 link-hover-style-1 text-color-default"> Our Services</a></li>
                             <li><i class="fas fa-angle-right text-color-default"></i><a href="about-us.html"
-                                    class="link-hover-style-1 text-color-default ml-1"> About Us</a></li>
+                                    class="ml-1 link-hover-style-1 text-color-default"> About Us</a></li>
                             <li><i class="fas fa-angle-right text-color-default"></i><a href="contact-us.html"
-                                    class="link-hover-style-1 text-color-default ml-1"> Contact Us</a></li>
+                                    class="ml-1 link-hover-style-1 text-color-default"> Contact Us</a></li>
                         </ul>
                     </div>
-                    <div class="col-6 col-lg-2 mb-5 mb-lg-0">
+                    <div class="mb-5 col-6 col-lg-2 mb-lg-0">
                         <ul class="list list-icons list-icons-sm">
                             <li><i class="fas fa-angle-right text-color-default"></i><a href="page-faq.html"
-                                    class="link-hover-style-1 text-color-default ml-1"> FAQ's</a></li>
+                                    class="ml-1 link-hover-style-1 text-color-default"> FAQ's</a></li>
                             <li><i class="fas fa-angle-right text-color-default"></i><a href="sitemap.html"
-                                    class="link-hover-style-1 text-color-default ml-1"> Sitemap</a></li>
+                                    class="ml-1 link-hover-style-1 text-color-default"> Sitemap</a></li>
                         </ul>
                     </div>
                     <div class="col-md-6 col-lg-5">
@@ -850,16 +874,16 @@
             <div class="footer-copyright bg-light">
                 <div class="container py-2">
                     <hr class="my-2">
-                    <div class="row justify-content-between pt-4 pb-5">
+                    <div class="pt-4 pb-5 row justify-content-between">
                         <div class="col-auto">
                             <p>© Copyright 2020. All Rights Reserved.</p>
                         </div>
                         <div class="col-auto">
                             <nav id="sub-menu">
                                 <ul>
-                                    <li><a href="page-faq.html" class="text-color-default ml-1 text-decoration-none">
+                                    <li><a href="page-faq.html" class="ml-1 text-color-default text-decoration-none">
                                             Terms and Conditions</a></li>
-                                    <li><a href="sitemap.html" class="text-color-default ml-1 text-decoration-none">
+                                    <li><a href="sitemap.html" class="ml-1 text-color-default text-decoration-none">
                                             Privacy Policy</a></li>
                                 </ul>
                             </nav>

@@ -284,8 +284,9 @@ class SmailResource extends Resource
         return Smail::selectRaw('user')->join('users_mail', 'smails.id', '=', 'users_mail.mail')
             ->where('read', false)->where('user', auth()->user()->id)->get()->count() > 0 ? 'danger' : 'primary';
     }
+
     public static function canAccess(): bool
     {
-        return collect(['0','1','2','3','4','5'])->contains(auth()->user()->ex);
+        return collect(['0', '1', '2', '3', '4', '5'])->contains(auth()->user()->ex);
     }
 }

@@ -9,17 +9,19 @@ use Illuminate\Support\Facades\DB;
 class ConnWid extends ChartWidget
 {
     protected static ?string $pollingInterval = null;
+
     protected static string $view = 'filament.widgets.conn-wid';
 
     protected static ?int $sort = 10;
 
     protected static ?string $maxHeight = '200px';
+
     #[Locked]
     public $mlc;
 
     public function mount(): void
     {
-        $this->mlc=\App\Models\Info::first()->mlc;
+        $this->mlc = \App\Models\Info::first()->mlc;
     }
 
     public function getColumns(): int|string|array
@@ -34,7 +36,7 @@ class ConnWid extends ChartWidget
 
     public function getHeading(): ?string
     {
-        return __('main.w46').' /'.$this->mlc.' '.trans_choice('form.day',5);
+        return __('main.w46').' /'.$this->mlc.' '.trans_choice('form.day', 5);
     }
 
     protected function getData(): array
@@ -58,9 +60,9 @@ class ConnWid extends ChartWidget
             'datasets' => [
                 [
                     'data' => $uc[1],
-                    'fill'=>true,
-                    'tension'=>0.5,
-                    'borderColor'=>'#fff33b'
+                    'fill' => true,
+                    'tension' => 0.5,
+                    'borderColor' => '#fff33b',
                 ],
             ],
             'labels' => $uc[0],

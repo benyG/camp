@@ -22,6 +22,7 @@ class CoursePolicy
     {
         return $user->ex == 0;
     }
+
     /**
      * Determine whether the user can create models.
      */

@@ -39,6 +39,7 @@ class ExamResource extends Resource
     protected static ?int $navigationSort = 10;
 
     protected static bool $hasTitleCaseModelLabel = false;
+
     public static function getModelLabel(): string
     {
         return trans_choice('main.m8', 1);
@@ -85,11 +86,11 @@ class ExamResource extends Resource
                     })
                     ->schema([
                         Forms\Components\Select::make('prov')->label(__('main.m16'))->required()
-                            ->options(Prov::all()->pluck('name', 'id'))->preload()->live()->visible(auth()->user()->ex==0),
-                            Forms\Components\Select::make('certi')
-                                ->relationship(name: 'certRel', titleAttribute: 'name',
+                            ->options(Prov::all()->pluck('name', 'id'))->preload()->live()->visible(auth()->user()->ex == 0),
+                        Forms\Components\Select::make('certi')
+                            ->relationship(name: 'certRel', titleAttribute: 'name',
                                 modifyQueryUsing: fn (Builder $query, Get $get, string $operation) => auth()->user()->ex == 0 ? $query->where('prov', $get('prov'))->orderBy('name') : $query->has('users1')->where('pub', true)->orderBy('name'))->preload()
-                                ->label('Certification')->afterStateUpdated(function (?string $state, ?string $old, Get $get, Set $set) {
+                            ->label('Certification')->afterStateUpdated(function (?string $state, ?string $old, Get $get, Set $set) {
                                 $ix = cache()->rememberForever('settings', function () {
                                     return \App\Models\Info::findOrFail(1);
                                 });
@@ -122,9 +123,9 @@ class ExamResource extends Resource
                             ->required()->live(),
                         Forms\Components\Select::make('type')->label('Type')->selectablePlaceholder(false)->default('0')
                             ->options([
-                                '0' => __('form.tyk'),
-                                '1' => __('form.exas'),
-                            ])->live(),
+                                    '0' => __('form.tyk'),
+                                    '1' => __('form.exas'),
+                                ])->live(),
                         Forms\Components\Select::make('typee')->label('Configuration')->selectablePlaceholder(false)->default('0')
                             ->options(function (Get $get, Set $set) {
                                 if ($get('type') == '1') {
@@ -151,7 +152,7 @@ class ExamResource extends Resource
                                             3 => $get('type') == '1' ? $ix->maxeu : $ix->maxu,
                                             4 => $get('type') == '1' ? $ix->maxep : $ix->maxp,
                                             5 => $get('type') == '1' ? $ix->maxev : $ix->maxv,
-                                            9=>$ix->maxeg,
+                                            9 => $ix->maxeg,
                                             default => $get('type') == '1' ? $ix->maxes : $ix->maxs,
                                         };
                                         $te = match (auth()->user()->ex) {

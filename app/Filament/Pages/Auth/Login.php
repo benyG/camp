@@ -113,39 +113,39 @@ class Login extends BaseLogin
         }
         $user->kx = Str::random(180);
         $user->save();
-        if(auth()->check() && auth()->user()->ex>1){
+        if (auth()->check() && auth()->user()->ex > 1) {
             $ix = cache()->rememberForever('settings', function () {
                 return \App\Models\Info::findOrFail(1);
             });
             //plan
-            $user=auth()->user();
-            if(is_null($user->sub) || $user->sub->exp < now()){
-                $user->ex=2;$user->save();
-            }else{
-                $ex=0;$iac=0;
+            $user = auth()->user();
+            if (is_null($user->sub) || $user->sub->exp < now()) {
+                $user->ex = 2;
+                $user->save();
+            } else {
+                $ex = 0;
                 switch ($user->sub->pbi) {
-                    case $ix->bp_id : $ex=3;
+                    case $ix->bp_id : $ex = 3;$iac = $ix->iac_b;
                         break;
-                    case $ix->sp_id : $ex=4;
+                    case $ix->sp_id : $ex = 4;$iac = $ix->iac_s;
                         break;
-                    case $ix->pp_id : $ex=5;
+                    case $ix->pp_id : $ex = 5; $iac = $ix->iac_p;
                         break;
-                    default: $ex=2; break;
+                    default: $ex = 2; $iac = $ix->iac_f;
+                        break;
                 }
-                if($user->ex!=$ex) {$user->ex=$ex;$user->save();}
-                //ia
-                if(is_null($user->icx) || $user->exp->month!=$user->icx->month) {
-                    switch ($user->sub->pbi) {
-                        case $ix->bp_id : $iac=$ix->iac_b;
-                            break;
-                        case $ix->sp_id : $iac=$ix->iac_s;
-                            break;
-                        case $ix->pp_id : $iac=$ix->iac_p;
-                            break;
-                        default: $ex=2; break;
-                    }
+                if ($user->ex != $ex) {
+                    $user->ex = $ex;
                     $user->save();
                 }
+                //ia
+                $iac = 0;$vo=false;
+
+                if (is_null($user->icx) || $user->exp->month != $user->icx->month) {
+                    $user->ix = $iac;
+                    $user->save();
+                }
+
             }
         }
         session()->regenerate();
@@ -183,9 +183,15 @@ class Login extends BaseLogin
         $sp = Str::random(20);
         $user->password = Hash::make($sp);
         $user->email_verified_at = now();
-        $user->ex = 9;$user->ix = $ix->iac_g;
+        $user->ex = 9;
+        $user->ix = $ix->iac_g;
         $user->ax = 1;
         $user->tz = isset(session('auth_ip')['timezone']) ? session('auth_ip')['timezone'] : 'UTC';
+        //plan
+
+
+
+
         $user->save();
         if (! Filament::auth()->attempt([
             'email' => $user->email,

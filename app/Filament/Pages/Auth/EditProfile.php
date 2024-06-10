@@ -68,8 +68,9 @@ Min One Special Chars
 
         return $record;
     }
+
     public static function canAccess(): bool
     {
-        return collect(['0','1','2','3','4','5'])->contains(auth()->user()->ex);
+        return collect(['0', '1', '2', '3', '4', '5'])->contains(auth()->user()->ex);
     }
 }

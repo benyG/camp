@@ -9,6 +9,7 @@ use Filament\Widgets\ChartWidget;
 class TestCertifChart extends ChartWidget
 {
     protected static ?string $pollingInterval = null;
+
     protected static string $view = 'filament.widgets.testcert';
 
     protected static ?int $sort = 50;

@@ -78,7 +78,7 @@ return [
     'e4' => 'La page a expiré après un long moment sans interaction. Veuillez rafraîchir la page',
     'e5' => 'une erreur s\'est produite durant le traitement. Veuillez contacter les administrateurs',
     'e6' => 'Essayer une autre option ou contactez le support',
-    'e7' =>'Accès refusé',
+    'e7' => 'Accès refusé',
     'lo1' => 'Vous n\'avez pas encore de compte ?',
     'lo2' => 'OU',
     'lo3' => 'Continuer avec Google',

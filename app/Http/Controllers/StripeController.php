@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OAuthProvider;
 use App\Models\User;
-use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Exception;
-use Filament\Facades\Filament;
-use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -32,5 +28,4 @@ class StripeController extends Controller
 
         return redirect()->to(filament()->getLoginUrl());
     }
-
 }

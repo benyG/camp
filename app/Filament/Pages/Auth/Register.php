@@ -10,7 +10,6 @@ use Filament\Forms\Form;
 use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
 use Filament\Notifications\Notification;
 use Filament\Pages\Auth\Register as BaseRegister;
-use Filament\Forms\Get;
 use Livewire\Features\SupportRedirects\Redirector;
 
 class Register extends BaseRegister
@@ -45,6 +44,7 @@ class Register extends BaseRegister
                                 foreach ($oo as $timezone) {
                                     $ap[$timezone['timezone']] = '(GMT '.$timezone['offset'].') '.$timezone['name'];
                                 }
+
                                 return $ap;
                             }),
                     ])
@@ -83,7 +83,7 @@ class Register extends BaseRegister
 
         $data = $this->form->getState();
         $user = $this->getUserModel()::create($data);
-        $user->ix=$ix->iac_f;
+        $user->ix = $ix->iac_f;
         $user->save();
         $txt = 'New user registered with email '.$data['email'];
         \App\Models\Journ::add(null, 'Register', 1, $txt, $this->ox);

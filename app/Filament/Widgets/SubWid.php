@@ -18,9 +18,10 @@ class SubWid extends Widget
     public function mount()
     {
     }
+
     public static function canView(): bool
     {
-      return false;
-     // return auth()->user()->ex > 1 && (is_null(auth()->user()->sub) || now()>auth()->user()->sub->exp);
+        return false;
+        // return auth()->user()->ex > 1 && (is_null(auth()->user()->sub) || now()>auth()->user()->sub->exp);
     }
 }

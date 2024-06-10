@@ -232,9 +232,9 @@ class QuestionResource extends Resource
             ->schema([
                 Infolists\Components\Grid::make()->columns(3)
                     ->schema([
-                Infolists\Components\TextEntry::make('moduleRel.name')->label('Modules'),
-                Infolists\Components\TextEntry::make('maxr')->label(__('form.mans')),
-                Infolists\Components\TextEntry::make('rev')->label(__('form.rev')),
+                        Infolists\Components\TextEntry::make('moduleRel.name')->label('Modules'),
+                        Infolists\Components\TextEntry::make('maxr')->label(__('form.mans')),
+                        Infolists\Components\TextEntry::make('rev')->label(__('form.rev')),
                     ]),
                 Infolists\Components\TextEntry::make('text')->html(),
                 Infolists\Components\TextEntry::make('descr')->html()->label(__('form.expl')),
@@ -259,7 +259,8 @@ class QuestionResource extends Resource
                             ->icon('heroicon-m-check-circle')->color('warning')
                             ->visible(fn ($record): bool => $record->reviews->count() > 0)
                             ->action(function ($record) {
-                                $record->rev++;$record->save();
+                                $record->rev++;
+                                $record->save();
                                 foreach ($record->reviews as $rev) {
                                     $ma = new \App\Models\SMail;
                                     $ma->from = auth()->id();
@@ -321,12 +322,12 @@ class QuestionResource extends Resource
                                         ],
                                     ])
                                         ->json();
-                                     //   dd($response);
-                                    if (array_key_exists('choices',$response)) {
-                                      //  $txot = $response['choices'][0]['message']['content'];
-                                      $txot = preg_replace('/(\d+\. \*\*|- \*\*|- )/', '<br>$1',$response['choices'][0]['message']['content'] );
-                                      $txot = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>',$txot );
-                                      \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
+                                    //   dd($response);
+                                    if (array_key_exists('choices', $response)) {
+                                        //  $txot = $response['choices'][0]['message']['content'];
+                                        $txot = preg_replace('/(\d+\. \*\*|- \*\*|- )/', '<br>$1', $response['choices'][0]['message']['content']);
+                                        $txot = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $txot);
+                                        \App\Models\User::where('id', auth()->id())->update(['ix' => auth()->user()->ix + 1]);
                                     } else {
                                         Notification::make()->danger()->title(__('form.e10'))->send();
                                     }

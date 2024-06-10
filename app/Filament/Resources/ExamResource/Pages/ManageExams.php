@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\ExamResource\Pages;
 
 use App\Filament\Resources\ExamResource;
-use App\Models\Exam;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
@@ -13,16 +12,16 @@ class ManageExams extends ManageRecords
 
     protected function getHeaderActions(): array
     {
-        $ix= cache()->rememberForever('settings', function () {
+        $ix = cache()->rememberForever('settings', function () {
             return \App\Models\Info::findOrFail(1);
         });
 
         return [
-            Actions\Action::make("ddr")->label(__('form.cre'))
+            Actions\Action::make('ddr')->label(__('form.cre'))
                 ->visible(fn (): bool => auth()->user()->can('add-exam'))
                 ->url(fn (): string => $this->getResource()::getUrl('create'))
                 ->color('primary'),
-            Actions\Action::make("ddr14")->label(__('form.cre'))
+            Actions\Action::make('ddr14')->label(__('form.cre'))
                 ->visible(fn (): bool => auth()->user()->cannot('add-exam'))
                 ->modalContent(fn (): \Illuminate\Contracts\View\View => view('components.pricing1', ['ix' => $ix]))
                 ->modalSubmitAction(false)

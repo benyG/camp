@@ -51,9 +51,9 @@ class CourseResource extends Resource
                 Forms\Components\TextInput::make('name')->label(__('form.na'))
                     ->required()
                     ->maxLength(255),
-                    Forms\Components\Textarea::make('descr2')->columnSpanFull()->label('Description'),
-                    Forms\Components\Textarea::make('descr')->columnSpanFull()->label(__('form.descr')),
-                    ])->columns(2);
+                Forms\Components\Textarea::make('descr2')->columnSpanFull()->label('Description'),
+                Forms\Components\Textarea::make('descr')->columnSpanFull()->label(__('form.descr')),
+            ])->columns(2);
     }
 
     public static function table(Table $table): Table

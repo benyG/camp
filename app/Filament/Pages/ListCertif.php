@@ -2,11 +2,7 @@
 
 namespace App\Filament\Pages;
 
-use App\Jobs\SendEmail;
 use App\Models\Course;
-use App\Models\SMail;
-use App\Models\User;
-use App\Notifications\NewMail;
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Forms\Get;
@@ -16,9 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Notification as Notif;
 use Illuminate\Contracts\View\View;
+
 class ListCertif extends Page implements HasTable
 {
     use InteractsWithTable;
@@ -42,15 +37,16 @@ class ListCertif extends Page implements HasTable
 
     protected function getHeaderActions(): array
     {
-                $ix = cache()->rememberForever('settings', function () {
-                    return \App\Models\Info::findOrFail(1);
-                });
+        $ix = cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+        });
+
         return [
             Actions\Action::make('inv14')->label(__('form.eca4'))->closeModalByClickingAway(false)
-            ->modalContent(fn (): View => view('components.pricing3', ['ix' => $ix]))
+                ->modalContent(fn (): View => view('components.pricing3', ['ix' => $ix]))
                 ->color('info')->closeModalByClickingAway(false)
                 ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
-                ->modalDescription(__('main.w43',['rst'=>'ECA']))
+                ->modalDescription(__('main.w43', ['rst' => 'ECA']))
                 ->modalSubmitAction(false)
                 ->modalCancelAction(false),
             Actions\Action::make('rrtt')->label(__('form.add'))->form([
@@ -62,34 +58,35 @@ class ListCertif extends Page implements HasTable
                             ->pluck('name', 'id');
                     })->label('Certifications')->preload()->live(),
                 Forms\Components\Placeholder::make('Description')
-                    ->hidden(fn(Get $get):bool=>empty($get('cou')))
-                    ->content(fn (Get $get): ?string => empty($get('cou'))? '': \App\Models\Course::where('id', $get('cou'))->first()->descr),
+                    ->hidden(fn (Get $get): bool => empty($get('cou')))
+                    ->content(fn (Get $get): ?string => empty($get('cou')) ? '' : \App\Models\Course::where('id', $get('cou'))->first()->descr),
 
             ])->action(function ($data) {
-                if(auth()->user()->can('add-course',\App\Models\Course::class)){
+                if (auth()->user()->can('add-course', \App\Models\Course::class)) {
                     $rec = Course::findorFail($data['cou']);
                     $rec->users()->attach(auth()->id());
                     Notification::make()->success()->title(__('form.e31', ['name' => $rec->name]))->send();
                 }
             })->closeModalByClickingAway(false)
-            ->modalDescription(__('form.e32'))
+                ->modalDescription(__('form.e32'))
                 ->after(function ($data) {
-                    if(auth()->user()->can('add-course',\App\Models\Course::class)){
-                            $rec = Course::findorFail($data['cou']);
-                            $txt = "Certification '$rec->name' added";
-                            \App\Models\Journ::add(auth()->user(), 'Portfolio', 8, $txt);
+                    if (auth()->user()->can('add-course', \App\Models\Course::class)) {
+                        $rec = Course::findorFail($data['cou']);
+                        $txt = "Certification '$rec->name' added";
+                        \App\Models\Journ::add(auth()->user(), 'Portfolio', 8, $txt);
                     }
                 })->color('success')->modalHeading(__('main.lc2'))
                 ->modalSubmitActionLabel(__('form.add'))
-                ->disabled(fn():bool=>auth()->user()->cannot('add-course',\App\Models\Course::class)),
+                ->disabled(fn (): bool => auth()->user()->cannot('add-course', \App\Models\Course::class)),
         ];
     }
 
     public function table(Table $table): Table
     {
-        $eca=auth()->user()->eca-auth()->user()->courses->count();
+        $eca = auth()->user()->eca - auth()->user()->courses->count();
+
         return $table
-        ->heading(fn(Get $get)=>__('form.eca2').__('main.space').': '.($eca<0?0:$eca))
+            ->heading(fn (Get $get) => __('form.eca2').__('main.space').': '.($eca < 0 ? 0 : $eca))
             ->query(Course::has('users1')->withCount('modules')->withCount('questions')->where('pub', true))
             ->emptyStateHeading(__('main.lc3'))->emptyStateIcon('heroicon-o-bookmark')
             ->emptyStateDescription(__('main.lc4'))
@@ -101,7 +98,7 @@ class ListCertif extends Page implements HasTable
                 /* Tables\Columns\TextColumn::make('oo')->badge()->label(__('form.ins'))
                     ->state(fn (Course $record) => $record->users1()->first()->pivot->approve ? __('form.yes') : __('form.pen'))
                     ->color(fn (Course $record) => $record->users1()->first()->pivot->approve ? 'success' : 'warning'), */
-           ])
+            ])
             ->filters([
                 Tables\Filters\SelectFilter::make('prov')
                     ->relationship(name: 'provRel', titleAttribute: 'name')

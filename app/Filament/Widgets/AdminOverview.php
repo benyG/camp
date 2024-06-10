@@ -11,13 +11,15 @@ class AdminOverview extends Widget
     protected static bool $isLazy = true;
 
     protected static string $view = 'filament.widgets.adm-ovv';
-    protected int | string | array $columnSpan = 'full';
+
+    protected int|string|array $columnSpan = 'full';
 
     #[Locked]
     public $va;
 
     #[Locked]
     public $co;
+
     #[Locked]
     public $pro;
 
