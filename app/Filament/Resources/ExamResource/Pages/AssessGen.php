@@ -4,7 +4,7 @@ namespace App\Filament\Resources\ExamResource\Pages;
 
 use App\Filament\Resources\ExamResource;
 use App\Models\Exam;
-use Filament\Actions\Action as Action1;
+use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Validate;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 
 #[Lazy]
 class AssessGen extends Page implements HasActions, HasForms
@@ -114,6 +116,17 @@ class AssessGen extends Page implements HasActions, HasForms
 
     #[Locked]
     public $iati3 = false;
+    #[Locked]
+    public $ias3 = false;
+    #[Locked]
+    public $ias4 = false;
+    #[Locked]
+    public $aqa1 = false;
+    #[Locked]
+    public $aqa2 = false;
+
+    #[Locked]
+    public $qeror = false;
 
     #[Validate('required', onUpdate: false)]
     public $ans;
@@ -126,11 +139,14 @@ class AssessGen extends Page implements HasActions, HasForms
 
     #[Locked]
     public $ias2;
+    #[Locked]
+    public $iac;
 
     protected static string $view = 'filament.resources.exam-resource.pages.assess-gen';
 
     public function mount($ex): void
     {
+        $this->iac=auth()->user()->ix+auth()->user()->ix2;
         $this->record = Exam::has('users1')->where('name', $ex)->with('modules')->with('certRel')->with('users1')->firstOrFail();
         if (empty($this->record->users1()->first()->pivot->start_at)) {
             $this->record->users1()->updateExistingPivot(auth()->id(), [
@@ -179,6 +195,8 @@ class AssessGen extends Page implements HasActions, HasForms
             }) <= 1;
             $this->aa = $this->quest[$this->qcur]->answers->random($this->quest[$this->qcur]->answers->count())->pluck('text', 'id');
             $this->qtext = $this->quest[$this->qcur]->text;
+            $this->js('setTimeout(() => { $wire.aqaQuery() }, 10000);');
+
         } else {
             $sc = round(100 * $this->score / $this->qtot, 2);
             $this->btext = "
@@ -197,9 +215,9 @@ class AssessGen extends Page implements HasActions, HasForms
         $this->qcur2 = $this->qcur;
     }
 
-    public function revAction(): Action1
+    public function revAction(): Action
     {
-        return Action1::make('rev')->label(__('main.here'))->link()
+        return Action::make('rev')->label(__('main.here'))->link()
             ->requiresConfirmation()->color('primary')
             ->modalIcon('heroicon-o-question-mark-circle')
             ->modalHeading(__('main.as10'))
@@ -215,10 +233,11 @@ class AssessGen extends Page implements HasActions, HasForms
             });
     }
 
-    public function invAction(): Action1
+    public function invAction(): Action
     {
-        return Action1::make('inv')->label(__('main.i3'))->size(ActionSize::Small)
+        return Action::make('inv')->label(__('main.i3'))->size(ActionSize::Small)
             ->link()->disabled(function (): bool {
+                if(auth()->user()->aqa) return true;
                 if (empty($this->iatext2)) {
                     if (empty($this->qtext)) {
                         return true;
@@ -252,66 +271,20 @@ class AssessGen extends Page implements HasActions, HasForms
                     return \App\Models\Info::findOrFail(1);
                 })]))
             ->action(function () {
-                if (auth()->user()->can('call-ai')) {
-                    $ix = cache()->rememberForever('settings', function () {
-                        return \App\Models\Info::findOrFail(1);
-                    });
-                    $ik = 1;
-                    $aitx = '';
-                    foreach ($this->aa as $value) {
-                        if (! is_string($value)) {
-                            $value = $value->text;
-                        }
-                        $aitx .= $ik.'. '.$value."\n ";
-                        $ik++;
-                    }
-                    $stats = $this->record->certRel->name." certification exam:
-                    - Question :
-                    $this->qtext
-                    - Answers choices :".$aitx.'.';
-                    try {
-                        $apk = Crypt::decryptString($ix->apk);
-                        //   dd( $apk);
-                        $response = Http::withToken($apk)->post($ix->endp, [
-                            'model' => $ix->model,
-                            'messages' => [
-                                ['role' => 'system', 'content' => $ix->cont1.__('main.i5')],
-                                ['role' => 'user', 'content' => $stats],
-                            ],
-                        ])
-                            ->json();
-                        //   dd($response);
-                        if (is_array($response['choices'])) {
-                            $this->iatext3 = __('main.i6', ['name' => auth()->user()->name]);
-                            $this->iati = true;
-                            if (! $this->iati3) {
-                                $this->iati3 = true;
-                            }
-                            $this->iatext = $response['choices'][0]['message']['content'];
-                            iac_decr();
-                            if (auth()->user()->vo) {
-                                $this->ssPick($this->iatext);
-                            }
-                        } else {
-                            Notification::make()->danger()->title(__('form.e10'))->send();
-                        }
-                    } catch (DecryptException $e) {
-                        Notification::make()->danger()->title(__('form.e11'))->send();
-                    } catch (ConnectionException $e) {
-                        Notification::make()->danger()->title(__('form.e12'))->send();
-                    }
-                }
+                    $this->aqaMan();
             });
     }
 
-    public function inaAction(): Action1
+    public function inaAction(): Action
     {
         $ix = cache()->rememberForever('settings', function () {
             return \App\Models\Info::findOrFail(1);
         });
 
-        return Action1::make('ina')->label(__('main.i8'))->size(ActionSize::Small)->modalSubmitActionLabel('Yes')
+        return Action::make('ina')->label(__('main.i8'))->size(ActionSize::Small)->modalSubmitActionLabel('Yes')
             ->icon('heroicon-o-light-bulb')->disabled(function (): bool {
+                return true;
+                if(auth()->user()->aqa) return true;
                 if (empty($this->cans)) {
                     return true;
                 } else {
@@ -335,72 +308,14 @@ class AssessGen extends Page implements HasActions, HasForms
             ->modalCancelAction(auth()->user()->can('call-ai') ? null : false)
             ->modalDescription(fn (): string => auth()->user()->can('call-ai') ? '' : __('form.e33'))
             ->action(function () {
-                if (auth()->user()->can('call-ai')) {
-                    $ix = cache()->rememberForever('settings', function () {
-                        return \App\Models\Info::findOrFail(1);
-                    });
-                    $ik = 1;
-                    $aitx = '';
-                    foreach ($this->aa as $value) {
-                        if (! is_string($value)) {
-                            $value = $value->text;
-                        }
-                        $aitx .= $ik.'. '.$value."\n ";
-                        $ik++;
-                    }
-                    $stats = $this->record->certRel->name." certification exam:
-                 - Question :
-                 $this->qtext
-                 - Answers choice :".$aitx.'.';
-                    try {
-                        $apk = Crypt::decryptString($ix->apk);
-                        //  dd($apk);
-                        $response = Http::withToken($apk)->post($ix->endp, [
-                            'model' => $ix->model,
-                            'messages' => [
-                                ['role' => 'system', 'content' => $ix->cont2.__('main.i5')],
-                                ['role' => 'user', 'content' => $stats],
-                            ],
-                        ])
-                            ->json();
-                        // dd($response["choices"][0]["message"]["content"]);
-                        if (is_array($response['choices'])) {
-                            $this->iatext3 = __('main.i6', ['name' => auth()->user()->name]);
-                            $this->iati2 = true;
-                            if (! $this->iati3) {
-                                $this->iati3 = true;
-                            }
-                            // $this->iatext2 = preg_replace('/(\d+\. \*\*|- \*\*|- )/', '<br>$1',$response['choices'][0]['message']['content'] );
-                            $this->iatext2 = $response['choices'][0]['message']['content'];
-                            iac_decr();
-                            if (auth()->user()->vo) {
-                                $this->ssPick($this->iatext2);
-                            }
-                        } else {
-                            Notification::make()->danger()->title(__('form.e10'))->send();
-                        }
-                    } catch (DecryptException $e) {
-                        Notification::make()->danger()->title(__('form.e11'))->send();
-                    } catch (ConnectionException $e) {
-                        Notification::make()->danger()->title(__('form.e12'))->send();
-                    }
-                }
+                $this->aqaMan2();
             });
     }
 
-    public function ssAction(): Action1
+    public function ssmAction(): Action
     {
-        return Action1::make('in41')->label(__('main.i9'))->size(ActionSize::Small)
+        return Action::make('ino')->label(fn (): string => auth()->user()->can('call-ai') && auth()->user()->can('vo')  && auth()->user()->vo? __('form.sta4'):__('form.sta5'))->size(ActionSize::Small)
             ->link()->disabled(fn (): bool => auth()->user()->can('call-ai'))
-            ->closeModalByClickingAway(false)
-            ->modalWidth(\Filament\Support\Enums\MaxWidth::ExtraLarge)
-            ->modalContent(fn (): View => view('components.pricing2', ['ix' => cache()->rememberForever('settings', function () {
-                return \App\Models\Info::findOrFail(1);
-            })]))
-            ->modalSubmitAction(false)
-            ->modalHidden(fn (): bool => auth()->user()->can('call-ai'))
-            ->modalCancelAction(false)
-            ->modalDescription(__('form.e33'))
             ->color(function () {
                 if (auth()->user()->can('vo')) {
                     return auth()->user()->vo ? 'primary' : 'gray';
@@ -408,53 +323,182 @@ class AssessGen extends Page implements HasActions, HasForms
                     return 'gray';
                 }
             })
-            ->icon('heroicon-o-play');
+            ->icon(fn (): string => auth()->user()->can('call-ai') && auth()->user()->can('vo')  && auth()->user()->vo? 'heroicon-o-speaker-wave' : 'heroicon-o-speaker-x-mark')
+            ->closeModalByClickingAway(false)
+            ->modalContent(fn (): View => view('componets.pricing2', ['ix' => cache()->rememberForever('settings', function () {
+                return \App\Models\Info::findOrFail(1);
+            })]))
+            ->modalSubmitAction(false)
+            ->modalCancelAction(false)
+            ->modalDescription(__('form.e33'))
+            ->action(function(){
+               // $this->js('alert("ddf")');
+            });
     }
-
-    public function ssPick1()
+    public function ssPick3()
     {
-        $ix = cache()->rememberForever('settings', function () {
-            return \App\Models\Info::findOrFail(1);
-        });
-        if (! empty($this->iatext)) {
-            $this->js("new Audio('data:audio/mp3;base64,".$this->ias1."').play()");
+        if ($this->iati && !$this->ias3) {
+            $this->ssPica($this->iatext,false);
+        }
+    }
+    public function ssPick4()
+    {
+        if ($this->iati2 && !$this->ias4) {
+            $this->ssPica($this->iatext2,true);
+        }
+    }
+    public function aqaQuery()
+    {
+        if (!$this->aqa1 && auth()->user()->aqa) {
+            $this->aqaMan();
+        }
+    }
+    public function aqaQuery2()
+    {
+        if (!$this->aqa2 && auth()->user()->aqa) {
+            $this->aqaMan2();
         }
     }
 
-    public function ssPick2()
+    public function aqaMan()
     {
-        $ix = cache()->rememberForever('settings', function () {
-            return \App\Models\Info::findOrFail(1);
-        });
-        if (! empty($this->iatext2)) {
-            $this->js("new Audio('data:audio/mp3;base64,".$this->ias2."').play()");
-        }
-    }
-
-    public function ssPick($txt)
-    {
-        if (auth()->user()->can('call-ai') && ! empty($txt)) {
+        if (auth()->user()->can('call-ai')) {
+             $this->aqa1=true;
+             $ix = cache()->rememberForever('settings', function () {
+                return \App\Models\Info::findOrFail(1);
+            });
+            $ik = 1;
+            $aitx = '';
+            foreach ($this->aa as $value) {
+                if (! is_string($value)) {
+                    $value = $value->text;
+                }
+                $aitx .= $ik.'. '.$value."\n ";
+                $ik++;
+            }
+            $stats = $this->record->certRel->name." certification exam:
+            - Question :
+            $this->qtext
+            - Answers choices :".$aitx.'.';
             try {
+                $this->qeror=true;
+                $apk = Crypt::decryptString($ix->apk);
+                //   dd( $apk);
+                $response = Http::withToken($apk)->post($ix->endp, [
+                    'model' => $ix->model,
+                    'max_tokens'=>1100,
+                    'messages' => [
+                        ['role' => 'system', 'content' => $ix->cont1],
+                        ['role' => 'user', 'content' => $stats],
+                    ],
+                ])
+                    ->json();
+                //   dd($response);
+                if (is_array($response['choices'])) {
+                    $this->qeror=false;
+                    $this->iatext3 = __('main.i6', ['name' => auth()->user()->name]);
+                    $this->iati = true;
+                    if (! $this->iati3) {
+                        $this->iati3 = true;
+                    }
+                    $this->iatext = $response['choices'][0]['message']['content'];
+                    iac_decr();$this->iac--;
+
+                } else {
+                    Notification::make()->danger()->title(__('form.e10'))->send();
+                    $this->qeror=false;
+                }
+            } catch (DecryptException $e) {
+                Notification::make()->danger()->title(__('form.e11'))->send();
+                $this->qeror=false;
+            } catch (ConnectionException $e) {
+                Notification::make()->danger()->title(__('form.e12'))->send();
+                $this->qeror=false;
+            }
+        }
+    }
+    public function aqaMan2()
+    {
+        if (auth()->user()->can('call-ai')) {
+            $this->aqa2=true;
+            $ix = cache()->rememberForever('settings', function () {
+                return \App\Models\Info::findOrFail(1);
+            });
+            $ik = 1;
+            $aitx = '';
+            foreach ($this->aa as $value) {
+                if (! is_string($value)) {
+                    $value = $value->text;
+                }
+                $aitx .= $ik.'. '.$value."\n ";
+                $ik++;
+            }
+            $stats = $this->record->certRel->name." certification exam:
+         - Question :
+         $this->qtext
+         - Answers choice :".$aitx.'.';
+            try {
+                $this->qeror=true;
+                $apk = Crypt::decryptString($ix->apk);
+                //  dd($apk);
+                $response = Http::withToken($apk)->post($ix->endp, [
+                    'model' => $ix->model,
+                    'messages' => [
+                        ['role' => 'system', 'content' => $ix->cont2],
+                        ['role' => 'user', 'content' => $stats],
+                    ],
+                ])
+                    ->json();
+                // dd($response["choices"][0]["message"]["content"]);
+                if (is_array($response['choices'])) {
+                    $this->qeror=false;
+                    $this->iatext3 = __('main.i6', ['name' => auth()->user()->name]);
+                    $this->iati2 = true;
+                    if (! $this->iati3) {
+                        $this->iati3 = true;
+                    }
+                    $this->iatext2 = $response['choices'][0]['message']['content'];
+                    iac_decr();$this->iac--;
+                } else {
+                    Notification::make()->danger()->title(__('form.e10'))->send();
+                    $this->qeror=false;
+                }
+            } catch (DecryptException $e) {
+                Notification::make()->danger()->title(__('form.e11'))->send();
+                $this->qeror=false;
+            } catch (ConnectionException $e) {
+                Notification::make()->danger()->title(__('form.e12'))->send();
+                $this->qeror=false;
+            }
+        }
+    }
+    public function ssPica($txt, $opt)
+    {
+        if (auth()->user()->can('call-ai') && auth()->user()->can('vo') && auth()->user()->vo &&  ! empty($txt)) {
+            try {
+                $this->ias4=$opt==true;$this->ias3=$opt==false;
                 $apk = Crypt::decryptString($this->ix->apk);
                 //  dd($apk);
-                $response = Http::withToken($apk)->post($this->ix->endp2, [
+                $this->qeror=true;
+                $promise = Http::async()->timeout(500)->withToken($apk)->post($this->ix->endp2, [
                     'model' => $this->ix->model2,
                     'input' => $txt,
                     'voice' => $this->ix->aivo,
                     'response_format ' => 'mp3',
-                ]);
-                // dd($response->getBody()->getContents());
-                if (! empty($response)) {
+                ])->then(function ($response) {
+                    $this->qeror=false;
                     $this->ias1 = base64_encode($response->getBody()->getContents());
-                    $this->js("new Audio('data:audio/mp3;base64,".$this->ias1."').play()");
-                    iac_decr();
-                } else {
-                    Notification::make()->danger()->title(__('form.e10'))->send();
-                }
+                    $this->js("new Audio('data:audio/mpeg;base64,".$this->ias1."').play()");
+                    iac_decr();$this->iac--;
+                });
+                $promise->wait();
+
             } catch (DecryptException $e) {
                 Notification::make()->danger()->title(__('form.e11'))->send();
+                $this->qeror=false;
             } catch (ConnectionException $e) {
                 Notification::make()->danger()->title(__('form.e12'))->send();
+                $this->qeror=false;
             }
         }
     }
@@ -479,6 +523,9 @@ class AssessGen extends Page implements HasActions, HasForms
         $this->iati3 = false;
         $this->iatext3 = $this->iatext = $this->iatext2 = '';
         $this->iati1 = $this->iati = false;
+        $this->ias3 = $this->ias4 = false;
+        $this->aqa1 = $this->aqa2=false;
+
         $this->ico = $this->qcur < $this->qtot ? 'heroicon-m-play' : '';
         if ($this->qcur <= $this->qtot - 1) {
             $this->aa = $this->quest[$this->qcur]->answers->random($this->quest[$this->qcur]->answers->count())->pluck('text', 'id');
@@ -490,6 +537,7 @@ class AssessGen extends Page implements HasActions, HasForms
             $this->ans2 = [];
             $this->cans = null;
             $this->bm2 = false;
+            $this->js('setTimeout(() => { $wire.aqaQuery() }, 10000);');
         } else {
             $this->carr[0] = $this->qcur;
             $this->carr[1] = $this->score;
@@ -555,6 +603,7 @@ class AssessGen extends Page implements HasActions, HasForms
                 "<span alt='' style='--c-50:var(--danger-50);--c-400:var(--danger-400);--c-600:var(--danger-600);' class='text-sm text-custom-600'>
                 <br>  ".__('main.as14')." <br> </span><span class='text-xs'>".__('main.as13').": <br>
                 $au</span>";
+                $this->aqaQuery2();
             }
         } else {
             $ab2 = $this->quest[$this->qcur]->answers->whereIn('id', $this->ans2)->sum(function (\App\Models\Answer $aas) {
@@ -616,7 +665,9 @@ class AssessGen extends Page implements HasActions, HasForms
                 $this->populate();
             } else {
                 if ($this->bm2) {
+                    if(!$this->qeror)
                     $this->populate();
+                    else Notification::make()->danger()->title(__('form.e37'))->send();
                 } else {
                     $this->incrQuest();
                 }

@@ -9,6 +9,7 @@ use Filament\Forms\Components\Component;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use App\Forms\Components\IAUnit;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Notifications\Notification;
@@ -62,29 +63,28 @@ class Usett extends Page implements HasActions, HasForms
                     ->schema([
                         Forms\Components\Placeholder::make('email')
                             ->content(fn (): string => auth()->user()->email),
-                        Forms\Components\Placeholder::make('iac4')->label(__('form.iac'))
-                            ->content(fn (): int => auth()->user()->ix + auth()->user()->ix2)->key('action_test_2')
-                            ->hintAction(
-                                \Filament\Forms\Components\Actions\Action::make('eers')->label(__('form.add'))
-                                    ->closeModalByClickingAway(false)
-                                    ->modalContent(fn (): \Illuminate\Contracts\View\View => view('components.pricing2', ['ix' => $ix]))
-                                    ->color('primary')->closeModalByClickingAway(false)
-                                    ->modalWidth(\Filament\Support\Enums\MaxWidth::ExtraLarge)
-                                    ->modalSubmitAction(false)
-                                    ->modalCancelAction(false)
-                                    ->icon('heroicon-m-plus')
-                            ),
-                        Forms\Components\Placeholder::make('eca')->label(__('form.eca2'))->key('action_test_3')
+                        IAUnit::make('iac4')->label(__('form.iac'))->hintAction(
+                            \Filament\Forms\Components\Actions\Action::make('eers')->label(__('form.add'))
+                                ->closeModalByClickingAway(false)->iconButton()
+                                ->modalContent(fn (): \Illuminate\Contracts\View\View => view('components.pricing2', ['ix' => $ix]))
+                                ->color('primary')->closeModalByClickingAway(false)
+                                ->modalWidth(\Filament\Support\Enums\MaxWidth::ExtraLarge)
+                                ->modalSubmitAction(false)
+                                ->modalCancelAction(false)
+                                ->icon('heroicon-m-plus-circle')
+                                )
+                        ->content(fn (): int => auth()->user()->ix + auth()->user()->ix2)->key('action_est_2'),
+                        IAUnit::make('eca')->label(__('form.eca2'))->key('action_test_3')
                             ->content(fn (): int => auth()->user()->eca)
                             ->hintAction(
                                 \Filament\Forms\Components\Actions\Action::make('ee0rs')->label(__('form.add'))
-                                    ->closeModalByClickingAway(false)
+                                    ->closeModalByClickingAway(false)->iconButton()
                                     ->modalContent(fn (): \Illuminate\Contracts\View\View => view('components.pricing3', ['ix' => $ix]))
                                     ->color('primary')->closeModalByClickingAway(false)
                                     ->modalWidth(\Filament\Support\Enums\MaxWidth::Small)
                                     ->modalSubmitAction(false)
                                     ->modalCancelAction(false)
-                                    ->icon('heroicon-m-plus')
+                                    ->icon('heroicon-m-plus-circle')
                             ),
                     ]),
                 Forms\Components\Section::make(__('form.pa2'))->columns(2)->description(__('form.pa3'))->columns(2)
@@ -126,7 +126,7 @@ class Usett extends Page implements HasActions, HasForms
 
     public static function canAccess(): bool
     {
-        return collect(['2', '3', '4', '5'])->contains(auth()->user()->ex);
+        return collect(['2', '3', '4', '5','9'])->contains(auth()->user()->ex);
     }
 
     protected function getVO(): Component
@@ -153,8 +153,16 @@ class Usett extends Page implements HasActions, HasForms
             return \App\Models\Info::findOrFail(1);
         });
 
-        return Forms\Components\Toggle::make('vo2')->label(__('form.aivo2'))->inline(false)
-            ->default(auth()->user()->vo2)->disabled(auth()->user()->cannot('vo'));
+        return auth()->user()->can('vo') ? Forms\Components\Select::make('vo2')->label(__('form.aivo'))->tooltip(__('form.sta3'))
+        ->options(['0'=>'Coach Ben','1'=>'Coach Becky'])->selectablePlaceholder(false)->default(auth()->user()->vo2) :
+            Forms\Components\Toggle::make('vo2')->label(__('form.aivo'))->inline(false)->tooltip(__('form.sta3'))->disabled(true)->declined()
+                ->hintAction(
+                    \Filament\Forms\Components\Actions\Action::make('c12')->label(__('form.upg'))
+                        ->closeModalByClickingAway(false)
+                        ->modalContent(fn (): \Illuminate\Contracts\View\View => view('components.pricing1', ['ix' => $ix]))
+                        ->color('primary')->closeModalByClickingAway(false)
+                        ->modalSubmitAction(false)->modalCancelAction(false)
+                )->default(false)->declined();
     }
 
     protected function getITG(): Component

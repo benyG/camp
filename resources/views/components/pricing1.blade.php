@@ -58,7 +58,7 @@
                                     <p class="mb-3">
                                         <span
                                             class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900"><span
-                                                x-text="month? '$'+bpma:'$'+bpya"></span>€</span>
+                                                x-text="month? '$'+bpma:'$'+bpya"></span>$</span>
                                         <span class="text-xs font-medium text-gray-400 dark:text-gray-600">/mo</span>
                                     </p>
                                 </th>
@@ -73,7 +73,7 @@
                                     <p class="mb-3">
                                         <span
                                             class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900"><span
-                                                x-text="month? '$'+spma:'$'+spya"></span>€</span>
+                                                x-text="month? '$'+spma:'$'+spya"></span>$</span>
                                         <span class="text-xs font-medium text-gray-400 dark:text-gray-600">/mo</span>
                                     </p>
                                 </th>
@@ -88,7 +88,7 @@
                                     <p class="mb-3">
                                         <span
                                             class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900"><span
-                                                x-text="month? '$'+ppma:'$'+ppya"></span>€</span>
+                                                x-text="month? '$'+ppma:'$'+ppya"></span>$</span>
                                         <span class="text-xs font-medium text-gray-400 dark:text-gray-600">/mo</span>
                                     </p>
                                 </th>

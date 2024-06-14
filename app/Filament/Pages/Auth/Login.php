@@ -112,7 +112,6 @@ class Login extends BaseLogin
             $this->throwFailureValidationException();
         }
         $user->kx = Str::random(180);
-        $user->save();
         if (auth()->check() && auth()->user()->ex > 1) {
             $ix = cache()->rememberForever('settings', function () {
                 return \App\Models\Info::findOrFail(1);
@@ -121,33 +120,62 @@ class Login extends BaseLogin
             $user = auth()->user();
             if (is_null($user->sub) || $user->sub->exp < now()) {
                 $user->ex = 2;
-                $user->save();
+                $user->aqa= false;
+                if (!$ix->sta_f) {
+                    $user->vo = false; $user->vo2=false;
+                }
+                //pa
+                if (!$ix->pa_f) {
+                    $user->pa = false;
+                }
+                //tga
+                if (!$ix->tga_f) {
+                    $user->itg = false;
+                }
             } else {
-                $ex = 0;
+                $ex = 0; $iac = 0;$vo=false;$itg=false;$pa=false;
                 switch ($user->sub->pbi) {
-                    case $ix->bp_id : $ex = 3;$iac = $ix->iac_b;
+                    case $ix->bp_id : $ex = 3;$iac = $ix->iac_b;$vo=$ix->sta_b;
+                    $itg=$ix->tga_b;$pa=$ix->pa_b;
                         break;
-                    case $ix->sp_id : $ex = 4;$iac = $ix->iac_s;
+                    case $ix->sp_id : $ex = 4;$iac = $ix->iac_s;$vo=$ix->sta_s;
+                    $itg=$ix->tga_s;$pa=$ix->pa_s;
                         break;
-                    case $ix->pp_id : $ex = 5; $iac = $ix->iac_p;
+                    case $ix->pp_id : $ex = 5; $iac = $ix->iac_p;$vo=$ix->sta_p;
+                    $itg=$ix->tga_p;$pa=$ix->pa_p;
                         break;
-                    default: $ex = 2; $iac = $ix->iac_f;
+                    default: $ex = 2; $iac = $ix->iac_f;$vo=$ix->sta_f;
+                    $itg=$ix->tga_f;$pa=$ix->pa_f;
                         break;
                 }
                 if ($user->ex != $ex) {
                     $user->ex = $ex;
-                    $user->save();
                 }
+                if ($user->ex != 4 && $user->ex != 5) {
+                    $user->aqa = false;
+                }
+
                 //ia
-                $iac = 0;$vo=false;
-
-                if (is_null($user->icx) || $user->exp->month != $user->icx->month) {
+                $rs=fmod(intval($user->sub->created_at->diffInDays(now())),30);
+                //dd($rs);
+                if (is_null($user->icx) || \Illuminate\Support\Carbon::parse($user->icx)->diffInDays(now())>$rs) {
                     $user->ix = $iac;
-                    $user->save();
                 }
-
+                if (!$vo) {
+                    $user->vo = false; $user->vo2=false;
+                }
+                //pa
+                if (!$pa) {
+                    $user->pa = false;
+                }
+                //tga
+                if (!$itg) {
+                    $user->itg = false;
+                }
             }
         }
+        $user->save();
+
         session()->regenerate();
 
         return app(LoginResponse::class);
@@ -188,9 +216,9 @@ class Login extends BaseLogin
         $user->ax = 1;
         $user->tz = isset(session('auth_ip')['timezone']) ? session('auth_ip')['timezone'] : 'UTC';
         //plan
-
-
-
+        $user->ix = $ix->iac_g;
+        $user->aqa= false; $user->vo2= false;
+        $user->pa=$ix->pa_g;$user->itg=$ix->tga_g;$user->vo=$ix->sta_g;
 
         $user->save();
         if (! Filament::auth()->attempt([

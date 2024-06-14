@@ -28,10 +28,10 @@ return new class extends Migration
             $table->timestamp('icx')->nullable(); //last ia call
             $table->json('certs')->nullable(); //nb cert for perf anal
             $table->boolean('lom')->default(false); //mfa
-            $table->boolean('aqa')->default(true); //automatique question explain
-            $table->boolean('pa')->default(true); // perf anal
-            $table->boolean('itg')->default(true); //intelligent test generation
-            $table->boolean('vo')->default(true); //vocal ai k
+            $table->boolean('aqa')->default(false); //automatique question explain
+            $table->boolean('pa')->default(false); // perf anal
+            $table->boolean('itg')->default(false); //intelligent test generation
+            $table->boolean('vo')->default(false); //vocal ai k
             $table->boolean('vo2')->default(false); //voice type ai
             $table->string('pk')->defaul('0'); // pck selected
 

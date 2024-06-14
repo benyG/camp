@@ -49,7 +49,7 @@ class ListCertif extends Page implements HasTable
                 ->modalDescription(__('main.w43', ['rst' => 'ECA']))
                 ->modalSubmitAction(false)
                 ->modalCancelAction(false),
-            Actions\Action::make('rrtt')->label(__('form.add'))->form([
+            Actions\Action::make('rrtt')->label(__('form.eca5'))->form([
                 Forms\Components\Select::make('prov')->label(__('main.m16'))->required()
                     ->options(\App\Models\Prov::all()->pluck('name', 'id'))->preload()->live(),
                 Forms\Components\Select::make('cou')->required()

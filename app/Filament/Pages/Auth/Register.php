@@ -83,7 +83,21 @@ class Register extends BaseRegister
 
         $data = $this->form->getState();
         $user = $this->getUserModel()::create($data);
+        //plan
         $user->ix = $ix->iac_f;
+        $user->aqa= false; $user->vo2= false;
+        if (!$ix->sta_f) {
+            $user->vo = false; $user->vo2=false;
+        }
+        //pa
+        if (!$ix->pa_f) {
+            $user->pa = false;
+        }
+        //tga
+        if (!$ix->tga_f) {
+            $user->itg = false;
+        }
+
         $user->save();
         $txt = 'New user registered with email '.$data['email'];
         \App\Models\Journ::add(null, 'Register', 1, $txt, $this->ox);

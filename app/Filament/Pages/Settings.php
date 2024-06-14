@@ -251,9 +251,9 @@ class Settings extends Page implements HasActions, HasForms
                                             ->required()->rules(['url'])->columnSpan(2),
                                         Forms\Components\TextInput::make('model2')->label(__('form.aimo2'))
                                             ->required()->rules(['max:255']),
-                                        Forms\Components\TextInput::make('aivo')->label(__('form.aivo'))
+                                        Forms\Components\TextInput::make('aivo')->label('Coach Ben')
                                             ->required()->rules(['max:200']),
-                                        Forms\Components\TextInput::make('aivo')->label(__('form.aivo2'))
+                                        Forms\Components\TextInput::make('aivo2')->label('Coach Becky')
                                             ->required()->rules(['max:200']),
                                     ]),
                                 Forms\Components\Section::make(__('form.cont'))

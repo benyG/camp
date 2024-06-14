@@ -3,9 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ITExamBootcamp</title>
-<meta name="GENERATOR" content="Created by BlueVoda Website builder http://www.bluevoda.com">
-<meta name="HOSTING" content="Hosting Provided By VodaHost http://www.vodahost.com">
+<title>Exam Boot</title>
 <style type="text/css">
 html, body
 {
@@ -68,7 +66,7 @@ a:hover
 <div id="Layer1" style="position:absolute;background-color:#22C55E;left:197px;top:0px;width:53px;height:309px;z-index:1" title="">
 </div>
 <div id="bv_Image1" style="margin:0;padding:0;position:absolute;left:261px;top:123px;width:252px;height:37px;text-align:left;z-index:2;">
-<img src="{{asset('img/ed9286e08a43ad6602548f5200cdc247.png')}}" id="Image1" alt="" align="top" border="0" style="width:252px;height:37px;"></div>
+<img src="{{asset('img/logo-default-slim-dark.png')}}" id="Image1" alt="" align="top" border="0" style="width:252px;"></div>
 <div id="bv_Text1" style="margin:0;padding:0;position:absolute;left:294px;top:292px;width:560px;height:44px;text-align:left;z-index:3;">
            <br>         @switch($exception->getStatusCode())
                         @case(404)

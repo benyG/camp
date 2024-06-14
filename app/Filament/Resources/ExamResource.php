@@ -166,7 +166,7 @@ class ExamResource extends Resource
                                     }
                                 }
                             }),
-                        Forms\Components\TextInput::make('timer')->numeric()->requiredIf('type', '1')->label(__('main.as18'))
+                        Forms\Components\TextInput::make('timer')->numeric()->requiredIf('type', '1')->label(__('main.as18'))->default(30)
                             ->readonly(fn (Get $get): bool => $get('typee') == '1')
                             ->hidden(fn (Get $get): bool => $get('type') != '1')
                             ->rules(['min:'.$ix->mint, 'max:'.match (auth()->user()->ex) {
@@ -238,7 +238,7 @@ class ExamResource extends Resource
                                     })
                             ),
                         Forms\Components\DatePicker::make('due')->label(__('main.dd'))
-                            ->required()->minDate(now()),
+                            ->required()->minDate(now())->default(now()->addDays(7)),
                     ]),
                 Forms\Components\Section::make(trans_choice('main.m5', 5))->columns(3)->hidden(auth()->user()->ex != 0)
                     ->description(__('main.as19'))
@@ -277,7 +277,7 @@ class ExamResource extends Resource
                                             $fail(__('form.e17').' '.$rud);
                                         }
                                     }])
-                                    ->default($ix->minq)->live(onBlur: true),
+                                    ->default(10)->live(onBlur: true),
                             ])->minItems(1)->maxItems(fn (Get $get): int => $get('type') == '1' ? Module::where('course', $get('certi'))->count() : 1),
                     ]),
                 Forms\Components\Section::make('Note')

@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Exam Boot Camp - {{ __('main.w1') }}</title>
+    <title>Exam Boot- {{ __('main.w1') }}</title>
     <x-meta_name />
     <x-css1 />
 </head>
@@ -64,9 +64,7 @@
                             <div class="header-row justify-content-end">
                                 <ul
                                     class="header-social-icons social-icons d-none d-sm-block social-icons-clean social-icons-icon-light">
-                                    <li class="social-icons-facebook"><a href="http://www.facebook.com/" target="_blank"
-                                            title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
-                                    <li class="social-icons-twitter"><a href="http://www.twitter.com/" target="_blank"
+                                                                        <li class="social-icons-twitter"><a href="http://www.twitter.com/" target="_blank"
                                             title="Twitter"><i class="fab fa-twitter"></i></a></li>
                                     <li class="social-icons-linkedin"><a href="http://www.linkedin.com/" target="_blank"
                                             title="Linkedin"><i class="fab fa-linkedin-in"></i></a></li>
@@ -106,11 +104,12 @@
                         data-plugin-options="{'startPos': 'none', 'speed': 2.5, 'transition': true}" />
                 </div>
                 <div class="appear-animation position-absolute" data-appear-animation="zoomIn"
-                    data-appear-animation-delay="1100" style="top: 22%; right: 25%;">
-                    <img src="{{ asset('img/demos/sass/icons/icon-4.png')}}" class="img-fluid" alt=""
+                    data-appear-animation-delay="1100" style="top: 1%; right: 1%;">
+                    <img src="{{ asset('img/demos/sass/icons/home-1.png')}}" class="img-fluid" alt=""
                         data-plugin-float-element
                         data-plugin-options="{'startPos': 'none', 'speed': 2, 'transition': true, 'horizontal': true}" />
                 </div>
+                <!--
                 <div class="appear-animation position-absolute" data-appear-animation="zoomIn"
                     data-appear-animation-delay="1700" style="top: 49%; right: 16%;">
                     <img src="{{ asset('img/demos/sass/icons/icon-5.png')}}" class="img-fluid" alt=""
@@ -123,25 +122,23 @@
                         data-plugin-float-element
                         data-plugin-options="{'startPos': 'none', 'speed': 2.5, 'transition': true, 'horizontal': true}" />
                 </div>
-
+                -->
                 <div class="container pt-5 mt-5">
                     <div class="pt-5 mt-5 row justify-content-center">
                         <div class="pt-3 text-center col-lg-7">
                             <h1 class="text-color-light font-weight-extra-bold text-12 line-height-2 appear-animation"
-                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="500">Modern AI powered exam simulation platform</h1>
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="500">Modern <label class="text-color-green">AI connected</label> exam simulation platform</h1>
                             <div class="appear-animation" data-appear-animation="fadeInUpShorter"
                                 data-appear-animation-delay="700">
-                                <p class="pb-3 mb-4 text-color-light opacity-6 text-5">Porto is used by several
-                                    companies to manage their projects.</p>
+                                <p class="pb-3 mb-4 text-color-light opacity-6 text-5">Access a large database of realistic exam questions and unlock the power of AI to PASS your certification.</p>
                             </div>
-                            <a href="#"
-                                class="px-5 py-3 btn btn-light text-color-dark custom-secondary-font font-weight-bold text-3 appear-animation"
-                                data-appear-animation="fadeInRightShorter" data-appear-animation-delay="900">GET
-                                STARTED</a>
-                            <a href="#"
+                            <a href="https://examboot.net/boss/login"
                                 class="px-5 py-3 ml-4 btn btn-dark custom-secondary-font font-weight-bold text-3 appear-animation"
-                                data-appear-animation="fadeInLeftShorter" data-appear-animation-delay="900">VIEW OUR
-                                PLANS</a>
+                                data-appear-animation="fadeInLeftShorter" data-appear-animation-delay="900">SIGN UP FREE</a>
+                            <a href="#pricing"
+                                class="px-5 py-3 btn btn-light text-color-dark custom-secondary-font font-weight-bold text-3 appear-animation"
+                                data-appear-animation="fadeInRightShorter" data-appear-animation-delay="900">VIEW OUR PLANS</a>
+
                         </div>
                     </div>
                 </div>
@@ -165,9 +162,14 @@
                                 <div class="m-0 owl-carousel owl-theme nav-style-1"
                                     data-plugin-options="{'autoHeight': true, 'items': 1, 'margin': 10, 'nav': false, 'dots': false, 'stagePadding': 0, 'animateOut': 'fadeOut', 'autoplay': true, 'autoplayTimeout': 3000}">
                                     <div>
-                                        <img alt="" class="img-fluid rounded-0"
+                                         <!--
+                                         <img alt="" class="img-fluid rounded-0"
                                             src="{{ asset('img/demos/sass/screens/screen-1.jpg')}}">
+                                          -->
+                                            <iframe width="1007" height="592" src="https://www.youtube.com/embed/CeeR41CHzAA?si=N-GgPqPdpXSVDdOt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
                                     </div>
+                                     <!--
                                     <div>
                                         <img alt="" class="img-fluid rounded-0"
                                             src="{{ asset('img/demos/sass/screens/screen-2.jpg')}}">
@@ -176,6 +178,7 @@
                                         <img alt="" class="img-fluid rounded-0"
                                             src="{{ asset('img/demos/sass/screens/screen-3.jpg')}}">
                                     </div>
+                                    -->
                                 </div>
                                 <div class="carousel-ipad-home"></div>
                             </div>
@@ -188,7 +191,7 @@
 
                 <div class="pb-3 mt-5 text-center row">
 
-                    <p class="lead">Exam simulation for these IT certification providers is available on ExamBoot. Connect and Test yourself.</p>
+                    <p class="lead">Exam simulation for these certification providers is available on ExamBoot. Connect and Test yourself.</p>
 
                     <div class="owl-carousel owl-theme carousel-center-active-item"
                         data-plugin-options="{'responsive': {'0': {'items': 1}, '476': {'items': 1}, '768': {'items': 5}, '992': {'items': 7}, '1200': {'items': 7}}, 'autoplay': true, 'autoplayTimeout': 3000, 'dots': false}">
@@ -226,7 +229,7 @@
                 </div>
             </div>
 
-            <section class="m-0 mt-4 border-0 section p-relative" id="features">
+            <section class="m-0 mt-4 bg-transparent border-0 section p-relative" id="features">
                 <div class="container">
                     <div class="py-2 row align-items-center justify-content-center">
                         <div class="text-center col-lg-6">
@@ -234,7 +237,7 @@
                         </div>
                         <div class="text-center col-lg-6 text-lg-left">
                             <h2 class="mb-1 text-color-dark font-weight-bold text-6 appear-animation"
-                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">Unique, AI-connected exam simulation engine.</h2>
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">Unique, AI-connected <label class="text-color-green">exam simulation engine</label>.</h2>
                             <p class="lead appear-animation" data-appear-animation="fadeInUpShorter"
                                 data-appear-animation-delay="200">
 
@@ -269,11 +272,10 @@
                     <div class="py-2 row align-items-center justify-content-center">
                         <div class="text-center col-lg-6 text-lg-left">
                             <h2 class="mb-1 text-color-dark font-weight-bold text-6 appear-animation"
-                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">Drag n’ Drop
-                                Features</h2>
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">Exciting and hands-on <label class="text-color-green">dashboard</label> experience.</h2>
                             <p class="lead appear-animation" data-appear-animation="fadeInUpShorter"
                                 data-appear-animation-delay="200">
-                                Real-time performance analysis
+                                <label class="text-color-green">Real-time performance analysis</label>
                             </p>
                             <p class="appear-animation" data-appear-animation="fadeInUpShorter"
                                 data-appear-animation-delay="400">
@@ -284,8 +286,7 @@
                                                            </p>
                             <a href="https://examboot.net/boss/login"
                                 class="px-5 py-3 mt-3 btn btn-dark custom-secondary-font font-weight-bold text-3 appear-animation"
-                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="600">VIEW OUR
-                                PLANS</a>
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="600">GET FREE ACCESS</a>
                         </div>
                         <div class="text-center col-lg-6">
                             <img class="img-fluid" src="{{ asset('img/demos/sass/features/feature-2.png')}}"" alt="">
@@ -294,7 +295,7 @@
                 </div>
             </section>
 
-            <section class="m-0 border-0 section">
+            <section class="m-0 bg-transparent border-0 section">
                 <div class="container">
                     <div class="py-2 row align-items-center justify-content-center">
                         <div class="text-center col-lg-6">
@@ -302,18 +303,22 @@
                         </div>
                         <div class="text-center col-lg-6 text-lg-left">
                             <h2 class="mb-1 text-color-dark font-weight-bold text-6 appear-animation"
-                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">Advanced
-                                Reporting Features</h2>
-                            <p class="lead appear-animation" data-appear-animation="fadeInUpShorter"
-                                data-appear-animation-delay="200">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                elit massa enim.</p>
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">Get prepped like a pro with your <label class="text-color-green">AI coach!</label></h2>
+                            <p class="lead appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="200">
+                                <label class="text-color-green">Instant Feedback and Explanations:</label>
+                            </p>
                             <p class="appear-animation" data-appear-animation="fadeInUpShorter"
-                                data-appear-animation-delay="400">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                elit. Phasellus blandit massa enim. Nullam id varius nunc.</p>
-                            <a href="#"
+                                data-appear-animation-delay="400">During your simulation, your coach will assist you vocaly and will provide instant feedback to explain questions and answers.
+                            </p>
+                            <p class="lead appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="200">
+                               <label class="text-color-green">Advices and actions:</label>
+                            </p>
+                            <p class="appear-animation" data-appear-animation="fadeInUpShorter"
+                                data-appear-animation-delay="400">Your coach analyzes your dashboard. He identifies your knowledge gaps, makes personalized recommendations on how best to prepare for the exam, create add assign you tests based on your gaps and weaknesses.
+                            </p>
+                             <a href="https://examboot.net/boss/login"
                                 class="px-5 py-3 mt-3 btn btn-dark custom-secondary-font font-weight-bold text-3 appear-animation"
-                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="600">VIEW OUR
-                                PLANS</a>
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="600">GET STARTED NOW</a>
                         </div>
                     </div>
                 </div>
@@ -324,19 +329,15 @@
                     <div class="py-2 row align-items-center justify-content-center">
                         <div class="text-center col-lg-6 text-lg-left">
                             <h2 class="mb-1 text-color-dark font-weight-bold text-6 appear-animation"
-                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">Drag n’ Drop
-                                Features</h2>
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="0">Create customized exam and <label class="text-color-green">share the joy!</label></h2>
                             <p class="lead appear-animation" data-appear-animation="fadeInUpShorter"
-                                data-appear-animation-delay="200">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                elit massa enim. Nullam id varius nunc.</p>
+                                data-appear-animation-delay="200"><label class="text-color-green">Take advantage of the AI features of our exam engine with your network.</label></p>
                             <p class="appear-animation" data-appear-animation="fadeInUpShorter"
-                                data-appear-animation-delay="400">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                elit. Phasellus blandit massa enim. Nullam id varius nunc. Vivamus bibendum magna ex, et
-                                faucibus lacus venenatis eget.</p>
-                            <a href="#"
+                                data-appear-animation-delay="400">Examboot gives you the ability to import your own questions, create a group,
+                                invite users or friends and share tests with them or on social networks. Questions are imported in JSON format.</p>
+                            <a href="https://examboot.net/boss/login"
                                 class="px-5 py-3 mt-3 btn btn-dark custom-secondary-font font-weight-bold text-3 appear-animation"
-                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="600">VIEW OUR
-                                PLANS</a>
+                                data-appear-animation="fadeInUpShorter" data-appear-animation-delay="600">JOIN AND SHARE</a>
                         </div>
                         <div class="text-center col-lg-6">
                             <img class="img-fluid" src="{{ asset('img/demos/sass/features/feature-4.png')}}"" alt="">
@@ -411,7 +412,7 @@
                     <div class="py-2 row">
                         <div class="text-center col">
                             <h2 class="mb-1 text-color-dark font-weight-bold text-7">User Reviews</h2>
-                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit massa enim.</p>
+                            <p class="lead">They tried and they adopted</p>
                         </div>
                     </div>
                     <div class="pt-3 row">
@@ -419,16 +420,15 @@
                             data-appear-animation-delay="500">
                             <div class="testimonial testimonial-light">
                                 <blockquote class="blockquote-default">
-                                    <p class="mb-0 text-default">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                        elit. Donec hendrerit vehicula.</p>
+                                    <p class="mb-0 text-default">As an IT professional aiming for multiple certifications, ExamBoot has been a game-changer. The AI assistant is incredibly intuitive and provides clear explanations for complex questions. The simulation tests are spot on and mimic the real exam conditions perfectly. Highly recommend it to anyone serious about IT certifications!</p>
                                 </blockquote>
                                 <div class="testimonial-arrow-down"></div>
                                 <div class="testimonial-author">
                                     <div class="testimonial-author-thumbnail">
                                         <img src="{{ asset('img/clients/client-1.jpg')}}" class="rounded-circle" alt="">
                                     </div>
-                                    <p><strong class="font-weight-extra-bold text-dark">John Smith</strong><span
-                                            class="text-default">CEO & Founder - Okler</span></p>
+                                    <p><strong class="font-weight-extra-bold text-dark">Jennifer Yol</strong><span
+                                            class="text-default">Project Manager</span></p>
                                 </div>
                             </div>
                         </div>
@@ -436,16 +436,14 @@
                             data-appear-animation-delay="300">
                             <div class="testimonial testimonial-primary">
                                 <blockquote>
-                                    <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                                        hendrerit vehicula est, in consequat.</p>
+                                    <p class="mb-0">ExamBoot offers a comprehensive set of features for exam preparation. I especially appreciate the performance dashboard which helps me track my progress. The only reason I’m not giving it five stars is that I encountered a few minor bugs, but the support team was quick to address them. Overall, a solid tool for anyone preparing for IT exams.</p>
                                 </blockquote>
                                 <div class="testimonial-arrow-down"></div>
                                 <div class="testimonial-author">
                                     <div class="testimonial-author-thumbnail">
                                         <img src="{{ asset('img/clients/client-2.jpg')}}" class="rounded-circle" alt="">
                                     </div>
-                                    <p><strong class="font-weight-extra-bold">Jessica Smith</strong><span>CEO & Founder
-                                            - Okler</span></p>
+                                    <p><strong class="font-weight-extra-bold">Joel Ngaska</strong><span>CIO Cameroon Airports </span></p>
                                 </div>
                             </div>
                         </div>
@@ -453,16 +451,15 @@
                             data-appear-animation-delay="500">
                             <div class="testimonial testimonial-light">
                                 <blockquote class="blockquote-default">
-                                    <p class="mb-0 text-default">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                        elit. Donec hendrerit vehicula.</p>
+                                    <p class="mb-0 text-default">ExamBoot is hands down the best platform I've used for certification preparation. The large database of questions and the ability to create and share exams with peers is fantastic. I passed my CISSP on the first try thanks to ExamBoot. Highly recommended!</p>
                                 </blockquote>
                                 <div class="testimonial-arrow-down"></div>
                                 <div class="testimonial-author">
                                     <div class="testimonial-author-thumbnail">
                                         <img src="{{ asset('img/clients/client-3.jpg')}}" class="rounded-circle" alt="">
                                     </div>
-                                    <p><strong class="font-weight-extra-bold text-dark">Paul Smith</strong><span
-                                            class="text-default">CEO & Founder - Okler</span></p>
+                                    <p><strong class="font-weight-extra-bold text-dark">Luck Stanford</strong><span
+                                            class="text-default">Information Security Architect</span></p>
                                 </div>
                             </div>
                         </div>
@@ -475,7 +472,7 @@
                     <div class="py-2 row">
                         <div class="text-center col">
                             <h2 class="mb-1 text-color-dark font-weight-bold text-7">Pricing</h2>
-                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit massa enim.</p>
+                            <p class="lead">Choose the plan that fits your needs</p>
                         </div>
                     </div>
 
@@ -483,11 +480,11 @@
                         <div class="col-md-6 col-lg-3">
                             <div class="plan">
                                 <div class="plan-header">
-                                    <h3>Enterprise</h3>
+                                    <h3>Free</h3>
                                 </div>
                                 <div class="plan-price">
-                                    <span class="price"><span class="price-unit">$</span>59</span>
-                                    <label class="price-label">PER MONTH</label>
+                                    <span class="price"><span class="price-unit">$</span>0</span>
+                                    <label class="price-label">FOREVER</label>
                                 </div>
                                 <div class="plan-features">
                                     <ul>
@@ -506,10 +503,10 @@
                         <div class="col-md-6 col-lg-3">
                             <div class="plan">
                                 <div class="plan-header">
-                                    <h3>Professional</h3>
+                                    <h3>Basic</h3>
                                 </div>
                                 <div class="plan-price">
-                                    <span class="price"><span class="price-unit">$</span>29</span>
+                                    <span class="price"><span class="price-unit">$</span>20</span>
                                     <label class="price-label">PER MONTH</label>
                                 </div>
                                 <div class="plan-features">
@@ -528,11 +525,11 @@
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <div class="plan plan-featured">
-                                <div class="plan-header bg-primary">
+                                <div class="plan-header bg-primary-green">
                                     <h3>Standard</h3>
                                 </div>
                                 <div class="plan-price">
-                                    <span class="price"><span class="price-unit">$</span>17</span>
+                                    <span class="price"><span class="price-unit">$</span>25</span>
                                     <label class="price-label">PER MONTH</label>
                                 </div>
                                 <div class="plan-features">
@@ -550,11 +547,11 @@
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <div class="plan">
-                                <div class="plan-header">
-                                    <h3>Basic</h3>
+                                <div class="plan-header bg-primary-gold">
+                                    <h3>Premium</h3>
                                 </div>
                                 <div class="plan-price">
-                                    <span class="price"><span class="price-unit">$</span>9</span>
+                                    <span class="price"><span class="price-unit">$</span>35</span>
                                     <label class="price-label">PER MONTH</label>
                                 </div>
                                 <div class="plan-features">
@@ -566,8 +563,7 @@
                                     </ul>
                                 </div>
                                 <div class="plan-footer">
-                                    <a href="#" class="px-4 py-2 btn btn-dark btn-modern btn-outline">Sign
-                                        Up</a>
+                                    <a href="#" class="px-4 py-2 btn btn-dark btn-modern btn-outline bg-primary-gold"><b>Start Free Trial</b></a>
                                 </div>
                             </div>
                         </div>
@@ -581,7 +577,7 @@
                     <div class="py-2 row">
                         <div class="text-center col">
                             <h2 class="mb-1 text-color-dark font-weight-bold text-7">Frequent Asked Questions</h2>
-                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit massa enim.</p>
+                            <p class="lead">Here you will find answers to the most common questions about our platform, how it works, and how to make the most of its features to prepare for your IT certification exams.</p>
                         </div>
                     </div>
                     <div class="py-3 row align-items-center justify-content-center">
@@ -589,76 +585,46 @@
 
                             <div class="toggle toggle-minimal toggle-primary" data-plugin-toggle>
                                 <section class="toggle active">
-                                    <a class="toggle-title">Curabitur eget leo at velit imperdiet vague iaculis
-                                        vitaes?</a>
+                                    <a class="toggle-title">What is ExamBoot and how does it help with IT certification exams?</a>
                                     <div class="toggle-content">
-                                        <p class="pb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Curabitur pellentesque neque eget diam posuere porta. Quisque ut nulla at
-                                            nunc <a href="#">vehicula</a> lacinia. Proin adipiscing porta tellus,
-                                            ut feugiat nibh adipiscing sit amet. Lorem ipsum dolor sit amet, consectetur
-                                            adipiscing elit. Curabitur pellentesque neque eget diam posuere porta.
-                                            Quisque ut nulla at nunc <a href="#">vehicula</a> lacinia. Proin
-                                            adipiscing porta tellus, ut feugiat nibh adipiscing sit amet.</p>
+                                        <p class="pb-3">ExamBoot is a modern platform integrated with artificial intelligence designed to help users prepare for IT certification exams. It offers realistic exam simulations, performance tracking, and personalized assistance through an AI coach. With over 25,000 questions from various certification providers, ExamBoot ensures thorough preparation for a wide range of IT certifications.</p>
                                     </div>
                                 </section>
                                 <section class="toggle">
-                                    <a class="toggle-title">Curabitur eget leo at imperdiet vague iaculis vitaes?</a>
+                                    <a class="toggle-title">How do I interact with the AI coach?</a>
                                     <div class="toggle-content">
-                                        <p class="pb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Curabitur eget leo at velit imperdiet varius. In eu ipsum vitae velit congue
-                                            iaculis vitae at risus. Nullam tortor nunc, bibendum vitae semper a,
-                                            volutpat eget massa. Lorem ipsum dolor sit amet, consectetur adipiscing
-                                            elit. Integer fringilla, orci sit amet posuere auctor.</p>
+                                        <p class="pb-3">Actions for interacting with the AI coach are visible in various parts of your user interface. To interact with the AI Coach, you will need enough “AI Call Credits”. These credits allow you to invoke the Coach API, allowing you to get voice explanations of questions, performance analytics, and personalized test recommendations. You can purchase IA Call credits through your ExamBoot account.</p>
                                     </div>
                                 </section>
                                 <section class="toggle">
-                                    <a class="toggle-title">Eget leo at imperdiet vague iaculis vitaes?</a>
+                                    <a class="toggle-title">What are ECA units and how do they work?</a>
                                     <div class="toggle-content">
-                                        <p class="pb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Curabitur eget leo at velit imperdiet varius. In eu ipsum vitae velit congue
-                                            iaculis vitae at risus. Nullam tortor nunc, bibendum vitae semper a,
-                                            volutpat eget massa. Lorem ipsum dolor sit amet, consectetur adipiscing
-                                            elit. Integer fringilla, orci sit amet posuere auctor.</p>
+                                        <p class="pb-3">“Exam Config Activation Units” (ECA Units) are required to add a certification exam setup to your portfolio. Using ECA units, you can activate a specific certification exam, such as CISSP, CISM, PMP. Once the configuration is present in your portfolio, you will be able to generate and execute several exam simulations for this certification. For each certification exam you wish to prepare for, an ECA unit will be required. When you pay for a plan, that plan comes with a fixed number of non-renewable ECA units.</p>
                                     </div>
                                 </section>
                                 <section class="toggle">
-                                    <a class="toggle-title">Leo at imperdiet vague iaculis vitaes?</a>
+                                    <a class="toggle-title">How can I purchase IA Call credits and ECA units?</a>
                                     <div class="toggle-content">
-                                        <p class="pb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Curabitur eget leo at velit imperdiet varius. In eu ipsum vitae velit congue
-                                            iaculis vitae at risus. Nullam tortor nunc, bibendum vitae semper a,
-                                            volutpat eget massa. Lorem ipsum dolor sit amet, consectetur adipiscing
-                                            elit. Integer fringilla, orci sit amet posuere auctor.</p>
+                                        <p class="pb-3">You can purchase IA Call credits and ECA units directly through your ExamBoot account. Go to 'Settings' or 'Billings', and select 'ADD' button to start the process.
+                                        Various payment options are available for your convenience. The payment process is outsourced and processed by the renowned Stripe platform. ExamBoot does not store any of your data and benefits from all the security of Stripe.</p>
                                     </div>
                                 </section>
                                 <section class="toggle">
-                                    <a class="toggle-title">Eget leo at imperdiet vague iaculis vitaes?</a>
+                                    <a class="toggle-title">What happens if I run out of IA Call credits or ECA units?</a>
                                     <div class="toggle-content">
-                                        <p class="pb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Curabitur eget leo at velit imperdiet varius. In eu ipsum vitae velit congue
-                                            iaculis vitae at risus. Nullam tortor nunc, bibendum vitae semper a,
-                                            volutpat eget massa. Lorem ipsum dolor sit amet, consectetur adipiscing
-                                            elit. Integer fringilla, orci sit amet posuere auctor.</p>
+                                        <p class="pb-3">If you run out of IA Call credits, you will not be able to interact with AI features until you purchase more credits. Similarly, if you run out of ECA units, you won't be able to add new certification exam configuration to your portfolio. You can easily purchase additional credits or units at any time through your account 'Settings' or 'Billings' section.</p>
                                     </div>
                                 </section>
                                 <section class="toggle">
-                                    <a class="toggle-title">Imperdiet vague iaculis vitaes?</a>
+                                    <a class="toggle-title">Can I share my exam simulations and results with others?</a>
                                     <div class="toggle-content">
-                                        <p class="pb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Curabitur eget leo at velit imperdiet varius. In eu ipsum vitae velit congue
-                                            iaculis vitae at risus. Nullam tortor nunc, bibendum vitae semper a,
-                                            volutpat eget massa. Lorem ipsum dolor sit amet, consectetur adipiscing
-                                            elit. Integer fringilla, orci sit amet posuere auctor.</p>
+                                        <p class="pb-3">Yes, ExamBoot allows you to share your exam simulations and results with others. You can create custom exams, invite members to join your group, and share your tests on social media. This feature not only helps in collaborative learning but also adds a fun and interactive dimension to your exam preparation.</p>
                                     </div>
                                 </section>
                                 <section class="toggle">
-                                    <a class="toggle-title">Curabitur eget leo at velit imperdiet vague iaculis
-                                        vitaes?</a>
+                                    <a class="toggle-title">How does the performance dashboard work?</a>
                                     <div class="toggle-content">
-                                        <p class="pb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Curabitur pellentesque neque eget diam posuere porta. Quisque ut nulla at
-                                            nunc <a href="#">vehicula</a> lacinia. Proin adipiscing porta tellus,
-                                            ut feugiat nibh adipiscing sit amet.</p>
+                                        <p class="pb-3">The performance dashboard provides a detailed overview of your exam preparation progress. It displays your performance metrics, such as scores and completion rates, in an easy-to-understand graphical format. You can filter your results by certification and domain to identify areas where you need to focus more. Your AI coach also uses this data to offer personalized recommendations and to generate tests to help you improve.</p>
                                     </div>
                                 </section>
                             </div>
@@ -674,31 +640,29 @@
                         <div class="col-md-3 appear-animation" data-appear-animation="fadeInLeftShorter"
                             data-appear-animation-delay="500">
                             <div class="counter counter-with-unit counter-unit-on-top">
-                                <strong class="text-color-dark font-weight-extra-bold text-13 text-lg-15"
-                                    data-to="100">0</strong>
-                                <strong class="unit text-color-dark font-weight-bold text-5 text-lg-8">%</strong>
+                                <strong class="text-color-green font-weight-extra-bold text-13 text-lg-15"
+                                    data-to="98" style="color: #22C45D;">0</strong>
+                                <strong class="unit text-color-dark font-weight-bold text-5 text-lg-8" style="color: #22C45D;">%</strong>
                                 <label class="px-5 font-weight-normal text-3 text-lg-4 px-lg-4">Percent of happy users
-                                    using Porto</label>
+                                    using ExamBoot</label>
                             </div>
                         </div>
                         <div class="col-md-4 col-lg-3 appear-animation" data-appear-animation="fadeIn"
                             data-appear-animation-delay="300">
                             <div class="counter counter-with-unit counter-unit-on-top">
-                                <strong class="text-color-dark font-weight-extra-bold text-13 text-lg-15"
-                                    data-to="50">0</strong>
-                                <strong class="unit text-color-dark font-weight-bold text-5 text-lg-8">+</strong>
-                                <label class="px-5 font-weight-normal text-3 text-lg-4">Projects managed with
-                                    Porto</label>
+                                <strong class="text-color-green font-weight-extra-bold text-13 text-lg-15"
+                                    data-to="25232" style="color: #22C45D;">0</strong>
+                                <strong class="unit text-color-dark font-weight-bold text-5 text-lg-8" style="color: #22C45D;">+</strong>
+                                <label class="px-5 font-weight-normal text-3 text-lg-4">Number of questions in our database</label>
                             </div>
                         </div>
                         <div class="col-md-3 appear-animation" data-appear-animation="fadeInRightShorter"
                             data-appear-animation-delay="500">
                             <div class="counter counter-with-unit counter-unit-on-top">
-                                <strong class="text-color-dark font-weight-extra-bold text-13 text-lg-15"
-                                    data-to="350">0</strong>
-                                <strong class="unit text-color-dark font-weight-bold text-5 text-lg-8">+</strong>
-                                <label class="px-5 font-weight-normal text-3 text-lg-4">Number of clients around the
-                                    world</label>
+                                <strong class="text-color-green font-weight-extra-bold text-13 text-lg-15"
+                                    data-to="132" style="color: #22C45D;">0</strong>
+                                <strong class="unit text-color-green font-weight-bold text-5 text-lg-8" >+</strong>
+                                <label class="px-5 font-weight-normal text-3 text-lg-4">Popular certifications available</label>
                             </div>
                         </div>
                     </div>
@@ -714,7 +678,7 @@
                     <div class="circle"></div>
                     <div class="circle"></div>
                 </div>
-
+                <!--
                 <img src="{{ asset('img/demos/sass/icons/icon-2.png')}}" class="img-fluid position-absolute" alt=""
                     data-plugin-float-element
                     data-plugin-options="{'startPos': 'none', 'speed': 3, 'transition': true}"
@@ -727,14 +691,13 @@
                     data-plugin-float-element
                     data-plugin-options="{'startPos': 'none', 'speed': 2.5, 'transition': true}"
                     style="top: 57%; left: 73%;" />
-
+                 -->
                 <div class="container pb-5 mb-5">
                     <div class="pb-2 mb-4 row">
                         <div class="text-center col">
-                            <h2 class="mb-2 text-color-light font-weight-bold text-10">Start Free Trial Now - 30 Days
+                            <h2 class="mb-2 text-color-light font-weight-bold text-10">Contact Us
                             </h2>
-                            <p class="text-color-light opacity-6 text-4">Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. </p>
+                            <p class="text-color-light opacity-6 text-4"> </p>
                         </div>
                     </div>
                     <div class="row justify-content-center">
@@ -751,7 +714,7 @@
                                 </div>
 
                                 <input type="hidden" name="subject" id="subject"
-                                    value="Contact Form - Start Free Trial" />
+                                    value="Contact Form" />
                                 <div class="form-row">
                                     <div class="mb-2 form-group col">
                                         <input type="text" value=""
@@ -759,14 +722,7 @@
                                             class="form-control" name="name" placeholder="Name" required>
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="mb-2 form-group col">
-                                        <input type="text" value=""
-                                            data-msg-required="Please enter the phone." maxlength="100"
-                                            class="form-control" name="phone" id="phone" placeholder="Phone"
-                                            required>
-                                    </div>
-                                </div>
+
                                 <div class="form-row">
                                     <div class="mb-5 form-group col">
                                         <input type="email" value=""
@@ -777,7 +733,7 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="text-center form-group col">
-                                        <input type="submit" value="GET STARTED"
+                                        <input type="submit" value="GET IN TOUCH"
                                             class="px-5 py-3 btn btn-dark btn-modern custom-secondary-font text-3"
                                             data-loading-text="Loading...">
                                     </div>
@@ -863,12 +819,7 @@
                                     class="ml-1 link-hover-style-1 text-color-default"> Sitemap</a></li>
                         </ul>
                     </div>
-                    <div class="col-md-6 col-lg-5">
-                        <div id="tweet" class="twitter" data-plugin-tweets
-                            data-plugin-options="{'username': 'oklerthemes', 'count': 1, 'iconColor': 'text-color-primary'}">
-                            <p>Please wait...</p>
-                        </div>
-                    </div>
+
                 </div>
             </div>
             <div class="footer-copyright bg-light">
@@ -876,15 +827,17 @@
                     <hr class="my-2">
                     <div class="pt-4 pb-5 row justify-content-between">
                         <div class="col-auto">
-                            <p>© Copyright 2020. All Rights Reserved.</p>
+                            <p>© Copyright 2024. All Rights Reserved.</p>
                         </div>
                         <div class="col-auto">
                             <nav id="sub-menu">
                                 <ul>
-                                    <li><a href="page-faq.html" class="ml-1 text-color-default text-decoration-none">
+                                    <li><a href="condition.html" class="ml-1 text-color-default text-decoration-none">
                                             Terms and Conditions</a></li>
-                                    <li><a href="sitemap.html" class="ml-1 text-color-default text-decoration-none">
+                                    <li><a href="privacy.html" class="ml-1 text-color-default text-decoration-none">
                                             Privacy Policy</a></li>
+                                    <li><a href="dmca.html" class="ml-1 text-color-default text-decoration-none">
+                                            DMCA Copyright</a></li>
                                 </ul>
                             </nav>
                         </div>
