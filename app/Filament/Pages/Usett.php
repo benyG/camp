@@ -103,6 +103,7 @@ class Usett extends Page implements HasActions, HasForms
                         $this->getITG(),
                         $this->getVO(),
                         $this->getVO2(),
+                        $this->getVO3(),
                     ]),
             ])->statePath('data');
     }
@@ -115,6 +116,7 @@ class Usett extends Page implements HasActions, HasForms
         $user->certs = $dt['certs'];
         $user->vo = $dt['vo'];
         $user->vo2 = $dt['vo2'];
+        $user->pk = $dt['pk'];
         $user->aqa = $dt['aca'];
         $user->itg = $dt['itg'];
         $user->save();
@@ -153,9 +155,9 @@ class Usett extends Page implements HasActions, HasForms
             return \App\Models\Info::findOrFail(1);
         });
 
-        return auth()->user()->can('vo') ? Forms\Components\Select::make('vo2')->label(__('form.aivo'))->tooltip(__('form.sta3'))
+        return auth()->user()->can('vo') ? Forms\Components\Select::make('vo2')->label(__('form.aivo'))
         ->options(['0'=>'Coach Ben','1'=>'Coach Becky'])->selectablePlaceholder(false)->default(auth()->user()->vo2) :
-            Forms\Components\Toggle::make('vo2')->label(__('form.aivo'))->inline(false)->tooltip(__('form.sta3'))->disabled(true)->declined()
+            Forms\Components\Toggle::make('vo2')->label(__('form.aivo'))->inline(false)->disabled(true)->declined()
                 ->hintAction(
                     \Filament\Forms\Components\Actions\Action::make('c12')->label(__('form.upg'))
                         ->closeModalByClickingAway(false)
@@ -164,7 +166,31 @@ class Usett extends Page implements HasActions, HasForms
                         ->modalSubmitAction(false)->modalCancelAction(false)
                 )->default(false)->declined();
     }
+    protected function getVO3(): Component
+    {
+        $ix = cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+        });
 
+        return auth()->user()->can('vo') ? Forms\Components\Select::make('pk')->label(__('form.sta6'))
+        ->options([
+            'en-US'=>'English','fr_FR'=>'French','es-ES'=>'Spanish','de-DE'=>'German',
+            'it-IT'=>'Italian ','pt_BR'=>'Portuguese','zh-CN'=>'Chinese','ja-JP'=>'Japanese',
+            'ko-KR'=>'Korean ','ar-SA'=>'Arabic','ru-RU'=>'Russian ','he-IL'=>'Hebrew',
+            'hi-IN'=>'Hindi','bn-BD'=>'Bengali','nl-NL'=>'Dutch','sv-SE'=>'Swedish',
+            'da-DK'=>'Danish','nb-NO'=>'Norwegian','fi-FI'=>'Finnish','pl-PL'=>'Polish',
+            'tr-TR'=>'Turkish','th-TH'=>'Thai','vi-VN'=>'Vietnamese','id-ID'=>'Indonesian',
+            'ms-MY'=>'Malaysian','th-TH'=>'Thai','vi-VN'=>'Vietnamese','id-ID'=>'Indonesian',
+            ])->selectablePlaceholder(false)->default(auth()->user()->pk) :
+            Forms\Components\Toggle::make('pk')->label(__('form.sta6'))->inline(false)->disabled(true)->declined()
+                ->hintAction(
+                    \Filament\Forms\Components\Actions\Action::make('c12')->label(__('form.upg'))
+                        ->closeModalByClickingAway(false)
+                        ->modalContent(fn (): \Illuminate\Contracts\View\View => view('components.pricing1', ['ix' => $ix]))
+                        ->color('primary')->closeModalByClickingAway(false)
+                        ->modalSubmitAction(false)->modalCancelAction(false)
+                )->default(false)->declined();
+    }
     protected function getITG(): Component
     {
         $ix = cache()->rememberForever('settings', function () {

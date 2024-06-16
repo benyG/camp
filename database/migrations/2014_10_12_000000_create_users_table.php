@@ -33,7 +33,7 @@ return new class extends Migration
             $table->boolean('itg')->default(false); //intelligent test generation
             $table->boolean('vo')->default(false); //vocal ai k
             $table->boolean('vo2')->default(false); //voice type ai
-            $table->string('pk')->defaul('0'); // pck selected
+            $table->string('pk')->defaul('0'); // ai lang
 
             $table->timestamps();
             $table->foreign('vague')->references('id')->on('vagues')->cascadeOnUpdate()->nullOnDelete();

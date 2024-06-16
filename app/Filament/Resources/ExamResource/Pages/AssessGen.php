@@ -164,9 +164,8 @@ class AssessGen extends Page implements HasActions, HasForms
             return \App\Models\Info::findOrFail(1);
         });
 
-        $this->carr = cache()->get('carr_'.$this->record->id.'_'.auth()->id());
-        if (empty($this->carr)) {
-            $this->carr = cache()->remember('carr_'.$this->record->id.'_'.auth()->id(), 87000, function () {
+        $carr = \App\Models\CacheEx::where('name','carr_'.$this->record->id.'_'.auth()->id())->get();
+        if ($carr->count()<=0) {
                 $qt = [];
                 if (empty($this->record->users1()->first()->pivot->quest)) {
                     foreach ($this->record->modules as $md) {
@@ -178,9 +177,13 @@ class AssessGen extends Page implements HasActions, HasForms
                 $rt = \App\Models\Question::whereIn('id', $qt)->with('answers')->get();
                 $at = $rt->pluck('questions.text', 'questions.id');
 
-                return [0, 0, $this->record->timer, $this->record->name, $rt, $at];
-            });
-        }
+                $this->carr = [0, 0, $this->record->timer, $this->record->name, $rt, $at];
+                \App\Models\CacheEx::create([
+                    'name' => 'carr_'.$this->record->id.'_'.auth()->id(),
+                    'gen' => base64_encode(serialize($this->carr)),
+                ]);
+        }else $this->carr=unserialize(base64_decode($carr->first()->gen));
+       // dd($this->carr);
         $this->tim = $this->record->timer - now()->diffInMinutes($this->record->users1()->first()->pivot->start_at);
         $this->qcur = $this->carr[0];
         $this->score = $this->carr[1];
@@ -388,7 +391,7 @@ class AssessGen extends Page implements HasActions, HasForms
                     'model' => $ix->model,
                     'max_tokens'=>1100,
                     'messages' => [
-                        ['role' => 'system', 'content' => $ix->cont1],
+                        ['role' => 'system', 'content' => $ix->cont1.' Your expression language is '.auth()->user()->pk],
                         ['role' => 'user', 'content' => $stats],
                     ],
                 ])
@@ -444,7 +447,7 @@ class AssessGen extends Page implements HasActions, HasForms
                 $response = Http::withToken($apk)->post($ix->endp, [
                     'model' => $ix->model,
                     'messages' => [
-                        ['role' => 'system', 'content' => $ix->cont2],
+                        ['role' => 'system', 'content' => $ix->cont2].' Your expression language is '.auth()->user()->pk,
                         ['role' => 'user', 'content' => $stats],
                     ],
                 ])
@@ -541,7 +544,9 @@ class AssessGen extends Page implements HasActions, HasForms
         } else {
             $this->carr[0] = $this->qcur;
             $this->carr[1] = $this->score;
-            cache(['carr_'.$this->record->id.'_'.auth()->id() => $this->carr], 86400);
+            \App\Models\CacheEx::where('name', 'carr_'.$this->record->id.'_'.auth()->id())
+            ->update(['gen'=>base64_encode(serialize($this->carr))]);
+           // cache(['carr_'.$this->record->id.'_'.auth()->id() => $this->carr], 86400);
             $this->record->users1()->updateExistingPivot(auth()->id(), [
                 'comp_at' => now()]);
             $this->aa = [];
@@ -638,7 +643,9 @@ class AssessGen extends Page implements HasActions, HasForms
         $this->carr[0] = $this->qcur;
         $this->carr[1] = $this->score;
         $this->carr[5] = $this->gen;
-        cache(['carr_'.$this->record->id.'_'.auth()->id() => $this->carr], 86400);
+       // cache(['carr_'.$this->record->id.'_'.auth()->id() => $this->carr], 86400);
+        \App\Models\CacheEx::where('name', 'carr_'.$this->record->id.'_'.auth()->id())
+        ->update(['gen'=>base64_encode(serialize($this->carr))]);
         $this->record->users1()->updateExistingPivot(auth()->id(), [
             'gen' => $this->gen]);
 

@@ -21,8 +21,10 @@ class ManageOrders extends ManageRecords
                 PID: $record->pbi <br>
                 Amount: $record->amount <br>
                 Qty: $record->qte <br>
-                For user : ".$record->userRel->name.' <br>
-                ';
+                For user : ".$record->userRel->name.' <br>';
+                if ($record->type==1) {
+                        \App\Models\User::where('id',$record->userRel->id)->increment('ix2', $record->qte);
+                }
                 \App\Models\Journ::add(auth()->user(), 'Billing', 1, $txt);
             }),
         ];
