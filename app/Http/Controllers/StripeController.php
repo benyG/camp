@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class StripeController extends Controller
 {
-    public function handleWebhook()
+    public function handleWebhook(Request $request)
     {
         $stripe = new \Stripe\StripeClient('rk_test_51Oo7zYGO0bcnzZi7htomlQuVlBk2i2SsIov0weXy387DYDMm7pGPyP0q0bAkE7HU9tBnyCGdolwamY10F6oeg5b60007G7OsJ5');
 

@@ -16,7 +16,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/pay', 'App\Http\Controllers\StripeController@handleWebhook')->name('stripe.o');
+Route::post('/pay', 'App\Http\Controllers\StripeController@handleWebhook')->name('stripe.o');
 
 Route::get('/ui2', function () {
     return view('welcome2');
