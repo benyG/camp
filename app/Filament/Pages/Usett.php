@@ -87,7 +87,7 @@ class Usett extends Page implements HasActions, HasForms
                                     ->icon('heroicon-m-plus-circle')
                             ),
                     ]),
-                Forms\Components\Section::make(__('form.gs'))->columns([
+                Forms\Components\Section::make(__('form.aivo2'))->columns([
                     'sm' => 2,
                     'md' => 3,
                 ])

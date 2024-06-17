@@ -5782,3 +5782,8 @@ html.boxed .body {
 .custom-animated-circles-primary .circle {
 	border-color: #22C45D !important;
 }
+
+.custom-image-size {
+    width: 500px; /* Ajustez la largeur selon vos besoins */
+    height: auto; /* Maintient les proportions d'origine */
+}

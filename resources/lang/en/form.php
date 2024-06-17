@@ -249,6 +249,7 @@ return [
     'act' => 'activated',
     'rpl' => 'Replay',
     'aivo' => 'AI Coach',
+    'aivo2' => 'AI Coach Settings',
     'sta4' => 'Speech ON',
     'sta5' => 'Speech OFF',
      'sta6' => 'Expression Language',

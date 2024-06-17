@@ -250,6 +250,7 @@ return [
     'act' => 'activé(e)',
     'rpl' => 'Relire',
     'aivo' => 'Coach IA',
+    'aivo2' => 'Paramètres du Coach IA',
     'sta4' => 'Voix ACTIVÉE',
     'sta5' => 'Voix DÉSACTIVÉE',
      'sta6' => 'Langue d\'expression',
