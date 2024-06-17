@@ -406,6 +406,7 @@ class AssessGen extends Page implements HasActions, HasForms
                     }
                     $this->iatext = $response['choices'][0]['message']['content'];
                     iac_decr();$this->iac--;
+                $this->ssPick3();
 
                 } else {
                     Notification::make()->danger()->title(__('form.e10'))->send();
@@ -462,6 +463,7 @@ class AssessGen extends Page implements HasActions, HasForms
                     }
                     $this->iatext2 = $response['choices'][0]['message']['content'];
                     iac_decr();$this->iac--;
+                    $this->ssPick4();
                 } else {
                     Notification::make()->danger()->title(__('form.e10'))->send();
                     $this->qeror=false;

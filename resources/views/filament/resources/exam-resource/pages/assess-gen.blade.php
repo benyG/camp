@@ -299,7 +299,6 @@
                                     $wire.iati = false;
                                     $data.charIndex = 0;
                                 }
-                                $wire.ssPick3();
                             }
                         }, $data.typeSpeed);">
                         <span x-html="text"></span>
@@ -331,7 +330,6 @@
                                     $wire.iati2 = false;
                                     $data.charIndex = 0;
                                 }
-                                $wire.ssPick4();
                             }
                         }, $data.typeSpeed)">
                         <span x-html="text"></span>
