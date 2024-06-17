@@ -9,7 +9,7 @@ use Laravel\Socialite\Facades\Socialite;
 
 class StripeController extends Controller
 {
-    public function handleWebhook()
+    public function handleWebhook(Request $request)
     {
         $stripe = new \Stripe\StripeClient('sk_test_...');
 
