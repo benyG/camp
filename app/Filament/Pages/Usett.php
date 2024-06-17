@@ -87,12 +87,6 @@ class Usett extends Page implements HasActions, HasForms
                                     ->icon('heroicon-m-plus-circle')
                             ),
                     ]),
-                Forms\Components\Section::make(__('form.pa2'))->columns(2)->description(__('form.pa3'))->columns(2)
-                    ->schema([
-                        Forms\Components\Select::make('certs')->label(__('form.pa4'))->multiple()
-                        ->default(auth()->user()->certs)
-                            ->options(auth()->user()->courses->pluck('name', 'id'))
-                    ]),
                 Forms\Components\Section::make(__('form.gs'))->columns([
                     'sm' => 2,
                     'md' => 3,
@@ -104,6 +98,12 @@ class Usett extends Page implements HasActions, HasForms
                         $this->getVO(),
                         $this->getVO2(),
                         $this->getVO3(),
+                        Forms\Components\Section::make(__('form.pa2'))->columns(2)->description(__('form.pa3'))->columns(2)
+                            ->schema([
+                                Forms\Components\Select::make('certs')->label(__('form.pa4'))->multiple()
+                                ->default(auth()->user()->certs)
+                                    ->options(auth()->user()->courses->pluck('name', 'id'))
+                            ]),
                     ]),
             ])->statePath('data');
     }
@@ -114,11 +114,13 @@ class Usett extends Page implements HasActions, HasForms
          //dd($dt);
         $user = auth()->user();
         $user->certs = $dt['certs'];
-        $user->vo = $dt['vo'];
-        $user->vo2 = $dt['vo2'];
+        if(auth()->user()->can('vo')){
+            $user->vo = $dt['vo'];
+            $user->vo2 = $dt['vo2'];
+        }
         $user->pk = $dt['pk'];
         $user->aqa = $dt['aca'];
-        $user->itg = $dt['itg'];
+       if(auth()->user()->can('tga')) {$user->itg = $dt['itg'];}
         $user->save();
         Notification::make()->title(__('form.e30'))->success()->send();
         if (auth()->user()->wasChanged()) {

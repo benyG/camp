@@ -252,7 +252,7 @@
                             {{ $this->ssmAction }}
                         </div>
                         <div class='self-center pt-2' wire:key="{{ rand() }}">
-                           <x-filament::link tag="button" color="gray" disabled icon="heroicon-m-banknotes">
+                           <x-filament::link tag="button" color="gray" disabled icon="heroicon-m-sparkles">
                             {{__('form.iac')}}{{__('main.space')}}: <span x-text="$wire.get('iac')"></span>
                         </x-filament::link>
                         </div>
