@@ -52,7 +52,7 @@
                 class="w-full text-sm rounded-lg inline-flex items-center justify-center
                 fi-btn relative font-semibold outline-none transition duration-75 focus-visible:ring-2 fi-color-gray fi-btn-color-gray fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 shadow-sm bg-white text-gray-950 hover:bg-gray-50 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 ring-1 ring-gray-950/10 dark:ring-white/20 fi-ac-action fi-ac-btn-action"
                 type="submit" wire:loading.attr="disabled">
-                <x-filament::icon icon="heroicon-o-user-circle" class="w-6 h-6 text-white" />
+                <x-filament::icon icon="heroicon-o-user-circle" class="w-6 h-6 text-gray-900 dark:text-white" />
                 {{ __('main.lo5') }}
                 <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                     class="w-5 h-5 text-white transition duration-75 animate-spin fi-btn-icon"

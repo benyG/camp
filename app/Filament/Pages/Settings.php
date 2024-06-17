@@ -158,7 +158,11 @@ class Settings extends Page implements HasActions, HasForms
                                             ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('pa_f')->label(__('form.pa'))
                                             ->required()->default(false)->inline(false),
-                                    ]),
+                                        Forms\Components\Toggle::make('ecl_f')->label(__('form.ecl'))
+                                            ->required()->default(false)->inline(false),
+                                        Forms\Components\Toggle::make('ss_f')->label(__('form.ss'))
+                                            ->required()->default(false)->inline(false),
+                                  ]),
                                 Forms\Components\Section::make('Basic')->columns($cgrid)
                                     ->schema([
                                         Forms\Components\TextInput::make('maxtu')->label(__('form.tim').'s Exam.')
@@ -183,7 +187,11 @@ class Settings extends Page implements HasActions, HasForms
                                             ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('pa_b')->label(__('form.pa'))
                                             ->required()->default(false)->inline(false),
-                                    ]),
+                                        Forms\Components\Toggle::make('ecl_b')->label(__('form.ecl'))
+                                            ->required()->default(false)->inline(false),
+                                        Forms\Components\Toggle::make('ss_b')->label(__('form.ss'))
+                                            ->required()->default(false)->inline(false),
+   ]),
                                 Forms\Components\Section::make('Standard')->columns($cgrid)
                                     ->schema([
                                         Forms\Components\TextInput::make('maxtp')->label(__('form.tim').'s Exam.')
@@ -208,7 +216,11 @@ class Settings extends Page implements HasActions, HasForms
                                             ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('pa_s')->label(__('form.pa'))
                                             ->required()->default(false)->inline(false),
-                                    ]),
+                                        Forms\Components\Toggle::make('ecl_s')->label(__('form.ecl'))
+                                            ->required()->default(false)->inline(false),
+                                        Forms\Components\Toggle::make('ss_s')->label(__('form.ss'))
+                                            ->required()->default(false)->inline(false),
+   ]),
                                 Forms\Components\Section::make('Premium')->columns($cgrid)
                                     ->schema([
                                         Forms\Components\TextInput::make('maxtv')->label(__('form.tim').'s Exam.')
@@ -233,7 +245,11 @@ class Settings extends Page implements HasActions, HasForms
                                             ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('pa_p')->label(__('form.pa'))
                                             ->required()->default(false)->inline(false),
-                                    ]),
+                                        Forms\Components\Toggle::make('ecl_p')->label(__('form.ecl'))
+                                            ->required()->default(false)->inline(false),
+                                        Forms\Components\Toggle::make('ss_p')->label(__('form.ss'))
+                                            ->required()->default(false)->inline(false),
+                                        ]),
                             ]),
                         Forms\Components\Tabs\Tab::make(__('form.ai'))
                             ->schema([

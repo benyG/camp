@@ -117,6 +117,7 @@ class UserResource extends Resource
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ix')->label(__('main.aic'))
+                ->formatStateUsing(fn ($record): string => $record->ix+$record->ix2)
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')->label(__('form.cat'))
                     ->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),

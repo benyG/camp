@@ -79,7 +79,7 @@ class AssessCreate extends CreateRecord
 
                     return $msg;
                 })
-                ->modalContent(fn (): View => view('components.pricing1', ['ix' => $ix]))
+                ->modalSubmitActionLabel(__('form.upg'))
                 ->action(function (): void {
                     if (auth()->user()->can('add-exam')) {
                         $this->validate();
@@ -160,11 +160,13 @@ class AssessCreate extends CreateRecord
                         \App\Models\Journ::add(auth()->user(), 'Assessments', 1, $txt);
                         redirect()->to($this->getResource()::getUrl('index'));
                     }
+                    else {
+                        redirect()->to(\App\Filament\Pages\Pricing::getUrl());
+                    }
                 })
-                ->modalSubmitAction(false)
-                ->modalCancelAction(false)
                 ->modalHeading(__('form.upp'))
                 ->closeModalByClickingAway(false)
+                ->modalIcon('heroicon-o-lock-closed')
                 ->modalHidden(function () {
                     $ix = cache()->rememberForever('settings', function () {
                         return \App\Models\Info::findOrFail(1);

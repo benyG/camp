@@ -235,12 +235,18 @@
                     <div class='flex flex-col' id='kj5'>
                         <div class='flex flex-col justify-center text-center text-primary-500'>
                             <img style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
-                                src='{{ asset('img/'.(auth()->user()->vo2? 'Becky':'Ben').'.webp') }}'
+                                src='{{ asset('img/' . (auth()->user()->vo2 ? 'Becky' : 'Ben') . '.webp') }}'
                                 class="row-span-2 mx-auto rounded-full ring-custom-600 dark:ring-custom-400 ring-2 w-11 h-11" />
-                            <div><span style="font-size:10px">Coach {{ auth()->user()->vo2? 'Becky':'Ben' }}</span> <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white transition duration-75 animate-spin fi-btn-icon" wire:loading.delay>
-    <path clip-rule="evenodd" d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill-rule="evenodd" fill="currentColor" opacity="0.2"></path>
-    <path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z" fill="currentColor"></path>
-</svg></div>
+                            <div><span style="font-size:10px">Coach {{ auth()->user()->vo2 ? 'Becky' : 'Ben' }}</span>
+                                <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                    class="w-4 h-4 text-gray-900 transition duration-75 dark:text-white animate-spin fi-btn-icon"
+                                    wire:loading.delay>
+                                    <path clip-rule="evenodd"
+                                        d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                                        fill-rule="evenodd" fill="currentColor" opacity="0.2"></path>
+                                    <path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z"
+                                        fill="currentColor"></path>
+                                </svg></div>
                         </div>
                         <div class='self-center '>
                             {{ $this->invAction }}
@@ -252,9 +258,9 @@
                             {{ $this->ssmAction }}
                         </div>
                         <div class='self-center pt-2' wire:key="{{ rand() }}">
-                           <x-filament::link tag="button" color="gray" disabled icon="heroicon-m-sparkles">
-                            {{__('form.iac')}}{{__('main.space')}}: <span x-text="$wire.get('iac')"></span>
-                        </x-filament::link>
+                            <x-filament::link tag="button" color="gray" disabled icon="heroicon-m-sparkles">
+                                {{ __('form.iac') }}{{ __('main.space') }}: <span x-text="$wire.get('iac')"></span>
+                            </x-filament::link>
                         </div>
                     </div>
                 </div>
@@ -304,12 +310,14 @@
                         <span x-html="text"></span>
                     </div>
                     @if (auth()->user()->can('vo') && auth()->user()->vo)
-                    <div
-                        class="px-4 py-1 justify-end w-full grow @if (empty($iatext)) {{ 'hidden' }} @else {{'flex'}} @endif">
-                        <x-filament::link tag="button" x-on:click="if($wire.ias1!=null) {new Audio('data:audio/mpeg;base64,'+$wire.ias1).play()}" icon="heroicon-m-play">
-                            {{ __('form.rpl') }}
-                        </x-filament::link>
-                    </div>
+                        <div
+                            class="px-4 py-1 justify-end w-full grow @if (empty($iatext)) {{ 'hidden' }} @else {{ 'flex' }} @endif">
+                            <x-filament::link tag="button"
+                                x-on:click="if($wire.ias1!=null) {new Audio('data:audio/mpeg;base64,'+$wire.ias1).play()}"
+                                icon="heroicon-m-play">
+                                {{ __('form.rpl') }}
+                            </x-filament::link>
+                        </div>
                     @endif
                     <div id='rr13'
                         style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
@@ -335,12 +343,14 @@
                         <span x-html="text"></span>
                     </div>
                     @if (auth()->user()->can('vo') && auth()->user()->can('call-ai') && auth()->user()->vo)
-                    <div
-                        class="px-4 py-1 justify-end w-full grow @if (empty($iatext2)) {{'hidden'}} @else {{'flex'}} @endif">
-                        <x-filament::link tag="button" x-on:click="if($wire.ias2!=null) {new Audio('data:audio/mpeg;base64,'+$wire.ias2).play()}" icon="heroicon-m-play">
-                            {{ __('form.rpl') }}
-                        </x-filament::link>
-                    </div>
+                        <div
+                            class="px-4 py-1 justify-end w-full grow @if (empty($iatext2)) {{ 'hidden' }} @else {{ 'flex' }} @endif">
+                            <x-filament::link tag="button"
+                                x-on:click="if($wire.ias2!=null) {new Audio('data:audio/mpeg;base64,'+$wire.ias2).play()}"
+                                icon="heroicon-m-play">
+                                {{ __('form.rpl') }}
+                            </x-filament::link>
+                        </div>
                     @endif
                 </div>
             </div>

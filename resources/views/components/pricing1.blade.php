@@ -11,17 +11,19 @@
                     <p class="font-light text-gray-500 dark:text-gray-400">Plan</p>
                     <div class="text-xs text-gray-500 dark:text-gray-400">
                         <button x-on:click="month = true"
+                        x-bind:class="month? 'text-white':'text-gray-500 dark:text-gray-400'"
                             x-bind:style="month ?
                                 '--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);' : ''"
-                            class="font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50">
+                            class="font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-gray-400 hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50">
                             {{ __('form.mon') }}
                         </button>
                     </div>
                     <div class="text-xs text-gray-500 dark:text-gray-400">
                         <button x-on:click="month = false"
+                        x-bind:class="!month? 'text-white':'text-gray-500 dark:text-gray-400'"
                             x-bind:style="!month ?
                                 '--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);' : ''"
-                            class="font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50">
+                            class="font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-gray-400  hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50">
                             {{ __('form.ann') }}
                         </button>
                     </div>
@@ -43,7 +45,7 @@
                                     </h2>
                                     <p class="mb-3">
                                         <span
-                                            class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900">0€</span>
+                                            class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900">0$</span>
                                         <span class="text-xs font-medium text-gray-400 dark:text-gray-600">/mo</span>
                                     </p>
                                 </th>
@@ -56,8 +58,7 @@
                                         </span>
                                     </h2>
                                     <p class="mb-3">
-                                        <span
-                                            class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900"><span
+                                        <span class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900"><span
                                                 x-text="month? '$'+bpma:'$'+bpya"></span>$</span>
                                         <span class="text-xs font-medium text-gray-400 dark:text-gray-600">/mo</span>
                                     </p>
@@ -71,8 +72,7 @@
                                         </span>
                                     </h2>
                                     <p class="mb-3">
-                                        <span
-                                            class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900"><span
+                                        <span class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900"><span
                                                 x-text="month? '$'+spma:'$'+spya"></span>$</span>
                                         <span class="text-xs font-medium text-gray-400 dark:text-gray-600">/mo</span>
                                     </p>
@@ -86,8 +86,7 @@
                                         </span>
                                     </h2>
                                     <p class="mb-3">
-                                        <span
-                                            class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900"><span
+                                        <span class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900"><span
                                                 x-text="month? '$'+ppma:'$'+ppya"></span>$</span>
                                         <span class="text-xs font-medium text-gray-400 dark:text-gray-600">/mo</span>
                                     </p>
@@ -206,157 +205,37 @@
                                 <td>
                                     @if ($ix->tec_f)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @else
-                                        <x-filament::icon icon="heroicon-o-minus" class="w-6 h-6 mx-auto text-white" />
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->tec_b)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @else
-                                        <x-filament::icon icon="heroicon-o-minus" class="w-6 h-6 mx-auto text-white" />
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->tec_s)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @else
-                                        <x-filament::icon icon="heroicon-o-minus" class="w-6 h-6 mx-auto text-white" />
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->tec_p)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class="text-left">
-                                    <h3 class="py-3 text-xs">{{ __('form.ftg2') }}</h3>
-                                </th>
-                                <td>
-                                    @if ($ix->ftg_f)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($ix->ftg_b)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($ix->ftg_s)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($ix->ftg_p)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class="text-left">
-                                    <h3 class="py-3 text-xs">{{ __('form.pa2') }}</h3>
-                                </th>
-                                <td>
-                                    @if ($ix->pa_f)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($ix->pa_b)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($ix->pa_s)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($ix->pa_p)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class="text-left">
-                                    <h3 class="py-3 text-xs">{{ __('form.tga2') }}</h3>
-                                </th>
-                                <td>
-                                    @if ($ix->tga_f)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($ix->tga_b)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($ix->tga_s)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($ix->tga_p)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @endif
                                 </td>
                             </tr>
@@ -367,37 +246,242 @@
                                 <td>
                                     @if ($ix->sta_f)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->sta_b)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->sta_s)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->sta_p)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-white" />
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-white" />
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-left">
+                                    <h3 class="py-3 text-xs">{{ __('form.ftg2') }}</h3>
+                                </th>
+                                <td>
+                                    @if ($ix->ftg_f)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->ftg_b)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->ftg_s)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->ftg_p)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-left">
+                                    <h3 class="py-3 text-xs">{{ __('form.pa2') }}</h3>
+                                </th>
+                                <td>
+                                    @if ($ix->pa_f)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->pa_b)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->pa_s)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->pa_p)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-left">
+                                    <h3 class="py-3 text-xs">{{ __('form.tga2') }}</h3>
+                                </th>
+                                <td>
+                                    @if ($ix->tga_f)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->tga_b)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->tga_s)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->tga_p)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-left">
+                                    <h3 class="py-3 text-xs">{{ __('form.ecl') }}</h3>
+                                </th>
+                                <td>
+                                    @if ($ix->ecl_f)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->ecl_b)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->ecl_s)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->ecl_p)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-left">
+                                    <h3 class="py-3 text-xs">{{ __('form.ss') }}</h3>
+                                </th>
+                                <td>
+                                    @if ($ix->ss_f)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->ss_b)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->ss_s)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->ss_p)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
                                     @endif
                                 </td>
                             </tr>
@@ -509,8 +593,8 @@
                         </div>
                         <a target="_blank"
                             x-bind:href="month ?
-                                '{{ $ix->bp_ml . '?locale='.app()->getLocale().'&prefilled_email=' . urlencode(auth()->user()->email) }}' :
-                                '{{ $ix->bp_yl . '?locale='.app()->getLocale().'&prefilled_email=' . urlencode(auth()->user()->email) }}'"
+                                '{{ $ix->bp_ml . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}' :
+                                '{{ $ix->bp_yl . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}'"
                             style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);font-variant: small-caps;"
                             class="text-xl grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50 fi-ac-action fi-ac-btn-action">
                             {{ __('form.sub1') }}</a>
@@ -606,8 +690,8 @@
                         </div>
                         <a target="_blank"
                             x-bind:href="month ?
-                                '{{ $ix->sp_ml . '?locale='.app()->getLocale().'&prefilled_email=' . urlencode(auth()->user()->email) }}' :
-                                '{{ $ix->sp_yl . '?locale='.app()->getLocale().'&prefilled_email=' . urlencode(auth()->user()->email) }}'"
+                                '{{ $ix->sp_ml . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}' :
+                                '{{ $ix->sp_yl . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}'"
                             style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);font-variant: small-caps;"
                             class="text-xl grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50 fi-ac-action fi-ac-btn-action">
                             {{ __('form.sub1') }}</a>
@@ -692,8 +776,8 @@
                         </div>
                         <a target="_blank"
                             x-bind:href="month ?
-                                '{{ $ix->pp_ml . '?locale='.app()->getLocale().'&prefilled_email=' . urlencode(auth()->user()->email) }}' :
-                                '{{ $ix->pp_yl . '?locale='.app()->getLocale().'&prefilled_email=' . urlencode(auth()->user()->email) }}'"
+                                '{{ $ix->pp_ml . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}' :
+                                '{{ $ix->pp_yl . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}'"
                             style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);font-variant: small-caps;"
                             class="text-xl grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50 fi-ac-action fi-ac-btn-action">
                             {{ __('form.sub1') }}</a>

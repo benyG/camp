@@ -16,6 +16,8 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::get('/boss/customer', [\App\Http\Controllers\StripeController::class, 'handleWebhook']);
+
 Route::get('/ui2', function () {
     return view('welcome2');
 })->name('home2');

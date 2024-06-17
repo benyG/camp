@@ -126,7 +126,18 @@ return new class extends Migration
             $table->smallInteger('iac2_qt')->default(0)->unsigned();
             $table->smallInteger('iac3_qt')->default(0)->unsigned();
             $table->smallInteger('eac_qt')->default(0)->unsigned();
-
+            $table->boolean('ss_g')->default(false);
+            $table->boolean('ss_f')->default(false);
+            $table->boolean('ss_b')->default(false);
+            $table->boolean('ss_s')->default(false);
+            $table->boolean('ss_p')->default(false);
+            $table->boolean('ss_b')->default(false);
+            $table->boolean('ecl_g')->default(false);
+            $table->boolean('ecl_f')->default(false);
+            $table->boolean('ecl_b')->default(false);
+            $table->boolean('ecl_s')->default(false);
+            $table->boolean('ecl_p')->default(false);
+            $table->boolean('ecl_b')->default(false);
         });
     }
 
