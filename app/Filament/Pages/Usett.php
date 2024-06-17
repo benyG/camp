@@ -117,8 +117,8 @@ class Usett extends Page implements HasActions, HasForms
         if(auth()->user()->can('vo')){
             $user->vo = $dt['vo'];
             $user->vo2 = $dt['vo2'];
+            $user->pk = $dt['pk'];
         }
-        $user->pk = $dt['pk'];
         $user->aqa = $dt['aca'];
        if(auth()->user()->can('tga')) {$user->itg = $dt['itg'];}
         $user->save();
@@ -184,14 +184,23 @@ class Usett extends Page implements HasActions, HasForms
             'tr-TR'=>'Turkish','th-TH'=>'Thai','vi-VN'=>'Vietnamese','id-ID'=>'Indonesian',
             'ms-MY'=>'Malaysian','th-TH'=>'Thai','vi-VN'=>'Vietnamese','id-ID'=>'Indonesian',
             ])->selectablePlaceholder(false)->default(auth()->user()->pk) :
-            Forms\Components\Toggle::make('pk')->label(__('form.sta6'))->inline(false)->disabled(true)->declined()
+            Forms\Components\Select::make('pk')->label(__('form.sta6'))
+            ->options([
+                'en-US'=>'English','fr_FR'=>'French','es-ES'=>'Spanish','de-DE'=>'German',
+                'it-IT'=>'Italian ','pt_BR'=>'Portuguese','zh-CN'=>'Chinese','ja-JP'=>'Japanese',
+                'ko-KR'=>'Korean ','ar-SA'=>'Arabic','ru-RU'=>'Russian ','he-IL'=>'Hebrew',
+                'hi-IN'=>'Hindi','bn-BD'=>'Bengali','nl-NL'=>'Dutch','sv-SE'=>'Swedish',
+                'da-DK'=>'Danish','nb-NO'=>'Norwegian','fi-FI'=>'Finnish','pl-PL'=>'Polish',
+                'tr-TR'=>'Turkish','th-TH'=>'Thai','vi-VN'=>'Vietnamese','id-ID'=>'Indonesian',
+                'ms-MY'=>'Malaysian','th-TH'=>'Thai','vi-VN'=>'Vietnamese','id-ID'=>'Indonesian',
+                ])->selectablePlaceholder(false)->default(auth()->user()->pk)->disabled()
                 ->hintAction(
                     \Filament\Forms\Components\Actions\Action::make('c12')->label(__('form.upg'))
                         ->closeModalByClickingAway(false)
                         ->modalContent(fn (): \Illuminate\Contracts\View\View => view('components.pricing1', ['ix' => $ix]))
                         ->color('primary')->closeModalByClickingAway(false)
                         ->modalSubmitAction(false)->modalCancelAction(false)
-                )->default(false)->declined();
+                );
     }
     protected function getITG(): Component
     {

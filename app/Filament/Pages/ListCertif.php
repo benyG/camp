@@ -92,7 +92,7 @@ class ListCertif extends Page implements HasTable
             ->emptyStateDescription(__('main.lc4'))
             ->columns([
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable()->label(__('form.na'))
-                    ->description(fn (Course $record): ?string => $record->descr),
+                    ->description(fn (Course $record): ?string => $record->descr2),
                 Tables\Columns\TextColumn::make('modules_count')->sortable()->label('Modules'),
                 Tables\Columns\TextColumn::make('questions_count')->sortable()->label('Questions'),
                 /* Tables\Columns\TextColumn::make('oo')->badge()->label(__('form.ins'))

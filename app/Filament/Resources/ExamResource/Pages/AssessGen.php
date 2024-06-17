@@ -447,7 +447,7 @@ class AssessGen extends Page implements HasActions, HasForms
                 $response = Http::withToken($apk)->post($ix->endp, [
                     'model' => $ix->model,
                     'messages' => [
-                        ['role' => 'system', 'content' => $ix->cont2].' Your expression language is '.auth()->user()->pk,
+                        ['role' => 'system', 'content' => $ix->cont2.' Your expression language is '.auth()->user()->pk],
                         ['role' => 'user', 'content' => $stats],
                     ],
                 ])
