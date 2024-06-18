@@ -23,9 +23,7 @@ class ManageExams extends ManageRecords
                 ->color('primary'),
             Actions\Action::make('ddr14')->label(__('form.cre'))
                 ->visible(fn (): bool => auth()->user()->cannot('add-exam'))
-                ->modalContent(fn (): \Illuminate\Contracts\View\View => view('components.pricing1', ['ix' => $ix]))
-                ->modalSubmitAction(false)
-                ->modalCancelAction(false)
+                ->modalSubmitActionLabel(__('form.upg'))
                 ->modalHeading(__('form.upp'))
                 ->closeModalByClickingAway(false)
                 ->modalDescription(__('form.saa3'))

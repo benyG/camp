@@ -220,7 +220,7 @@ return [
     'mcde' => 'Max configurable delay for Exams',
     'mqt' => 'Max questions per Test',
     'mqe' => 'Max questions per Exam',
-    'tec2' => 'Access TYPICAL exam config (aka Real world-Like)',
+    'tec2' => 'Access to Real world-Like exam simulation',
     'ftg2' => 'Failures-based test generation AI',
     'pa2' => 'Performance Tracking by AI Coach',
     'pa3' => 'Select the certifications in preparation for which you want your AI coach to regularly analyze your performance etc. and make recommendations.',

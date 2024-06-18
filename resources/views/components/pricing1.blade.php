@@ -11,7 +11,7 @@
                     <p class="font-light text-gray-500 dark:text-gray-400">Plan</p>
                     <div class="text-xs text-gray-500 dark:text-gray-400">
                         <button x-on:click="month = true"
-                        x-bind:class="month? 'text-white':'text-gray-500 dark:text-gray-400'"
+                            x-bind:class="month ? 'text-white' : 'text-gray-500 dark:text-gray-400'"
                             x-bind:style="month ?
                                 '--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);' : ''"
                             class="font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-gray-400 hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50">
@@ -20,7 +20,7 @@
                     </div>
                     <div class="text-xs text-gray-500 dark:text-gray-400">
                         <button x-on:click="month = false"
-                        x-bind:class="!month? 'text-white':'text-gray-500 dark:text-gray-400'"
+                            x-bind:class="!month ? 'text-white' : 'text-gray-500 dark:text-gray-400'"
                             x-bind:style="!month ?
                                 '--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);' : ''"
                             class="font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-gray-400  hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50">
@@ -43,6 +43,9 @@
                                             Free
                                         </span>
                                     </h2>
+                                    <span class="block my-2 text-xs text-gray-400 dark:text-gray-600">
+                                        {{ __('form.pp_t1') }}
+                                    </span>
                                     <p class="mb-3">
                                         <span
                                             class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900">0$</span>
@@ -57,6 +60,9 @@
                                             Basic
                                         </span>
                                     </h2>
+                                    <span class="block my-2 text-xs text-gray-400 dark:text-gray-600">
+                                        {{ __('form.bp_t1') }}
+                                    </span>
                                     <p class="mb-3">
                                         <span class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900"><span
                                                 x-text="month? '$'+bpma:'$'+bpya"></span>$</span>
@@ -71,6 +77,9 @@
                                             Standard
                                         </span>
                                     </h2>
+                                    <span class="block my-2 text-xs text-gray-400 dark:text-gray-600">
+                                        {{ __('form.sp_t1') }}
+                                    </span>
                                     <p class="mb-3">
                                         <span class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900"><span
                                                 x-text="month? '$'+spma:'$'+spya"></span>$</span>
@@ -85,6 +94,9 @@
                                             Premium
                                         </span>
                                     </h2>
+                                    <span class="block my-2 text-xs text-gray-400 dark:text-gray-600">
+                                        {{ __('form.pp_t1') }}
+                                    </span>
                                     <p class="mb-3">
                                         <span class="text-lg font-bold sm:text-xl text-gray-50 dark:text-gray-900"><span
                                                 x-text="month? '$'+ppma:'$'+ppya"></span>$</span>
@@ -93,7 +105,8 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="space-y-6 text-center divide-y divide-gray-700 dark:divide-gray-300">
+                        <tbody class="space-y-6 text-center divide-y divide-gray-700 dark:divide-gray-300"
+                            style='--c-50:var(--success-50);--c-400:var(--success-400);--c-600:var(--success-600);'>
                             <tr>
                                 <th scope="row">
                                 </th>
@@ -200,83 +213,83 @@
                             </tr>
                             <tr>
                                 <th scope="row" class="text-left">
-                                    <h3 class="py-3 text-xs">{{ __('form.tec2') }}</h3>
-                                </th>
-                                <td>
-                                    @if ($ix->tec_f)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($ix->tec_b)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($ix->tec_s)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($ix->tec_p)
-                                        <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
-                                    @else
-                                        <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class="text-left">
                                     <h3 class="py-3 text-xs">{{ __('form.sta2') }}</h3>
                                 </th>
                                 <td>
                                     @if ($ix->sta_f)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400"/>
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->sta_b)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->sta_s)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->sta_p)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-left">
+                                    <h3 class="py-3 text-xs">{{ __('form.tec2') }}</h3>
+                                </th>
+                                <td>
+                                    @if ($ix->tec_f)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->tec_b)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->tec_s)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ix->tec_p)
+                                        <x-filament::icon icon="heroicon-m-check-circle"
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
+                                    @else
+                                        <x-filament::icon icon="heroicon-o-minus"
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                             </tr>
@@ -287,37 +300,37 @@
                                 <td>
                                     @if ($ix->ftg_f)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->ftg_b)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->ftg_s)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->ftg_p)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                             </tr>
@@ -328,37 +341,37 @@
                                 <td>
                                     @if ($ix->pa_f)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->pa_b)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->pa_s)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->pa_p)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                             </tr>
@@ -369,37 +382,37 @@
                                 <td>
                                     @if ($ix->tga_f)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->tga_b)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->tga_s)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->tga_p)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                             </tr>
@@ -410,37 +423,37 @@
                                 <td>
                                     @if ($ix->ecl_f)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->ecl_b)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->ecl_s)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->ecl_p)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                             </tr>
@@ -451,37 +464,37 @@
                                 <td>
                                     @if ($ix->ss_f)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->ss_b)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->ss_s)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ix->ss_p)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
-                                            class="w-6 h-6 mx-auto text-gray-900 dark:text-white" />
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @endif
                                 </td>
                             </tr>

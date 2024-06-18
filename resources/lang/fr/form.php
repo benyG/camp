@@ -222,7 +222,7 @@ return [
     'mqt' => 'Max de questions par Test',
     'mqe' => 'Max de questions par Examen',
     'tec2' => 'Examens de certification semblables au monde réel (TYPICAL)',
-    'ftg2' => 'IA de génération de tests basée sur les échecs',
+    'ftg2' => 'IA de génération de tests basés sur les échecs',
     'pa2' => 'Suivi des performances par le Coach IA',
     'pa3' => 'Selectionnez les certifications en preparation pour lesquelles vous souhaitez que votre coach IA analyze regulierement vos performances etc fasse des recommadations.',
     'tga2' => 'Génération de tests actionnés par l’IA',
