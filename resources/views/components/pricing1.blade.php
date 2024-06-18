@@ -588,7 +588,20 @@
                                     <span>{{ __('form.tga2') }}</span>
                                 </li>
                             @endif
-
+                            @if ($ix->ecl_f)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.ecl') }}</span>
+                                </li>
+                            @endif
+                            @if ($ix->ss_f)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.ss') }}</span>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                     <!-- Pricing Card -->
@@ -685,6 +698,21 @@
                                     <span>{{ __('form.tga2') }}</span>
                                 </li>
                             @endif
+                            @if ($ix->ecl_b)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.ecl') }}</span>
+                                </li>
+                            @endif
+                            @if ($ix->ss_b)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.ss') }}</span>
+                                </li>
+                            @endif
+
                         </ul>
                     </div>
                     <!-- Pricing Card -->
@@ -772,6 +800,27 @@
                                     <!-- Icon -->
                                     <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
                                     <span>{{ __('form.pa2') }}</span>
+                                </li>
+                            @endif
+                            @if ($ix->tga_s)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.tga2') }}</span>
+                                </li>
+                            @endif
+                            @if ($ix->ecl_s)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.ecl') }}</span>
+                                </li>
+                            @endif
+                            @if ($ix->ss_s)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.ss') }}</span>
                                 </li>
                             @endif
 
@@ -874,6 +923,21 @@
                                     <span>{{ __('form.tga2') }}</span>
                                 </li>
                             @endif
+                            @if ($ix->ecl_p)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.ecl') }}</span>
+                                </li>
+                            @endif
+                            @if ($ix->ss_p)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.ss') }}</span>
+                                </li>
+                            @endif
+
                         </ul>
                     </div>
                 </div>
