@@ -15,7 +15,7 @@ class Order extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'exp', 'pbi', 'sid', 'amount', 'type', 'qte',
+        'exp', 'pbi', 'sid', 'amount', 'type', 'qte','ili',
     ];
 
     public function userRel(): BelongsTo

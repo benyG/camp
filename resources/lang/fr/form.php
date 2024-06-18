@@ -125,6 +125,8 @@ return [
     'exa' => 'Examen',
     'apis' => 'Paramètres de l\'API',
     'apik' => 'Clé d\'API',
+    'sik' => 'Clé secrète Stripe',
+    'whk' => 'Clé Webhook',
     'enu' => 'URL API Texte',
     'enu2' => 'URL API Voix',
     'aimo' => 'Modèle d\'IA (Text)',

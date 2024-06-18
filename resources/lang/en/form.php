@@ -124,6 +124,8 @@ return [
     'exa' => 'Exam',
     'apis' => 'API Settings',
     'apik' => 'API Key',
+    'sik' => 'Stripe Secret Key',
+    'whk' => 'Webhook Key',
     'enu' => 'Text Endpoint URL',
     'enu2' => 'Speech Endpoint URL',
     'aimo' => 'AI Model (Text)',

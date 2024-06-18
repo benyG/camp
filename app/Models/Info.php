@@ -13,7 +13,7 @@ class Info extends Model
 
     protected $fillable = [
         'wperc', 'smtp', 'maxu', 'maxs', 'maxv', 'maxp', 'mint', 'minq', 'efrom',
-        'maxtu', 'maxts', 'maxtv', 'maxtp', 'maxeu', 'maxes', 'maxev', 'maxep',
+        'maxtu', 'maxts', 'maxtv', 'maxtp', 'maxeu', 'maxes', 'maxev', 'maxep','spk', 'whk',
         'apk', 'endp', 'endp2', 'cont1', 'cont2', 'cont3', 'maxcl', 'model', 'model2', 'taff', 'aivo', 'aivo2',
         'cont4', 'cont5', 'cont3', 'cont6', 'cont7', 'cont8', 'cont9', 'mia',
         'iac_f', 'saa_f', 'tec_f', 'ftg_f', 'tga_f', 'sta_f', 'pa_f', 'eca_f','ecl_f','ss_f',

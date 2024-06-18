@@ -191,7 +191,7 @@ class Settings extends Page implements HasActions, HasForms
                                             ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('ss_b')->label(__('form.ss'))
                                             ->required()->default(false)->inline(false),
-   ]),
+                                    ]),
                                 Forms\Components\Section::make('Standard')->columns($cgrid)
                                     ->schema([
                                         Forms\Components\TextInput::make('maxtp')->label(__('form.tim').'s Exam.')
@@ -220,7 +220,7 @@ class Settings extends Page implements HasActions, HasForms
                                             ->required()->default(false)->inline(false),
                                         Forms\Components\Toggle::make('ss_s')->label(__('form.ss'))
                                             ->required()->default(false)->inline(false),
-   ]),
+                                    ]),
                                 Forms\Components\Section::make('Premium')->columns($cgrid)
                                     ->schema([
                                         Forms\Components\TextInput::make('maxtv')->label(__('form.tim').'s Exam.')
@@ -293,6 +293,17 @@ class Settings extends Page implements HasActions, HasForms
                             ]),
                         Forms\Components\Tabs\Tab::make('Stripe')
                             ->schema([
+                                Forms\Components\Section::make(__('form.cos'))->columns(3)
+                                    ->schema([
+                                        Password::make('spk')->label(__('form.sik'))
+                                            ->required()->columnSpanFull()
+                                            ->dehydrateStateUsing(fn (string $state): string => $state != Info::first()->spk ? Crypt::encryptString($state) : $state)
+                                            ->dehydrated(fn (?string $state): bool => filled($state)),
+                                        Password::make('whk')->label(__('form.whk'))
+                                            ->required()->columnSpanFull()
+                                            ->dehydrateStateUsing(fn (string $state): string => $state != Info::first()->whk ? Crypt::encryptString($state) : $state)
+                                            ->dehydrated(fn (?string $state): bool => filled($state)),
+                                    ]),
                                 Forms\Components\Section::make('Basic')->columns($sgrid)
                                     ->schema([
                                         Forms\Components\TextInput::make('bp_id')->label(__('form.pid'))->required(),

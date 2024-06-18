@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('pbi'); // product id
             $table->string('sid'); // stripe id
             $table->string('cus')->nullable();
+            $table->text('ili')->nullable();
             $table->smallInteger('amount')->default(0)->unsigned();
             $table->unsignedBigInteger('user')->nullable();
             $table->foreign('user')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();

@@ -77,6 +77,8 @@ return new class extends Migration
             $table->boolean('smtp')->default(true);
             $table->tinyInteger('var1')->default(0);
             $table->text('apk')->nullable();
+            $table->text('spk')->nullable();
+            $table->text('whk')->nullable();
             $table->text('endp')->nullable();
             $table->text('endp2')->nullable();
             $table->text('model')->nullable();
