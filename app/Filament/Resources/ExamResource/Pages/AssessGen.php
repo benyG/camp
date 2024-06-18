@@ -198,7 +198,7 @@ class AssessGen extends Page implements HasActions, HasForms
             }) <= 1;
             $this->aa = $this->quest[$this->qcur]->answers->random($this->quest[$this->qcur]->answers->count())->pluck('text', 'id');
             $this->qtext = $this->quest[$this->qcur]->text;
-            $this->js('setTimeout(() => { $wire.aqaQuery() }, 10000);');
+            $this->js('setTimeout(() => { $wire.aqaQuery() }, 5000);');
 
         } else {
             $sc = round(100 * $this->score / $this->qtot, 2);
@@ -543,7 +543,7 @@ class AssessGen extends Page implements HasActions, HasForms
             $this->ans2 = [];
             $this->cans = null;
             $this->bm2 = false;
-            $this->js('setTimeout(() => { $wire.aqaQuery() }, 10000);');
+            $this->js('setTimeout(() => { $wire.aqaQuery() }, 5000);');
         } else {
             $this->carr[0] = $this->qcur;
             $this->carr[1] = $this->score;

@@ -331,7 +331,7 @@
                         }'
                         x-init="setInterval(function() {
                             if ($wire.iati2) {
-                                let current = $wire.iatext2.replace(/(\d+\. \*\*|- \*\*|- )/g, '<br>$1').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                                let current = $wire.iatext2.replace(/(\d+\. \*\*|- \*\*|- )/g, '<br>$1').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/(#{3,5})/g, '<br><br>');
                                 $data.text = current.substring(0, $data.charIndex);
                                 $data.charIndex += 1;
                                 if ($data.charIndex >= current.length) {

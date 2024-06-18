@@ -217,7 +217,7 @@ class Login extends BaseLogin
         $user->tz = isset(session('auth_ip')['timezone']) ? session('auth_ip')['timezone'] : 'UTC';
         //plan
         $user->ix = $ix->iac_g;
-        $user->aqa= false; $user->vo2= false;
+        $user->aqa= true; $user->vo2= false;
         $user->pa=$ix->pa_g;$user->itg=$ix->tga_g;$user->vo=$ix->sta_g;
 
         $user->save();
