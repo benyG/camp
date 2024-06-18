@@ -532,9 +532,10 @@ class ExamResource extends Resource
                                         : 'N/A'),
                                     Infolists\Components\Actions::make([
                                         Infolists\Components\Actions\Action::make('opoi')->label(__('main.as28'))
-                                            ->color('primary')->icon('heroicon-o-cog-8-tooth')->link()
-                                            ->disabled(fn ($record): bool => Course::where('id', $record->certi)->whereRelation('users1', 'approve', true)->count() <= 0)
+                                            ->color('primary')->icon(fn():string=>auth()->user()->can('ftg')?'heroicon-o-lock-closed':'heroicon-o-cog-8-tooth')->link()
+                                            ->disabled(fn ($record): bool =>auth()->user()->cannot('ftg') || Course::where('id', $record->certi)->whereRelation('users1', 'approve', true)->count() <= 0)
                                             ->action(function ($record) {
+                                                if(auth()->user()->can('ftg')){
                                                 if (isset($record->llo)) {
                                                     $ess = new Exam();
                                                     $ess->name = 'TestRX_'.Str::remove('-', now()->toDateString()).'_'.Str::random(5);
@@ -553,20 +554,25 @@ class ExamResource extends Resource
                                                     Notification::make()->success()->title(__('form.e18'))->send();
 
                                                     $txt = "Assessment generated from another ! <br>
-                                            Title: $ess->title <br>
-                                            Cert: ".$ess->certRel->name." <br>
-                                            Type: Test <br>
-                                            Nb. Questions: $ess->quest <br>
-                                            Due date: $ess->due <br>
-                                            Users: ".auth()->user()->name.'<br>
-                                            Modules: '.implode(',', $ess->modules()->pluck('name')->toArray()).' <br>
-                                            ';
+                                                    Title: $ess->title <br>
+                                                    Cert: ".$ess->certRel->name." <br>
+                                                    Type: Test <br>
+                                                    Nb. Questions: $ess->quest <br>
+                                                    Due date: $ess->due <br>
+                                                    Users: ".auth()->user()->name.'<br>
+                                                    Modules: '.implode(',', $ess->modules()->pluck('name')->toArray()).' <br>
+                                                    ';
                                                     \App\Models\Journ::add(auth()->user(), 'Assessments', 1, $txt);
 
                                                 } else {
                                                     Notification::make()->success()->title(__('form.e19'))->send();
                                                 }
+                                            }
                                             }),
+                                            Infolists\Components\Actions\Action::make('owoi')->label(__('form.upg'))
+                                            ->color('primary')->size(\Filament\Support\Enums\ActionSize::Small)
+                                            ->disabled(fn ($record): bool => Course::where('id', $record->certi)->whereRelation('users1', 'approve', true)->count() <= 0)
+                                            ->url(fn (): string => \App\Filament\Pages\Pricing::getUrl()),
                                     ]),
                                     Infolists\Components\TextEntry::make('sccr')->label('% '.Str::ucfirst(__('form.per')).' Modules')
                                         ->state(fn () => $mode)->html(),

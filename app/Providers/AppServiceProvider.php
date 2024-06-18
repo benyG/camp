@@ -128,6 +128,34 @@ class AppServiceProvider extends ServiceProvider
 
             return $oo;
         });
+        Gate::define('ftg', function (\App\Models\User $user) {
+            $ix = cache()->rememberForever('settings', function () {
+                return \App\Models\Info::findOrFail(1);
+            });
+            $oo = false;
+            switch (auth()->user()->ex) {
+                case 2:
+                    $oo = $ix->ftg_f;
+                    break;
+                case 3:
+                    $oo = $ix->ftg_b;
+                    break;
+                case 4:
+                    $oo = $ix->ftg_s;
+                    break;
+                case 5:
+                    $oo = $ix->ftg_p;
+                    break;
+                case 9:
+                    $oo = $ix->ftg_g;
+                    break;
+                default:
+                    $oo = false;
+                    break;
+            }
+
+            return $oo;
+        });
         /** END Gates */
         FilamentColor::register([
             'violet' => Color::Violet,
