@@ -313,7 +313,7 @@
                         <div
                             class="px-4 py-1 justify-end w-full grow @if (empty($iatext)) {{ 'hidden' }} @else {{ 'flex' }} @endif">
                             <x-filament::link tag="button"
-                                x-on:click="if($wire.ias1!=null) {new Audio('data:audio/mpeg;base64,'+$wire.ias1).play()}"
+                                x-on:click="if($wire.ias1!=null) {new Audio('data:audio/wav;base64,'+$wire.ias1).play()}"
                                 icon="heroicon-m-play">
                                 {{ __('form.rpl') }}
                             </x-filament::link>
@@ -346,7 +346,7 @@
                         <div
                             class="px-4 py-1 justify-end w-full grow @if (empty($iatext2)) {{ 'hidden' }} @else {{ 'flex' }} @endif">
                             <x-filament::link tag="button"
-                                x-on:click="if($wire.ias2!=null) {new Audio('data:audio/mpeg;base64,'+$wire.ias2).play()}"
+                                x-on:click="if($wire.ias2!=null) {new Audio('data:audio/wav;base64,'+$wire.ias2).play()}"
                                 icon="heroicon-m-play">
                                 {{ __('form.rpl') }}
                             </x-filament::link>
