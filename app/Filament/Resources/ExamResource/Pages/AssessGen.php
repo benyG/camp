@@ -491,7 +491,7 @@ class AssessGen extends Page implements HasActions, HasForms
                     'voice' => $this->ix->aivo,
                     'response_format ' => 'wav',
                 ]);
-                if (!is_null($response->getBody())) {
+                if (!is_null($response)) {
                     $this->qeror=false;
                    // dd('ff');
                     $this->ias1 = base64_encode($response->getBody()->getContents());
