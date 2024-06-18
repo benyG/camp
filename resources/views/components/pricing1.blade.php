@@ -499,7 +499,6 @@
                                 </td>
                             </tr>
                         </tbody>
-                        </tbody>
                     </table>
                 </div>
                 <div class="grid gap-1 md:grid-flow-col md:hidden">
