@@ -485,19 +485,19 @@ class AssessGen extends Page implements HasActions, HasForms
                 $apk = Crypt::decryptString($this->ix->apk);
                 //  dd($apk);
                 $this->qeror=true;
-                $response = Http::timeout(500)->withToken($apk)->post($this->ix->endp2, [
+                $promise = Http::async()->timeout(500)->withToken($apk)->post($this->ix->endp2, [
                     'model' => $this->ix->model2,
                     'input' => $txt,
                     'voice' => $this->ix->aivo,
                     'response_format ' => 'wav',
-                ]);
-                if (!is_null($response)) {
+                ])->then(function ($response) {
                     $this->qeror=false;
                    // dd('ff');
                     $this->ias1 = base64_encode($response->getBody()->getContents());
                     $this->js("new Audio('data:audio/wav;base64,".$this->ias1."').play()");
                     iac_decr();$this->iac--;
-                }
+                });
+                $promise->wait();
                // dd('kk');
             } catch (DecryptException $e) {
                 Notification::make()->danger()->title(__('form.e11'))->send();
