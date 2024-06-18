@@ -492,12 +492,13 @@ class AssessGen extends Page implements HasActions, HasForms
                     'response_format ' => 'mp3',
                 ])->then(function ($response) {
                     $this->qeror=false;
+                   // dd('ff');
                     $this->ias1 = base64_encode($response->getBody()->getContents());
                     $this->js("new Audio('data:audio/mpeg;base64,".$this->ias1."').play()");
                     iac_decr();$this->iac--;
                 });
                 $promise->wait();
-
+               // dd('kk');
             } catch (DecryptException $e) {
                 Notification::make()->danger()->title(__('form.e11'))->send();
                 $this->qeror=false;

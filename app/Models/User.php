@@ -164,6 +164,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function sub(): HasOne
     {
-        return $this->hasOne(Order::class, 'user')->where('type', 0);
+        return $this->hasOne(Order::class, 'user')->where('type', 0)->whereDate('exp','>', now()->setTimezone('UTC'))->latest();
     }
 }
