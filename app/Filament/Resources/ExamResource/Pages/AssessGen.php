@@ -488,7 +488,7 @@ class AssessGen extends Page implements HasActions, HasForms
                 $promise = Http::async()->timeout(500)->withToken($apk)->post($this->ix->endp2, [
                     'model' => $this->ix->model2,
                     'input' => $txt,
-                    'voice' => $this->ix->aivo,
+                    'voice' =>auth()->user()->vo2? $this->ix->aivo2:$this->ix->aivo,
                     'response_format ' => 'wav',
                 ])->then(function ($response) {
                     $this->qeror=false;
