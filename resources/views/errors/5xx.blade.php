@@ -63,6 +63,8 @@
      <div id="container">
          <div id="bv_Text2"
              style="margin:0;padding:0;position:absolute;left:295px;top:216px;width:361px;height:44px;text-align:left;z-index:0;">
+             <font style="font-size:37px" color="#FFFFFF" face="Arial"><b>{{ $exception->getStatusCode() }} </b>-
+             </font>
              <font style="font-size:29px" color="#FFFFFF" face="Arial">ERROR</font>
          </div>
          <div id="Layer1"
@@ -76,7 +78,16 @@
          </div>
          <div id="bv_Text1"
              style="margin:0;padding:0;position:absolute;left:294px;top:292px;width:560px;height:44px;text-align:left;z-index:3;">
-             <br> {{ $exception->getMessage() }}
+             <br> @switch($exception->getStatusCode())
+                 @case(500)
+                     <font style="font-size:19px" color="#FFFFFF" face="Arial">{{ __('main.e5') }}.<br><br>
+                         {{ __('main.e6') }}.</font>
+                 @break
+
+                 @default
+                     {{ $exception->getMessage() }}
+             @endswitch
+
          </div>
      </div>
  </body>

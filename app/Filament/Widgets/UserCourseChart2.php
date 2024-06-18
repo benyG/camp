@@ -25,14 +25,14 @@ class UserCourseChart2 extends ChartWidget
 
     #[Locked]
     public $cos;
-
     #[Locked]
-    public $record;
+    public $usrec;
+
 
     public function mount($usrec = null): void
     {
-        $this->record = is_int($usrec) ? User::with('exams2')->findOrFail($usrec) : auth()->user();
-        $arr = array_unique($this->record->exams2()->pluck('certi')->toArray());
+        $rec= !is_null($usrec) ? User::findOrFail($usrec) : auth()->user();
+        $arr = array_unique($rec->exams2()->pluck('certi')->toArray());
         $this->cos = count($arr) > 0 ? Course::whereIn('id', $arr)->get() : Course::has('users1')->where('pub', true)->get();
         // $this->cos=Course::get();
     }
@@ -63,8 +63,8 @@ class UserCourseChart2 extends ChartWidget
     protected function getData(): array
     {
         $mod = Module::select('id', 'name')->where('course', $this->cs)->get()->pluck('name', 'id')->toArray();
-        //  $this->record = $this->record ?? auth()->user();
-        $exa = $this->record->exams2()->where('certi', $this->cs)->get();
+        $rec = !is_null($this->usrec) ? User::findOrFail($this->usrec) : auth()->user();
+        $exa = $rec->exams2()->where('certi', $this->cs)->get();
         $que = [];
         foreach ($exa as $ex) {
             if (! empty($ex->pivot->gen) && is_array($ex->pivot->gen)) {

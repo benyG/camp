@@ -20,7 +20,7 @@ class UserCourseChart3 extends ChartWidget
     protected static ?int $sort = 1;
 
     #[Locked]
-    public $record;
+    public $usrec;
 
     public $cs = 0;
 
@@ -31,7 +31,7 @@ class UserCourseChart3 extends ChartWidget
 
     public function mount($usrec = null): void
     {
-        $this->record = is_int($usrec) ? User::with('exams2')->findOrFail($usrec) : auth()->user();
+        if(!is_null($usrec)) $this->usrec =$usrec;
     }
 
     public function getHeading(): ?string
@@ -69,8 +69,8 @@ class UserCourseChart3 extends ChartWidget
     {
         $uc = [[], [], []];
         if (! empty($this->cos) > 0) {
-            //  $this->record = $this->record ?? auth()->user();
-            $exa = $this->record->exams2()->where('certi', $this->cs)->get();
+            $rec = !is_null($this->usrec) ? User::findOrFail($this->usrec) : auth()->user();
+            $exa = $rec->exams2()->where('certi', $this->cs)->get();
             $md1 = 0;
             $md2 = 0;
             $QUEST = Question::select('id', 'module')->with('answers')->get();

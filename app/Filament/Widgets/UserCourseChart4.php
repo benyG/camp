@@ -28,11 +28,11 @@ class UserCourseChart4 extends ChartWidget
     public $cos;
 
     #[Locked]
-    public $record;
+    public $usrec;
 
     public function mount($usrec = null): void
     {
-        $this->record = is_int($usrec) ? User::with('exams2')->findOrFail($usrec) : auth()->user();
+        if(!is_null($usrec)) $this->usrec =$usrec;
     }
 
     public function getHeading(): ?string
@@ -69,11 +69,11 @@ class UserCourseChart4 extends ChartWidget
             return \App\Models\Info::findOrFail(1);
         });
         $uc = [[], [], []];
-        // $this->record = $this->record ?? auth()->user();
+        $rec = !is_null($this->usrec) ? User::findOrFail($this->usrec) : auth()->user();
         $arx = $this->cs2 == 'X' ? [0, 1] : [intval($this->cs2)];
         $exx = Exam::select('id', 'type', 'added_at', 'certi')->where('certi', $this->cs)->whereIn('type', $arx)->latest('added_at')->get()->pluck('id')->toArray();
         $exa = ExamUser::selectRaw('DATE(added) as ax,COUNT(*) as exa')
-            ->where('user', $this->record->id)->whereIn('exam', $exx)->limit($ix->taff)->
+            ->where('user', $rec->id)->whereIn('exam', $exx)->limit($ix->taff)->
         groupBy(DB::raw('DATE(added)'))->latest('ax')->get();
         // dd($exa->count());
         foreach ($exa as $ex) {

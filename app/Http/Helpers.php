@@ -39,13 +39,16 @@ if (! function_exists('iac_decr')) {
     function iac_decr(): void
     {
         if (auth()->user()->ix > 0) {
+            if(\App\Models\User::where('id', auth()->id())->first()->ix>0){
             \App\Models\User::where('id', auth()->id())->decrement('ix');
             \App\Models\User::where('id', auth()->id())->update(['icx' => now()]);
             iac_incr();
+            }
         } elseif (auth()->user()->ix2 > 0) {
+            if(\App\Models\User::where('id', auth()->id())->first()->ix2>0){
             \App\Models\User::where('id', auth()->id())->decrement('ix2');
             \App\Models\User::where('id', auth()->id())->update(['icx' => now()]);
-            iac_incr();
+            iac_incr();}
         }
     }
 }
