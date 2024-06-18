@@ -218,7 +218,7 @@
                                 <td>
                                     @if ($ix->sta_f)
                                         <x-filament::icon icon="heroicon-m-check-circle"
-                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400"/>
+                                            class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
                                     @else
                                         <x-filament::icon icon="heroicon-o-minus"
                                             class="w-6 h-6 mx-auto text-custom-600 dark:text-custom-400" />
@@ -553,6 +553,13 @@
                                 <span><span class="font-bold">{{ str_pad($ix->maxes, 2, '0', 0) }}</span>
                                     {{ __('form.mqe') }}</span>
                             </li>
+                            @if ($ix->sta_f)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.sta2') }}</span>
+                                </li>
+                            @endif
                             @if ($ix->tec_f)
                                 <li class="grid justify-start grid-flow-col text-left gap-x-1">
                                     <!-- Icon -->
@@ -582,13 +589,6 @@
                                 </li>
                             @endif
 
-                            @if ($ix->sta_f)
-                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
-                                    <!-- Icon -->
-                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
-                                    <span>{{ __('form.sta2') }}</span>
-                                </li>
-                            @endif
                         </ul>
                     </div>
                     <!-- Pricing Card -->
@@ -650,6 +650,13 @@
                                 <span><span class="font-bold">{{ str_pad($ix->maxeu, 2, '0', 0) }}</span>
                                     {{ __('form.mqe') }}</span>
                             </li>
+                            @if ($ix->sta_b)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.sta2') }}</span>
+                                </li>
+                            @endif
                             @if ($ix->tec_b)
                                 <li class="grid justify-start grid-flow-col text-left gap-x-1">
                                     <!-- Icon -->
@@ -676,14 +683,6 @@
                                     <!-- Icon -->
                                     <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
                                     <span>{{ __('form.tga2') }}</span>
-                                </li>
-                            @endif
-
-                            @if ($ix->sta_b)
-                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
-                                    <!-- Icon -->
-                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
-                                    <span>{{ __('form.sta2') }}</span>
                                 </li>
                             @endif
                         </ul>
@@ -747,6 +746,13 @@
                                 <span><span class="font-bold">{{ str_pad($ix->maxev, 2, '0', 0) }}</span>
                                     {{ __('form.mqe') }}</span>
                             </li>
+                            @if ($ix->sta_s)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.sta2') }}</span>
+                                </li>
+                            @endif
                             @if ($ix->tec_s)
                                 <li class="grid justify-start grid-flow-col text-left gap-x-1">
                                     <!-- Icon -->
@@ -833,6 +839,13 @@
                                 <span class="font-bold">{{ str_pad($ix->maxev, 2, '0', 0) }}</span>
                                 <span>{{ __('form.mqe') }}</span>
                             </li>
+                            @if ($ix->sta_p)
+                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
+                                    <!-- Icon -->
+                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
+                                    <span>{{ __('form.sta2') }}</span>
+                                </li>
+                            @endif
                             @if ($ix->tec_p)
                                 <li class="grid justify-start grid-flow-col text-left gap-x-1">
                                     <!-- Icon -->
@@ -854,13 +867,6 @@
                                     <span>{{ __('form.pa2') }}</span>
                                 </li>
                             @endif
-                            @if ($ix->pa_p)
-                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
-                                    <!-- Icon -->
-                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
-                                    <span>{{ __('form.pa2') }}</span>
-                                </li>
-                            @endif
                             @if ($ix->tga_p)
                                 <li class="grid justify-start grid-flow-col text-left gap-x-1">
                                     <!-- Icon -->
@@ -868,15 +874,6 @@
                                     <span>{{ __('form.tga2') }}</span>
                                 </li>
                             @endif
-
-                            @if ($ix->sta_p)
-                                <li class="grid justify-start grid-flow-col text-left gap-x-1">
-                                    <!-- Icon -->
-                                    <x-filament::icon icon="heroicon-m-check-circle" class="w-4 h-4 text-white" />
-                                    <span>{{ __('form.sta2') }}</span>
-                                </li>
-                            @endif
-
                         </ul>
                     </div>
                 </div>
