@@ -7,15 +7,25 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Carbon;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class StripeController extends Controller
 {
     public function handleWebhook(Request $request)
     {
-        $stripe = new \Stripe\StripeClient('rk_test_51Oo7zYGO0bcnzZi7htomlQuVlBk2i2SsIov0weXy387DYDMm7pGPyP0q0bAkE7HU9tBnyCGdolwamY10F6oeg5b60007G7OsJ5');
+        $ix = cache()->rememberForever('settings', function () {
+            return \App\Models\Info::findOrFail(1);
+          });
+          $sc="";$es="";
+        try {
+        $sc = Crypt::decryptString($ix->spk);$es = Crypt::decryptString($ix->whks);
+        } catch (DecryptException $e) {
+            report($e);
+            return response()->json(['status' => 'key encryption error'], 400);
+        }
 
-        // This is your Stripe CLI webhook secret for testing your endpoint locally.
-        $endpoint_secret = 'whsec_J9ZBsoHBh1iS1wZtCALUlxTOCsTQmaTw';
+        $stripe = new \Stripe\StripeClient($sc);
+        $endpoint_secret = $es;
 
         $payload = @file_get_contents('php://input');
         $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
@@ -48,60 +58,66 @@ class StripeController extends Controller
       });
       $event=json_decode($event);
       if($event->type=="checkout.session.completed" && $event->data->object->payment_status="paid"){
+        $ty=3;$url=null;
+
+        if($event->data->object->payment_link==$ix->iac1_id ||
+        $event->data->object->payment_link==$ix->iac2_id||
+        $event->data->object->payment_link==$ix->iac3_id) $ty=1;
+        if($event->data->object->payment_link==$ix->eca_id) $ty=2;
+
+        $ul=\App\Models\Chx::where('pli',$event->data->object->payment_intent)->get();
+        if($ul->count()>0){
+            $ob=$ul->first();
+            $url=$ob->rli;
+            $ob->delete();
+        }
+
         $us=\App\Models\User::where('email',$event->data->object->customer_details->email)->get();
-        if($us->count()>0){
           $or=new \App\Models\Order;
-          $or->pbi=$event->data->object->lines->data[0]->plan->product;
+          $or->pbi=$event->data->object->payment_link;
           $or->sid=$event->data->object->id;
-          $or->amount=$event->data->object->amount_paid;
+          $or->amount=$event->data->object->amount_total/100;
           $or->cus=$event->data->object->payment_intent;
           $or->qte=1;
-          $or->type=0;
-          $or->user=$us->first()->id;
+          $or->type=$ty;
+          $or->ili=$url;
+          $or->user=$us->count()>0?$us->first()->id:null;
           $or->save();
+      }
+      if($event->type=="charge.succeeded" && $event->data->object->paid=="true"){
+        $ul=\App\Models\Order::where('cus',$event->data->object->payment_intent)->get();
+        if($ul->count()>0){
+            $ob=$ul->first();
+            $ob->ili=$event->data->object->receipt_url;
+            $ob->save();
         }else {
           \App\Models\Chx::create([
-            "i1"=>$event->type,
-            "pli"=>"",
-            "rli"=>$event->data->object->hosted_invoice_url,
-            "i2"=>$event->data->object->payment_intent,
+            "pli"=>$event->data->object->payment_intent,
+            "rli"=>$event->data->object->receipt_url,
             "sid"=>$event->data->object->id,
-            "i3"=>json_encode($event, JSON_PRETTY_PRINT),
+            "i1"=>$event->data->object->receipt_email,
+            "i2"=>$event->data->object->amount,
           ]);
         }
       }
-      if($event->type=="charge.succeeded"){
-
-      }
       if($event->type=="invoice.paid" && $event->data->object->paid){
         $us=\App\Models\User::where('email',$event->data->object->customer_email)->get();
-        if($us->count()>0){
           $or=new \App\Models\Order;
           $or->pbi=$event->data->object->lines->data[0]->plan->product;
           $or->sid=$event->data->object->id;
-          $or->amount=$event->data->object->amount_paid;
+          $or->amount=$event->data->object->amount_paid/100;
           $or->cus=$event->data->object->payment_intent;
           $or->qte=1;
           $or->type=0;
           $or->ili=$event->data->object->hosted_invoice_url;
           $or->exp=Carbon::createFromTimestampUTC($event->data->object->lines->data[1]->period->end);
-          $or->user=$us->first()->id;
+          $or->user=$us->count()>0?$us->first()->id:null;
           $or->save();
-        }else {
-          \App\Models\Chx::create([
-            "i1"=>$event->type,
-            "pli"=>"",
-            "rli"=>$event->data->object->hosted_invoice_url,
-            "i2"=>$event->data->object->payment_intent,
-            "sid"=>$event->data->object->id,
-            "i3"=>json_encode($event, JSON_PRETTY_PRINT),
-          ]);
-        }
       }
     }
     public function handle2()
     {
-        $this->storeEvent($this->getDt2());
+       // $this->storeEvent($this->getDt2());
         return response()->json(['status' => 'success'], 200);
     }
 
@@ -149,7 +165,7 @@ class StripeController extends Controller
                       "postal_code": "G1T 0H9",
                       "state": null
                   },
-                  "customer_email": "cptmbh@yahoo.fr",
+                  "customer_email": "cpt1mbh@yahoo.fr",
                   "customer_name": "Mike Payer",
                   "customer_phone": null,
                   "customer_shipping": null,
@@ -583,5 +599,128 @@ class StripeController extends Controller
             "type": "checkout.session.completed"
         }';
     }
+    public function getDt3() : string {
+        return '{
+                    "id": "evt_3PSnPtGO0bcnzZi7107Meo0R",
+                    "object": "event",
+                    "api_version": "2024-04-10",
+                    "created": 1718660926,
+                    "data": {
+                        "object": {
+                            "id": "ch_3PSnPtGO0bcnzZi71ySIWL0p",
+                            "object": "charge",
+                            "amount": 2000,
+                            "amount_captured": 2000,
+                            "amount_refunded": 0,
+                            "application": null,
+                            "application_fee": null,
+                            "application_fee_amount": null,
+                            "balance_transaction": null,
+                            "billing_details": {
+                                "address": {
+                                    "city": null,
+                                    "country": "CA",
+                                    "line1": null,
+                                    "line2": null,
+                                    "postal_code": "G1V 0J8",
+                                    "state": null
+                                },
+                                "email": "cisspbootcamp08@gmail.com",
+                                "name": "Bogo gobo",
+                                "phone": null
+                            },
+                            "calculated_statement_descriptor": "EXAMBOOT.NET",
+                            "captured": true,
+                            "created": 1718660926,
+                            "currency": "usd",
+                            "customer": null,
+                            "description": null,
+                            "destination": null,
+                            "dispute": null,
+                            "disputed": false,
+                            "failure_balance_transaction": null,
+                            "failure_code": null,
+                            "failure_message": null,
+                            "fraud_details": [],
+                            "invoice": null,
+                            "livemode": false,
+                            "metadata": [],
+                            "on_behalf_of": null,
+                            "order": null,
+                            "outcome": {
+                                "network_status": "approved_by_network",
+                                "reason": null,
+                                "risk_level": "normal",
+                                "risk_score": 30,
+                                "seller_message": "Payment complete.",
+                                "type": "authorized"
+                            },
+                            "paid": true,
+                            "payment_intent": "pi_3PSnPtGO0bcnzZi71LG8I8x1",
+                            "payment_method": "pm_1PSnPsGO0bcnzZi7GvOBdYrm",
+                            "payment_method_details": {
+                                "card": {
+                                    "amount_authorized": 2000,
+                                    "brand": "visa",
+                                    "checks": {
+                                        "address_line1_check": null,
+                                        "address_postal_code_check": "pass",
+                                        "cvc_check": "pass"
+                                    },
+                                    "country": "US",
+                                    "exp_month": 11,
+                                    "exp_year": 2027,
+                                    "extended_authorization": {
+                                        "status": "disabled"
+                                    },
+                                    "fingerprint": "5c3B6EvTEI9gMv3H",
+                                    "funding": "credit",
+                                    "incremental_authorization": {
+                                        "status": "unavailable"
+                                    },
+                                    "installments": null,
+                                    "last4": "4242",
+                                    "mandate": null,
+                                    "multicapture": {
+                                        "status": "unavailable"
+                                    },
+                                    "network": "visa",
+                                    "network_token": {
+                                        "used": false
+                                    },
+                                    "overcapture": {
+                                        "maximum_amount_capturable": 2000,
+                                        "status": "unavailable"
+                                    },
+                                    "three_d_secure": null,
+                                    "wallet": null
+                                },
+                                "type": "card"
+                            },
+                            "radar_options": [],
+                            "receipt_email": "cisspbootcamp08@gmail.com",
+                            "receipt_number": null,
+                            "receipt_url": "https:\/\/pay.stripe.com\/receipts\/payment\/CAcaFwoVYWNjdF8xT283ellHTzBiY256Wmk3KL_ewrMGMgYdLMRNi3s6LBY3DlRR9RKiVT_9sugCjAse-U0o50bvgXBCl7410Oh6OMMc3OovqIK9FWsu",
+                            "refunded": false,
+                            "review": null,
+                            "shipping": null,
+                            "source": null,
+                            "source_transfer": null,
+                            "statement_descriptor": null,
+                            "statement_descriptor_suffix": null,
+                            "status": "succeeded",
+                            "transfer_data": null,
+                            "transfer_group": null
+                        }
+                    },
+                    "livemode": false,
+                    "pending_webhooks": 1,
+                    "request": {
+                        "id": "req_UMMBKaqI64tqzE",
+                        "idempotency_key": "1378ff99-ea8f-4d18-bd67-a3c6acc8d694"
+                    },
+                    "type": "charge.succeeded"
+                }';
+      }
 
 }

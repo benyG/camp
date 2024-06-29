@@ -157,7 +157,7 @@ class Usett extends Page implements HasActions, HasForms
             return \App\Models\Info::findOrFail(1);
         });
 
-        return auth()->user()->can('vo') ? Forms\Components\Select::make('vo2')->label(__('form.aivo'))
+        return auth()->user()->can('vo') ? Forms\Components\Select::make('vo2')->label(__('form.aivo'))->native(false)
         ->options(['0'=>'Coach Ben','1'=>'Coach Becky'])->selectablePlaceholder(false)->default(auth()->user()->vo2) :
             Forms\Components\Toggle::make('vo2')->label(__('form.aivo'))->inline(false)->disabled(true)->declined()
                 ->hintAction(
@@ -174,7 +174,7 @@ class Usett extends Page implements HasActions, HasForms
             return \App\Models\Info::findOrFail(1);
         });
 
-        return auth()->user()->can('vo') ? Forms\Components\Select::make('pk')->label(__('form.sta6'))
+        return auth()->user()->can('vo') ? Forms\Components\Select::make('pk')->label(__('form.sta6'))->native(false)
         ->options([
             'en-US'=>'English','fr_FR'=>'French','es-ES'=>'Spanish','de-DE'=>'German',
             'it-IT'=>'Italian ','pt_BR'=>'Portuguese','zh-CN'=>'Chinese','ja-JP'=>'Japanese',

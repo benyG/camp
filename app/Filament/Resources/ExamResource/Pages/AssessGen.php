@@ -489,12 +489,12 @@ class AssessGen extends Page implements HasActions, HasForms
                     'model' => $this->ix->model2,
                     'input' => $txt,
                     'voice' =>auth()->user()->vo2? $this->ix->aivo2:$this->ix->aivo,
-                    'response_format ' => 'wav',
+                    'response_format ' => 'mp3',
                 ])->then(function ($response) {
                     $this->qeror=false;
                    // dd('ff');
                     $this->ias1 = base64_encode($response->getBody()->getContents());
-                    $this->js("new Audio('data:audio/wav;base64,".$this->ias1."').play()");
+                    $this->js("new Audio('data:audio/mpeg;base64,".$this->ias1."').play()");
                     iac_decr();$this->iac--;
                 });
                 $promise->wait();
