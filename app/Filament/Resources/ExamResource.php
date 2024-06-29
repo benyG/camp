@@ -535,7 +535,13 @@ class ExamResource extends Resource
                                             ->color('primary')->icon(fn():string=>auth()->user()->can('ftg')?'heroicon-o-lock-closed':'heroicon-o-cog-8-tooth')->link()
                                             ->disabled(fn ($record): bool =>auth()->user()->cannot('ftg') || Course::where('id', $record->certi)->whereRelation('users1', 'approve', true)->count() <= 0)
                                             ->action(function ($record) {
-                                                if(auth()->user()->can('ftg')){
+                                                if(auth()->user()->cannot('ftg')){
+                                                    Notification::make()->success()->title(__('form.e19'))->send();
+                                                }
+                                                else if(auth()->user()->cannot('add-exam')){
+                                                    Notification::make()->success()->title(__('form.saa3'))->send();
+                                                }
+                                                else{
                                                 if (isset($record->llo)) {
                                                     $ess = new Exam();
                                                     $ess->name = 'TestRX_'.Str::remove('-', now()->toDateString()).'_'.Str::random(5);
@@ -564,8 +570,6 @@ class ExamResource extends Resource
                                                     ';
                                                     \App\Models\Journ::add(auth()->user(), 'Assessments', 1, $txt);
 
-                                                } else {
-                                                    Notification::make()->success()->title(__('form.e19'))->send();
                                                 }
                                             }
                                             }),

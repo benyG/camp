@@ -60,12 +60,6 @@ class OrderResource extends Resource
 
         return $form
             ->schema([
-                Forms\Components\Select::make('type')->label('Type')->required()
-                    ->options([
-                        0 => 'Plan',
-                        1 => __('form.iac'),
-                        2 => 'ECA',
-                    ]),
                 Forms\Components\Select::make('pbi')->label(__('form.pid'))->required()
                     ->options([
                         $ix->bp_id => 'Basic', $ix->sp_id => 'Standard', $ix->pp_id => 'Premium',
@@ -76,10 +70,6 @@ class OrderResource extends Resource
                     ->required()->maxLength(200),
                 Forms\Components\DateTimePicker::make('exp')->label('Expiration')->default(now())
                     ->required(),
-                Forms\Components\TextInput::make('amount')->label(__('form.amo'))
-                    ->required()->numeric()->default(0),
-                Forms\Components\TextInput::make('qte')->label(__('form.qty'))
-                    ->required()->numeric()->default(1),
                 Forms\Components\Select::make('user')->label(__('form.us'))->required()
                     ->relationship(name: 'userRel', titleAttribute: 'name'),
             ])->columns(3);
@@ -124,7 +114,8 @@ class OrderResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('ffb')->label(__('form.bic'))->icon('heroicon-o-document-text')->iconButton()
-                    ->url(fn ($record): string => $record->li.'')->color('gray'),
+                    ->url(fn ($record): string => $record->ili.'')->color('gray')->openUrlInNewTab()
+                    ->visible(fn($record):bool=>!empty($record->ili)),
                 Tables\Actions\EditAction::make()->iconButton()
                     ->using(function (\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model {
                         $reco = $record->replicate();
@@ -158,6 +149,7 @@ class OrderResource extends Resource
     {
         return [
             'index' => Pages\ManageOrders::route('/'),
+            'charges' => Pages\Charges::route('/charges'),
         ];
     }
 }

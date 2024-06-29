@@ -11,7 +11,6 @@ class Chx extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'pli', 'rli', 'sid','i1','i2','i3','i4',
     ];
 
 }
