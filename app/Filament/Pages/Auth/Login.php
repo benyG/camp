@@ -214,6 +214,7 @@ class Login extends BaseLogin
         $user->ex = 9;
         $user->ix = $ix->iac_g;
         $user->ax = 1;
+        $user->pk = '0';
         $user->tz = isset(session('auth_ip')['timezone']) ? session('auth_ip')['timezone'] : 'UTC';
         //plan
         $user->ix = $ix->iac_g;
@@ -234,7 +235,6 @@ class Login extends BaseLogin
         $user = Filament::auth()->user();
         $txt = "Successful login of a guest '$user->name' ($user->email)";
         \App\Models\Journ::add($user, 'Login', 0, $txt, $this->ox);
-
         if (
             ($user instanceof FilamentUser) &&
             (! $user->canAccessPanel(Filament::getCurrentPanel()))

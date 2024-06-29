@@ -44,7 +44,7 @@
                                         </span>
                                     </h2>
                                     <span class="block my-2 text-xs text-gray-400 dark:text-gray-600">
-                                        {{ __('form.pp_t1') }}
+                                        {{ __('main.w44') }}
                                     </span>
                                     <p class="mb-3">
                                         <span

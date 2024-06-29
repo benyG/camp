@@ -19,4 +19,5 @@
     </x-filament-panels::form>
 
     {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::AUTH_REGISTER_FORM_AFTER, scopes: $this->getRenderHookScopes()) }}
+<div class="-mt-2 -mb-4"><x-footer2 /></div>
 </x-filament-panels::page.simple>

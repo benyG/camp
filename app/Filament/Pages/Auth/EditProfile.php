@@ -12,6 +12,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class EditProfile extends BaseEditProfile
 {
+    public function mount(): void
+    {
+        if(auth()->user()->ex==9) redirect()->to(filament()->getUrl());
+    }
     public function form(Form $form): Form
     {
         return $form
@@ -69,8 +73,4 @@ Min One Special Chars
         return $record;
     }
 
-    public static function canAccess(): bool
-    {
-        return collect(['0', '1', '2', '3', '4', '5'])->contains(auth()->user()->ex);
-    }
 }

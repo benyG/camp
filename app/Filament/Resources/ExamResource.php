@@ -25,6 +25,7 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 class ExamResource extends Resource
 {
@@ -169,9 +170,19 @@ class ExamResource extends Resource
                         Forms\Components\TextInput::make('timer')->numeric()->requiredIf('type', '1')->label(__('main.as18'))->default(30)
                             ->readonly(fn (Get $get): bool => $get('typee') == '1')
                             ->hidden(fn (Get $get): bool => $get('type') != '1')
-                            ->rules(['min:'.$ix->mint, 'max:'.match (auth()->user()->ex) {
-                                1 => $ix->maxts,0 => 40000000,
-                                2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv,9 => $ix->maxtg,default => $ix->maxts
+                            ->rules(['min:'.$ix->mint,
+                            fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                                $ix = cache()->rememberForever('settings', function () {
+                                    return \App\Models\Info::findOrFail(1);
+                                });
+                                $mq = match (auth()->user()->ex) {
+                                    1 => $ix->maxts,0 => 40000000,
+                                    2 => $ix->maxts, 3 => $ix->maxtu, 4 => $ix->maxtp, 5 => $ix->maxtv,9 => $ix->maxtg,default => $ix->maxts
+                                };
+                                if ($mq < intval($value)) {
+
+                                    $fail(__('form.e38',['rst',$mq]).'. '.__('main.w42'));
+                                }
                             }]),
                         Forms\Components\TextInput::make('quest')->numeric()->required()->label('Nb. Questions')->readonly(fn (Get $get): bool => $get('typee') == '1')->default(10)
                             ->rules(['min:'.$ix->minq, fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
@@ -187,7 +198,7 @@ class ExamResource extends Resource
                                     2 => $ix->maxs, 3 => $ix->maxu, 4 => $ix->maxp, 5 => $ix->maxv,9 => $ix->maxeg,default => $ix->maxes
                                 };
                                 if ($mq < intval($value)) {
-                                    $fail(__('form.mqu').' '.$mq);
+                                    $fail(__('form.e38',['rst',$mq]).'. '.__('main.w42'));
                                 }
                             },
                                 fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
@@ -379,12 +390,12 @@ class ExamResource extends Resource
                         $action->label(__('form.clo'));
                     })
                     ->modalSubmitAction(false)
-                    ->modalHeading(fn (Exam $record): string => __('main.as21'))
+                    ->modalHeading("")
                     ->visible(function (Exam $record) {
                         if (empty($record->users1->first()->pivot->start_at)) {
                             return $record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due;
                         } else {
-                            return $record->type == 1 ? ($record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due) && $record->timer - now()->diffInMinutes($record->users1->first()->pivot->start_at) > 0 :
+                            return $record->type == 1 ? ($record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due) && ($record->timer - Carbon::parse($record->users1->first()->pivot->start_at)->diffInMinutes(now(),true)) > 0 :
                                  ($record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due);
                         }
                     })
@@ -429,7 +440,7 @@ class ExamResource extends Resource
                         if (empty($record->users1->first()->pivot->start_at)) {
                             return $record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due;
                         } else {
-                            return $record->type == 1 ? ($record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due) && $record->timer - now()->diffInMinutes($record->users1->first()->pivot->start_at) > 0 :
+                            return $record->type == 1 ? ($record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due) && ($record->timer - Carbon::parse($record->users1->first()->pivot->start_at)->diffInMinutes(now(),true)) > 0 :
                                  ($record->users1->count() > 0 && empty($record->users1->first()->pivot->comp_at) && ! empty($record->due) && now() < $record->due);
                         }
                     })
@@ -445,7 +456,7 @@ class ExamResource extends Resource
                         if (empty($record->users1->first()->pivot->start_at)) {
                             return $record->users1->count() > 0 && (! empty($record->users1->first()->pivot->comp_at) || (! empty($record->due) && now() > $record->due));
                         } else {
-                            return $record->type == 1 ? ($record->users1->count() > 0 && (! empty($record->users1->first()->pivot->comp_at) || (! empty($record->due) && now() > $record->due) || $record->timer - now()->diffInMinutes($record->users1->first()->pivot->start_at) <= 0)) :
+                            return $record->type == 1 ? ($record->users1->count() > 0 && (! empty($record->users1->first()->pivot->comp_at) || (! empty($record->due) && now() > $record->due) || ($record->timer - Carbon::parse($record->users1->first()->pivot->start_at)->diffInMinutes(now(),true)) <= 0)) :
                                  ($record->users1->count() > 0 && (! empty($record->users1->first()->pivot->comp_at) || (! empty($record->due) && now() > $record->due)));
                         }
                     })
@@ -528,7 +539,7 @@ class ExamResource extends Resource
                                     Infolists\Components\TextEntry::make('a2')->label(__('form.tai'))
                                         ->state(fn (Exam $record) => ! empty($record->users1->first()->pivot->start_at)
                                         && ! empty($record->users1->first()->pivot->comp_at) ?
-                                        \Illuminate\Support\Carbon::parse($record->users1->first()->pivot->comp_at)->diffInMinutes($record->users1->first()->pivot->start_at).' min'
+                                        \Illuminate\Support\Carbon::parse($record->users1->first()->pivot->start_at)->diffInMinutes($record->users1->first()->pivot->comp_at,true).' min'
                                         : 'N/A'),
                                     Infolists\Components\Actions::make([
                                         Infolists\Components\Actions\Action::make('opoi')->label(__('main.as28'))
@@ -623,7 +634,7 @@ class ExamResource extends Resource
                                 $mode = "<table class='w-full text-sm border-collapse table-auto'><thead><tr><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>".trans_choice('main.m5', 5)."</th><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>".__('form.ti')." (min.)</th><th class='p-4 pt-0 pb-3 pl-8 font-medium text-left text-gray-400 border-b dark:border-gray-600 dark:text-gray-200'>Score</th></tr></thead><tbody class=''>";
                                 foreach ($record->users as $us) {
                                     $mode .= "<tr><td class='p-4 pl-8 text-gray-500 border-b border-gray-100 dark:border-gray-700 dark:text-gray-400'>".$us->name."</td><td class='p-4 pl-8 text-gray-500 border-b border-gray-100 dark:border-gray-700 dark:text-gray-400'>".(! empty($us->pivot->start_at) && ! empty($us->pivot->comp_at) ?
-                                    \Illuminate\Support\Carbon::parse($us->pivot->comp_at)->diffInMinutes($us->pivot->start_at) :
+                                    \Illuminate\Support\Carbon::parse($us->pivot->comp_at)->diffInMinutes($us->pivot->start_at,true) :
                                     'N/A').'</td>';
                                     // $mod=array();
                                     // foreach ($record->modules as $gg) $mod[$gg->id]=[$gg->name,$gg->pivot->nb,0];

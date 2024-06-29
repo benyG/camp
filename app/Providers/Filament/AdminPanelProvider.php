@@ -74,7 +74,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->renderHook('panels::head.end', fn (): string => Blade::render('components.author'))
             ->renderHook('panels::auth.login.form.after', fn (): string => Blade::render('footer3'))
-            ->renderHook('panels::auth.register.form.after', fn (): string => Blade::render('footer4'))
+            ->renderHook('panels::auth.register.form.after', fn (): string => Blade::render('footer5'))
             ->renderHook('panels::user-menu.before', fn (): string => Blade::render('head1'))
             ->userMenuItems([
                 MenuItem::make()

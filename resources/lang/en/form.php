@@ -51,7 +51,7 @@ return [
     'e35' => 'Successfully removed',
     'e36' => 'Select an element',
     'e37' => 'Query still pending. Please wait.',
-    'e38' => '',
+    'e38' => 'Your current subscription plan doesn\'t allow you a value greater than :rst',
     'e39' => '',
     'e40' => '',
     'tz' => 'Timezone',

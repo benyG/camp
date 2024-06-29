@@ -22,6 +22,7 @@ use Illuminate\Support\Str;
 use Livewire\Attributes\Validate;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Illuminate\Support\Carbon;
 
 #[Lazy]
 class AssessGen extends Page implements HasActions, HasForms
@@ -148,14 +149,14 @@ class AssessGen extends Page implements HasActions, HasForms
     {
         $this->iac=auth()->user()->ix+auth()->user()->ix2;
         $this->record = Exam::has('users1')->where('name', $ex)->with('modules')->with('certRel')->with('users1')->firstOrFail();
-        if (empty($this->record->users1()->first()->pivot->start_at)) {
+        if (empty($this->record->users1->first()->pivot->start_at)) {
             $this->record->users1()->updateExistingPivot(auth()->id(), [
                 'start_at' => now()]);
         }
         if ($this->record->type == '1') {
             if (! empty($this->record->due) && now() > $this->record->due) {
                 redirect()->to(ExamResource::getUrl());
-            } elseif (now()->diffInMinutes($this->record->users1()->first()->pivot->start_at) >
+            } elseif (Carbon::parse($this->record->users1->first()->pivot->start_at)->diffInMinutes(now(),true) >
             $this->record->timer) {
                 redirect()->to(ExamResource::getUrl());
             }
@@ -167,12 +168,12 @@ class AssessGen extends Page implements HasActions, HasForms
         $carr = \App\Models\CacheEx::where('name','carr_'.$this->record->id.'_'.auth()->id())->get();
         if ($carr->count()<=0) {
                 $qt = [];
-                if (empty($this->record->users1()->first()->pivot->quest)) {
+                if (empty($this->record->users1->first()->pivot->quest)) {
                     foreach ($this->record->modules as $md) {
                         $qt = array_merge($qt, $md->questions()->pluck('id')->random($md->pivot->nb)->toArray());
                     }
                 } else {
-                    $qt = json_decode($this->record->users1()->first()->pivot->quest);
+                    $qt = json_decode($this->record->users1->first()->pivot->quest);
                 }
                 $rt = \App\Models\Question::whereIn('id', $qt)->with('answers')->get();
                 $at = $rt->pluck('questions.text', 'questions.id');
@@ -184,7 +185,7 @@ class AssessGen extends Page implements HasActions, HasForms
                 ]);
         }else $this->carr=unserialize(base64_decode($carr->first()->gen));
        // dd($this->carr);
-        $this->tim = $this->record->timer - now()->diffInMinutes($this->record->users1()->first()->pivot->start_at);
+        $this->tim = $this->record->timer - Carbon::parse($this->record->users1->first()->pivot->start_at)->diffInMinutes(now(),true);
         $this->qcur = $this->carr[0];
         $this->score = $this->carr[1];
         $this->quest = $this->carr[4];
@@ -286,7 +287,6 @@ class AssessGen extends Page implements HasActions, HasForms
 
         return Action::make('ina')->label(__('main.i8'))->size(ActionSize::Small)->modalSubmitActionLabel('Yes')
             ->icon('heroicon-o-light-bulb')->disabled(function (): bool {
-                return true;
                 if(auth()->user()->aqa) return true;
                 if (empty($this->cans)) {
                     return true;
@@ -663,7 +663,7 @@ class AssessGen extends Page implements HasActions, HasForms
         if ($opt == false && $this->qcur <= $this->qtot - 1) {
             $this->validateData();
         }
-        if ($opt || ($this->record->type == '1' && $this->record->timer - now()->diffInMinutes($this->record->users1()->first()->pivot->start_at) <= 0)) {
+        if ($opt || ($this->record->type == '1' && ($this->record->timer - Carbon::parse($this->record->users1()->first()->pivot->start_at)->diffInMinutes(now(),true)) <= 0)) {
             $this->qcur = $this->qtot; //dd($opt);
             $this->qcur2 = $this->qtot - 1; //dd($opt);
         }

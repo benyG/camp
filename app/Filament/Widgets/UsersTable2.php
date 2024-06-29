@@ -11,6 +11,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 
 class UsersTable2 extends BaseWidget
 {
@@ -91,7 +92,12 @@ class UsersTable2 extends BaseWidget
         //  rnd();
         // dd(Exam::with('certRel')->where('from',$this->record->id)->orWhereRelation('users', 'user', $this->record->id)->latest('added_at')->count());
         return $table->paginated([5, 10, 25, 50])->heading(__('main.w37'))
-            ->query(Exam::with('certRel')->where('from', $this->record->id)->orWhereRelation('users', 'user', $this->record->id)->latest('added_at'))
+        ->queryStringIdentifier('ussdez5')
+            ->query(Exam::with('certRel')
+            ->where(function (Builder $query) {
+                $query->where('from', $this->record->id)->orWhereRelation('users', 'user', $this->record->id);
+            })
+            ->latest('added_at'))
             ->columns([
                 Tables\Columns\TextColumn::make('certRel.name')->sortable()->searchable()->label('Title')
                     ->description(fn (Exam $record): string => $record->name),

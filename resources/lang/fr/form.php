@@ -51,7 +51,7 @@ return [
     'e35' => 'Retrait effectué',
     'e36' => 'Sélectionnez un élément',
     'e37' => 'Une requête est toujours en cours. Veuillez patienter.',
-    'e38' => '',
+    'e38' => 'Votre abonnement actuel ne permet pas une valeur supérieure à :rst',
     'e39' => '',
     'e40' => '',
     'tz' => 'Fuseau horaire',

@@ -20,7 +20,7 @@
                 </div>
                 <div style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
                 class="text-3xl font-semibold tracking-tight text-custom-500 dark:text-custom-400">
-                    {{$co}}
+                    {{$mo}}
                 </div>
             </div>
             <div class="grid gap-y-2">
@@ -31,7 +31,7 @@
                 </div>
                 <div style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
                 class="text-3xl font-semibold tracking-tight text-custom-500 dark:text-custom-400">
-                    {{$mo}}
+                    {{$co}}
                 </div>
             </div>
             <div class="grid gap-y-2">

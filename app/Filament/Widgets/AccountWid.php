@@ -17,7 +17,10 @@ class AccountWid extends Widget implements HasActions, HasForms
     protected static ?int $sort = -3;
 
     protected static string $view = 'filament.widgets.account-widget';
-
+    public function mount()
+    {
+        if(auth()->user()->ex==9 && auth()->user()->pk=='0'){auth()->user()->pk=1;auth()->user()->save(); redirect()->to(\App\Filament\Pages\ListCertif::getUrl());}
+    }
     public function priAction(): Action
     {
         return Action::make('inv')->label(__('form.upg'))
