@@ -59,6 +59,7 @@ class StripeController extends Controller
         return \App\Models\Info::findOrFail(1);
       });
       $event=json_decode($event);
+      if(is_null($event)) return response()->json(['status' => 'empty event'], 400);
       if($event->type=="checkout.session.completed" && $event->data->object->payment_status="paid"){
         $ty=3;$url=null;
 
