@@ -114,7 +114,7 @@
                                     <span class="block text-sm"></span>
                                 </td>
                                 <td>
-                                    <a target="_blank"
+                                    <a
                                         x-bind:href="month ?
                                             '{{ $ix->bp_ml . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}' :
                                             '{{ $ix->bp_yl . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}'"
@@ -123,7 +123,7 @@
                                         {{ __('form.sub1') }}</a>
                                 </td>
                                 <td>
-                                    <a target="_blank"
+                                    <a
                                         x-bind:href="month ?
                                             '{{ $ix->sp_ml . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}' :
                                             '{{ $ix->sp_yl . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}'"
@@ -132,7 +132,7 @@
                                         {{ __('form.sub1') }}</a>
                                 </td>
                                 <td>
-                                    <a target="_blank"
+                                    <a
                                         x-bind:href="month ?
                                             '{{ $ix->pp_ml . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}' :
                                             '{{ $ix->pp_yl . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}'"
@@ -616,7 +616,7 @@
                                 <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('form.mo') }}</div>
                             </div>
                         </div>
-                        <a target="_blank"
+                        <a
                             x-bind:href="month ?
                                 '{{ $ix->bp_ml . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}' :
                                 '{{ $ix->bp_yl . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}'"
@@ -727,7 +727,7 @@
                                 <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('form.mo') }}</div>
                             </div>
                         </div>
-                        <a target="_blank"
+                        <a
                             x-bind:href="month ?
                                 '{{ $ix->sp_ml . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}' :
                                 '{{ $ix->sp_yl . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}'"
@@ -841,7 +841,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a target="_blank"
+                        <a
                             x-bind:href="month ?
                                 '{{ $ix->pp_ml . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}' :
                                 '{{ $ix->pp_yl . '?locale=' . app()->getLocale() . '&prefilled_email=' . urlencode(auth()->user()->email) }}'"
