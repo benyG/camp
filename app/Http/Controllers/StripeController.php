@@ -45,9 +45,7 @@ class StripeController extends Controller
             report($e);
             exit();
           }
-      $event=json_decode($event,true);
-      if(is_null($event)) return response()->json(['status' => 'empty event'], 400);
-      else  $this->storeEvent($event);
+       $this->storeEvent($event);
 
         return response()->json(['status' => 'success'], 200);
     }
