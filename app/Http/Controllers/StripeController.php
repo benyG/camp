@@ -16,8 +16,15 @@ class StripeController extends Controller
         $ix = cache()->rememberForever('settings', function () {
             return \App\Models\Info::findOrFail(1);
           });
-          $sc=$ix->spk;$es=$ix->whks;
-
+          $sc="sk_test_51Oo7zYGO0bcnzZi78qRaoBrTiqRDsDyiPScv4c7cntWrV7xb7YDD4WG8dmffrboHY4gOeCJDTyczFl3hKIWs149e0072trkVlT";
+          $es="whsec_J9ZBsoHBh1iS1wZtCALUlxTOCsTQmaTw";
+        /* try {
+        $sc = Crypt::decryptString($ix->spk);$es = Crypt::decryptString($ix->whks);
+        dd($sc."\n".$es);
+        } catch (DecryptException $e) {
+            report($e);
+            return response()->json(['status' => 'key encryption error'.$sc], 400);
+        } */
 
         $stripe = new \Stripe\StripeClient($sc);
         $endpoint_secret = $es;
@@ -33,11 +40,11 @@ class StripeController extends Controller
           } catch(\UnexpectedValueException $e) {
             // Invalid payload
             report($e);
-            http_response_code(400);
+            return response()->json(['status' => 'UnexpectedValueException'], 400);
             exit();
           } catch(\Stripe\Exception\SignatureVerificationException $e) {
             // Invalid signature
-            http_response_code(400);
+            return response()->json(['status' => 'SignatureVerificationException'], 400);
             report($e);
             exit();
           }
