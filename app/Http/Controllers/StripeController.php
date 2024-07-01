@@ -22,7 +22,7 @@ class StripeController extends Controller
         dd($sc."\n".$es);
         } catch (DecryptException $e) {
             report($e);
-            return response()->json(['status' => 'key encryption error'], 400);
+            return response()->json(['status' => 'key encryption error'.$sc], 400);
         }
 
         $stripe = new \Stripe\StripeClient($sc);
