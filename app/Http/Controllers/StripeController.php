@@ -55,7 +55,7 @@ class StripeController extends Controller
       $ix = cache()->rememberForever('settings', function () {
         return \App\Models\Info::findOrFail(1);
       });
-      if($event->type=="checkout.session.completed" && $event->data->object->payment_status="paid"){
+      if($event->type=="checkout.session.completed" && $event->data->object->payment_status="paid" && $event->data->object->payment_status="payment"){
         $ty=3;$url=null;
 
         if($event->data->object->payment_link==$ix->iac1_id ||
@@ -98,7 +98,7 @@ class StripeController extends Controller
             \App\Models\User::where('id', $us->first()->id)->increment('ix2', $qt);
           }
       }
-      if($event->type=="charge.succeeded" && $event->data->object->paid=="true"){
+      if($event->type=="charge.succeeded" && $event->data->object->paid=="true" && empty($event->data->object->description)){
         $ul=\App\Models\Order::where('cus',$event->data->object->payment_intent)->get();
         if($ul->count()>0){
             $ob=$ul->first();
@@ -124,7 +124,7 @@ class StripeController extends Controller
           $or->qte=1;
           $or->type=0;
           $or->ili=$event->data->object->hosted_invoice_url;
-          $or->exp=Carbon::createFromTimestampUTC($event->data->object->lines->data[1]->period->end);
+          $or->exp=Carbon::createFromTimestampUTC($event->data->object->lines->data[0]->period->end);
           $or->user=$us->count()>0?$us->first()->id:null;
           $or->save();
       }
