@@ -81,6 +81,22 @@ class StripeController extends Controller
           $or->ili=$url;
           $or->user=$us->count()>0?$us->first()->id:null;
           $or->save();
+          if($us->count()>0 && $ty==1){
+            $qt=0;
+            switch ($event->data->object->payment_link) {
+                case $ix->iac1_id:
+                    $qt=$ix->iac1_qt;
+                    break;
+                case $ix->iac2_id:
+                        $qt=$ix->iac2_qt;
+                        break;
+                case $ix->iac3_id:
+                            $qt=$ix->iac3_qt;
+                            break;
+                default: break;
+            }
+            \App\Models\User::where('id', $us->first()->id)->increment('ix2', $qt);
+          }
       }
       if($event->type=="charge.succeeded" && $event->data->object->paid=="true"){
         $ul=\App\Models\Order::where('cus',$event->data->object->payment_intent)->get();
