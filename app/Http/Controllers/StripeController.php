@@ -19,6 +19,7 @@ class StripeController extends Controller
           $sc="";$es="";
         try {
         $sc = Crypt::decryptString($ix->spk);$es = Crypt::decryptString($ix->whks);
+        dd($sc."\n".$es);
         } catch (DecryptException $e) {
             report($e);
             return response()->json(['status' => 'key encryption error'], 400);
