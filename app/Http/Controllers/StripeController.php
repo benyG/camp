@@ -16,15 +16,13 @@ class StripeController extends Controller
         $ix = cache()->rememberForever('settings', function () {
             return \App\Models\Info::findOrFail(1);
           });
-          $sc="rk_test_51Oo7zYGO0bcnzZi7l2g1C4Js0pp79qkQkMIMwIK2cCqMV9QZsad0WqBE0yWYikpPBIpTc6sCVuZ7CtZPHCKG1Bsn00B4vNi0ds";
-          $es="whsec_J9ZBsoHBh1iS1wZtCALUlxTOCsTQmaTw";
-        /* try {
+         try {
         $sc = Crypt::decryptString($ix->spk);$es = Crypt::decryptString($ix->whks);
         dd($sc."\n".$es);
         } catch (DecryptException $e) {
             report($e);
             return response()->json(['status' => 'key encryption error'.$sc], 400);
-        } */
+        }
 
         $stripe = new \Stripe\StripeClient($sc);
         $endpoint_secret = $es;
