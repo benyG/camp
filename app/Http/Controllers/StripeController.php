@@ -17,11 +17,11 @@ class StripeController extends Controller
             return \App\Models\Info::findOrFail(1);
           });
          try {
-        $sc = Crypt::decryptString($ix->spk);$es = Crypt::decryptString($ix->whks);
+        $sc = Crypt::decryptString($ix->spk);$es = Crypt::decryptString($ix->whk);
         dd($sc."\n".$es);
         } catch (DecryptException $e) {
             report($e);
-            return response()->json(['status' => 'key encryption error'.$sc], 400);
+            return response()->json(['status' => 'key encryption error'], 400);
         }
 
         $stripe = new \Stripe\StripeClient($sc);
