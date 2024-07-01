@@ -16,7 +16,7 @@ class StripeController extends Controller
         $ix = cache()->rememberForever('settings', function () {
             return \App\Models\Info::findOrFail(1);
           });
-          $sc="sk_test_51Oo7zYGO0bcnzZi78qRaoBrTiqRDsDyiPScv4c7cntWrV7xb7YDD4WG8dmffrboHY4gOeCJDTyczFl3hKIWs149e0072trkVlT";
+          $sc="rk_test_51Oo7zYGO0bcnzZi7l2g1C4Js0pp79qkQkMIMwIK2cCqMV9QZsad0WqBE0yWYikpPBIpTc6sCVuZ7CtZPHCKG1Bsn00B4vNi0ds";
           $es="whsec_J9ZBsoHBh1iS1wZtCALUlxTOCsTQmaTw";
         /* try {
         $sc = Crypt::decryptString($ix->spk);$es = Crypt::decryptString($ix->whks);
@@ -49,7 +49,7 @@ class StripeController extends Controller
             exit();
           }
           return response()->json(['status' => $event], 200);
-      $event=json_decode($event);
+      $event=json_decode($event,true);
       if(is_null($event)) return response()->json(['status' => 'empty event'], 400);
       else  $this->storeEvent($event);
 
