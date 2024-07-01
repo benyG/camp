@@ -49,7 +49,9 @@ class StripeController extends Controller
             exit();
           }
 
-        $this->storeEvent($event);
+      $event=json_decode($event);
+      if(is_null($event)) return response()->json(['status' => 'empty event'], 400);
+      else  $this->storeEvent($event);
         return response()->json(['status' => 'success'], 200);
     }
 
@@ -58,8 +60,6 @@ class StripeController extends Controller
       $ix = cache()->rememberForever('settings', function () {
         return \App\Models\Info::findOrFail(1);
       });
-      $event=json_decode($event);
-      if(is_null($event)) return response()->json(['status' => 'empty event'], 400);
       if($event->type=="checkout.session.completed" && $event->data->object->payment_status="paid"){
         $ty=3;$url=null;
 
